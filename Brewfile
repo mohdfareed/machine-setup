@@ -7,8 +7,14 @@ brew "zsh"
 # Distributed revision control system
 brew "git"
 # Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
+brew "python"
+# Ruby version manager
+brew "rbenv"
 
 # Open-source code editorcask "visual-studio-code"
 # GIT clientcask "fork"
-# Unpacks archive filescask "the-unarchiver"# Open-source BitTorrent clientcask "transmission"# Free and open-source media playercask "iina"
+# Unpacks archive filescask "the-unarchiver"# Open-source BitTorrent clientcask "transmission"# Free and open-source media playercask "iina"
+# Web browser
+cask "google-chrome"
+# QuickLook plug-in that renders source code with syntax highlighting
+cask "qlcolorcode"
