@@ -5,3 +5,6 @@
 	defaultBranch = main
 [core]
 	editor = code --wait
+[alias]
+	g = log --graph --abbrev-commit --name-status
+	gcomp = log --graph --abbrev-commit --oneline
