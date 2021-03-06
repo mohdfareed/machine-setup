@@ -1,5 +1,5 @@
 # path of the notebook's directory
-notebook="/Users/mohdfareed/Library/Mobile Documents/com~apple~CloudDocs/Notebook"
+notebook=~"/Library/Mobile Documents/com~apple~CloudDocs/Notebook"
 
 # set VSCode as the default editor
 export EDITOR=/usr/local/bin/code
