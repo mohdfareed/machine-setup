@@ -6,7 +6,7 @@ touch $HOME/.hushlogin
 source ./scripts/homebrew.sh
 sh -c "$(curl -fsSL \
   https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-source ./scripts/symlinks.sh
+source ./scripts/symlink.sh
 
 echo "Sourcing .zshrc ..."
 source "$HOME/.zshrc"

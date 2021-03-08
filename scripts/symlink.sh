@@ -8,10 +8,10 @@ symlink_dotfile() {
 echo "Creating symlinks ..."
 
 pushd ./dots
-symlink_dotfile .zshrc
-symlink_dotfile .aliases
-symlink_dotfile .gitconfig
-symlink_dotfile .gitignore_global
+symlink_dotfile zshrc
+symlink_dotfile aliases
+symlink_dotfile gitconfig
+symlink_dotfile gitignore_global
 
 # oh-my-zsh theme
 git -C ~/.dotfiles/other/common pull
@@ -19,4 +19,4 @@ ln -s ~/.dotfiles/other/common/common.zsh-theme $HOME/.oh-my-zsh/themes
 
 # colorls configuration
 mkdir -p ~/.config/colorls
-ln -s ~/.dotfiles/other/dark_colors.yaml ~./config/colorls/dark_colors.yaml
+ln -s ~/.dotfiles/other/dark_colors.yaml ~/.config/colorls/dark_colors.yaml
