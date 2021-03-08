@@ -2,16 +2,25 @@
 
 ## Installation
 
-1. Run the installation script
+1. Install Xcode Command Line Tools
 
 ```sh
 $ xcode-select --install
-$ git clone https://github.com/mohdfareed/dotfiles.git ~/.dotfiles
-$ chmod +x $HOME/.dotfiles/install.sh
-$ $HOME/.dotfiles/install.sh
 ```
 
-2. Change terminal profile by running `Personal.terminal`
+2. Install Oh My Zsh
+
+```sh
+$ sh -c "$(curl -fsSL \
+    https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+3. Run the installation script
+
+```sh
+$ git clone https://github.com/mohdfareed/dotfiles.git ~/.dotfiles
+$ $HOME/.dotfiles/install.sh
+```
 
 ## TODO
 
@@ -19,7 +28,6 @@ $ $HOME/.dotfiles/install.sh
 - Write more detailed bootstrapping steps.
 - Make a checklist of steps to decommission your computer before wiping your hard drive.
 - Modify packages and applications installed by default.
-- Customize the shell further.
 - Automate GitHub authentication process.
 - Set specific setup scripts for Ruby and other frameworks.
 - Add update script

@@ -8,10 +8,11 @@ touch $HOME/.hushlogin
 git -C $HOME/.dotfiles submodule update --init
 
 source $HOME/.dotfiles/scripts/homebrew.sh
-sh -c "$(curl -fsSL \
-  https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 source $HOME/.dotfiles/scripts/symlink.sh
 
 echo "Sourcing .zshrc ..."
 source "$HOME/.zshrc"
+
+open $HOME/.dotfiles/other/Personal.terminal
+echo "Set the added profile, 'Personal', as the default."
 echo "Installation complete!"
