@@ -12,7 +12,7 @@ $ xcode-select --install
 
 ```sh
 $ sh -c "$(curl -fsSL \
-    https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 3. Run the installation script
