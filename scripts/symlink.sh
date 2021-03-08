@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 symlink_dotfile() {
-  ln -sfv $(grealpath $1) "$HOME/.$1"
+  ln -sfv $1 "$HOME/.$1"
 }
 
 
