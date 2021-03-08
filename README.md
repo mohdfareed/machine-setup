@@ -29,5 +29,4 @@ $ $HOME/.dotfiles/install.sh
 - Make a checklist of steps to decommission your computer before wiping your hard drive.
 - Modify packages and applications installed by default.
 - Automate GitHub authentication process.
-- Set specific setup scripts for Ruby and other frameworks.
 - Add update script

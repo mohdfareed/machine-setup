@@ -13,6 +13,8 @@ source $HOME/.dotfiles/scripts/symlink.sh
 echo "Sourcing .zshrc ..."
 source "$HOME/.zshrc"
 
+source $HOME/.dotfiles/scripts/ruby.sh
+
 open $HOME/.dotfiles/other/Personal.terminal
 echo "'Personal' profile has been added to the terminal."
 echo "Set it as the default through the Preferences."
