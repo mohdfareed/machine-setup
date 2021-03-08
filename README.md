@@ -1,6 +1,6 @@
 # Dotfiles
 
-## Steps to bootstrap a new Mac
+## Installation
 
 1. Clone repo into new hidden directory.
 
@@ -23,3 +23,4 @@ git clone https://github.com/mohdfareed/Dotfiles.git ~/.dotfiles
 - Customize the shell further.
 - Automate GitHub authentication process.
 - Set specific setup scripts for Ruby and other frameworks.
+- Add update script
