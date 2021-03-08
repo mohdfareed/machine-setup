@@ -1,0 +1,4 @@
+[submodule "common"]
+	path = other/common
+	url = https://github.com/jackharrisonsherlock/common
+	ignore = dirty
