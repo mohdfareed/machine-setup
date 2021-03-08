@@ -11,15 +11,8 @@ source $HOME/.aliases
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
 
-# SSH
-export PATH="/usr/local/sbin:$PATH"
-
 # python
 export PATH=/usr/local/opt/python/libexec/bin:$PATH
-
-# Homebrew
-export PATH=/opt/homebrew/bin:$PATH
-export PATH="/opt/homebrew/sbin:$PATH"
 
 # rbenv
 export RBENV_ROOT=/opt/homebrew/opt/rbenv

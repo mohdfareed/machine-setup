@@ -8,6 +8,7 @@
 	excludesfile = ~/.gitignore_global
 [color]
 	ui = auto
+
 [diff]
 	tool = vscode
 [difftool "vscode"]
@@ -16,6 +17,7 @@
 	tool = vscode
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
+
 [alias]
 	graph = log --graph --abbrev-commit --name-status
 	graphcompact = log --graph --abbrev-commit --oneline
