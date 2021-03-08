@@ -11,6 +11,7 @@ brew upgrade
 brew cleanup
 
 # update App Store apps
+echo "Upgrading App Store apps..."
 mas upgrade
 
 # install latest ruby version

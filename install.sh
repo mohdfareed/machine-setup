@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-
 # remove last login time prompt
 touch $HOME/.hushlogin
 

@@ -27,6 +27,9 @@ brew install python
 # Ruby version manager
 brew install rbenv
 
+# Mac App Store command-line interface
+brew install mas
+
 # Open-source code editor
 brew install --cask visual-studio-code
 # Unpacks archive files
@@ -35,16 +38,6 @@ brew install --cask the-unarchiver
 brew install --cask transmission
 # Free and open-source media player
 brew install --cask iina
-
-# Mac App Store command-line interface
-brew install mas
-mas install 441258766 # Magnet
-mas install 409201541 # Pages
-mas install 409203825 # Numbers
-mas install 409183694 # Keynote
-mas install 1320666476 # Wipr
-mas install 1438243180 # Dark Reader
-mas install 1505779553 # Dashlane
 
 # fonts
 brew tap homebrew/cask-fonts
