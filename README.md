@@ -2,6 +2,8 @@
 
 ## Installation
 
+1. Run the installation script
+
 ```sh
 $ xcode-select --install
 $ git clone https://github.com/mohdfareed/dotfiles.git ~/dotfiles
@@ -9,6 +11,8 @@ $ cd ~/dotfiles
 $ chmod +x install.sh
 $ ./install.sh
 ```
+
+2. Change terminal profile by running `Personal.terminal`
 
 ## TODO
 

@@ -25,9 +25,6 @@ brew install python
 # Ruby version manager
 brew install rbenv
 
-# Mac App Store command-line interface
-brew install mas
-
 # Open-source code editor
 brew install --cask visual-studio-code
 # Unpacks archive files
@@ -37,7 +34,8 @@ brew install --cask transmission
 # Free and open-source media player
 brew install --cask iina
 
-# App Store applications
+# Mac App Store command-line interface
+brew install mas
 mas install 441258766 # Magnet
 mas install 409201541 # Pages
 mas install 409203825 # Numbers
