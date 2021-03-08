@@ -2,16 +2,12 @@
 
 ## Installation
 
-1. Clone repo into new hidden directory.
-
-```zsh
-git clone https://github.com/mohdfareed/Dotfiles.git ~/.dotfiles
-```
-
-2. Run install script
-
-```zsh
-~/.dotfiles/install.sh
+```sh
+$ xcode-select --install
+$ git clone https://github.com/mohdfareed/dotfiles.git ~/dotfiles
+$ cd ~/dotfiles
+$ chmod +x install.sh
+$ ./install.sh
 ```
 
 ## TODO
