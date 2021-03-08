@@ -57,4 +57,4 @@ brew install --cask font-new-york
 brew cleanup
 
 # fix “zsh compinit: insecure directories”
-# chmod -R go-w "$(brew --prefix)/share"
+chmod -R go-w "$(brew --prefix)/share"
