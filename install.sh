@@ -14,5 +14,6 @@ echo "Sourcing .zshrc ..."
 source "$HOME/.zshrc"
 
 open $HOME/.dotfiles/other/Personal.terminal
-echo "Set the added profile, 'Personal', as the default."
+echo "'Personal' profile has been added to the terminal."
+echo "Set it as the default through the Preferences."
 echo "Installation complete!"
