@@ -1,6 +1,8 @@
-# Check for homebrew and install if needed
+#!/usr/bin/env zsh
+
 echo "Installing homebrew ..."
 
+# Check for homebrew and install if needed
 which -s brew
 if [[ $? != 0 ]] ; then
   /bin/bash -c "$(curl -fsSL \
@@ -28,7 +30,7 @@ brew install rbenv
 # Open-source code editor
 brew install --cask visual-studio-code
 # Unpacks archive files
-cask the-unarchiver
+brew install --cask the-unarchiver
 # Open-source BitTorrent client
 brew install --cask transmission
 # Free and open-source media player
