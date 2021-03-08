@@ -38,6 +38,17 @@ brew install --cask the-unarchiver
 brew install --cask transmission
 # Free and open-source media player
 brew install --cask iina
+# Control windows and applications right from your trackpad
+brew install --cask swish
+# Smooths scrolling and set mouse scroll directions independently
+brew install --cask mos
+# Tool to control external monitor brightness & volume
+brew install --cask monitor control
+
+# # Web browser
+# brew install --cask google-chrome
+# # Application uninstaller
+# brew install --cask appcleaner
 
 # fonts
 brew tap homebrew/cask-fonts

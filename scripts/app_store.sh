@@ -14,10 +14,11 @@ while true; do
     esac
 done
 
-mas install 441258766 # Magnet
-mas install 409201541 # Pages
-mas install 409203825 # Numbers
-mas install 409183694 # Keynote
+mas install 441258766  # Magnet
+mas install 409201541  # Pages
+mas install 409203825  # Numbers
+mas install 409183694  # Keynote
 mas install 1320666476 # Wipr
 mas install 1438243180 # Dark Reader
 mas install 1505779553 # Dashlane
+mas install 937984704  # Amphetamine
