@@ -21,15 +21,13 @@ tput clear
 echo "${BOLD}Installing App Store applications...${CLR}"
 
 # ask if the user is signed-in to continue
-echo "\nYou need to be signed-in to the App Store to continue."
-echo "${BOLD}Are you signed-in? [y|N]${CLR}"
-read answer
+echo "${BOLD}You need to be signed-in to the App Store to continue.${CLR}"
+echo
+read -sk "?Press RETURN to continue or any other key to abort" answer
 
 case $answer in
-    [Yy]* )
-        ;;
-    * )
-        exit;;
+    $'\n' ) ;;
+    * ) exit ;;
 esac
 
 # prompt the user to choose the apps to install
