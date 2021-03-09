@@ -36,7 +36,7 @@ prompt swish
 # Smooths scrolling and set mouse scroll directions independently
 prompt mos
 # Tool to control external monitor brightness & volume
-prompt monitor control
+prompt monitorcontrol
 
 # Web browser
 prompt google-chrome
