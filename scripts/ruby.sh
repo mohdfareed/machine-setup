@@ -27,25 +27,22 @@ version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 # prompt the user for confirmation to install latest ruby version
 
 echo "\nRuby version ${RBOLD}$version${CLR} will be installed."
-echo "Would you like to continue?[Y|n]"
-read answer
+echo
+read -sk "?Press RETURN to continue or any other key to abort" answer
 
-case $answer in
-    [Nn]* ) exit;;
-    * ) rbenv install $version;;
-esac
+if [[ $answer = $'\n' ]] ; then
+    # installed latest Ruby version and set it as default
+    rbenv install $version
+    rbenv global $version
+    rbenv rehash
 
-# set default Ruby version
-rbenv global $version
-rbenv rehash
+    echo "${BOLD}Installing gems...${CLR}"
 
-
-echo "${BOLD}Installing gems...${CLR}"
-
-# prompt the user to choose the gems to install
-prompt bundler  # applications' dependencies manager
-prompt pry      # runtime developer console and IRB alternative
-prompt byebug   # Ruby debugger
-prompt rails    # full-stack web framework
-prompt colorls  # CLI gem that beautifies the terminal's ls command
-prompt colorize # methods to set text color, background color and text effects
+    # prompt the user to choose the gems to install
+    prompt bundler  # applications' dependencies manager
+    prompt pry      # runtime developer console and IRB alternative
+    prompt byebug   # Ruby debugger
+    prompt rails    # full-stack web framework
+    prompt colorls  # CLI gem that beautifies the terminal's ls command
+    prompt colorize # methods to set text color, background color and text effects
+fi

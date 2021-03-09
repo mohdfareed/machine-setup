@@ -25,17 +25,14 @@ echo "${BOLD}You need to be signed-in to the App Store to continue.${CLR}"
 echo
 read -sk "?Press RETURN to continue or any other key to abort" answer
 
-case $answer in
-    $'\n' ) ;;
-    * ) exit ;;
-esac
-
 # prompt the user to choose the apps to install
-prompt 441258766  # Magnet
-prompt 409201541  # Pages
-prompt 409203825  # Numbers
-prompt 409183694  # Keynote
-prompt 1320666476 # Wipr
-prompt 1438243180 # Dark Reader
-prompt 1505779553 # Dashlane
-prompt 937984704  # Amphetamine
+if [[ $answer = $'\n' ]] ; then
+    prompt 441258766  # Magnet
+    prompt 409201541  # Pages
+    prompt 409203825  # Numbers
+    prompt 409183694  # Keynote
+    prompt 1320666476 # Wipr
+    prompt 1438243180 # Dark Reader
+    prompt 1505779553 # Dashlane
+    prompt 937984704  # Amphetamine
+fi
