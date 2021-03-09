@@ -1,5 +1,5 @@
 # notebook's directory
-notebook=~"/Library/Mobile Documents/com~apple~CloudDocs/Notebook"
+notebook="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Notebook"
 
 # colorls
 alias lc='colorls -A --sd --git-status'

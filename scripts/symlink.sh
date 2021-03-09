@@ -20,4 +20,4 @@ ln -siv $HOME/.dotfiles/other/common/common.zsh-theme $HOME/.oh-my-zsh/themes
 # colorls configuration
 mkdir -p $HOME/.config/colorls
 ln -siv $HOME/.dotfiles/other/dark_colors.yaml \
-    ~/.config/colorls/dark_colors.yaml
+    $HOME/.config/colorls/dark_colors.yaml

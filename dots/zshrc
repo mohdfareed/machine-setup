@@ -1,18 +1,18 @@
 # oh-my-zsh
-export ZSH=~"/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # theme
 ZSH_THEME="common"
 
 # aliases
-source $HOME/.aliases 
+source $HOME/.aliases
 
 # default editor
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
 
 # python
-export PATH=/usr/local/opt/python/libexec/bin:$PATH
+export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
 
 # rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
