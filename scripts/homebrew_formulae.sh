@@ -1,24 +1,43 @@
 #!/usr/bin/env zsh
 
+CLR='\033[0m'
+BOLD='\033[1m'
+RBOLD='\033[1;31m'
+
+# prompt the user for confirmation, skip installation if needed
+prompt() {
+    echo "\nWould you like to install ${RBOLD}$1${CLR}? [Y|n]"
+    read answer
+
+    case $answer in
+        [Nn]* ) ;;
+        * ) brew install $1;;
+    esac
+}
+
+
+tput clear
+echo "${BOLD}Installing homebrew formulae...${CLR}"
+
 brew update
 
-echo "Installing homebrew formulae..."
+# prompt the user to choose the formulae to install
 
 # UNIX shell (command interpreter)
-brew install zsh
+prompt zsh
 # Fish-like fast/unobtrusive autosuggestions for zsh
-brew install zsh-autosuggestions
+prompt zsh-autosuggestions
 # Fish shell like syntax highlighting for zsh
-brew install zsh-syntax-highlighting
+prompt zsh-syntax-highlighting
 
 # Distributed revision control system
-brew install git
+prompt git
 # Interpreted, interactive, object-oriented programming language
-brew install python
+prompt python
 # Ruby version manager
-brew install rbenv
+prompt rbenv
 
 # Mac App Store command-line interface
-brew install mas
+prompt mas
 
 brew cleanup

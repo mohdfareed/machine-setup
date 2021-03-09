@@ -5,21 +5,21 @@
 **1. Install Xcode Command Line Tools:**
 
 ```sh
-$ xcode-select --install
+xcode-select --install
 ```
 
 **2. Install Oh My Zsh:**
 
 ```sh
-$ sh -c "$(curl -fsSL \
-$ https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL \
+https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 **3. Run the installation script:**
 
 ```sh
-$ git clone https://github.com/mohdfareed/dotfiles.git ~/.dotfiles
-$ $HOME/.dotfiles/install.sh
+git clone https://github.com/mohdfareed/dotfiles.git $HOME/.dotfiles
+$HOME/.dotfiles/install.sh
 ```
 
 **4. Change terminal's default profile:**
