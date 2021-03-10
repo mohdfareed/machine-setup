@@ -1,8 +1,10 @@
 # notebook's directory
 notebook="$HOME/Library/Mobile Documents/com~apple~CloudDocs/Notebook"
+# open notebook with vscode
+alias notes='code $notebook'
 
 # colorls
 alias lc='colorls -A --sd --git-status'
 
-# clear window
-alias c='clear'
+# complete uninstallation
+alias uninstall='brew uninstall --zap --force'
