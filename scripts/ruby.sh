@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 
-CLR='\033[0m'
-BOLD='\033[1m'
-RBOLD='\033[1;31m'
+clear='\033[0m'
+bold='\033[1m'
+rbold='\033[1;31m'
 
 # prompt the user for confirmation, skip installation if needed
 prompt() {
-    echo "\nWould you like to install ${RBOLD}$1${CLR}? [Y|n]"
+    echo "\nWould you like to install ${rbold}$1${clear}? [Y|n]"
     read answer
 
     case $answer in
@@ -19,14 +19,14 @@ prompt() {
 
 
 tput clear
-echo "${BOLD}Installing latest version of Ruby...${CLR}"
+echo "${bold}Installing latest version of Ruby...${clear}"
 
 # get the latest version number of Ruby
 version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 
 # prompt the user for confirmation to install latest ruby version
 
-echo "\nRuby version ${RBOLD}$version${CLR} will be installed."
+echo "\nRuby version ${rbold}$version${clear} will be installed."
 echo
 read -sk "?Press RETURN to continue or any other key to abort" answer
 
@@ -36,7 +36,7 @@ if [[ $answer = $'\n' ]] ; then
     rbenv global $version
     rbenv rehash
 
-    echo "${BOLD}Installing gems...${CLR}"
+    echo "${bold}Installing gems...${clear}"
 
     # prompt the user to choose the gems to install
     prompt bundler  # applications' dependencies manager

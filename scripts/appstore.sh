@@ -1,13 +1,13 @@
 #!/usr/bin/env zsh
 
-CLR='\033[0m'
-BOLD='\033[1m'
-RBOLD='\033[1;31m'
+clear='\033[0m'
+bold='\033[1m'
+rbold='\033[1;31m'
 
 # prompt the user for confirmation, skip installation if needed
 prompt() {
-    echo "\nWould you like to install ${RBOLD}$(mas info $1 | \
-    head -n 1)${CLR}? [Y|n]"
+    echo "\nWould you like to install ${rbold}$(mas info $1 | \
+    head -n 1)${clear}? [Y|n]"
     read answer
 
     case $answer in
@@ -18,10 +18,10 @@ prompt() {
 
 
 tput clear
-echo "${BOLD}Installing App Store applications...${CLR}"
+echo "${bold}Installing App Store applications...${clear}"
 
 # ask if the user is signed-in to continue
-echo "${BOLD}You need to be signed-in to the App Store to continue.${CLR}"
+echo "${bold}You need to be signed-in to the App Store to continue.${clear}"
 echo
 read -sk "?Press RETURN to continue or any other key to abort" answer
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env zsh
 
-CLR='\033[0m'
-BOLD='\033[1m'
-RBOLD='\033[1;31m'
+clear='\033[0m'
+bold='\033[1m'
+rbold='\033[1;31m'
 
 tput clear
-echo "${BOLD}Installing homebrew ...${CLR}"
+echo "${bold}Installing homebrew ...${clear}"
 
 # Check for homebrew and install it if needed
 which -s brew

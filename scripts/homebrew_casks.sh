@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 
-CLR='\033[0m'
-BOLD='\033[1m'
-RBOLD='\033[1;31m'
+clear='\033[0m'
+bold='\033[1m'
+rbold='\033[1;31m'
 
 # prompt the user for confirmation, skip installation if needed
 prompt() {
-    echo "\nWould you like to install ${RBOLD}$1${CLR}? [Y|n]"
+    echo "\nWould you like to install ${rbold}$1${clear}? [Y|n]"
     read answer
 
     case $answer in
@@ -17,7 +17,7 @@ prompt() {
 
 
 tput clear
-echo "${BOLD}Installing homebrew casks...${CLR}"
+echo "${bold}Installing homebrew casks...${clear}"
 
 brew update
 
@@ -44,6 +44,8 @@ prompt google-chrome
 prompt appcleaner
 # System monitor for the menu bar
 prompt stats
+# QuickLook plug-in that renders source code with syntax highlighting
+prompt qlcolorcode
 
 # fonts
 brew tap homebrew/cask-fonts

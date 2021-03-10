@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 
-CLR='\033[0m'
-BOLD='\033[1m'
-GBOLD='\033[1;32m'
+clear='\033[0m'
+bold='\033[1m'
+gbold='\033[1;32m'
 
 # remove last login time prompt
 touch $HOME/.hushlogin
@@ -24,7 +24,7 @@ source $HOME/.dotfiles/scripts/symlink.sh
 source $HOME/.dotfiles/scripts/ruby.sh
 
 # add custom terminal profile. It has to be set as default manually
-echo "\n${BOLD}Adding new terminal profile...${CLR}"
+echo "\n${bold}Adding new terminal profile...${clear}"
 open $HOME/.dotfiles/other/Personal.terminal
 
-echo "\n${GBOLD}Installation complete!${CLR}"
+echo "\n${gbold}Installation complete!${clear}"
