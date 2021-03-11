@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+## REQUIREMENTS:
+# brew
+# rbenv
+
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
@@ -26,7 +30,6 @@ echo "${bold}Installing latest version of Ruby...${clear}"
 version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 
 # prompt the user for confirmation to install latest ruby version
-
 echo "\nRuby version ${rbold}$version${clear} will be installed."
 echo -e "\a"
 read -sk "?Press RETURN to continue or any other key to abort" answer
@@ -36,6 +39,7 @@ if [[ $answer = $'\n' ]] ; then
     rbenv install $version
     rbenv global $version
     rbenv rehash
+    eval "$(rbenv init -)" # update the current session's ruby
 
     echo "${bold}Installing gems...${clear}"
 

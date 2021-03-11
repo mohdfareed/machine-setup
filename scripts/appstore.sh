@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+## REQUIREMENTS:
+# brew
+# mas
+
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
