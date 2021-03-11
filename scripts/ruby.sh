@@ -43,6 +43,6 @@ if [[ $answer = $'\n' ]] ; then
     prompt pry      # runtime developer console and IRB alternative
     prompt byebug   # Ruby debugger
     prompt rails    # full-stack web framework
+    prompt colorize # methods to set text color, background color, text effects
     prompt colorls  # CLI gem that beautifies the terminal's ls command
-    prompt colorize # methods to set text color, background color and text effects
 fi

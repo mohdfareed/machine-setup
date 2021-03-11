@@ -7,8 +7,17 @@ gbold='\033[1;32m'
 # remove last login time prompt
 touch $HOME/.hushlogin
 
+# create config hidden folder
+mkdir -p $HOME/.config/colorls
+
 # update submodules
 git -C $HOME/.dotfiles submodule update --init
+
+# installing oh-my-zsh
+source $HOME/.dotfiles/scripts/on_my_zsh.sh
+
+# create symlinks and resource new zsh profile
+source $HOME/.dotfiles/scripts/symlink.sh
 
 # install homebrew and its forumlae and casks
 source $HOME/.dotfiles/scripts/homebrew.sh
@@ -17,14 +26,11 @@ source $HOME/.dotfiles/scripts/homebrew_casks.sh
 # install App Store applications
 source $HOME/.dotfiles/scripts/appstore.sh
 
-# create symlinks and resource new zsh profile
-source $HOME/.dotfiles/scripts/symlink.sh
-
 # install ruby and its gems
 source $HOME/.dotfiles/scripts/ruby.sh
 
-# add custom terminal profile. It has to be set as default manually
-echo "\n${bold}Adding new terminal profile...${clear}"
-open $HOME/.dotfiles/other/Personal.terminal
+# load new zsh profile
+echo "\n${bold}Sourcing .zshrc ...${clear}"
+source "$HOME/.zshrc"
 
 echo "\n${gbold}Installation complete!${clear}"
