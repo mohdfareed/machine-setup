@@ -19,10 +19,7 @@ symlink aliases
 symlink gitconfig
 symlink gitignore_global
 
-# link oh-my-zsh theme
-git -C $HOME/.dotfiles/other/common pull
-ln -siv $HOME/.dotfiles/other/common/common.zsh-theme $HOME/.oh-my-zsh/themes
-
 # link colorls configuration
+mkdir -p $HOME/.config/colorls
 ln -siv $HOME/.dotfiles/other/dark_colors.yaml \
 $HOME/.config/colorls/dark_colors.yaml

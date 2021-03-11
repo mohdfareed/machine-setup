@@ -8,7 +8,7 @@ gbold='\033[1;32m'
 touch $HOME/.hushlogin
 
 # create config hidden folder
-mkdir -p $HOME/.config/colorls
+mkdir -p $HOME/.config
 
 # update submodules
 git -C $HOME/.dotfiles submodule update --init
