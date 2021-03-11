@@ -5,17 +5,17 @@ clear='\033[0m'
 bold='\033[1m'
 gbold='\033[1;32m'
 
+# clone repo and setup git credentials and configuration
+source $scripts/scripts/git.sh
+
 # remove last login time prompt
 touch $HOME/.hushlogin
 
 # create config hidden folder
 mkdir -p $HOME/.config
 
-# clone repo
-source $scripts/scripts/git.sh
-
 # installing oh-my-zsh
-source on_my_zsh.sh
+source oh_my_zsh.sh
 
 # create symlinks and resource new zsh profile
 source $scripts/symlink.sh
