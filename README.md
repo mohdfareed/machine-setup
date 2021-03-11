@@ -8,13 +8,7 @@
 xcode-select --install
 ```
 
-**2. Pull Dotfiles repo:**
-
-```sh
-git clone https://github.com/mohdfareed/dotfiles.git $HOME/.dotfiles
-```
-
-**3. Run the installation script:**
+**2. Run the installation script:**
 
 ```sh
 $HOME/.dotfiles/install.sh
@@ -26,10 +20,7 @@ $HOME/.dotfiles/install.sh
 
 ## TODO
 
-- Learn how to use defaults to record and restore System Preferences and macOS configurations.
-- Automate GitHub authentication process.
+- Learn how to use *defaults* to record and restore System Preferences and macOS configurations.
 - Clean home directory and move files to `~/.config`.
-- Source `.zshrc` before installing ruby gems.
-- Fix Ruby script requiring to reload terminal to install gems.
-- Look over VSCode settings starting from workbench (and JSON file).
-- Ring bell at prompts.
+- Configure git settings in VSCode
+- Fix terminal font
