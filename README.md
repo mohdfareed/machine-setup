@@ -14,13 +14,7 @@ xcode-select --install
 git clone https://github.com/mohdfareed/dotfiles.git $HOME/.dotfiles
 ```
 
-**3. Setup Terminal:**
-
-```sh
-$HOME/.dotfiles/terminal_setup.sh
-```
-
-**4. Run the installation script:**
+**3. Run the installation script:**
 
 ```sh
 $HOME/.dotfiles/install.sh

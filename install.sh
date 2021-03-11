@@ -29,6 +29,9 @@ source $HOME/.dotfiles/scripts/appstore.sh
 # install ruby and its gems
 source $HOME/.dotfiles/scripts/ruby.sh
 
+# setup terminal
+source $HOME/.dotfiles/scripts/terminal_setup.sh
+
 # load new zsh profile
 echo "\n${bold}Sourcing .zshrc ...${clear}"
 source "$HOME/.zshrc"
