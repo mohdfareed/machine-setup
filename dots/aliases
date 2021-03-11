@@ -6,5 +6,9 @@ alias notes='code $notebook'
 # colorls
 alias lc='colorls -A --sd --git-status'
 
-# complete uninstallation
+# complete uninstallation of casks
 alias uninstall='brew uninstall --zap --force'
+
+# download YouTube video
+alias dlyoutube='youtube-dl --write-sub --write-auto-sub --embed-subs \
+    --merge-output-format mp4 -o "$HOME/Downloads/%(title)s.%(ext)s"'

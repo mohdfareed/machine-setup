@@ -43,5 +43,9 @@ prompt rbenv
 
 # Mac App Store command-line interface
 prompt mas
+# Play, record, convert, and stream audio and video
+prompt ffmpeg # youtube-dl dependency
+# Download YouTube videos from the command-line
+prompt youtube-dl
 
 brew cleanup
