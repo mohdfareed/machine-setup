@@ -1,23 +1,37 @@
 #!/usr/bin/env zsh
 
-echo "Updating..."
+clear='\033[0m'
+bold='\033[1m'
+gbold='\033[1;32m'
+
+echo "${bold}Updating...${clear}"
 
 # update submodules
 git -C $HOME/.dotfiles submodule update --init
 
 # update brew and its forumlae and casks
-brew update
-brew upgrade
-brew cleanup
+which -s brew
+if [[ $? = 0 ]] ; then
+    brew update
+    brew upgrade
+    brew cleanup
+fi
 
-# update App Store apps
-echo "Upgrading App Store apps..."
-mas upgrade
+which -s mas
+if [[ $? = 0 ]] ; then
+    mas upgrade
+fi
 
 # install latest ruby version
-source $HOME/.dotfiles/scripts/ruby.sh
+which -s rbenv
+if [[ $? = 0 ]] ; then
+    source $HOME/.dotfiles/scripts/ruby.sh
+fi
 
 # update oh-my-zsh
-omz update
+which -s omz
+if [[ $? = 0 ]] ; then
+    omz update
+fi
 
-echo "Updating complete!"
+echo "${gbold}Updating complete!${clear}"
