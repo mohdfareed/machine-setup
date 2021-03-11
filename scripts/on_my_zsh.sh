@@ -12,4 +12,7 @@ https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
 "" --unattended
 
 # link oh-my-zsh theme
+if [[ ! -f $HOME/.dotfiles/other/common/common.zsh-theme ]]; then
+    git -C $HOME/.dotfiles submodule update --init
+fi
 ln -siv $HOME/.dotfiles/other/common/common.zsh-theme $ZSH/themes

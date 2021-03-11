@@ -19,7 +19,19 @@ symlink aliases
 symlink gitconfig
 symlink gitignore_global
 
-# link colorls configuration
-mkdir -p $HOME/.config/colorls
-ln -siv $HOME/.dotfiles/other/dark_colors.yaml \
-$HOME/.config/colorls/dark_colors.yaml
+# link colorls config if it is installed
+which -s colorls
+if [[ $? = 0 ]] ; then
+    # link colorls configuration
+    mkdir -p $HOME/.config/colorls
+    ln -siv $HOME/.dotfiles/other/dark_colors.yaml \
+    $HOME/.config/colorls/dark_colors.yaml
+fi
+
+# link oh-my-zsh theme if oh-my-zsh is installed
+if [[ -z "$ZSH" ]]; then
+    if [[ ! -f $HOME/.dotfiles/other/common/common.zsh-theme ]]; then
+        git -C $HOME/.dotfiles submodule update --init
+    fi
+    ln -siv $HOME/.dotfiles/other/common/common.zsh-theme $ZSH/themes
+fi

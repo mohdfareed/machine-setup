@@ -45,4 +45,13 @@ if [[ $answer = $'\n' ]] ; then
     prompt rails    # full-stack web framework
     prompt colorize # methods to set text color, background color, text effects
     prompt colorls  # CLI gem that beautifies the terminal's ls command
+
+    # link colorls config if it is installed
+    which -s colorls
+    if [[ $? = 0 ]] ; then
+        # link colorls configuration
+        mkdir -p $HOME/.config/colorls
+        ln -siv $HOME/.dotfiles/other/dark_colors.yaml \
+        $HOME/.config/colorls/dark_colors.yaml
+    fi
 fi
