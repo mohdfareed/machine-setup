@@ -5,9 +5,6 @@ clear='\033[0m'
 bold='\033[1m'
 gbold='\033[1;32m'
 
-# clone repo and setup git credentials and configuration
-source $scripts/scripts/git.sh
-
 # remove last login time prompt
 touch $HOME/.hushlogin
 
@@ -16,9 +13,6 @@ mkdir -p $HOME/.config
 
 # installing oh-my-zsh
 source oh_my_zsh.sh
-
-# create symlinks and resource new zsh profile
-source $scripts/symlink.sh
 
 # install homebrew and its forumlae and casks
 source $scripts/homebrew.sh
