@@ -9,7 +9,7 @@ rbold='\033[1;31m'
 tput clear
 echo "${bold}Setting Terminal default settings. \
 ${rbold}Terminal app will be restarted...${clear}"
-echo
+echo -e "\a"
 read -sk "?Press RETURN to continue or any other key to abort" answer
 
 # prompt the user to choose the apps to install

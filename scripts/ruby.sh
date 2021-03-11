@@ -6,7 +6,8 @@ rbold='\033[1;31m'
 
 # prompt the user for confirmation, skip installation if needed
 prompt() {
-    echo "\nWould you like to install ${rbold}$1${clear}? [Y|n]"
+    echo -e "\a"
+    echo "Would you like to install ${rbold}$1${clear}? [Y|n]"
     read answer
 
     case $answer in
@@ -27,7 +28,7 @@ version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 # prompt the user for confirmation to install latest ruby version
 
 echo "\nRuby version ${rbold}$version${clear} will be installed."
-echo
+echo -e "\a"
 read -sk "?Press RETURN to continue or any other key to abort" answer
 
 if [[ $answer = $'\n' ]] ; then

@@ -6,7 +6,8 @@ rbold='\033[1;31m'
 
 # prompt the user for confirmation, skip installation if needed
 prompt() {
-    echo "\nWould you like to install ${rbold}$1${clear}? [Y|n]"
+    echo -e "\a"
+    echo "Would you like to install ${rbold}$1${clear}? [Y|n]"
     read answer
 
     case $answer in

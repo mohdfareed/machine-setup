@@ -6,7 +6,8 @@ rbold='\033[1;31m'
 
 # prompt the user for confirmation, skip installation if needed
 prompt() {
-    echo "\nWould you like to install ${rbold}$(mas info $1 | \
+    echo -e "\a"
+    echo "Would you like to install ${rbold}$(mas info $1 | \
     head -n 1)${clear}? [Y|n]"
     read answer
 
@@ -22,7 +23,7 @@ echo "${bold}Installing App Store applications...${clear}"
 
 # ask if the user is signed-in to continue
 echo "${bold}You need to be signed-in to the App Store to continue.${clear}"
-echo
+echo -e "\a"
 read -sk "?Press RETURN to continue or any other key to abort" answer
 
 # prompt the user to choose the apps to install
