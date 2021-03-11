@@ -32,8 +32,5 @@ source $HOME/.dotfiles/scripts/ruby.sh
 # setup terminal
 source $HOME/.dotfiles/scripts/terminal_setup.sh
 
-# load new zsh profile
-echo "\n${bold}Sourcing .zshrc ...${clear}"
-source "$HOME/.zshrc"
-
-echo "\n${gbold}Installation complete!${clear}"
+echo -e "\a"
+echo "${gbold}Installation complete!${clear}"

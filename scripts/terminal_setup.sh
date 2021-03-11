@@ -32,5 +32,4 @@ defaults write com.apple.terminal \
 "NSWindowTabbingShoudShowTabBarKey-TTWindow-TTWindowController-\
 TTWindowController-VT-FS" 1
 
-# quit terminal
-osascript -e 'quit app "Terminal"'
+echo "Restart Terminal for the changes to take effect."
