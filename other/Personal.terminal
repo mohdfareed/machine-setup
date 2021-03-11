@@ -350,6 +350,8 @@
 	</data>
 	<key>BackgroundSettingsForInactiveWindows</key>
 	<true/>
+	<key>CursorType</key>
+	<integer>2</integer>
 	<key>Font</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
@@ -390,6 +392,8 @@
 	<false/>
 	<key>UseBrightBold</key>
 	<true/>
+	<key>VisualBellOnlyWhenMuted</key>
+	<false/>
 	<key>name</key>
 	<string>Personal</string>
 	<key>type</key>
