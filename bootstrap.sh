@@ -16,8 +16,8 @@ git -C $dotfiles submodule update --init
 
 # remove last login time prompt
 touch $HOME/.hushlogin
-# create config hidden folder
-mkdir -p $HOME/.config
+# create Developer folder
+mkdir -p $HOME/Developer
 
 # setup zsh
 source $scripts/zsh.sh
