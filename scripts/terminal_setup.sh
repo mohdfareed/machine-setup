@@ -9,11 +9,6 @@ rbold='\033[1;31m'
 tput clear
 echo "${bold}Setting up Terminal app...${clear}"
 
-# prompt the user to choose the apps to install
-if [[ $answer != $'\n' ]] ; then
-    exit
-fi
-
 # profile's path and name
 pf_path=$(find $HOME/.dotfiles/other -maxdepth 1 -name "*.terminal" | head -n 1)
 pf_name=$(basename $pf_path .terminal)
