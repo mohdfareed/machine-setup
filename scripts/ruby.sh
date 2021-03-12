@@ -26,6 +26,36 @@ prompt() {
 tput clear
 echo "${bold}Installing latest version of Ruby...${clear}"
 
+# check if rbenv is installed
+which -s rbenv
+if [[ $? != 0 ]] ; then
+    echo "${bold}rbenv is not installed.${clear}"
+    echo "${bold}Would you like to install it?${clear}"
+    echo -e "\a"
+    read -sk "?Press RETURN to continue or any other key to abort" answer
+
+    if [[ $answer != $'\n' ]] ; then
+    exit;
+    fi
+
+    # check if brew is installed before installing rbenv
+    which -s brew
+    if [[ $? != 0 ]] ; then
+        echo "${bold}Homebrew is not installed.${clear}"
+        echo "${bold}Would you like to install it?${clear}"
+        echo -e "\a"
+        read -sk "?Press RETURN to continue or any other key to abort" answer
+
+        if [[ $answer != $'\n' ]] ; then
+        exit;
+        fi
+
+        source $dotfiles/scripts/homebrew.sh
+    fi
+
+    brew install rbenv
+fi
+
 # get the latest version number of Ruby
 version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 

@@ -7,10 +7,7 @@ rbold='\033[1;31m'
 # prompt user for confirmation
 
 tput clear
-echo "${bold}Setting Terminal default settings. \
-${rbold}Terminal app will be restarted...${clear}"
-echo -e "\a"
-read -sk "?Press RETURN to continue or any other key to abort" answer
+echo "${bold}Setting up Terminal app...${clear}"
 
 # prompt the user to choose the apps to install
 if [[ $answer != $'\n' ]] ; then
