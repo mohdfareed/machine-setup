@@ -6,7 +6,7 @@ bold='\033[1m'
 rbold='\033[1;31m'
 
 tput clear
-echo "${bold}Setting up Oh My Zsh...${clear}"
+echo "${bold}Setting up Zsh...${clear}"
 
 # install oh-my-zsh
 ZSH="$HOME/.config/oh-my-zsh" sh -c "$(curl -fsSL \
