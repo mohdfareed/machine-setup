@@ -30,5 +30,5 @@ fi
 brew install git
 
 # symlink git configuration files
-ln -siv "$dotfiles/dots/gitconfig" "$HOME/.gitconfig"
-ln -siv "$dotfiles/dots/gitignore_global" "$DEVELOPER/.gitignore_global"
+ln -siv "$dotfiles/dots/gitconfig" "$DEVELOPER/git/config"
+ln -siv "$dotfiles/dots/gitignore_global" "$DEVELOPER/git/ignore_global"

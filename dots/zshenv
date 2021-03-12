@@ -8,5 +8,8 @@ export VISUAL=/usr/local/bin/code
 # oh-my-zsh
 export ZSH="$ZDOTDIR/oh-my-zsh"
 
+# git config dir
+export XDG_CONFIG_HOME="$DEVELOPER"
+
 # ruby
 export RBENV_ROOT="$DEVELOPER/rbenv"
