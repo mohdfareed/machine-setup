@@ -32,7 +32,8 @@ if [[ $? != 0 ]] ; then
     echo "${bold}rbenv is not installed.${clear}"
     echo "${bold}Would you like to install it?${clear}"
     echo -e "\a"
-    read -sk "?Press RETURN to continue or any other key to abort" answer
+    echo "Press RETURN to continue or any other key to abort"
+    read -sk answer
 
     if [[ $answer != $'\n' ]] ; then
     exit;
@@ -44,7 +45,8 @@ if [[ $? != 0 ]] ; then
         echo "${bold}Homebrew is not installed.${clear}"
         echo "${bold}Would you like to install it?${clear}"
         echo -e "\a"
-        read -sk "?Press RETURN to continue or any other key to abort" answer
+        echo "Press RETURN to continue or any other key to abort"
+        read -sk answer
 
         if [[ $answer != $'\n' ]] ; then
         exit;
@@ -62,7 +64,8 @@ version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 # prompt the user for confirmation to install latest ruby version
 echo "\nRuby version ${rbold}$version${clear} will be installed."
 echo -e "\a"
-read -sk "?Press RETURN to continue or any other key to abort" answer
+echo "Press RETURN to continue or any other key to abort"
+read -sk answer
 
 if [[ $answer = $'\n' ]] ; then
     # installed latest Ruby version and set it as default

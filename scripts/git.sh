@@ -17,7 +17,8 @@ if [[ $? != 0 ]] ; then
     echo "${bold}Homebrew is not installed.${clear}"
     echo "${bold}Would you like to install it?${clear}"
     echo -e "\a"
-    read -sk "?Press RETURN to continue or any other key to abort" answer
+    echo "Press RETURN to continue or any other key to abort"
+    read -sk answer
 
     if [[ $answer != $'\n' ]] ; then
     exit;

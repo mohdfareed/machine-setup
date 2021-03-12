@@ -28,7 +28,8 @@ echo "${bold}Installing App Store applications...${clear}"
 # ask if the user is signed-in to continue
 echo "${bold}You need to be signed-in to the App Store to continue.${clear}"
 echo -e "\a"
-read -sk "?Press RETURN to continue or any other key to abort" answer
+echo "Press RETURN to continue or any other key to abort"
+read -sk answer
 
 # prompt the user to choose the apps to install
 if [[ $answer = $'\n' ]] ; then
