@@ -14,6 +14,9 @@ pat='3b82f82e9087eb0db848fada1b1f239ee43a46db' # github personal access token
 mkdir -p $HOME/Developer
 # remove last login time prompt
 touch $HOME/.hushlogin
+# add notebook symlink
+ln -siv /Users/mohdfareed/Library/Mobile\ Documents/com\~apple\~CloudDocs/\
+Notebook $HOME
 
 # clone repo and its submodules
 git clone https://$username:$pat@github.com/mohdfareed/dotfiles.gi $dotfiles
