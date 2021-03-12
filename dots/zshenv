@@ -1,0 +1,12 @@
+export DEVELOPER="$HOME/Developer"
+export ZDOTDIR="$DEVELOPER/zsh"
+
+# default editor
+export EDITOR=/usr/local/bin/code
+export VISUAL=/usr/local/bin/code
+
+# oh-my-zsh
+export ZSH="$ZDOTDIR/oh-my-zsh"
+
+# ruby
+export RBENV_ROOT="$DEVELOPER/rbenv"

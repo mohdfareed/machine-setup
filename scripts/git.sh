@@ -3,7 +3,7 @@
 ## REQUIREMENTS:
 # brew
 
-dotfiles="$HOME/.dotfiles"
+dotfiles="$DEVELOPER/.dotfiles"
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
@@ -31,4 +31,4 @@ brew install git
 
 # symlink git configuration files
 ln -siv "$dotfiles/dots/gitconfig" "$HOME/.gitconfig"
-ln -siv "$dotfiles/dots/gitignore_global" "$HOME/.gitignore_global"
+ln -siv "$dotfiles/dots/gitignore_global" "$DEVELOPER/.gitignore_global"

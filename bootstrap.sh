@@ -4,20 +4,20 @@ clear='\033[0m'
 bold='\033[1m'
 gbold='\033[1;32m'
 
-dotfiles="$HOME/.dotfiles"
+dotfiles="$DEVELOPER/.dotfiles"
 scripts="$dotfiles/scripts"
 username="mohdfareed" # github username
 pat='3b82f82e9087eb0db848fada1b1f239ee43a46db' # github personal access token
 
 
-# clone repo and its submodules
-git clone https://$username:$pat@github.com/mohdfareed/dotfiles.gi
-git -C $dotfiles submodule update --init
-
-# remove last login time prompt
-touch $HOME/.hushlogin
 # create Developer folder
 mkdir -p $HOME/Developer
+# remove last login time prompt
+touch $HOME/.hushlogin
+
+# clone repo and its submodules
+git clone https://$username:$pat@github.com/mohdfareed/dotfiles.gi $dotfiles
+git -C $dotfiles submodule update --init
 
 # setup zsh
 source $scripts/zsh.sh

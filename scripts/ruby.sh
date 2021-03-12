@@ -89,7 +89,7 @@ if [[ $answer = $'\n' ]] ; then
     if [[ $? = 0 ]] ; then
         # link colorls configuration
         mkdir -p $HOME/.config/colorls
-        ln -siv $HOME/.dotfiles/other/dark_colors.yaml \
+        ln -siv $DEVELOPER/.dotfiles/other/dark_colors.yaml \
         $HOME/.config/colorls/dark_colors.yaml
     fi
 fi

@@ -1,21 +1,13 @@
-# oh-my-zsh
-export ZSH="$HOME/Developer/oh-my-zsh"
+# python
+export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
 
 # theme
 ZSH_THEME="common"
 
 # aliases
-source $HOME/.aliases
+source $ZDOTDIR/aliases
 
-# default editor
-export EDITOR=/usr/local/bin/code
-export VISUAL=/usr/local/bin/code
-
-# python
-export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
-
-# rbenv
-export RBENV_ROOT="$HOME/Developer/rbenv"
+# ruby
 eval "$(rbenv init -)"
 
 # plugins
