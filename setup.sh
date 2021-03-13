@@ -23,7 +23,7 @@ echo
 echo "Cloning dotfiles repo..."
 
 # clone repo and its submodules
-git clone https://$username:$pat@github.com/mohdfareed/dotfiles.gi $DOTFILES
+git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git $DOTFILES
 git -C $DOTFILES submodule update --init
 
 # setup zsh

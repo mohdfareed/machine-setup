@@ -11,7 +11,7 @@ xcode-select --install
 **2. Run installer script:**
 
 ```sh
-curl -L https://git.io/JqcIh | zsh
+curl -L https://git.io/JqCB0 | zsh
 ```
 
 **2. Use default Terminal profile for man-pages:**
