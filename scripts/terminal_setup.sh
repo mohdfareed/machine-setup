@@ -10,7 +10,7 @@ tput clear
 echo "${bold}Setting up Terminal app...${clear}"
 
 # profile's path and name
-pf_path=$(find $DEVELOPER/.dotfiles/other -maxdepth 1 -name "*.terminal" | \
+pf_path=$(find $DEVELOPER/dotfiles/other -maxdepth 1 -name "*.terminal" | \
 head -n 1)
 pf_name=$(basename $pf_path .terminal)
 

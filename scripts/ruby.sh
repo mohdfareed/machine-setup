@@ -89,7 +89,7 @@ if [[ $answer = $'\n' ]] ; then
     if [[ $? = 0 ]] ; then
         # link colorls configuration
         mkdir -p $DEVELOPER/colorls
-        ln -siv $DEVELOPER/.dotfiles/other/dark_colors.yaml \
+        ln -siv $DEVELOPER/dotfiles/other/dark_colors.yaml \
         $DEVELOPER/colorls/dark_colors.yaml
 
         # get path of file specifying config dir and update it

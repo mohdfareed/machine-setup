@@ -4,7 +4,7 @@ clear='\033[0m'
 bold='\033[1m'
 gbold='\033[1;32m'
 
-dotfiles="$DEVELOPER/.dotfiles"
+dotfiles="$DEVELOPER/dotfiles"
 scripts="$dotfiles/scripts"
 username="mohdfareed" # github username
 pat='3b82f82e9087eb0db848fada1b1f239ee43a46db' # github personal access token

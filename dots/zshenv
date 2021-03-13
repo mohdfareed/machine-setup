@@ -1,15 +1,19 @@
 export DEVELOPER="$HOME/Developer"
+
+# zsh directory
 export ZDOTDIR="$DEVELOPER/zsh"
 
 # default editor
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
 
-# oh-my-zsh
+# oh-my-zsh directory
 export ZSH="$ZDOTDIR/oh-my-zsh"
 
-# git config dir
+# base directory relative to which user data files should be stored
+export XDG_DATA_HOME="$DEVELOPER"
+# base directory relative to which user configuration files should be stored
 export XDG_CONFIG_HOME="$DEVELOPER"
 
-# ruby
+# rbenv directory
 export RBENV_ROOT="$DEVELOPER/rbenv"
