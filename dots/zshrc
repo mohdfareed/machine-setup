@@ -1,22 +1,30 @@
-# python
-export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
-
 # theme
 ZSH_THEME="common"
 
-# aliases
+# plugins
+plugins=(
+    colored-man-pages # adds colors to man pages
+    nvm # automatically sources and adds autocompletions for nvm
+    osx # provides a few utilities on macOS
+)
+
+# load aliases and functions
 source $ZDOTDIR/.aliases
 
-# ruby
-eval "$(rbenv init -)"
+# python
+# add unversioned symlinks to path
+export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
 
-# plugins
-plugins=(colored-man-pages)
+# ruby
+export RBENV_ROOT="$DEVELOPER/rbenv" # rbenv directory
+eval "$(rbenv init -)" # evaluate rbenv
+
+# nvm
+export NVM_DIR="$DEVELOPER/nvm" # nvm directory
+export NVM_LAZY=1 # let oh-my-zsh lazy evaluate nvm
 
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
-# load zsh autosuggestions
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # load zsh syntax highlighting
 source $(brew --prefix)/share/zsh-syntax-highlighting\
 /zsh-syntax-highlighting.zsh

@@ -15,6 +15,3 @@ export VISUAL=/usr/local/bin/code
 
 # oh-my-zsh directory
 export ZSH="$ZDOTDIR/oh-my-zsh"
-
-# rbenv directory
-export RBENV_ROOT="$DEVELOPER/rbenv"

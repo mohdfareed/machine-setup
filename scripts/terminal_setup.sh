@@ -20,9 +20,12 @@ open $p_path
 # set profile as the default
 defaults write com.apple.terminal "Default Window Settings" "$p_name"
 defaults write com.apple.terminal "Startup Window Settings" "$p_name"
+# hide line marks
+defaults write com.apple.Terminal ShowLineMarks -int 0
 # show tabs bar
 defaults write com.apple.terminal \
 "NSWindowTabbingShoudShowTabBarKey-TTWindow-TTWindowController-\
 TTWindowController-VT-FS" 1
+
 
 echo "Restart Terminal app for the changes to take effect."

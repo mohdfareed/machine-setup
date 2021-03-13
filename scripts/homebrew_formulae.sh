@@ -40,12 +40,12 @@ brew install git
 
 # prompt the user to choose the formulae to install
 
-# Fish-like fast/unobtrusive autosuggestions for zsh
-prompt zsh-autosuggestions
 # Interpreted, interactive, object-oriented programming language
 prompt python
 # Ruby version manager
 prompt rbenv
+# Node version management
+prompt n
 
 # Mac App Store command-line interface
 prompt mas

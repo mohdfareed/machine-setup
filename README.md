@@ -14,8 +14,6 @@ xcode-select --install
 zsh -c "$(curl -fsSL https://git.io/JqCB0)"
 ```
 
-**2. Delete the Man Page profile from Terminal app:**.
-
 ## Decommissioning Process
 
 - Backup terminal profile to `dotfiles/other`.
@@ -26,4 +24,4 @@ zsh -c "$(curl -fsSL https://git.io/JqCB0)"
 ## TODO
 
 - Learn how to use *defaults* to record and restore System Preferences and macOS configurations.
-- Check zsh speed
+- Clean up entire setup

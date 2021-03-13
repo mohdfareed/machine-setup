@@ -15,28 +15,5 @@ alias uninstall='brew uninstall --zap --force'
 alias dlyoutube='youtube-dl --write-sub --write-auto-sub --embed-subs \
     --merge-output-format mp4 -o "$HOME/Downloads/%(title)s.%(ext)s"'
 
-# open manpage in new window or Preview app
-alias m='manpage'
-
-# open manpage in new window or Preview app
-function manpage() {
-    preview=0 # open in new terminal window by default
-
-    # parse flags
-    for arg in $@; do
-        case $arg in
-            -p) preview=1
-                shift ;;
-            -*) echo "man: invalid option $arg" >&2
-                echo "usage: man [-p] name ..." >&2
-                return 1
-        esac
-    done
-
-    # open in new terminal window by default, or in Preview app if flag passed
-    if [[ $preview = 0 ]]; then
-        for arg in $@; do open x-man-page://$arg; done
-    else
-        for arg in $@; do man -t "$arg" | open -f -a "Preview"; done
-    fi
-}
+# open manpage in Preview app
+alias mp='man-preview'
