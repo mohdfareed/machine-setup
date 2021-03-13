@@ -17,8 +17,7 @@ prompt() {
         [Nn]* )
             ;;
         * )
-            which $1 > /dev/null
-            if [[ $? = 0 ]]; then gem install $1; fi
+            gem install $1
             ;;
     esac
 }
@@ -58,15 +57,20 @@ echo "\nCurrent Ruby versions installed:"
 rbenv versions
 echo "\nWould you like to install Ruby version ${rbold}$version${clear}? [y|N]"
 echo -e "\a"
-read -sk answer
+echo "Would you like to install Ruby version ${rbold}$version${clear}? [Y|n]"
+read answer
 
-if [[ $answer = $'\n' ]] ; then
-    # installed latest Ruby version and set it as default
-    rbenv install $version
-    rbenv global $version
-    rbenv rehash
-    eval "$(rbenv init -)" # update the current session's ruby
-fi
+case $answer in
+        [Yy]* )
+            # installed latest Ruby version and set it as default
+            rbenv install $version
+            rbenv global $version
+            rbenv rehash
+            eval "$(rbenv init -)" # update the current session's ruby
+            ;;
+        * )
+            ;;
+esac
 
 echo "${bold}Installing gems...${clear}"
 
@@ -91,6 +95,4 @@ if [[ $? = 0 ]] ; then
     # get path of file specifying config dir and update it
     colorls_path="$(dirname $(gem which colorls))/colorls/yaml.rb"
     sed -i '' 's#.config/colorls#Developer/colorls#' $colorls_path
-
-    sed -i '' 's#Developer/colorls#.config/colorls#' $colorls_path
 fi

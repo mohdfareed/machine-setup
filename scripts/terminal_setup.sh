@@ -12,7 +12,7 @@ echo "${bold}Setting up Terminal app...${clear}"
 # profile's path and name
 p_path=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | \
 head -n 1)
-p_name=$(basename $pf_path .terminal)
+p_name=$(basename $p_path .terminal)
 
 # add profile to terminal app
 open $p_path
@@ -25,4 +25,4 @@ defaults write com.apple.terminal \
 "NSWindowTabbingShoudShowTabBarKey-TTWindow-TTWindowController-\
 TTWindowController-VT-FS" 1
 
-echo "Restart Terminal for the changes to take effect."
+echo "Restart Terminal app for the changes to take effect."
