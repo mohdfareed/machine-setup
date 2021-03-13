@@ -1,9 +1,5 @@
 #!/usr/bin/env zsh
 
-## REQUIREMENTS:
-# brew
-# mas
-
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
@@ -24,6 +20,13 @@ prompt() {
 
 tput clear
 echo "${bold}Installing App Store applications...${clear}"
+
+# check if mas is installed before installing rbenv
+which mas > /dev/null
+if [[ $? != 0 ]] ; then
+    echo "${bold}mas is not installed...${clear}"
+    exit 1
+fi
 
 # ask if the user is signed-in to continue
 echo "${bold}You need to be signed-in to the App Store to continue.${clear}"

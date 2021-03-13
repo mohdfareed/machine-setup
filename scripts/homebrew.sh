@@ -2,18 +2,17 @@
 
 clear='\033[0m'
 bold='\033[1m'
-rbold='\033[1;31m'
 
 tput clear
-echo "${bold}Installing homebrew ...${clear}"
+echo "${bold}Installing homebrew...${clear}"
 
 # Check for homebrew and install it if needed
-which -s brew
+which brew > /dev/null
 if [[ $? != 0 ]] ; then
     /bin/bash -c "$(curl -fsSL \
         https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
-    echo "Homebrew already installed ..."
+    echo "Homebrew already installed."
     brew update
 fi
 

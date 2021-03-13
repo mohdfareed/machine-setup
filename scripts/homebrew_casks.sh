@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-## REQUIREMENTS:
-# brew
-
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
@@ -22,6 +19,13 @@ prompt() {
 
 tput clear
 echo "${bold}Installing homebrew casks...${clear}"
+
+# check if brew is installed before installing rbenv
+which brew > /dev/null
+if [[ $? != 0 ]] ; then
+    echo "${bold}Homebrew is not installed...${clear}"
+    exit 1
+fi
 
 brew update
 

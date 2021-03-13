@@ -27,7 +27,7 @@ tput clear
 echo "${bold}Installing latest version of Ruby...${clear}"
 
 # check if rbenv is installed
-which -s rbenv
+brew ls --version rbenv > /dev/null
 if [[ $? != 0 ]] ; then
     echo "${bold}rbenv is not installed.${clear}"
     echo "${bold}Would you like to install it?${clear}"
@@ -40,19 +40,10 @@ if [[ $? != 0 ]] ; then
     fi
 
     # check if brew is installed before installing rbenv
-    which -s brew
+    which brew > /dev/null
     if [[ $? != 0 ]] ; then
-        echo "${bold}Homebrew is not installed.${clear}"
-        echo "${bold}Would you like to install it?${clear}"
-        echo -e "\a"
-        echo "Press RETURN to continue or any other key to abort"
-        read -sk answer
-
-        if [[ $answer != $'\n' ]] ; then
-        exit;
-        fi
-
-        source $dotfiles/scripts/homebrew.sh
+        echo "${bold}Homebrew is not installed...${clear}"
+        exit 1
     fi
 
     brew install rbenv
@@ -85,7 +76,7 @@ if [[ $answer = $'\n' ]] ; then
     prompt colorls  # CLI gem that beautifies the terminal's ls command
 
     # link colorls config if it is installed and let colorls point to it
-    which -s colorls
+    which colorls > /dev/null
     if [[ $? = 0 ]] ; then
         # link colorls configuration
         mkdir -p $DEVELOPER/colorls

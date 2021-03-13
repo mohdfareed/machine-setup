@@ -12,7 +12,7 @@ tput clear
 echo "${bold}Setting up git...${clear}"
 
 # Check for homebrew and setup if needed
-which -s brew
+which brew > /dev/null
 if [[ $? != 0 ]] ; then
     echo "${bold}Homebrew is not installed.${clear}"
     echo "${bold}Would you like to install it?${clear}"

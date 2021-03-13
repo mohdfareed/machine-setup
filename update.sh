@@ -10,27 +10,27 @@ echo "${bold}Updating...${clear}"
 git -C $DEVELOPER/dotfiles submodule update --init
 
 # update brew and its forumlae and casks
-which -s brew
+which brew > /dev/null
 if [[ $? = 0 ]] ; then
     brew update
     brew upgrade
     brew cleanup
 fi
 
-which -s mas
+which mas > /dev/null
 if [[ $? = 0 ]] ; then
     mas upgrade
 fi
 
 # install latest ruby version
-which -s rbenv
+which rbenv > /dev/null
 if [[ $? = 0 ]] ; then
     source $DEVELOPER/dotfiles/scripts/ruby.sh
     gem update
 fi
 
 # update oh-my-zsh
-which -s omz
+which omz > /dev/null
 if [[ $? = 0 ]] ; then
     omz update
 fi
