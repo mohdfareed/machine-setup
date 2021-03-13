@@ -1,6 +1,7 @@
 # Main Colors
 unrecognized_file: red
 recognized_file: green
+executable_file: magenta
 dir: blue
 
 # Link
@@ -13,32 +14,32 @@ blockdev: green
 chardev: green
 
 # Access Modes
-write: darkkhaki
-read: limegreen
+write: green
+read: blue
 exec: red
-no_access: indianred
+no_access: white
 
 # Age
-day_old: mediumspringgreen
-hour_old: lime
-no_modifier: seagreen
+day_old: red
+hour_old: magenta
+no_modifier: blue
 
 # File Size
-file_large: orange
-file_medium: gold
-file_small: peachpuff
+file_large: red
+file_medium: yellow
+file_small: green
 
 # Random
 report: white
-user: moccasin
+user: blue
 tree: cyan
 empty: yellow
 error: red
-normal: darkkhaki
+normal: white
 
 # Git
 addition: green
 modification: yellow
 deletion: red
-untracked: white
-unchanged: white
+untracked: magenta
+unchanged: blue

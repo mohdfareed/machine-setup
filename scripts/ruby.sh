@@ -84,12 +84,18 @@ if [[ $answer = $'\n' ]] ; then
     prompt colorize # methods to set text color, background color, text effects
     prompt colorls  # CLI gem that beautifies the terminal's ls command
 
-    # link colorls config if it is installed
+    # link colorls config if it is installed and let colorls point to it
     which -s colorls
     if [[ $? = 0 ]] ; then
         # link colorls configuration
-        mkdir -p $HOME/.config/colorls
+        mkdir -p $DEVELOPER/colorls
         ln -siv $DEVELOPER/.dotfiles/other/dark_colors.yaml \
-        $HOME/.config/colorls/dark_colors.yaml
+        $DEVELOPER/colorls/dark_colors.yaml
+
+        # get path of file specifying config dir and update it
+        colorls_path="$(dirname $(gem which colorls))/colorls/yaml.rb"
+        sed -i '' 's#.config/colorls#Developer/colorls#' $colorls_path
+
+        sed -i '' 's#Developer/colorls#.config/colorls#' $colorls_path
     fi
 fi
