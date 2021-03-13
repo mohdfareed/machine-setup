@@ -5,7 +5,7 @@ export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
 ZSH_THEME="common"
 
 # aliases
-source $ZDOTDIR/aliases
+source $ZDOTDIR/.aliases
 
 # ruby
 eval "$(rbenv init -)"

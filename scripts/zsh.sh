@@ -17,7 +17,7 @@ https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
 # symlink files
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$DEVELOPER/zsh/.zshrc"
-ln -siv "$DOTFILES/dots/aliases" "$DEVELOPER/zsh/aliases"
+ln -siv "$DOTFILES/dots/aliases" "$DEVELOPER/zsh/.aliases"
 
 # link oh-my-zsh theme
 if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then

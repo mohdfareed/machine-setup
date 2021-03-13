@@ -43,7 +43,6 @@ if [[ $? = 0 ]] ; then
     source $scripts/homebrew_casks.sh
     # install App Store applications
     source $scripts/appstore.sh
-
     # setup ruby and its gems
     source $scripts/ruby.sh
 fi
