@@ -9,15 +9,13 @@ rbold='\033[1;31m'
 tput clear
 echo "${bold}Setting up Zsh...${clear}"
 
-# symlinking and sourcing environment variables
-ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
-
 # install oh-my-zsh
 ZSH="$DEVELOPER/zsh/oh-my-zsh" sh -c "$(curl -fsSL \
 https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
 "" --unattended
 
-# symlink profile
+# symlink files
+ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$DEVELOPER/zsh/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$DEVELOPER/zsh/aliases"
 
@@ -33,4 +31,4 @@ rm -rf $HOME/.zsh_sessions
 rm -rf $HOME/.zsh_history
 
 source $HOME/.zshenv
-source $DEVELOPER/zsh/.zshrc
+source $DEVELOPER/zsh/.zshrc 2> /dev/null

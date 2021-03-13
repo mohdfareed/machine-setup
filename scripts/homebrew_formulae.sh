@@ -29,17 +29,19 @@ fi
 
 brew update
 
-# prompt the user to choose the formulae to install
+# essential formulae
 
 # UNIX shell (command interpreter)
-prompt zsh
+brew install zsh
+# Fish shell like syntax highlighting for zsh
+brew install zsh-syntax-highlighting
+# Distributed revision control system
+brew install git
+
+# prompt the user to choose the formulae to install
+
 # Fish-like fast/unobtrusive autosuggestions for zsh
 prompt zsh-autosuggestions
-# Fish shell like syntax highlighting for zsh
-prompt zsh-syntax-highlighting
-
-# Distributed revision control system
-prompt git
 # Interpreted, interactive, object-oriented programming language
 prompt python
 # Ruby version manager

@@ -8,15 +8,13 @@
 xcode-select --install
 ```
 
-**2. Run installer script:**
+**2. Run installation script:**
 
 ```sh
-curl -L https://git.io/JqCB0 | zsh
+zsh -c "$(curl -fsSL https://git.io/JqCB0)"
 ```
 
-**2. Use default Terminal profile for man-pages:**
-
-    Delete the manpage profile from Terminal app.
+**2. Delete the Man Page profile from Terminal app:**.
 
 ## Decommissioning Process
 
