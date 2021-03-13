@@ -10,16 +10,16 @@ tput clear
 echo "${bold}Setting up Terminal app...${clear}"
 
 # profile's path and name
-pf_path=$(find $DEVELOPER/dotfiles/other -maxdepth 1 -name "*.terminal" | \
+p_path=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | \
 head -n 1)
-pf_name=$(basename $pf_path .terminal)
+p_name=$(basename $pf_path .terminal)
 
 # add profile to terminal app
-open $pf_path
+open $p_path
 
 # set profile as the default
-defaults write com.apple.terminal "Default Window Settings" "$pf_name"
-defaults write com.apple.terminal "Startup Window Settings" "$pf_name"
+defaults write com.apple.terminal "Default Window Settings" "$p_name"
+defaults write com.apple.terminal "Startup Window Settings" "$p_name"
 # show tabs bar
 defaults write com.apple.terminal \
 "NSWindowTabbingShoudShowTabBarKey-TTWindow-TTWindowController-\

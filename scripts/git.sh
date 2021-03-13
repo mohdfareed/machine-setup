@@ -1,9 +1,8 @@
 #!/usr/bin/env zsh
 
 ## REQUIREMENTS:
-# brew
+# XDG_CONFIG_HOME environment variable
 
-dotfiles="$DEVELOPER/dotfiles"
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
@@ -12,23 +11,12 @@ tput clear
 echo "${bold}Setting up git...${clear}"
 
 # Check for homebrew and setup if needed
-which brew > /dev/null
+which git > /dev/null
 if [[ $? != 0 ]] ; then
-    echo "${bold}Homebrew is not installed.${clear}"
-    echo "${bold}Would you like to install it?${clear}"
-    echo -e "\a"
-    echo "Press RETURN to continue or any other key to abort"
-    read -sk answer
-
-    if [[ $answer != $'\n' ]] ; then
-    exit;
-    fi
-
-    source $dotfiles/scripts/homebrew.sh
+    echo "${bold}Git is not installed...${clear}"
+    exit 1
 fi
 
-brew install git
-
 # symlink git configuration files
-ln -siv "$dotfiles/dots/gitconfig" "$DEVELOPER/git/config"
-ln -siv "$dotfiles/dots/gitignore_global" "$DEVELOPER/git/ignore_global"
+ln -siv "$DOTFILES/dots/gitconfig" "$XDG_CONFIG_HOME/git/config"
+ln -siv "$DOTFILES/dots/gitignore_global" "$XDG_CONFIG_HOME/git/ignore_global"

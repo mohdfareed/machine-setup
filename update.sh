@@ -7,7 +7,7 @@ gbold='\033[1;32m'
 echo "${bold}Updating...${clear}"
 
 # update submodules
-git -C $DEVELOPER/dotfiles submodule update --init
+git -C $DOTFILES submodule update --init
 
 # update brew and its forumlae and casks
 which brew > /dev/null
@@ -25,8 +25,7 @@ fi
 # install latest ruby version
 which rbenv > /dev/null
 if [[ $? = 0 ]] ; then
-    source $DEVELOPER/dotfiles/scripts/ruby.sh
-    gem update
+    source $DOTFILES/scripts/ruby.sh
 fi
 
 # update oh-my-zsh

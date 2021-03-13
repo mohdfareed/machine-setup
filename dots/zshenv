@@ -1,4 +1,10 @@
 export DEVELOPER="$HOME/Developer"
+export DOTFILES="$DEVELOPER/dotfiles"
+
+# base directory relative to which user data files should be stored
+export XDG_DATA_HOME="$DEVELOPER"
+# base directory relative to which user configuration files should be stored
+export XDG_CONFIG_HOME="$DEVELOPER"
 
 # zsh directory
 export ZDOTDIR="$DEVELOPER/zsh"
@@ -9,11 +15,6 @@ export VISUAL=/usr/local/bin/code
 
 # oh-my-zsh directory
 export ZSH="$ZDOTDIR/oh-my-zsh"
-
-# base directory relative to which user data files should be stored
-export XDG_DATA_HOME="$DEVELOPER"
-# base directory relative to which user configuration files should be stored
-export XDG_CONFIG_HOME="$DEVELOPER"
 
 # rbenv directory
 export RBENV_ROOT="$DEVELOPER/rbenv"

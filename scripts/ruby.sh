@@ -18,7 +18,8 @@ prompt() {
         [Nn]* )
             ;;
         * )
-            gem install $1;;
+            if [[ which $1 > /dev/null = 0 ]]; then gem install $1; fi
+            ;;
     esac
 }
 
@@ -53,7 +54,9 @@ fi
 version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 
 # prompt the user for confirmation to install latest ruby version
-echo "\nRuby version ${rbold}$version${clear} will be installed."
+echo "Current Ruby versions installed:"
+rbenv versions
+echo "\nLatest Ruby version ${rbold}$version${clear} will be installed."
 echo -e "\a"
 echo "Press RETURN to continue or any other key to abort"
 read -sk answer
@@ -64,29 +67,31 @@ if [[ $answer = $'\n' ]] ; then
     rbenv global $version
     rbenv rehash
     eval "$(rbenv init -)" # update the current session's ruby
+fi
 
-    echo "${bold}Installing gems...${clear}"
+echo "${bold}Installing gems...${clear}"
 
-    # prompt the user to choose the gems to install
-    prompt bundler  # applications' dependencies manager
-    prompt pry      # runtime developer console and IRB alternative
-    prompt byebug   # Ruby debugger
-    prompt rails    # full-stack web framework
-    prompt colorize # methods to set text color, background color, text effects
-    prompt colorls  # CLI gem that beautifies the terminal's ls command
+# prompt the user to choose the gems to install
+prompt bundler  # applications' dependencies manager
+prompt pry      # runtime developer console and IRB alternative
+prompt byebug   # Ruby debugger
+prompt rails    # full-stack web framework
+prompt colorize # methods to set text color, background color, text effects
+prompt colorls  # CLI gem that beautifies the terminal's ls command
 
-    # link colorls config if it is installed and let colorls point to it
-    which colorls > /dev/null
-    if [[ $? = 0 ]] ; then
-        # link colorls configuration
-        mkdir -p $DEVELOPER/colorls
-        ln -siv $DEVELOPER/dotfiles/other/dark_colors.yaml \
-        $DEVELOPER/colorls/dark_colors.yaml
+gem update
 
-        # get path of file specifying config dir and update it
-        colorls_path="$(dirname $(gem which colorls))/colorls/yaml.rb"
-        sed -i '' 's#.config/colorls#Developer/colorls#' $colorls_path
+# link colorls config if it is installed and let colorls point to it
+which colorls > /dev/null
+if [[ $? = 0 ]] ; then
+    # link colorls configuration
+    mkdir -p $XDG_CONFIG_HOME/colorls
+    ln -siv $DOTFILES/other/dark_colors.yaml \
+        $XDG_CONFIG_HOME/colorls/dark_colors.yaml
 
-        sed -i '' 's#Developer/colorls#.config/colorls#' $colorls_path
-    fi
+    # get path of file specifying config dir and update it
+    colorls_path="$(dirname $(gem which colorls))/colorls/yaml.rb"
+    sed -i '' 's#.config/colorls#Developer/colorls#' $colorls_path
+
+    sed -i '' 's#Developer/colorls#.config/colorls#' $colorls_path
 fi
