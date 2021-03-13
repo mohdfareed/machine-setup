@@ -18,11 +18,12 @@ zsh -c "$(curl -fsSL https://git.io/JqCB0)"
 
 ## Decommissioning Process
 
-- Backup terminal profile.
+- Backup terminal profile to `dotfiles/other`.
 - Check installed formulae, casks, and apps and add them to their respective scripts.
 - Choose the changes to the dotfiles to push.
-- Review changes to the System Preferences to include in scripts.
+- Review changes to the apps and system preferences to include in scripts.
 
 ## TODO
 
 - Learn how to use *defaults* to record and restore System Preferences and macOS configurations.
+- Check zsh speed

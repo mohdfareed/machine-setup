@@ -82,6 +82,10 @@ prompt rails    # full-stack web framework
 prompt colorize # methods to set text color, background color, text effects
 prompt colorls  # CLI gem that beautifies the terminal's ls command
 
+prompt solargraph    # code completion, documentation, and static analysis
+prompt rubocop       # Ruby code style checking and code formatting tool
+prompt rubocop-rspec # Code style checking for RSpec files
+
 gem update
 
 # link colorls config if it is installed and let colorls point to it
