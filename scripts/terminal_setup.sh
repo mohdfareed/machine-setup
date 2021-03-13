@@ -10,12 +10,12 @@ tput clear
 echo "${bold}Setting up Terminal app...${clear}"
 
 # profile's path and name
-p_path=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | \
-head -n 1)
-p_name=$(basename $p_path .terminal)
+p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | \
+    head -n 1)
+p_name=$(basename $p_file .terminal)
 
 # add profile to terminal app
-open $p_path
+open $p_file
 
 # set profile as the default
 defaults write com.apple.terminal "Default Window Settings" "$p_name"

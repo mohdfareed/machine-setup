@@ -55,7 +55,6 @@ version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 # prompt the user for confirmation to install latest ruby version
 echo "\nCurrent Ruby versions installed:"
 rbenv versions
-echo "\nWould you like to install Ruby version ${rbold}$version${clear}? [y|N]"
 echo -e "\a"
 echo "Would you like to install Ruby version ${rbold}$version${clear}? [Y|n]"
 read answer

@@ -8,7 +8,7 @@ rbold='\033[1;31m'
 prompt() {
     echo -e "\a"
     echo "Would you like to install ${rbold}$(mas info $1 | \
-    head -n 1)${clear}? [Y|n]"
+        head -n 1)${clear}? [Y|n]"
     read answer
 
     case $answer in
