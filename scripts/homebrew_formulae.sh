@@ -24,34 +24,33 @@ echo "${bold}Installing homebrew formulae...${clear}"
 which brew > /dev/null
 if [[ $? != 0 ]] ; then
     echo "${bold}Homebrew is not installed.${clear}"
-    exit 1
+else
+    brew update
+
+    # essential formulae
+
+    # UNIX shell (command interpreter)
+    brew install zsh
+    # Fish shell like syntax highlighting for zsh
+    brew install zsh-syntax-highlighting
+    # Distributed revision control system
+    brew install git
+
+    # prompt the user to choose the formulae to install
+
+    # Interpreted, interactive, object-oriented programming language
+    prompt python
+    # Ruby version manager
+    prompt rbenv
+    # Node version management
+    prompt n
+
+    # Mac App Store command-line interface
+    prompt mas
+    # Play, record, convert, and stream audio and video
+    prompt ffmpeg # youtube-dl dependency
+    # Download YouTube videos from the command-line
+    prompt youtube-dl
+
+    brew cleanup
 fi
-
-brew update
-
-# essential formulae
-
-# UNIX shell (command interpreter)
-brew install zsh
-# Fish shell like syntax highlighting for zsh
-brew install zsh-syntax-highlighting
-# Distributed revision control system
-brew install git
-
-# prompt the user to choose the formulae to install
-
-# Interpreted, interactive, object-oriented programming language
-prompt python
-# Ruby version manager
-prompt rbenv
-# Node version management
-prompt n
-
-# Mac App Store command-line interface
-prompt mas
-# Play, record, convert, and stream audio and video
-prompt ffmpeg # youtube-dl dependency
-# Download YouTube videos from the command-line
-prompt youtube-dl
-
-brew cleanup

@@ -36,14 +36,14 @@ if [[ $? != 0 ]] ; then
     read -sk answer
 
     if [[ $answer != $'\n' ]] ; then
-    exit;
+    return 1
     fi
 
     # check if brew is installed before installing rbenv
     which brew > /dev/null
     if [[ $? != 0 ]] ; then
         echo "${bold}Homebrew is not installed...${clear}"
-        exit 1
+        return 1
     fi
 
     brew install rbenv
@@ -61,13 +61,13 @@ read answer
 
 case $answer in
         [Yy]* )
+            ;;
+        * )
             # installed latest Ruby version and set it as default
             rbenv install $version
             rbenv global $version
             rbenv rehash
             eval "$(rbenv init -)" # update the current session's ruby
-            ;;
-        * )
             ;;
 esac
 
