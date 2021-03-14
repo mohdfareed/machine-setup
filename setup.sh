@@ -45,6 +45,8 @@ if [[ $? = 0 ]] ; then
     source $scripts/appstore.sh
     # setup ruby and its gems
     source $scripts/ruby.sh
+    # setup nvm
+    source $scripts/nvm.sh
 fi
 
 echo -e "\a"
