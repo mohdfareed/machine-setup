@@ -16,10 +16,16 @@ if [[ $? = 0 ]] ; then
     brew upgrade
     brew cleanup
 fi
-
+# update App Store applications
 which mas > /dev/null
 if [[ $? = 0 ]] ; then
     mas upgrade
+fi
+
+# update oh-my-zsh
+which omz > /dev/null
+if [[ $? = 0 ]] ; then
+    omz update
 fi
 
 # install latest ruby version
@@ -28,10 +34,10 @@ if [[ $? = 0 ]] ; then
     source $DOTFILES/scripts/ruby.sh
 fi
 
-# update oh-my-zsh
-which omz > /dev/null
+# install latest Node version
+which nvm > /dev/null
 if [[ $? = 0 ]] ; then
-    omz update
+    source $DOTFILES/scripts/nvm.sh
 fi
 
 echo "${gbold}Updating complete!${clear}"

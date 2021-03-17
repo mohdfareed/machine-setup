@@ -7,7 +7,7 @@ rbold='\033[1;31m'
 tput clear
 echo "${bold}Installing latest LTS Node version...${clear}"
 
-# check if rbenv is installed
+# check if nvm is installed
 brew ls --version nvm > /dev/null
 if [[ $? != 0 ]] ; then
     echo "${bold}nvm is not installed.${clear}"
@@ -30,10 +30,10 @@ if [[ $? != 0 ]] ; then
     brew install nvm
 fi
 
-# get the latest version number of Ruby
+# get the latest version number of nvm
 version=$(nvm list-remote 2> /dev/null | tail -1)
 
-# prompt the user for confirmation to install latest ruby version
+# prompt the user for confirmation to install latest nvm version
 echo "\nCurrent Node versions installed:"
 nvm list
 echo -e "\a"
