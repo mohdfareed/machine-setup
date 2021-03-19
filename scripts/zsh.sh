@@ -19,18 +19,16 @@ ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$DEVELOPER/zsh/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$DEVELOPER/zsh/.aliases"
 
-# link oh-my-zsh theme
-if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then
-    git -C $DOTFILES submodule update --init
-fi
-
-# FIXME: read-only access when ran directly after installation of oh-my-zsh
-ln -siv $DOTFILES/other/common/common.zsh-theme $ZSH/themes
+source $HOME/.zshenv
+source $DEVELOPER/zsh/.zshrc 2> /dev/null
 
 # delete old zshrc files
 rm -rf $HOME/.zshrc
 rm -rf $HOME/.zsh_sessions
 rm -rf $HOME/.zsh_history
 
-source $HOME/.zshenv
-source $DEVELOPER/zsh/.zshrc 2> /dev/null
+# link oh-my-zsh theme
+if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then
+    git -C $DOTFILES submodule update --init
+fi
+ln -siv $DOTFILES/other/common/common.zsh-theme $ZSH/themes
