@@ -45,7 +45,16 @@ source $scripts/git.sh
 source $scripts/terminal_setup.sh
 
 echo -e "\a"
-echo "Would you like to install ${rbold}rbenv${clear}? [Y|n]"
+echo "Would you like to setup ${rbold}python${clear}? [Y|n]"
+read answer
+
+case $answer in
+    [Nn]* ) ;;
+    * ) source $scripts/python.sh;;
+esac
+
+echo -e "\a"
+echo "Would you like to setup ${rbold}rbenv${clear}? [Y|n]"
 read answer
 
 case $answer in
@@ -54,7 +63,7 @@ case $answer in
 esac
 
 echo -e "\a"
-echo "Would you like to install ${rbold}nvm${clear}? [Y|n]"
+echo "Would you like to setup ${rbold}nvm${clear}? [Y|n]"
 read answer
 
 case $answer in

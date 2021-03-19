@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-DEVELOPER="$HOME/Developer"
-DOTFILES="$DEVELOPER/dotfiles"
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
@@ -9,18 +7,18 @@ rbold='\033[1;31m'
 tput clear
 echo "${bold}Setting up Zsh...${clear}"
 
+source $HOME/.zshenv
+
 # install oh-my-zsh
-ZSH="$DEVELOPER/zsh/oh-my-zsh" sh -c "$(curl -fsSL \
-    https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"\
-    "" --unattended
+sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
 
 # symlink files
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
-ln -siv "$DOTFILES/dots/zshrc" "$DEVELOPER/zsh/.zshrc"
-ln -siv "$DOTFILES/dots/aliases" "$DEVELOPER/zsh/.aliases"
+ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
+ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
 
 source $HOME/.zshenv
-source $DEVELOPER/zsh/.zshrc 2> /dev/null
+source $ZDOTDIR/.zshrc 2> /dev/null
 
 # delete old zshrc files
 rm -rf $HOME/.zshrc

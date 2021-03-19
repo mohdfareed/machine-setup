@@ -42,13 +42,13 @@ read answer
 
 case $answer in
         [Yy]* )
-            ;;
-        * )
             # installed latest Ruby version and set it as default
             rbenv install $version
             rbenv global $version
             rbenv rehash
             eval "$(rbenv init -)" # update the current session's ruby
+            ;;
+        * )
             ;;
 esac
 

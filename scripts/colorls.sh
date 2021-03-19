@@ -12,5 +12,5 @@ if [[ $? = 0 ]] ; then
 
     # get path of file specifying config dir and update it
     colorls_path="$(dirname $(gem which colorls))/colorls/yaml.rb"
-    sed -i '' 's#.config/colorls#Developer/colorls#' $colorls_path
+    sed -i '' "s#.config/colorls#$XDG_CONFIG_HOME/colorls#" $colorls_path
 fi
