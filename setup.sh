@@ -36,9 +36,10 @@ source $scripts/git.sh
 # setup terminal
 source $scripts/terminal_setup.sh
 
-# check if brew is installed and install its forumlae and casks
+# check if brew is installed
 which brew > /dev/null
 if [[ $? = 0 ]] ; then
+    # install brew's forumlae and casks
     source $scripts/homebrew_formulae.sh
     source $scripts/homebrew_casks.sh
     # install App Store applications

@@ -27,5 +27,6 @@ defaults write com.apple.terminal \
 "NSWindowTabbingShoudShowTabBarKey-TTWindow-TTWindowController-\
 TTWindowController-VT-FS" 1
 
-
+echo "Delete the manpage profile for manpages opened in new windows to use \
+the default profile."
 echo "Restart Terminal app for the changes to take effect."

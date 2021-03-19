@@ -23,6 +23,7 @@ ln -siv "$DOTFILES/dots/aliases" "$DEVELOPER/zsh/.aliases"
 if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then
     git -C $DOTFILES submodule update --init
 fi
+# FIXME: read-only access when ran directly after installation of oh-my-zsh
 ln -siv $DOTFILES/other/common/common.zsh-theme $ZSH/themes
 
 # delete old zshrc files

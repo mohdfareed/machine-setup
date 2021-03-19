@@ -20,8 +20,8 @@ exec: red
 no_access: white
 
 # Age
-day_old: red
-hour_old: magenta
+day_old: magenta
+hour_old: red
 no_modifier: blue
 
 # File Size
