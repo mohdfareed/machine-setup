@@ -5,7 +5,6 @@ ZSH_THEME="common"
 plugins=(
     colored-man-pages # adds colors to man pages
     osx               # provides a few utilities on macOS
-    nvm               # sources and adds autocompletions for nvm
 )
 
 # scripting languages
@@ -17,14 +16,25 @@ export PATH="$(gem environment gemdir)/bin:$PATH"           # ruby gems
 source $ZDOTDIR/.aliases
 # load colorls tab completion
 source $(dirname $(gem which colorls))/tab_complete.sh
+
+# rbenv
+which rbenv > /dev/null
+if [[ $? = 0 ]] ; then
+    export RBENV_ROOT="$XDG_DATA_HOME/rbenv"             # rbenv directory
+    export SOLARGRAPH_CACHE="$XDG_CACHE_HOME/solargraph" # solargraph directory
+    eval "$(rbenv init -)"                               # evaluate rbenv
+fi
+
+# nvm
+plugins+=(nvm) # lazy evaluate nvm and load tab completions
+which nvm > /dev/null
+if [[ $? = 0 ]] ; then
+    export NVM_DIR="$XDG_DATA_HOME/nvm" # nvm directory
+    export NVM_LAZY=1                   # let oh-my-zsh lazy evaluate nvm
+fi
+
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 # load zsh syntax highlighting
 source $(brew --prefix)/share/zsh-syntax-highlighting\
 /zsh-syntax-highlighting.zsh
-
-# rbenv
-which rbenv > /dev/null
-if [[ $? = 0 ]] ; then
-    eval "$(rbenv init -)"
-fi

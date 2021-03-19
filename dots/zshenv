@@ -8,11 +8,8 @@ export XDG_CONFIG_HOME="$DEVELOPER/config"
 # base directory relative to which cache files should be stored
 export XDG_CACHE_HOME="$DEVELOPER/cache"
 
-# zsh directory
+# zsh and oh-my-zsh directories
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export HISTFILE="$XDG_DATA_HOME/zsh/history"
-
-# oh-my-zsh directory
 export ZSH="$XDG_DATA_HOME/oh-my-zsh"
 
 # default editor
@@ -25,19 +22,9 @@ export VSCODE_EXTENSIONS="$XDG_DATA_HOME/vscode/extensions"
 # python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-export PYTHON_EGG_CACHE="$XDG_CACHE_HOME/python-eggs"
 
 # ruby
-export GEM_HOME="$XDG_DATA_HOME/gem"
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
 export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
-
-# rbenv
-export RBENV_ROOT="$XDG_DATA_HOME/rbenv" # rbenv directory
-export SOLARGRAPH_CACHE="$XDG_CACHE_HOME/solargraph" # solargraph directory
-
-# nvm
-export NVM_DIR="$XDG_DATA_HOME/nvm" # nvm directory
-export NVM_LAZY=1 # let oh-my-zsh lazy evaluate nvm

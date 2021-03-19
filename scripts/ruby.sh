@@ -35,22 +35,22 @@ brew install rbenv
 # get the latest version number of Ruby
 version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 
-# prompt the user for confirmation to install latest ruby version
+# prompt the user to selected ruby version to install
 echo -e "\a"
-echo "Would you like to install Ruby version ${rbold}$version${clear}? [Y|n]"
-read answer
+echo "Which ruby versions would you like to install?"
+echo
+echo "Available versions:"
+rbenv install -l 2> /dev/null
+read version
 
-case $answer in
-        [Yy]* )
-            # installed latest Ruby version and set it as default
-            rbenv install $version
-            rbenv global $version
-            rbenv rehash
-            eval "$(rbenv init -)" # update the current session's ruby
-            ;;
-        * )
-            ;;
-esac
+# installed selected Ruby version and set it as default
+rbenv install $version
+if [[ $? != 0 ]] ; then
+    # return 1
+fi
+rbenv global $version
+rbenv rehash
+eval "$(rbenv init -)" # update the current session's ruby
 
 echo "${bold}Installing gems...${clear}"
 
