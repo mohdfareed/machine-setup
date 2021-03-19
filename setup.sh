@@ -29,26 +29,39 @@ git -C $DOTFILES submodule update --init
 
 # setup homebrew
 source $scripts/homebrew.sh
+# install brew's forumlae and casks
+source $scripts/homebrew_formulae.sh
+source $scripts/homebrew_casks.sh
+
+# install App Store applications
+source $scripts/appstore.sh
+
 # setup zsh
 source $scripts/zsh.sh
+
 # setup git
 source $scripts/git.sh
+
 # setup terminal
 source $scripts/terminal_setup.sh
 
-# check if brew is installed
-which brew > /dev/null
-if [[ $? = 0 ]] ; then
-    # install brew's forumlae and casks
-    source $scripts/homebrew_formulae.sh
-    source $scripts/homebrew_casks.sh
-    # install App Store applications
-    source $scripts/appstore.sh
-    # setup ruby and its gems
-    source $scripts/ruby.sh
-    # setup nvm
-    source $scripts/nvm.sh
-fi
+echo -e "\a"
+echo "Would you like to install ${rbold}rbenv${clear}? [Y|n]"
+read answer
+
+case $answer in
+    [Nn]* ) ;;
+    * ) source $scripts/ruby.sh;;
+esac
+
+echo -e "\a"
+echo "Would you like to install ${rbold}nvm${clear}? [Y|n]"
+read answer
+
+case $answer in
+    [Nn]* ) ;;
+    * ) source $scripts/nvm.sh;;
+esac
 
 echo -e "\a"
 echo "${gbold}Installation complete!${clear}"

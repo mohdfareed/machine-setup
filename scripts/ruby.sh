@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-## REQUIREMENTS:
-# XDG_CONFIG_HOME environment variable
-
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
@@ -24,37 +21,21 @@ prompt() {
 
 
 tput clear
-echo "${bold}Installing latest version of Ruby...${clear}"
+echo "${bold}Installing rbenv and latest version of Ruby...${clear}"
 
-# check if rbenv is installed
-brew ls --version rbenv > /dev/null
+# check if brew is installed before installing rbenv
+which brew > /dev/null
 if [[ $? != 0 ]] ; then
-    echo "${bold}rbenv is not installed.${clear}"
-    echo "${bold}Would you like to install it?${clear}"
-    echo -e "\a"
-    echo "Press RETURN to continue or any other key to abort"
-    read -sk answer
-
-    if [[ $answer != $'\n' ]] ; then
+    echo "${bold}Homebrew is not installed...${clear}"
     return 1
-    fi
-
-    # check if brew is installed before installing rbenv
-    which brew > /dev/null
-    if [[ $? != 0 ]] ; then
-        echo "${bold}Homebrew is not installed...${clear}"
-        return 1
-    fi
-
-    brew install rbenv
 fi
+
+brew install rbenv
 
 # get the latest version number of Ruby
 version=$(rbenv install -l 2> /dev/null | grep -v '-' | tail -1)
 
 # prompt the user for confirmation to install latest ruby version
-echo "\nCurrent Ruby versions installed:"
-rbenv versions
 echo -e "\a"
 echo "Would you like to install Ruby version ${rbold}$version${clear}? [Y|n]"
 read answer

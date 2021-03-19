@@ -18,10 +18,6 @@ export ZSH="$ZDOTDIR/oh-my-zsh"
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
 
-# syntax-highlight file content with less using pygmentize
-export LESSOPEN="| pygmentize -f terminal -O style=native -g %s"
-export LESS=' -R -N '
-
 # rbenv
 export RBENV_ROOT="$XDG_CONFIG_HOME/rbenv" # rbenv directory
 export SOLARGRAPH_CACHE="$XDG_CONFIG_HOME/solargraph" # solargraph directory

@@ -6,7 +6,7 @@ notebook="$HOME/Notebook"
 alias notes='code $notebook'
 
 # colorized ls
-alias ls='colorls --sort-dirs --git-status'
+alias lc='colorls --sort-dirs --git-status'
 
 # complete uninstallation of casks and formulae
 alias uninstall='brew uninstall --zap'

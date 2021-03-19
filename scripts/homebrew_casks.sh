@@ -30,7 +30,7 @@ fi
 # prompt the user to choose the casks to install
 
 # Open-source code editor
-prompt visual-studio-code
+brew install --cask visual-studio-code
 # Unpacks archive files
 prompt the-unarchiver
 # Open-source BitTorrent client

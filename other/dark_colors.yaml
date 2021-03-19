@@ -14,7 +14,7 @@ blockdev: green
 chardev: green
 
 # Access Modes
-write: green
+write: magenta
 read: blue
 exec: red
 no_access: white

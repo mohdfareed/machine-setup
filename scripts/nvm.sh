@@ -5,37 +5,21 @@ bold='\033[1m'
 rbold='\033[1;31m'
 
 tput clear
-echo "${bold}Installing latest LTS Node version...${clear}"
+echo "${bold}Installing nvm and latest Node version...${clear}"
 
-# check if nvm is installed
-brew ls --version nvm > /dev/null
+# check if brew is installed before installing nvm
+which brew > /dev/null
 if [[ $? != 0 ]] ; then
-    echo "${bold}nvm is not installed.${clear}"
-    echo "${bold}Would you like to install it?${clear}"
-    echo -e "\a"
-    echo "Press RETURN to continue or any other key to abort"
-    read -sk answer
-
-    if [[ $answer != $'\n' ]] ; then
+    echo "${bold}Homebrew is not installed...${clear}"
     return 1
-    fi
-
-    # check if brew is installed before installing nvm
-    which brew > /dev/null
-    if [[ $? != 0 ]] ; then
-        echo "${bold}Homebrew is not installed...${clear}"
-        return 1
-    fi
-
-    brew install nvm
 fi
+
+brew install nvm
 
 # get the latest version number of nvm
 version=$(nvm list-remote 2> /dev/null | tail -1)
 
 # prompt the user for confirmation to install latest nvm version
-echo "\nCurrent Node versions installed:"
-nvm list
 echo -e "\a"
 echo "Would you like to install Node ${rbold}$version${clear}? [Y|n]"
 read answer
