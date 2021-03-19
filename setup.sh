@@ -27,17 +27,16 @@ echo "Cloning dotfiles repo..."
 git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git $DOTFILES
 git -C $DOTFILES submodule update --init
 
+# setup zsh
+source $scripts/zsh.sh
+
 # setup homebrew
 source $scripts/homebrew.sh
 # install brew's forumlae and casks
 source $scripts/homebrew_formulae.sh
 source $scripts/homebrew_casks.sh
-
 # install App Store applications
 source $scripts/appstore.sh
-
-# setup zsh
-source $scripts/zsh.sh
 
 # setup git
 source $scripts/git.sh
