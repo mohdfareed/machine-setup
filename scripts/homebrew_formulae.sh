@@ -28,7 +28,6 @@ if [[ $? != 0 ]] ; then
 fi
 
 # essential formulae
-# install without prompting for confirmation
 
 # UNIX shell (command interpreter)
 brew install zsh
@@ -36,29 +35,10 @@ brew install zsh
 brew install zsh-syntax-highlighting
 # Distributed revision control system
 brew install git
-
-# development
-
 # Interpreted, interactive, object-oriented programming language
 prompt python
-# Ruby version manager
-prompt rbenv
-# Node version management
-prompt nvm
-
-# Markdown Preview Enhanced vscode extension
-
-# Graph visualization software. Used to display graphs in markdown preview
-prompt graphviz
-# Development kit for the Java programming language
-# Used to display graphs in markdown preview
-prompt java
-# check if java is installed
-brew list java > /dev/null
-if [[ $? = 0 ]] ; then
-    sudo ln -sfn $(brew --prefix)/opt/openjdk/libexec/openjdk.jdk \
-        /Library/Java/JavaVirtualMachines/openjdk.jdk
-fi
+#Powerful, clean, object-oriented scripting language
+prompt ruby
 
 # utilities
 
@@ -68,5 +48,47 @@ prompt mas
 prompt ffmpeg # youtube-dl dependency
 # Download YouTube videos from the command-line
 prompt youtube-dl
+# Generic syntax highlighter
+prompt pygments
+
+# Markdown Preview Enhanced vscode extension
+
+# Graph visualization software. Used to display graphs in markdown preview
+prompt graphviz
+# Development kit for the Java programming language
+prompt java
 
 brew cleanup
+
+# prompt to install colorls
+# CLI gem that beautifies the terminal's ls command
+echo -e "\a"
+echo "Would you like to install ${rbold}colorls${clear}? [Y|n]"
+read answer
+case $answer in
+    [Nn]* )
+        ;;
+    * )
+        gem install colorls
+        ;;
+esac
+
+# link colorls config if it is installed and let colorls point to it
+which colorls > /dev/null
+if [[ $? = 0 ]] ; then
+    # link colorls configuration
+    mkdir -p $XDG_CONFIG_HOME/colorls
+    ln -siv $DOTFILES/other/dark_colors.yaml \
+        $XDG_CONFIG_HOME/colorls/dark_colors.yaml
+
+    # get path of file specifying config dir and update it
+    colorls_path="$(dirname $(gem which colorls))/colorls/yaml.rb"
+    sed -i '' 's#.config/colorls#Developer/colorls#' $colorls_path
+fi
+
+# check if java is installed
+brew list java > /dev/null
+if [[ $? = 0 ]] ; then
+    sudo ln -sfn $(brew --prefix)/opt/openjdk/libexec/openjdk.jdk \
+        /Library/Java/JavaVirtualMachines/openjdk.jdk
+fi

@@ -25,3 +25,9 @@ zsh -c "$(curl -fsSL https://git.io/JqCB0)"
 
 - Learn how to use *defaults* to record and restore System Preferences and macOS configurations.
 - Clean up entire setup
+  - Specify which steps are necessary and which are optional.
+- Fix Ruby IDE features and general setup
+- Work on note taking setup
+  - View diagrams in default preview window
+- Install ruby as a formula and `rbenv` as an option
+- `less` and `ls` commands colors

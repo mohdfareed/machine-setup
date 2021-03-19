@@ -73,29 +73,15 @@ esac
 
 echo "${bold}Installing gems...${clear}"
 
-# prompt the user to choose the gems to install
 prompt bundler  # applications' dependencies manager
 prompt pry      # runtime developer console and IRB alternative
 prompt byebug   # Ruby debugger
 prompt rails    # full-stack web framework
 prompt colorize # methods to set text color, background color, text effects
-prompt colorls  # CLI gem that beautifies the terminal's ls command
 
-prompt solargraph    # code completion, documentation, and static analysis
-prompt rubocop       # Ruby code style checking and code formatting tool
-prompt rubocop-rspec # Code style checking for RSpec files
+# vscode functionality
+prompt solargraph # code completion, documentation, and static analysis
+prompt ruby-debug-ide # an interface which glues ruby-debug to IDEs
+prompt debase -v 0.2.5.beta2 # fast implementation of the standard Ruby debugger
 
 gem update
-
-# link colorls config if it is installed and let colorls point to it
-which colorls > /dev/null
-if [[ $? = 0 ]] ; then
-    # link colorls configuration
-    mkdir -p $XDG_CONFIG_HOME/colorls
-    ln -siv $DOTFILES/other/dark_colors.yaml \
-        $XDG_CONFIG_HOME/colorls/dark_colors.yaml
-
-    # get path of file specifying config dir and update it
-    colorls_path="$(dirname $(gem which colorls))/colorls/yaml.rb"
-    sed -i '' 's#.config/colorls#Developer/colorls#' $colorls_path
-fi

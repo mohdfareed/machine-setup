@@ -4,24 +4,24 @@ ZSH_THEME="common"
 # plugins
 plugins=(
     colored-man-pages # adds colors to man pages
-    nvm # automatically sources and adds autocompletions for nvm
-    osx # provides a few utilities on macOS
+    nvm               # automatically sources and adds autocompletions for nvm
+    osx               # provides a few utilities on macOS
 )
 
 # load aliases and functions
 source $ZDOTDIR/.aliases
 
-# python
-# add unversioned symlinks to path
+# scripting languages
 export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH"
+export PATH="$(brew --prefix)/opt/ruby/bin:$PATH"
+export PATH="$(gem environment gemdir)/bin:$PATH"
+source $(dirname $(gem which colorls))/tab_complete.sh # colorls tab completion
 
-# ruby
-export RBENV_ROOT="$DEVELOPER/rbenv" # rbenv directory
-eval "$(rbenv init -)" # evaluate rbenv
-
-# nvm
-export NVM_DIR="$DEVELOPER/nvm" # nvm directory
-export NVM_LAZY=1 # let oh-my-zsh lazy evaluate nvm
+# rbenv
+which rbenv > /dev/null
+if [[ $? = 0 ]] ; then
+    eval "$(rbenv init -)" # evaluate rbenv
+fi
 
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh

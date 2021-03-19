@@ -6,14 +6,29 @@ notebook="$HOME/Notebook"
 alias notes='code $notebook'
 
 # colorized ls
-alias lc='colorls -A --sd --git-status'
+alias ls='colorls --sort-dirs --git-status'
 
-# complete uninstallation of casks
-alias uninstall='brew uninstall --zap --force'
+# complete uninstallation of casks and formulae
+alias uninstall='brew uninstall --zap'
+# install brew formulae or cask
+alias install='brew install'
 
-# download YouTube video
-alias dlyoutube='youtube-dl --write-sub --write-auto-sub --embed-subs \
-    --merge-output-format mp4 -o "$HOME/Downloads/%(title)s.%(ext)s"'
+alias dv='download-video'
+alias da='download-audio'
 
-# open manpage in Preview app
-alias mp='man-preview'
+# download videos from URL
+function download-video {
+    dir=("-d" "$HOME/Downloads")
+    zparseopts -D -K -- d:=dir
+
+    youtube-dl --write-sub --write-auto-sub --embed-subs \
+        --merge-output-format mp4 -o "${dir[2]}/%(title)s.%(ext)s" $1
+}
+
+# download audio from URL
+function download-audio {
+    dir=("-d" "$HOME/Downloads")
+    zparseopts -D -K -- d:=dir
+
+    youtube-dl -x --audio-format mp3 -o "${dir[2]}/%(title)s.%(ext)s" $1
+}

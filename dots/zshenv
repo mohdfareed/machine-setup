@@ -5,13 +5,27 @@ export DOTFILES="$DEVELOPER/dotfiles"
 export XDG_DATA_HOME="$DEVELOPER"
 # base directory relative to which user configuration files should be stored
 export XDG_CONFIG_HOME="$DEVELOPER"
+# base directory relative to which cache files should be stored
+export XDG_CACHE_HOME="$DEVELOPER/cache"
 
 # zsh directory
 export ZDOTDIR="$DEVELOPER/zsh"
+
+# oh-my-zsh directory
+export ZSH="$ZDOTDIR/oh-my-zsh"
 
 # default editor
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
 
-# oh-my-zsh directory
-export ZSH="$ZDOTDIR/oh-my-zsh"
+# syntax-highlight file content with less using pygmentize
+export LESSOPEN="| pygmentize -f terminal -O style=native -g %s"
+export LESS=' -R -N '
+
+# rbenv
+export RBENV_ROOT="$XDG_CONFIG_HOME/rbenv" # rbenv directory
+export SOLARGRAPH_CACHE="$XDG_CONFIG_HOME/solargraph" # solargraph directory
+
+# nvm
+export NVM_DIR="$XDG_CONFIG_HOME/nvm" # nvm directory
+export NVM_LAZY=1 # let oh-my-zsh lazy evaluate nvm
