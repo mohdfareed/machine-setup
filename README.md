@@ -24,5 +24,3 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 ## TODO
 
 - Learn how to use *defaults* to record and restore System Preferences and macOS configurations.
-- Clean up entire setup
-  - Specify which steps are necessary and which are optional.
