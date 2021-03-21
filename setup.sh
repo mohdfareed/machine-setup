@@ -6,9 +6,10 @@ gbold='\033[1;32m'
 
 DEV="$HOME/Developer"
 DOTFILES="$DEV/dotfiles"
-notebook="/Users/mohdfareed/Library/Mobile\ Documents/com\~apple\~CloudDocs/\
-Notebook"
+
+notebook="$HOME/Library/Mobile\ Documents/com\~apple\~CloudDocs/Notebook"
 scripts="$DOTFILES/scripts"
+
 username="mohdfareed" # github username
 pat='3b82f82e9087eb0db848fada1b1f239ee43a46db' # github personal access token
 
@@ -27,9 +28,6 @@ echo "Cloning dotfiles repo..."
 git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git $DOTFILES
 git -C $DOTFILES submodule update --init
 
-# setup zsh
-source $scripts/zsh.sh
-
 # setup homebrew
 source $scripts/homebrew.sh
 # install brew's forumlae and casks
@@ -38,11 +36,12 @@ source $scripts/homebrew_casks.sh
 # install App Store applications
 source $scripts/appstore.sh
 
-# setup git
-source $scripts/git.sh
-
+# setup zsh
+source $scripts/zsh.sh
 # setup terminal
 source $scripts/terminal_setup.sh
+# setup git
+source $scripts/git.sh
 
 echo -e "\a"
 echo "Would you like to setup ${rbold}python${clear}? [Y|n]"
