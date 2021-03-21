@@ -14,8 +14,6 @@ export PATH="$(gem environment gemdir)/bin:$PATH"           # ruby gems
 
 # load aliases and functions
 source $ZDOTDIR/.aliases
-# load colorls tab completion
-source $(dirname $(gem which colorls))/tab_complete.sh
 
 # rbenv
 which rbenv > /dev/null

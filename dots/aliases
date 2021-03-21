@@ -5,9 +5,6 @@ notebook="$HOME/Notebook"
 # open notebook with vscode
 alias notes='code $notebook'
 
-# colorized ls
-alias lc='colorls --sort-dirs --git-status'
-
 # complete uninstallation of casks and formulae
 alias uninstall='brew uninstall --zap'
 # install brew formulae or cask

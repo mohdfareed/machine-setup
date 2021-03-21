@@ -38,6 +38,8 @@ brew install python
 #Powerful, clean, object-oriented scripting language
 brew install ruby
 
+# Modern replacement for 'ls'
+prompt exa
 # Mac App Store command-line interface
 prompt mas
 # Play, record, convert, and stream audio and video

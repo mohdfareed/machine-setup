@@ -59,7 +59,7 @@ read answer
 
 case $answer in
     [Nn]* ) ;;
-    * ) source $scripts/ruby.sh;;
+    * ) source $scripts/rbenv.sh;;
 esac
 
 echo -e "\a"
