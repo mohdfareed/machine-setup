@@ -6,7 +6,7 @@ rbold='\033[1;31m'
 gbold='\033[1;32m'
 
 tput clear
-echo "${bold}Installing nvm and latest Node version...${clear}"
+echo "${bold}Setting up nvm...${clear}"
 
 # check if brew is installed
 which brew > /dev/null
@@ -18,6 +18,17 @@ fi
 
 brew install nvm
 brew cleanup
+
+tput clear
+echo "${bold}Installing latest Node version...${clear}"
+
+if [[ ! -d $DOTFILES ]] ; then
+    echo "${rbold}Error:${clear}"
+    echo "\tDOTFILES directory does not exist..."
+    return 1
+fi
+
+source $DOTFILES/dots/zshrc > /dev/null
 
 # get the latest version number of nvm
 version=$(nvm list-remote > /dev/null | tail -1)

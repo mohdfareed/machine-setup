@@ -22,16 +22,15 @@ ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
 
-source $HOME/.zshenv
 source $ZDOTDIR/.zshrc > /dev/null
-
-# delete old zshrc files
-rm -rf $HOME/.zshrc
-rm -rf $HOME/.zsh_sessions
-rm -rf $HOME/.zsh_history
 
 # link oh-my-zsh theme
 if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then
     git -C $DOTFILES submodule update --init
 fi
 ln -siv $DOTFILES/other/common/common.zsh-theme $ZSH/themes
+
+# delete old zshrc files
+rm -rf $HOME/.zshrc
+rm -rf $HOME/.zsh_sessions
+rm -rf $HOME/.zsh_history

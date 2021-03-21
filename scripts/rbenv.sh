@@ -32,6 +32,14 @@ if [[ $? != 0 ]] ; then
     return 1
 fi
 
+if [[ ! -d $DOTFILES ]] ; then
+    echo "${rbold}Error:${clear}"
+    echo "\tDOTFILES directory does not exist..."
+    return 1
+fi
+
+source $DOTFILES/dots/zshrc > /dev/null
+
 brew install rbenv
 brew cleanup
 
