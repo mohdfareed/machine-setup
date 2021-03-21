@@ -7,19 +7,10 @@ plugins=(
     osx               # provides a few utilities on macOS
 )
 
-# load aliases and functions
-source $ZDOTDIR/.aliases
-
-# options
-setopt CORRECT_ALL # offer to correct commands and arguments
-
-# zsh history and session history files
+# zsh
 export HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
-export SHELL_SESSION_DIR="$XDG_CACHE_HOME/zsh/zsh_sessions"
-export SHELL_SESSION_HISTFILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.history"
-export SHELL_SESSION_FILE="$SHELL_SESSION_DIR/$TERM_SESSION_ID.session"
-mkdir -m 700 -p "$SHELL_SESSION_DIR"
-rm -f -d "$ZDOTDIR/.zsh_sessions"
+setopt CORRECT_ALL # offer to correct commands and arguments
+source $ZDOTDIR/.aliases
 
 # rbenv
 if [[ -d "/usr/local/Cellar/rbenv" ]] ; then
