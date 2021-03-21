@@ -21,7 +21,7 @@ prompt() {
 tput clear
 echo "${bold}Installing homebrew casks...${clear}"
 
-# check if brew is installed before installing rbenv
+# check if brew is installed
 which brew > /dev/null
 if [[ $? != 0 ]] ; then
     echo "${rbold}Error:${clear}"

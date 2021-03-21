@@ -28,7 +28,7 @@ if [[ $answer != $'\n' ]] ; then
     return 1
 fi
 
-# check if mas is installed before installing rbenv
+# check if mas is installed
 which mas > /dev/null
 if [[ $? != 0 ]] ; then
     echo "${rbold}Error:${clear}"
