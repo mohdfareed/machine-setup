@@ -17,8 +17,3 @@ export SHELL_SESSIONS_DISABLE=1
 # default editor
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
-
-# python
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
-export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"

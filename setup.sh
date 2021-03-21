@@ -44,7 +44,7 @@ source $scripts/terminal_setup.sh
 source $scripts/git.sh
 
 echo -e "\a"
-echo "Would you like to setup ${rbold}python${clear}? [Y|n]"
+echo "Would you like to setup ${gbold}python${clear}? [Y|n]"
 read answer
 
 case $answer in
@@ -53,7 +53,7 @@ case $answer in
 esac
 
 echo -e "\a"
-echo "Would you like to setup ${rbold}rbenv${clear}? [Y|n]"
+echo "Would you like to setup ${gbold}rbenv${clear}? [Y|n]"
 read answer
 
 case $answer in
@@ -62,7 +62,7 @@ case $answer in
 esac
 
 echo -e "\a"
-echo "Would you like to setup ${rbold}nvm${clear}? [Y|n]"
+echo "Would you like to setup ${gbold}nvm${clear}? [Y|n]"
 read answer
 
 case $answer in
@@ -71,4 +71,5 @@ case $answer in
 esac
 
 echo -e "\a"
+echo "Restart Terminal app for the changes to take effect."
 echo "${gbold}Installation complete!${clear}"

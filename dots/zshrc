@@ -12,6 +12,11 @@ export HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 setopt CORRECT_ALL # offer to correct commands and arguments
 source $ZDOTDIR/.aliases
 
+# python
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
 # rbenv
 if [[ -d "/usr/local/Cellar/rbenv" ]] ; then
     export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
