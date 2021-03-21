@@ -3,11 +3,12 @@
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
+gbold='\033[1;32m'
 
 # prompt the user for confirmation, skip installation if needed
 prompt() {
     echo -e "\a"
-    echo "Would you like to install ${rbold}$1${clear}? [Y|n]"
+    echo "Would you like to install ${gbold}$1${clear}? [Y|n]"
     read answer
 
     case $answer in
@@ -23,26 +24,29 @@ echo "${bold}Installing homebrew casks...${clear}"
 # check if brew is installed before installing rbenv
 which brew > /dev/null
 if [[ $? != 0 ]] ; then
-    echo "${bold}Homebrew is not installed...${clear}"
+    echo "${rbold}Error:${clear}"
+    echo "\tHomebrew is not installed..."
     return 1
 fi
 
-# prompt the user to choose the casks to install
+## required casks
 
 # Open-source code editor
 brew install --cask visual-studio-code
-# Unpacks archive files
-prompt the-unarchiver
-# Open-source BitTorrent client
-prompt transmission
 # Free and open-source media player
-prompt iina
+brew install --cask iina
+# Unpacks archive files
+brew install --cask the-unarchiver
+# Open-source BitTorrent client
+brew install --cask transmission
 # Control windows and applications right from your trackpad
-prompt swish
+brew install --cask swish
 # Smooths scrolling and set mouse scroll directions independently
-prompt mos
+brew install --cask mos
 # Tool to control external monitor brightness & volume
-prompt monitorcontrol
+brew install --cask monitorcontrol
+
+## prompt the user to choose the casks to install
 
 # Web browser
 prompt google-chrome
@@ -53,12 +57,16 @@ prompt stats
 # QuickLook plug-in that renders source code with syntax highlighting
 prompt qlcolorcode
 
-# fonts
+## fonts
 brew tap homebrew/cask-fonts
-prompt font-hack-nerd-font
-prompt font-sf-pro
-prompt font-sf-compact
-prompt font-sf-mono
+
+# required
+brew install --cask font-sf-pro
+brew install --cask font-sf-compact
+brew install --cask font-sf-mono
+
+# optional
 prompt font-new-york
+prompt font-hack-nerd-font
 
 brew cleanup

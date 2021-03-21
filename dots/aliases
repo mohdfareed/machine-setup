@@ -5,6 +5,10 @@ notebook="$HOME/Notebook"
 # open notebook with vscode
 alias notes='code $notebook'
 
+# exa
+alias exa="exa -a --group-directories-first"
+alias exal="exa --git --group-directories-first -lghHmUTL2"
+
 # complete uninstallation of casks and formulae
 alias uninstall='brew uninstall --zap'
 # install brew formulae or cask

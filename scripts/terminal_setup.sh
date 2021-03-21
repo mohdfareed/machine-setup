@@ -1,13 +1,17 @@
 #!/usr/bin/env zsh
 
+## REQUIREMENTS:
+# .zshenv setup
+
 clear='\033[0m'
 bold='\033[1m'
-rbold='\033[1;31m'
 
 # prompt user for confirmation
 
 tput clear
 echo "${bold}Setting up Terminal app...${clear}"
+
+source $HOME/.zshenv
 
 # profile's path and name
 p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | \

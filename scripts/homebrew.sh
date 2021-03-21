@@ -12,7 +12,7 @@ if [[ $? != 0 ]] ; then
     /bin/bash -c "$(curl -fsSL \
         https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
-    echo "Homebrew already installed."
+    echo "Homebrew is already installed..."
     brew update
 fi
 
