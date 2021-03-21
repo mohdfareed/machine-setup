@@ -1,12 +1,12 @@
-export DEVELOPER="$HOME/Developer"
-export DOTFILES="$DEVELOPER/dotfiles"
+export DEV="$HOME/Developer"
+export DOTFILES="$DEV/dotfiles"
 
 # base directory relative to which user data files should be stored
-export XDG_DATA_HOME="$DEVELOPER/data"
+export XDG_DATA_HOME="$DEV/data"
 # base directory relative to which user configuration files should be stored
-export XDG_CONFIG_HOME="$DEVELOPER/config"
+export XDG_CONFIG_HOME="$DEV/config"
 # base directory relative to which cache files should be stored
-export XDG_CACHE_HOME="$DEVELOPER/cache"
+export XDG_CACHE_HOME="$DEV/cache"
 
 # zsh and oh-my-zsh directories
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"

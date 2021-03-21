@@ -4,8 +4,8 @@ clear='\033[0m'
 bold='\033[1m'
 gbold='\033[1;32m'
 
-DEVELOPER="$HOME/Developer"
-DOTFILES="$DEVELOPER/dotfiles"
+DEV="$HOME/Developer"
+DOTFILES="$DEV/dotfiles"
 notebook="/Users/mohdfareed/Library/Mobile\ Documents/com\~apple\~CloudDocs/\
 Notebook"
 scripts="$DOTFILES/scripts"
@@ -13,8 +13,8 @@ username="mohdfareed" # github username
 pat='3b82f82e9087eb0db848fada1b1f239ee43a46db' # github personal access token
 
 echo "${bold}Setting up device...${clear}"
-# create Developer folder
-mkdir -p $HOME/Developer
+# create DEV folder
+mkdir -p $DEV
 # remove last login time prompt
 touch $HOME/.hushlogin
 # add notebook symlink
