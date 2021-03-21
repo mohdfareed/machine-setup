@@ -1,14 +1,19 @@
 #!/usr/bin/env zsh
 
-## REQUIREMENTS:
-# XDG_CONFIG_HOME environment variable
-
 clear='\033[0m'
 bold='\033[1m'
 rbold='\033[1;31m'
 
 tput clear
 echo "${bold}Setting up git configuration...${clear}"
+
+if [[ ! -d $DOTFILES ]] ; then
+    echo "${rbold}Error:${clear}"
+    echo "\tDOTFILES directory does not exist..."
+    return 1
+fi
+
+source $DOTFILES/dots/zshenv
 
 # symlink git configuration files
 mkdir -p $XDG_CONFIG_HOME/git

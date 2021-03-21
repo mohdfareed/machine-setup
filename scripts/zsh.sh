@@ -2,12 +2,17 @@
 
 clear='\033[0m'
 bold='\033[1m'
-rbold='\033[1;31m'
 
 tput clear
 echo "${bold}Setting up Zsh...${clear}"
 
-source $HOME/.zshenv
+if [[ ! -d $DOTFILES ]] ; then
+    echo "${rbold}Error:${clear}"
+    echo "\tDOTFILES directory does not exist..."
+    return 1
+fi
+
+source $DOTFILES/dots/zshenv
 
 # install oh-my-zsh
 sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
@@ -18,7 +23,7 @@ ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
 
 source $HOME/.zshenv
-source $ZDOTDIR/.zshrc 2> /dev/null
+source $ZDOTDIR/.zshrc > /dev/null
 
 # delete old zshrc files
 rm -rf $HOME/.zshrc

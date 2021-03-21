@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-## REQUIREMENTS:
-# .zshenv setup
-
 clear='\033[0m'
 bold='\033[1m'
 
@@ -11,7 +8,13 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up Terminal app...${clear}"
 
-source $HOME/.zshenv
+if [[ ! -d $DOTFILES ]] ; then
+    echo "${rbold}Error:${clear}"
+    echo "\tDOTFILES directory does not exist..."
+    return 1
+fi
+
+source $DOTFILES/dots/zshenv
 
 # profile's path and name
 p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | \
