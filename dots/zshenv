@@ -18,9 +18,6 @@ export SHELL_SESSIONS_DISABLE=1
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
 
-# vscode extensions folder
-export VSCODE_EXTENSIONS="$XDG_DATA_HOME/vscode/extensions"
-
 # python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
