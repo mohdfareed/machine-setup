@@ -11,6 +11,7 @@ export XDG_CACHE_HOME="$DEV/cache"
 # zsh and oh-my-zsh directories
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}"
 
 # default editor
 export EDITOR=/usr/local/bin/code
