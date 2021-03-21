@@ -37,8 +37,6 @@ brew install zsh
 brew install zsh-syntax-highlighting
 # Distributed revision control system
 brew install git
-# Interpreted, interactive, object-oriented programming language
-brew install python
 # Mac App Store command-line interface
 brew install mas
 
