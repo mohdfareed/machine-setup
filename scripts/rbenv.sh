@@ -32,6 +32,9 @@ if [[ $? != 0 ]] ; then
     return 1
 fi
 
+brew install rbenv
+brew cleanup
+
 if [[ ! -d $DOTFILES ]] ; then
     echo "${rbold}Error:${clear}"
     echo "\tDOTFILES directory does not exist..."
@@ -39,9 +42,6 @@ if [[ ! -d $DOTFILES ]] ; then
 fi
 
 source $DOTFILES/dots/zshrc > /dev/null
-
-brew install rbenv
-brew cleanup
 
 # prompt the user to selected ruby version to install
 echo -e "\a"

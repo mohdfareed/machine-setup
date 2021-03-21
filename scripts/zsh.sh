@@ -19,7 +19,7 @@ sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
 
 # symlink files
 mkdir -p $ZDOTDIR
-mkdir -p $ZSH_COMPDUMP
+mkdir -p $(dirname $ZSH_COMPDUMP)
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
