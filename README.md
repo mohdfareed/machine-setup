@@ -11,7 +11,7 @@ xcode-select --install
 **2. Run installation script:**
 
 ```sh
-zsh -c "$(curl -fsSL https://git.io/JqCB0)"
+zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 ```
 
 ## Decommissioning Process
