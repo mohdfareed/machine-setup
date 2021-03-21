@@ -39,7 +39,7 @@ echo "Would you like to install Node ${gbold}$version${clear}? [Y|n]"
 read answer
 
 case $answer in
-        [Yy]* )
+        [Nn]* )
             ;;
         * )
             # installed latest Node version and set it as default

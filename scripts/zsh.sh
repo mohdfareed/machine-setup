@@ -18,17 +18,19 @@ source $DOTFILES/dots/zshenv
 sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
 
 # symlink files
+mkdir -p $ZDOTDIR
+mkdir -p $ZSH_COMPDUMP
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
-
-source $ZDOTDIR/.zshrc > /dev/null
 
 # link oh-my-zsh theme
 if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then
     git -C $DOTFILES submodule update --init
 fi
 ln -siv $DOTFILES/other/common/common.zsh-theme $ZSH/themes
+
+source $ZDOTDIR/.zshrc
 
 # delete old zshrc files
 rm -rf $HOME/.zshrc
