@@ -7,28 +7,27 @@ plugins=(
     osx               # provides a few utilities on macOS
 )
 
-# scripting languages
-export PATH="$(brew --prefix)/opt/python/libexec/bin:$PATH" # python
-export PATH="$(brew --prefix)/opt/ruby/bin:$PATH"           # ruby
-export PATH="$(gem environment gemdir)/bin:$PATH"           # ruby gems
-
 # load aliases and functions
 source $ZDOTDIR/.aliases
 
 # rbenv
-which rbenv > /dev/null
-if [[ $? = 0 ]] ; then
-    export RBENV_ROOT="$XDG_DATA_HOME/rbenv"             # rbenv directory
-    export SOLARGRAPH_CACHE="$XDG_CACHE_HOME/solargraph" # solargraph directory
-    eval "$(rbenv init -)"                               # evaluate rbenv
+if [[ -d "/usr/local/Cellar/rbenv" ]] ; then
+    export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
+    export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
+    export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
+    export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
+    export RBENV_ROOT="$XDG_DATA_HOME/rbenv"
+    export SOLARGRAPH_CACHE="$XDG_CACHE_HOME/solargraph"
+    eval "$(rbenv init -)"
 fi
 
 # nvm
-plugins+=(nvm) # lazy evaluate nvm and load tab completions
-which nvm > /dev/null
-if [[ $? = 0 ]] ; then
+if [[ -d "/usr/local/Cellar/nvm" ]] ; then
     export NVM_DIR="$XDG_DATA_HOME/nvm" # nvm directory
     export NVM_LAZY=1                   # let oh-my-zsh lazy evaluate nvm
+
+    plugins+=(nvm)  # lazy evaluate nvm and load tab completions
+    plugins+=(node) # adds node-docs function
 fi
 
 # load oh-my-zsh

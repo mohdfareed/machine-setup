@@ -22,9 +22,4 @@ export VSCODE_EXTENSIONS="$XDG_DATA_HOME/vscode/extensions"
 # python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-
-# ruby
-export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
-export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
-export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
-export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"

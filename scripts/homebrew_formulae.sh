@@ -35,8 +35,6 @@ brew install zsh-syntax-highlighting
 brew install git
 # Interpreted, interactive, object-oriented programming language
 brew install python
-#Powerful, clean, object-oriented scripting language
-brew install ruby
 
 # Modern replacement for 'ls'
 prompt exa
