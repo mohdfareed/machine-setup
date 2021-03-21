@@ -28,6 +28,7 @@ if [[ ! -d $DOTFILES ]] ; then
     return 1
 fi
 
+source $DOTFILES/dots/zshenv
 source $DOTFILES/dots/zshrc > /dev/null
 
 # get the latest version number of nvm
@@ -40,9 +41,16 @@ read answer
 
 case $answer in
         [Nn]* )
+            return 1
             ;;
         * )
-            # installed latest Node version and set it as default
-            nvm install node
             ;;
 esac
+
+# installed latest Node version and set it as default
+nvm install node
+nvm use node
+
+# set npm cache folder and config file
+npm config set cache $XDG_CACHE_HOME/npm --global
+npm config set userconfig $XDG_CONFIG_HOME/npm/npmrc --global
