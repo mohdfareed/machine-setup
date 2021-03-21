@@ -19,4 +19,5 @@ brew cleanup
 source $DOTFILES/dots/zshenv
 
 mkdir -p $XDG_CONFIG_HOME/python
+mkdir -p $XDG_CACHE_HOME/python
 ln -siv "$DOTFILES/dots/pythonrc" "$XDG_CONFIG_HOME/python/pythonrc"

@@ -13,9 +13,11 @@ setopt CORRECT_ALL # offer to correct commands and arguments
 source $ZDOTDIR/.aliases
 
 # python
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
-export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+if [[ -d "/usr/local/opt/python" ]] ; then
+    export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+    export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+    export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+fi
 
 # rbenv
 if [[ -d "/usr/local/Cellar/rbenv" ]] ; then
