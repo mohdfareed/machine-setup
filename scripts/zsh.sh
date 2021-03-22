@@ -33,6 +33,8 @@ ln -siv $DOTFILES/other/common/common.zsh-theme $ZSH/themes
 
 source $ZDOTDIR/.zshrc
 
+# remove last login time prompt
+touch $HOME/.hushlogin
 # delete old zshrc files
 rm -rf $HOME/.zshrc
 rm -rf $HOME/.zsh_sessions

@@ -2,17 +2,16 @@
 
 ## Installation Process
 
-**1. Install Xcode Command Line Tools:**
-
-```sh
-xcode-select --install
-```
-
-**2. Run installation script:**
+**1. Run installation script:**
 
 ```sh
 zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 ```
+
+## Caveats
+
+- Dotfiles and dev directories have to be changed in both `zshenv` and `setup.sh`.
+- GitHub authentication info might need to be updated in `setup.sh`.
 
 ## Decommissioning Process
 

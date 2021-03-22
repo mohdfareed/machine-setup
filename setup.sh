@@ -7,7 +7,6 @@ gbold='\033[1;32m'
 DEV="$HOME/Developer"
 DOTFILES="$DEV/dotfiles"
 
-notebook="$HOME/Library/Mobile\ Documents/com\~apple\~CloudDocs/Notebook"
 scripts="$DOTFILES/scripts"
 username="mohdfareed" # github username
 pat='3b82f82e9087eb0db848fada1b1f239ee43a46db' # github personal access token
@@ -20,10 +19,6 @@ git -C $DOTFILES submodule update --init
 
 tput clear
 echo "${bold}Setting up device...${clear}"
-# remove last login time prompt
-touch $HOME/.hushlogin
-# add notebook symlink
-if [[ -d $notebook ]]; then ln -siv $notebook $HOME; fi
 
 # setup homebrew and install its formulae and casks
 source $scripts/homebrew.sh

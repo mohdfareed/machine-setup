@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
 
-# notebook's directory
-notebook="$HOME/Notebook"
+# notebook and iCloud directories
+icloud="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+notebook="$icloud/Notebook"
 # open notebook with vscode
 alias notes='code $notebook'
 
