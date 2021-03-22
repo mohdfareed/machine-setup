@@ -11,36 +11,24 @@ plugins=(
 export HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 setopt CORRECT_ALL # offer to correct commands and arguments
 source $ZDOTDIR/.aliases
+source $ZDOTDIR/.lazy_loader
 
-# python
-if [[ -d "/usr/local/opt/python" ]] ; then
-    export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
-    export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-    export PATH="/usr/local/opt/python/libexec/bin:$PATH"
-fi
-
-# rbenv
+# lazy load rbenv. Execute rbenv to load
 if [[ -d "/usr/local/Cellar/rbenv" ]] ; then
-    export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
-    export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
-    export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
-    export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
-    export RBENV_ROOT="$XDG_DATA_HOME/rbenv"
-    export SOLARGRAPH_CACHE="$XDG_CACHE_HOME/solargraph"
-    eval "$(rbenv init -)"
+    rbenv_init() { eval "$(rbenv init -)" }
+    lazy_load rbenv_init rbenv
 fi
 
-# nvm
+# lazy load nvm. Execute nvm to load
 if [[ -d "/usr/local/Cellar/nvm" ]] ; then
-    export NVM_DIR="$XDG_DATA_HOME/nvm" # nvm directory
-
-    # lazily load nvm. execute nvm use node to load
-    . /usr/local/opt/nvm/nvm.sh --no-use
-    . /usr/local/opt/nvm/etc/bash_completion.d/nvm --no-use
+    nvm_init() {
+        . /usr/local/opt/nvm/nvm.sh
+        . /usr/local/opt/nvm/etc/bash_completion.d/nvm
+    }
+    lazy_load nvm_init nvm
 fi
 
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 # load zsh syntax highlighting
-source $(brew --prefix)/share/zsh-syntax-highlighting\
-/zsh-syntax-highlighting.zsh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

@@ -9,7 +9,7 @@ export XDG_CONFIG_HOME="$DEV/config"
 export XDG_CACHE_HOME="$DEV/cache"
 
 # zsh and oh-my-zsh directories
-export ZDOTDIR="$XDG_CONFIG_HOME"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH="$XDG_DATA_HOME/oh-my-zsh"
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}"
 export SHELL_SESSIONS_DISABLE=1
@@ -17,3 +17,19 @@ export SHELL_SESSIONS_DISABLE=1
 # default editor
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
+
+# python
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+# rbenv
+export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
+export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
+export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
+export RBENV_ROOT="$XDG_DATA_HOME/rbenv"
+export SOLARGRAPH_CACHE="$XDG_CACHE_HOME/solargraph"
+
+# nvm
+export NVM_DIR="$XDG_DATA_HOME/nvm"

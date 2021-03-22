@@ -23,6 +23,7 @@ mkdir -p $(dirname $ZSH_COMPDUMP)
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
+ln -siv "$DOTFILES/dots/lazy_loader" "$ZDOTDIR/.lazy_loader"
 
 # link oh-my-zsh theme
 if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then
