@@ -20,18 +20,13 @@ git -C $DOTFILES submodule update --init
 
 tput clear
 echo "${bold}Setting up device...${clear}"
-# create DEV folder
-mkdir -p $DEV
 # remove last login time prompt
 touch $HOME/.hushlogin
 # add notebook symlink
 if [[ -d $notebook ]]; then ln -siv $notebook $HOME; fi
 
-# setup homebrew
+# setup homebrew and install its formulae and casks
 source $scripts/homebrew.sh
-# install brew's forumlae and casks
-source $scripts/homebrew_formulae.sh
-source $scripts/homebrew_casks.sh
 # install App Store applications
 source $scripts/appstore.sh
 
