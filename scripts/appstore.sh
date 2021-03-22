@@ -8,8 +8,8 @@ gbold='\033[1;32m'
 # prompt the user for confirmation, skip installation if needed
 prompt() {
     echo -e "\a"
-    echo "Would you like to install ${gbold}$(mas info $1 | \
-        head -n 1)${clear}? [Y|n]"
+    app_name=$(mas info $1 | head -n 1)
+    echo "Would you like to install ${gbold}$app_name${clear}? [Y|n]"
     read answer
 
     case $answer in

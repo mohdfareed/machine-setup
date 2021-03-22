@@ -3,8 +3,6 @@
 clear='\033[0m'
 bold='\033[1m'
 
-# prompt user for confirmation
-
 tput clear
 echo "${bold}Setting up Terminal app...${clear}"
 
@@ -18,8 +16,7 @@ source $DOTFILES/dots/zshenv
 ## setup profile
 
 # profile's path and name
-p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | \
-    head -n 1)
+p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | head -n 1)
 p_name=$(basename $p_file .terminal)
 
 # add profile to terminal app
