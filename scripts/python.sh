@@ -8,8 +8,7 @@ tput clear
 echo "${bold}Setting up latest version of python...${clear}"
 
 if [[ ! -d $DOTFILES ]] ; then
-    echo "${rbold}Error:${clear}"
-    echo "\tDOTFILES directory does not exist..."
+    echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1
 fi
 
@@ -20,4 +19,4 @@ source $DOTFILES/dots/zshenv
 
 mkdir -p $XDG_CONFIG_HOME/python
 mkdir -p $XDG_CACHE_HOME/python
-ln -siv "$DOTFILES/dots/pythonrc" "$XDG_CONFIG_HOME/python/pythonrc"
+ln -siv "$DOTFILES/dots/pythonrc" "$PYTHONSTARTUP"

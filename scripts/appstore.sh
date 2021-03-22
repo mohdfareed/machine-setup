@@ -31,16 +31,14 @@ fi
 # check if mas is installed
 which mas > /dev/null
 if [[ $? != 0 ]] ; then
-    echo "${rbold}Error:${clear}"
-    echo "\tmas is not installed..."
+    echo "${rbold}Error:${clear} mas is not installed..."
     return 1
 fi
 
 # check if the user is signed-in to the App Store
 mas account > /dev/null
 if [[ $? != 0 ]] ; then
-    echo "${rbold}Error:${clear}"
-    echo "\tYou need to be signed-in to the App Store to continue..."
+    echo "${rbold}Error:${clear} You need to be signed-in to the App Store..."
     return 1
 fi
 

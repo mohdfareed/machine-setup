@@ -8,8 +8,7 @@ tput clear
 echo "${bold}Setting up git configuration...${clear}"
 
 if [[ ! -d $DOTFILES ]] ; then
-    echo "${rbold}Error:${clear}"
-    echo "\tDOTFILES directory does not exist..."
+    echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1
 fi
 

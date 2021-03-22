@@ -11,8 +11,7 @@ echo "${bold}Setting up nvm...${clear}"
 # check if brew is installed
 which brew > /dev/null
 if [[ $? != 0 ]] ; then
-    echo "${rbold}Error:${clear}"
-    echo "\tHomebrew is not installed..."
+    echo "${rbold}Error:${clear} Homebrew is not installed..."
     return 1
 fi
 
@@ -23,8 +22,7 @@ tput clear
 echo "${bold}Installing latest Node version...${clear}"
 
 if [[ ! -d $DOTFILES ]] ; then
-    echo "${rbold}Error:${clear}"
-    echo "\tDOTFILES directory does not exist..."
+    echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1
 fi
 
