@@ -15,6 +15,8 @@ fi
 
 source $DOTFILES/dots/zshenv
 
+## setup profile
+
 # profile's path and name
 p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | \
     head -n 1)
@@ -22,6 +24,8 @@ p_name=$(basename $p_file .terminal)
 
 # add profile to terminal app
 open $p_file
+
+## setup app
 
 # set profile as the default
 defaults write com.apple.terminal "Default Window Settings" "$p_name"
