@@ -19,7 +19,7 @@ prompt() {
 }
 
 tput clear
-echo "${bold}Installing homebrew...${clear}"
+echo "${bold}Installing Homebrew...${clear}"
 
 # Check for homebrew and install it if needed
 which brew > /dev/null
@@ -33,7 +33,9 @@ fi
 # fix “zsh compinit: insecure directories” message
 chmod -R go-w "$(brew --prefix)/share"
 
-echo "${bold}Installing homebrew formulae and casks...${clear}"
+echo "${bold}Installing Homebrew formulae and casks...${clear}"
+
+# FIXME: install casks and fonts with `--cask` option
 
 ## required formulae and casks
 

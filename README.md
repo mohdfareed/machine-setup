@@ -8,6 +8,21 @@
 zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 ```
 
+**2. Set login applications:**
+
+- Swish
+- Mos
+- MonitorControl
+- Magnet
+
+**3. Change some preferences manually:**
+
+- MonitorControl -> Advanced -> Hide OSD: true
+- Mos -> Exceptions -> Terminal and Parallels Desktop
+- Transmission -> General -> Set Default Application
+- System Preferences -> Displays -> Display -> Set external display's resolution
+- System Preferences -> Displays -> Arrangement -> Set external as main
+
 ## Caveats
 
 - Dotfiles and dev directories have to be changed in both `zshenv` and `setup.sh`.
