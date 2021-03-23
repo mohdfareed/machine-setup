@@ -47,8 +47,9 @@ brew install git
 brew install --cask visual-studio-code
 # Free and open-source media player
 brew install --cask iina
-# Unpacks archive files
-brew install --cask the-unarchiver
+# File archiver
+brew install --cask keka
+brew install --cask kekaexternalhelper
 # Open-source BitTorrent client
 brew install --cask transmission
 
