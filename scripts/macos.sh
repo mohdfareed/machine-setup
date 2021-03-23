@@ -6,6 +6,12 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up macOS Preferences...${clear}"
 
+# check if dotfiles repo exists
+if [[ ! -d $DOTFILES ]] ; then
+    echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
+    return 1
+fi
+
 # TODO: Check if needed
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'
@@ -36,6 +42,22 @@ defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # TODO: Extensions: com.apple.preferences.extensions....
 # ==========
+
+# Terminal
+# ========
+
+# profile's path and name
+p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | head -n 1)
+p_name=$(basename $p_file .terminal)
+open $p_file # add profile to terminal app
+sleep 1 # Wait to make sure the theme is loaded
+
+
+# set profile as the default
+defaults write com.apple.Terminal "Default Window Settings" "$p_name"
+defaults write com.apple.Terminal "Startup Window Settings" "$p_name"
+# hide line marks
+defaults write com.apple.Terminal ShowLineMarks -int 0
 
 # Finder
 # ======
