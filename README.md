@@ -20,9 +20,15 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - MonitorControl -> Advanced -> Hide OSD: true
 - Mos -> Exceptions -> Terminal and Parallels Desktop
 - Transmission -> General -> Set Default Application
+
+- Keka -> General -> Set Keka as the default decompressor
+- Keka -> Compression -> Show file in Finder after compression: false
+- Keka -> Extraction -> Show content in Finder after extraction: false
+- Keka -> File Access -> Enable home folder/external volumes access
+- Keka -> Finder Extension -> Show icons in actions: false
+
 - System Preferences -> Displays -> Display -> Set external display's resolution
 - System Preferences -> Displays -> Arrangement -> Set external as main
-- Keka -> General -> Set Keka as the default decompressor
 
 **4. Install come applications manually:**
 
