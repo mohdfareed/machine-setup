@@ -17,4 +17,4 @@ source $DOTFILES/dots/zshenv
 # symlink git configuration files
 mkdir -p $XDG_CONFIG_HOME/git
 ln -siv "$DOTFILES/dots/gitconfig" "$XDG_CONFIG_HOME/git/config"
-ln -siv "$DOTFILES/dots/gitignore_global" "$XDG_CONFIG_HOME/git/ignore_global"
+ln -siv "$DOTFILES/dots/gitignore" "$XDG_CONFIG_HOME/git/ignore"
