@@ -42,6 +42,9 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
     - Mission Control -> Show Desktop: `⌃⇧↑`
     - Services: choose services
   - Extensions -> setup extensions
+- Finder ->
+  - Sidebar: choose items
+  - Tags: uncheck all tags
 
 **4. Install applications:**
 

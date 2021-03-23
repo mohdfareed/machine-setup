@@ -11,11 +11,10 @@ if [[ ! -d $DOTFILES ]] ; then
     echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1
 fi
-source $DOTFILES/dots/zshenv
 
+source $DOTFILES/dots/zshenv
 # create link to personal music in Music folder
 ln -siv $iCloud/Music $HOME/Music/Personal
-
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'
 # ask for the administrator password upfront
@@ -27,7 +26,6 @@ sudo -v
 # set computer name and local host name
 scutil --set ComputerName "Mohd's MacBook Pro"
 scutil --set LocalHostName "Mohds-MacBook-Pro"
-
 # macOS appearance
 defaults write .GlobalPreferences AppleInterfaceStyle -string "Dark"
 # automatically switch appearance
@@ -40,6 +38,8 @@ defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
 defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
 # automatically rearrange spaces based on most recent use
 defaults weire com.apple.dock mru-spaces -bool false
+# Automatically hide and show the Dock
+defaults write com.apple.dock autohide -bool true
 # Play feedback when volume is changed
 defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 
@@ -55,6 +55,8 @@ defaults write .GlobalPreferences com.apple.mouse.scaling -1
 
 # show input menu in menu bar
 defaults write com.apple.TextInputMenu visible -bool true
+# Show input menu in the login screen
+sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
 # touch bar global presentation mode
 defaults write com.apple.touchbar.agent PresentationModeGlobal -string fullControlStrip
 # control strip customization
@@ -89,12 +91,53 @@ defaults write com.apple.Terminal ShowLineMarks -bool false
 # Finder
 # ======
 
+# set Home directory as the default location for new Finder windows
+defaults write com.apple.finder NewWindowTarget 'PfHm'
+defaults write com.apple.finder NewWindowTargetPath "file://${HOME}/"
 # when performing a search, search the current folder by default
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-# use list view in all Finder windows by default
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 # show the ~/Library folder
 chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
+# show path bar
+defaults write com.apple.finder ShowPathbar -bool true
+# Avoid creating .DS_Store files on network volumes
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+# Keep folders on top when sorting by name
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
+# Enable snap-to-grid for icons on the desktop and in other icon views
+/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
+# show preview pane
+defaults write com.apple.finder ShowPreviewPane -bool true
+# use list view in all Finder windows by default
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+# default list view settings
+defaults write com.apple.finder FK_DefaultListViewSettings '{
+    calculateAllSizes = 1;
+    columns = (
+        {
+            ascending = 1;
+            identifier = name;
+            visible = 1;
+        },
+        {
+            ascending = 1;
+            identifier = size;
+            visible = 1;
+        },
+        {
+            ascending = 1;
+            identifier = kind;
+            visible = 1;
+        }
+    );
+    showIconPreview = 1;
+    sortColumn = name;
+    useRelativeDates = 1;
+    viewOptionsVersion = 1;
+}'
 
 # Safari
 # ======
@@ -106,6 +149,14 @@ defaults write com.apple.Safari ReadingListSaveArticlesOfflineAutomatically -boo
 # enable the Develop menu and the Web Inspector
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+
+# TextEdit
+# ========
+
+# use plain text mode for new TextEdit documents
+defaults write com.apple.TextEdit RichText -int 0
+defaults write com.apple.TextEdit NSFixedPitchFont -string "SFMono-Regular"
+defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
 
 # Swish
 # =====
@@ -155,32 +206,22 @@ default write org.m0k.transmission DownloadLocationConstant -bool true
 # the default download location
 default write org.m0k.transmission DownloadFolder -string $HOME/Downloads
 
-################################################################################
-# Kill affected applications                                                   #
-################################################################################
+# Kill affected applications
+# ==========================
 
-for app in "Activity Monitor" \
-	"ControlStrip" \
-	"Address Book" \
+for app in "ControlStrip" \
 	"Calendar" \
 	"cfprefsd" \
-	"Contacts" \
 	"Dock" \
 	"Finder" \
-	"Google Chrome Canary" \
-	"Google Chrome" \
 	"Mail" \
-	"Messages" \
-	"Opera" \
-	"Photos" \
 	"Safari" \
-	"SizeUp" \
-	"Spectacle" \
 	"SystemUIServer" \
 	"Terminal" \
 	"Transmission" \
-	"Tweetbot" \
-	"Twitter" \
+	"Swish" \
+	"Mos" \
+	"TextEdit" \
 	"iCal"; do
 	killall "${app}" &> /dev/null
 done
