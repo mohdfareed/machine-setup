@@ -2,6 +2,8 @@
 
 ## Installation Process
 
+**0. Setup FileVault:**
+
 **1. Run installation script:**
 
 ```sh
@@ -15,27 +17,40 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - MonitorControl
 - Magnet
 
-**3. Change some preferences manually:**
+**3. Change preferences:**
 
 - MonitorControl -> Advanced -> Hide OSD: true
 - Mos -> Exceptions -> Terminal and Parallels Desktop
 - Transmission -> General -> Set Default Application
+- Keka ->
+  - General -> Set Keka as the default decompressor
+  - Compression -> Show file in Finder after compression: false
+  - Extraction -> Show content in Finder after extraction: false
+  - File Access -> Enable home folder/external volumes access
+  - Finder Extension -> Show icons in actions: false
+- System Preferences ->
+  - Displays ->
+    - Display -> Set external display's resolution
+    - Arrangement -> Set external as main
+  - Internet Accounts: add Google and University as mail accounts
+  - Language & Region -> 24-Hour Time: true
+  - Dock & Menu Bar -> Spotlight -> Show in Menu Bar: false
+  - Security & Privacy -> Unlock with Apple Watch
+  - Software Update -> Automatically keep Mac up to date
+  - Keyboard -> Shortcuts
+    - Launchpad -> Show Launchpad: `⌃⇧↓`
+    - Mission Control -> Show Desktop: `⌃⇧↑`
+    - Services: choose services
+  - Extensions -> setup extensions
 
-- Keka -> General -> Set Keka as the default decompressor
-- Keka -> Compression -> Show file in Finder after compression: false
-- Keka -> Extraction -> Show content in Finder after extraction: false
-- Keka -> File Access -> Enable home folder/external volumes access
-- Keka -> Finder Extension -> Show icons in actions: false
-
-- System Preferences -> Displays -> Display -> Set external display's resolution
-- System Preferences -> Displays -> Arrangement -> Set external as main
-
-**4. Install come applications manually:**
+**4. Install applications:**
 
 - Parallels Desktop
   - Setup Windows, Linux, and macOS virtual machines with snapshots
-- Microsoft Office (optional)
+- Microsoft Office
 - iA Writer
+
+**5. Setup Time Machine:**
 
 ## Caveats
 
@@ -56,3 +71,6 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - Create missing directories when needed.
 - Set applications icons
 - Find Keka preferences file
+- Set desktop wallpaper
+- Look into pyenv
+- Test preferences

@@ -11,34 +11,62 @@ if [[ ! -d $DOTFILES ]] ; then
     echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1
 fi
+source $DOTFILES/dots/zshenv
 
-# TODO: Check if needed
+# create link to personal music in Music folder
+ln -siv $iCloud/Music $HOME/Music/Personal
+
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'
 # ask for the administrator password upfront
 sudo -v
 
-# main
-# ====
+# General
+# =======
+
+# set computer name and local host name
+scutil --set ComputerName "Mohd's MacBook Pro"
+scutil --set LocalHostName "Mohds-MacBook-Pro"
+
+# macOS appearance
+defaults write .GlobalPreferences AppleInterfaceStyle -string "Dark"
+# automatically switch appearance
+defaults write .GlobalPreferences AppleInterfaceStyleSwitchesAutomatically -bool true
+# prefer tabs when opening documents
+defaults write .GlobalPreferences AppleWindowTabbingMode -string "always"
+# allow wallpaper tinting in windows
+defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
+# when switching to an application, switch to a space with open windows
+defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
+# automatically rearrange spaces based on most recent use
+defaults weire com.apple.dock mru-spaces -bool false
+# Play feedback when volume is changed
+defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 
 # trackpad, mouse, and keyboard
 # =============================
 
+# TODO: trackpad
 # tap to click
 defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-# disable mouse acceleration
-defaults write NSGlobalDomain com.apple.mouse.scaling -1
-# show expanded control strip in touch bar
+# mouse acceleration
+defaults write .GlobalPreferences com.apple.mouse.scaling -1
+
+# show input menu in menu bar
+defaults write com.apple.TextInputMenu visible -bool true
+# touch bar global presentation mode
 defaults write com.apple.touchbar.agent PresentationModeGlobal -string fullControlStrip
-
-# Energy Saving
-# =============
-
-# TODO: test it
-# require password immediately after screen saver begins
-defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
+# control strip customization
+defaults write com.apple.controlstrip FullCustomized '(
+    "com.apple.system.group.brightness",
+    "com.apple.system.launchpad",
+    "com.apple.system.group.keyboard-brightness",
+    "com.apple.system.group.media",
+    "com.apple.system.group.volume",
+    "com.apple.system.workflows",
+    "com.apple.system.screencapture"
+)'
 
 # TODO: Extensions: com.apple.preferences.extensions....
 # ==========
@@ -52,18 +80,15 @@ p_name=$(basename $p_file .terminal)
 open $p_file # add profile to terminal app
 sleep 1 # Wait to make sure the theme is loaded
 
-
-# set profile as the default
+# default Terminal profile
 defaults write com.apple.Terminal "Default Window Settings" "$p_name"
 defaults write com.apple.Terminal "Startup Window Settings" "$p_name"
-# hide line marks
-defaults write com.apple.Terminal ShowLineMarks -int 0
+# line marks
+defaults write com.apple.Terminal ShowLineMarks -bool false
 
 # Finder
 # ======
 
-# show all filename extensions
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 # when performing a search, search the current folder by default
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # use list view in all Finder windows by default
@@ -74,11 +99,11 @@ chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
 # Safari
 # ======
 
-# prevent Safari from opening ‘safe’ files automatically after downloading
+# open ‘safe’ files automatically after downloading
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 # save articles in Reading List for offline reading automatically
 defaults write com.apple.Safari ReadingListSaveArticlesOfflineAutomatically -bool true
-# enable the Develop menu and the Web Inspector in Safari
+# enable the Develop menu and the Web Inspector
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
 
@@ -129,3 +154,34 @@ default write org.m0k.transmission MagnetOpenAsk -bool true
 default write org.m0k.transmission DownloadLocationConstant -bool true
 # the default download location
 default write org.m0k.transmission DownloadFolder -string $HOME/Downloads
+
+################################################################################
+# Kill affected applications                                                   #
+################################################################################
+
+for app in "Activity Monitor" \
+	"ControlStrip" \
+	"Address Book" \
+	"Calendar" \
+	"cfprefsd" \
+	"Contacts" \
+	"Dock" \
+	"Finder" \
+	"Google Chrome Canary" \
+	"Google Chrome" \
+	"Mail" \
+	"Messages" \
+	"Opera" \
+	"Photos" \
+	"Safari" \
+	"SizeUp" \
+	"Spectacle" \
+	"SystemUIServer" \
+	"Terminal" \
+	"Transmission" \
+	"Tweetbot" \
+	"Twitter" \
+	"iCal"; do
+	killall "${app}" &> /dev/null
+done
+echo "Restart for some of the changes to take effect."
