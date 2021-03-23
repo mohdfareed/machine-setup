@@ -8,12 +8,12 @@ gbold='\033[1;32m'
 # prompt the user for confirmation before installation
 prompt() {
     echo -e "\a"
-    echo "Would you like to install ${gbold}$1${clear}? [y|N]"
+    echo "Would you like to install ${gbold}${@: -1}${clear}? [y|N]"
     read answer
 
     case $answer in
         [Yy]* )
-            brew install $1 ;;
+            brew install $@ ;;
         * ) ;;
     esac
 }
@@ -21,7 +21,7 @@ prompt() {
 tput clear
 echo "${bold}Installing Homebrew...${clear}"
 
-# Check for homebrew and install it if needed
+# check for homebrew and install it if needed
 which brew > /dev/null
 if [[ $? != 0 ]] ; then
     /bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"
@@ -35,8 +35,6 @@ chmod -R go-w "$(brew --prefix)/share"
 
 echo "${bold}Installing Homebrew formulae and casks...${clear}"
 
-# FIXME: install casks and fonts with `--cask` option
-
 ## required formulae and casks
 
 # UNIX shell (command interpreter)
@@ -45,39 +43,39 @@ brew install zsh
 brew install zsh-syntax-highlighting
 # Distributed revision control system
 brew install git
-# Mac App Store command-line interface
-brew install mas
 # Open-source code editor
-brew install visual-studio-code
+brew install --cask visual-studio-code
 # Free and open-source media player
-brew install iina
+brew install --cask iina
 # Unpacks archive files
-brew install the-unarchiver
+brew install --cask the-unarchiver
 # Open-source BitTorrent client
-brew install transmission
-# Control windows and applications right from your trackpad
-brew install swish
-# Smooths scrolling and set mouse scroll directions independently
-brew install mos
-# Tool to control external monitor brightness & volume
-brew install monitorcontrol
+brew install --cask transmission
 
 ## Optional formulae and casks
 
+# Mac App Store command-line interface
+prompt mas
 # Modern replacement for 'ls'
 prompt exa
 # Play, record, convert, and stream audio and video
 prompt ffmpeg # youtube-dl dependency
 # Download YouTube videos from the command-line
 prompt youtube-dl
+# Control windows and applications right from your trackpad
+prompt --cask swish
+# Smooths scrolling and set mouse scroll directions independently
+prompt --cask mos
+# Tool to control external monitor brightness & volume
+prompt --cask monitorcontrol
 # Web browser
-prompt google-chrome
+prompt --cask google-chrome
 # Application uninstaller
-prompt appcleaner
+prompt --cask appcleaner
 # System monitor for the menu bar
-prompt stats
+prompt --cask stats
 # QuickLook plug-in that renders source code with syntax highlighting
-prompt qlcolorcode
+prompt --cask qlcolorcode
 
 ## fonts
 
