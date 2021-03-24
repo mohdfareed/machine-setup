@@ -43,11 +43,12 @@ if [[ $? != 0 ]] ; then
 fi
 
 # prompt the user to choose the apps to install
-prompt 441258766  # Magnet
+prompt 497799835  # Xcode
 prompt 409201541  # Pages
 prompt 409203825  # Numbers
 prompt 409183694  # Keynote
-prompt 1320666476 # Wipr
-prompt 1438243180 # Dark Reader
 prompt 1505779553 # Dashlane
+prompt 441258766  # Magnet
+prompt 1438243180 # Dark Reader
+prompt 1320666476 # Wipr
 prompt 937984704  # Amphetamine

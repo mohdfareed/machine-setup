@@ -69,6 +69,8 @@ prompt --cask swish
 prompt --cask mos
 # Tool to control external monitor brightness & volume
 prompt --cask monitorcontrol
+# GIT client
+prompt --cask fork
 # Web browser
 prompt --cask google-chrome
 # Application uninstaller
