@@ -17,6 +17,7 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - MonitorControl
 - Magnet
 - Amphetamine
+- OpenInTerminal
 
 **3. Change preferences:**
 
@@ -39,6 +40,9 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
   - Toolbar: customize
 - Safari -> Extensions -> choose extensions (dark reader, IINA, Wipr)
   - Setup Dashlane: Sign-in, enable Touch ID, and background refresh
+- OpenInTerminal -> General ->
+  - Hide Status Bar Icon: true
+  - Default Text Editor: Visual Studio Code
 
 - Transmission -> General -> Set Default Application
 - Keka ->
@@ -94,3 +98,5 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - Set desktop wallpaper
 - Look into pyenv
 - Test preferences
+- Setup Fork then continue down AppCleaner list
+- Download music with video

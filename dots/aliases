@@ -3,6 +3,7 @@
 # notebook and iCloud directories
 iCloud="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 Notebook="$iCloud/Notebook"
+Music="$HOME/Music/Personal"
 # open notebook with vscode
 alias notes='code $Notebook'
 
@@ -18,7 +19,7 @@ alias install='brew install'
 alias dv='download-video'
 alias da='download-audio'
 
-# download videos from URL
+# download video from URL
 function download-video {
     dir=("-d" "$HOME/Downloads")
     zparseopts -D -K -- d:=dir

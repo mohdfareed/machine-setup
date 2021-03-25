@@ -45,6 +45,8 @@ brew install zsh-syntax-highlighting
 brew install git
 # Open-source code editor
 brew install --cask visual-studio-code
+# Finder Toolbar app to open the current directory in Terminal or Editor
+brew install --cask openinterminal
 # Free and open-source media player
 brew install --cask iina
 # File archiver
