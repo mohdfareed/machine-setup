@@ -93,10 +93,6 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 ## TODO
 
 - Create missing directories when needed.
-- Set applications icons
-- Find Keka preferences file
-- Set desktop wallpaper
 - Look into pyenv
 - Test preferences
 - Setup Fork then continue down AppCleaner list
-- Download music with video

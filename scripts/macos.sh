@@ -26,10 +26,6 @@ sudo -v
 # set computer name and local host name
 scutil --set ComputerName "Mohd's MacBook Pro"
 scutil --set LocalHostName "Mohds-MacBook-Pro"
-# macOS appearance
-defaults write .GlobalPreferences AppleInterfaceStyle -string "Dark"
-# automatically switch appearance
-defaults write .GlobalPreferences AppleInterfaceStyleSwitchesAutomatically -bool true
 # prefer tabs when opening documents
 defaults write .GlobalPreferences AppleWindowTabbingMode -string "always"
 # allow wallpaper tinting in windows
@@ -42,6 +38,10 @@ defaults weire com.apple.dock mru-spaces -bool false
 defaults write com.apple.dock autohide -bool true
 # Play feedback when volume is changed
 defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
+# set desktop wallpaper
+wp=$(find $DOTFILES/other -maxdepth 1 -name "wallpaper.*" | head -n 1)
+osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$wp\""
+osascript -e 'tell application "Finder" to set desktop picture to POSIX file "$wp"'
 
 # trackpad, mouse, and keyboard
 # =============================
@@ -53,14 +53,14 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool
 defaults write com.apple.AppleMultitouchTrackpad Dragging -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool true
 # mouse acceleration
-defaults write .GlobalPreferences com.apple.mouse.scaling -1
+defaults write .GlobalPreferences com.apple.mouse.scaling -int -1
 
 # show input menu in menu bar
 defaults write com.apple.TextInputMenu visible -bool true
 # Show input menu in the login screen
 sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
 # touch bar global presentation mode
-defaults write com.apple.touchbar.agent PresentationModeGlobal -string fullControlStrip
+defaults write com.apple.touchbar.agent PresentationModeGlobal -string "fullControlStrip"
 # control strip customization
 defaults write com.apple.controlstrip FullCustomized '(
     "com.apple.system.group.brightness",
@@ -72,8 +72,12 @@ defaults write com.apple.controlstrip FullCustomized '(
     "com.apple.system.screencapture"
 )'
 
-# TODO: Extensions: com.apple.preferences.extensions....
+# Extensions
 # ==========
+
+# add workflows
+open "$DOTFILES/other/automator/Index.workflow"
+open "$DOTFILES/other/automator/New Note.workflow"
 
 # Terminal
 # ========
@@ -102,6 +106,23 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
 # show path bar
 defaults write com.apple.finder ShowPathbar -bool true
+# set toolbar items
+defaults write com.apple.finder "NSToolbar Configuration Browser" '{
+    "TB Item Identifiers" =     (
+        "com.apple.finder.BACK",
+        NSToolbarFlexibleSpaceItem,
+        "com.apple.finder.SWCH",
+        NSToolbarSpaceItem,
+        "com.apple.finder.ARNG",
+        "com.apple.finder.NFLD",
+        "com.apple.finder.TRSH",
+        "wang.jianing.app.OpenInTerminal.OpenInTerminalFinderExtension",
+        NSToolbarSpaceItem,
+        "com.apple.finder.SRCH"
+    );
+    "TB Display Mode" = 2;
+}'
+killall Finder
 # Avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # Keep folders on top when sorting by name
@@ -259,7 +280,7 @@ for app in "ControlStrip" \
 	"Transmission" \
 	"Swish" \
 	"Mos" \
+	"IINA" \
 	"TextEdit"; do
 	killall "${app}" &> /dev/null
 done
-echo "Restart for some of the changes to take effect."

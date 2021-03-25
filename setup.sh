@@ -59,6 +59,9 @@ case $answer in
     * ) source $scripts/nvm.sh;;
 esac
 
+# setup macOS preferences
+source $scripts/macos.sh
+
 echo -e "\a"
-echo "Restart Terminal app for the changes to take effect."
+"Restart for some of the changes to take effect."
 echo "${gbold}Installation complete!${clear}"
