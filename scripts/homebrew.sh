@@ -43,6 +43,12 @@ brew install zsh
 brew install zsh-syntax-highlighting
 # Distributed revision control system
 brew install git
+# Modern replacement for 'ls'
+brew install exa
+# Play, record, convert, and stream audio and video
+brew install ffmpeg # youtube-dl dependency
+# Download YouTube videos from the command-line
+brew install youtube-dl
 # Open-source code editor
 brew install --cask visual-studio-code
 # Finder Toolbar app to open the current directory in Terminal or Editor
@@ -54,23 +60,17 @@ brew install --cask keka
 brew install --cask kekaexternalhelper
 # Open-source BitTorrent client
 brew install --cask transmission
+# Mac App Store command-line interface
+brew install --cask mas
+# Control windows and applications right from your trackpad
+brew install --cask swish
+# Smooths scrolling and set mouse scroll directions independently
+brew install --cask mos
+# Tool to control external monitor brightness & volume
+brew install --cask monitorcontrol
 
 ## Optional formulae and casks
 
-# Mac App Store command-line interface
-prompt mas
-# Modern replacement for 'ls'
-prompt exa
-# Play, record, convert, and stream audio and video
-prompt ffmpeg # youtube-dl dependency
-# Download YouTube videos from the command-line
-prompt youtube-dl
-# Control windows and applications right from your trackpad
-prompt --cask swish
-# Smooths scrolling and set mouse scroll directions independently
-prompt --cask mos
-# Tool to control external monitor brightness & volume
-prompt --cask monitorcontrol
 # GIT client
 prompt --cask fork
 # Web browser

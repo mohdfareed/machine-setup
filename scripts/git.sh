@@ -5,7 +5,7 @@ bold='\033[1m'
 rbold='\033[1;31m'
 
 tput clear
-echo "${bold}Setting up git configuration...${clear}"
+echo "${bold}Setting up git...${clear}"
 
 if [[ ! -d $DOTFILES ]] ; then
     echo "${rbold}Error:${clear} DOTFILES directory does not exist..."

@@ -4,7 +4,7 @@ clear='\033[0m'
 bold='\033[1m'
 
 tput clear
-echo "${bold}Setting up macOS Preferences...${clear}"
+echo "${bold}Setting up macOS preferences...${clear}"
 
 # check if dotfiles repo exists
 if [[ ! -d $DOTFILES ]] ; then
@@ -28,15 +28,15 @@ scutil --set ComputerName "Mohd's MacBook Pro"
 scutil --set LocalHostName "Mohds-MacBook-Pro"
 # prefer tabs when opening documents
 defaults write .GlobalPreferences AppleWindowTabbingMode -string "always"
-# allow wallpaper tinting in windows
+# reduce wallpaper tinting in windows
 defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
 # when switching to an application, switch to a space with open windows
 defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
 # automatically rearrange spaces based on most recent use
 defaults weire com.apple.dock mru-spaces -bool false
-# Automatically hide and show the Dock
+# automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool true
-# Play feedback when volume is changed
+# play feedback when volume is changed
 defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 # set desktop wallpaper
 wp=$(find $DOTFILES/other -maxdepth 1 -name "wallpaper.*" | head -n 1)
@@ -86,7 +86,6 @@ open "$DOTFILES/other/automator/New Note.workflow"
 p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | head -n 1)
 p_name=$(basename $p_file .terminal)
 open $p_file # add profile to terminal app
-sleep 1 # Wait to make sure the theme is loaded
 
 # default Terminal profile
 defaults write com.apple.Terminal "Default Window Settings" "$p_name"
@@ -106,7 +105,8 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
 # show path bar
 defaults write com.apple.finder ShowPathbar -bool true
-# set toolbar items
+# set toolbar items FIXME: OpenInTerminal needs to be opened and enabled
+# in preferences first, breaks order otherwise.
 defaults write com.apple.finder "NSToolbar Configuration Browser" '{
     "TB Item Identifiers" =     (
         "com.apple.finder.BACK",
@@ -122,13 +122,12 @@ defaults write com.apple.finder "NSToolbar Configuration Browser" '{
     );
     "TB Display Mode" = 2;
 }'
-killall Finder
-# Avoid creating .DS_Store files on network volumes
+# avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-# Keep folders on top when sorting by name
+# keep folders on top when sorting by name
 defaults write com.apple.finder _FXSortFoldersFirst -bool true
 defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
-# Enable snap-to-grid for icons on the desktop and in other icon views
+# enable snap-to-grid for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
@@ -189,7 +188,7 @@ defaults write com.apple.iCal "Show heat map in Year View" -bool true
 
 # Transmission
 # ============
-brew casks | grep -q "^transmission$"
+echo $(brew list) | grep -q " transmission "
 if [[ $? = 0 ]] ; then
 	# automatically size windows to fit all transfers
 	default write org.m0k.transmission AutoSize -bool true
@@ -208,36 +207,39 @@ if [[ $? = 0 ]] ; then
 	# download to DownloadFolder instead of the location of the torrent file
 	default write org.m0k.transmission DownloadLocationConstant -bool true
 	# the default download location
-	default write org.m0k.transmission DownloadFolder -string $HOME/Downloads
+	default write org.m0k.transmission DownloadFolder -string "$HOME/Downloads"
 fi
 
 # IINA
 # ====
 
-# quit after all windows are closed
-defaults write com.colliderli.iina quitWhenNoOpenedWindow -bool true
-# match system appearance
-defaults write com.colliderli.iina themeMaterial -int 4
-# set on screen controller toolbar items
-defaults write com.colliderli.iina controlBarToolbarButtons -array \
-	-int 4 \
-	-int 2 \
-	-int 1 \
-	-int 0
-# use left/right button for previous/next media
-defaults write com.colliderli.iina arrowBtnAction -int 1
-# show chapter position in progress bar
-defaults write com.colliderli.iina showChapterPos -bool true
-# show remaining time instead of total duration
-defaults write com.colliderli.iina showRemainingTime -bool true
-# preferred subtitles language
-defaults write com.colliderli.iina subLang -string "en"
-# custom youtube-dl path
-defaults write com.colliderli.iina ytdlSearchPath -string "/usr/local/bin"
+echo $(brew list) | grep -q " iina "
+if [[ $? = 0 ]] ; then
+	# quit after all windows are closed
+	defaults write com.colliderli.iina quitWhenNoOpenedWindow -bool true
+	# match system appearance
+	defaults write com.colliderli.iina themeMaterial -int 4
+	# set on screen controller toolbar items
+	defaults write com.colliderli.iina controlBarToolbarButtons -array \
+		-int 4 \
+		-int 2 \
+		-int 1 \
+		-int 0
+	# use left/right button for previous/next media
+	defaults write com.colliderli.iina arrowBtnAction -int 1
+	# show chapter position in progress bar
+	defaults write com.colliderli.iina showChapterPos -bool true
+	# show remaining time instead of total duration
+	defaults write com.colliderli.iina showRemainingTime -bool true
+	# preferred subtitles language
+	defaults write com.colliderli.iina subLang -string "en"
+	# custom youtube-dl path
+	defaults write com.colliderli.iina ytdlSearchPath -string "/usr/local/bin"
+fi
 
 # Swish
 # =====
-brew casks | grep -q "^swish$"
+echo $(brew list) | grep -q " swish "
 if [[ $? = 0 ]] ; then
 	# show app icon in menubar
 	defaults write co.highlyopinionated.swish showInMenuBar -bool false
@@ -252,7 +254,7 @@ fi
 # Mos
 # ===
 
-brew casks | grep -q "^mos$"
+echo $(brew list) | grep -q " mos "
 if [[ $? = 0 ]] ; then
 	# reverse the mouse wheel scroll direction
 	defaults write com.caldis.Mos reverse -bool 0
@@ -266,21 +268,31 @@ if [[ $? = 0 ]] ; then
 	defaults write com.caldis.Mos duration -float 2
 fi
 
+# OpenInTerminal
+# ==============
+
+echo $(brew list) | grep -q " openinterminal "
+if [[ $? = 0 ]] ; then
+	# show app icon in menubar
+	defaults write wang.jianing.app.OpenInTerminal "NSStatusItem Visible Item-0" -bool false
+fi
+
 # Kill affected applications
 # ==========================
 
 for app in "ControlStrip" \
 	"Calendar" \
-	"cfprefsd" \
 	"Dock" \
 	"Finder" \
 	"Safari" \
-	"SystemUIServer" \
 	"Terminal" \
 	"Transmission" \
 	"Swish" \
 	"Mos" \
 	"IINA" \
-	"TextEdit"; do
+	"TextEdit" \
+	"OpenInTerminal" \
+	"SystemUIServer" \
+	"cfprefsd"; do
 	killall "${app}" &> /dev/null
 done
