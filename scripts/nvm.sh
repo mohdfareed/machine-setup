@@ -18,9 +18,6 @@ fi
 brew install nvm
 brew cleanup
 
-tput clear
-echo "${bold}Installing latest Node version...${clear}"
-
 if [[ ! -d $DOTFILES ]] ; then
     echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1

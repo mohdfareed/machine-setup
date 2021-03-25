@@ -13,6 +13,18 @@ setopt CORRECT_ALL # offer to correct commands and arguments
 source $ZDOTDIR/.aliases
 source $ZDOTDIR/.lazy_loader
 
+# add brew's python to path
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+# lazy load pyenv. Execute pyenv to load
+if [[ -d "/usr/local/Cellar/pyenv" ]] ; then
+    pyenv_init() { eval "$(pyenv init -)" }
+    lazy_load pyenv_init pyenv
+
+fi
+
+# add brew's ruby to path TODO: brew's ruby gem dir
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="$(gem environment gemdir)/bin:$PATH"
 # lazy load rbenv. Execute rbenv to load
 if [[ -d "/usr/local/Cellar/rbenv" ]] ; then
     rbenv_init() { eval "$(rbenv init -)" }

@@ -22,7 +22,7 @@ prompt() {
 
 
 tput clear
-echo "${bold}Installing rbenv and latest version of Ruby...${clear}"
+echo "${bold}Setting up rbenv...${clear}"
 
 # check if brew is installed
 which brew > /dev/null
@@ -31,6 +31,7 @@ if [[ $? != 0 ]] ; then
     return 1
 fi
 
+brew install ruby
 brew install rbenv
 brew cleanup
 
@@ -39,11 +40,12 @@ if [[ ! -d $DOTFILES ]] ; then
     return 1
 fi
 
+source $DOTFILES/dots/zshenv
 source $DOTFILES/dots/zshrc > /dev/null
 
 # prompt the user to selected ruby version to install
 echo -e "\a"
-echo "Which ruby versions would you like to install?"
+echo "Which ruby version would you like to install?"
 echo
 echo "${bold}Installed versions:${clear}"
 rbenv versions

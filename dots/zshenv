@@ -19,9 +19,9 @@ export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
 
 # python
+export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
 # rbenv
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
