@@ -5,18 +5,17 @@
 	defaultBranch = main
 [core]
 	editor = code --wait
-	excludesfile = $XDG_CONFIG_HOME/git/ignore
 [color]
 	ui = auto
 
 [diff]
-	tool = vscode
+  tool = vscode
 [difftool "vscode"]
-	cmd = code --wait --diff $LOCAL $REMOTE
+  cmd = code --wait --diff $LOCAL $REMOTE
 [merge]
-	tool = vscode
+  tool = vscode
 [mergetool "vscode"]
-	cmd = code --wait $MERGED
+  cmd = code --wait $MERGED
 
 [alias]
 	graph = log --graph --abbrev-commit --name-status
