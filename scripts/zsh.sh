@@ -16,9 +16,11 @@ source $DOTFILES/dots/zshenv
 # install oh-my-zsh
 sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
 
+# create directories
+mkdir -p "$XDG_CONFIG_HOME/zsh"
+mkdir -p "$XDG_DATA_HOME/zsh"
+mkdir -p "$XDG_CACHE_HOME/zsh"
 # symlink files
-mkdir -p $ZDOTDIR
-mkdir -p $(dirname $ZSH_COMPDUMP)
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
