@@ -42,6 +42,18 @@ gem install solargraph
 gem install ruby-debug-ide
 # fast implementation of the standard Ruby debugger
 gem install debase -v '>= 0.2.5.beta'
+# CLI gem that beautifies the terminal's ls command, with color and icons
+gem install colorls
+
+# link colorls configuration
+mkdir -p $XDG_CONFIG_HOME/colorls
+ln -siv $DOTFILES/other/dark_colors.yaml \
+    $XDG_CONFIG_HOME/colorls/dark_colors.yaml
+
+# get path of file specifying config dir and update it
+colorls_path="$(dirname $(gem which colorls))/colorls/yaml.rb"
+sed -i '' "s#.config/colorls#$XDG_CONFIG_HOME/colorls#" $colorls_path
+
 
 # prompt the user for confirmation, skip installation if needed
 prompt() {

@@ -103,4 +103,4 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - Test preferences
 - Setup Fork then continue down AppCleaner list
 - Set defaults apps for common file types
-- Switch to `colorls`
+- Fix `colorls` coloring
