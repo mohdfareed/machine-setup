@@ -25,7 +25,7 @@ echo -e "\a"
 echo "Press RETURN to continue or any other key to abort"
 read -sk answer
 if [[ $answer != $'\n' ]] ; then
-    return 1
+    return 0
 fi
 
 # check if mas is installed
