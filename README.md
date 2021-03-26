@@ -85,9 +85,11 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 
 ## Caveats
 
-- Dotfiles and dev directories have to be changed in both `zshenv` and `setup.sh`
-- GitHub authentication info might need to be updated in `setup.sh`
-- Changing Homebrew's default directory breaks some `zshrc` checks, such as `nvm` and `rbenv`.
+- Dotfiles and dev directories have to be changed in both `zshenv` and `setup.sh`.
+- Dotfiles directory structure is hardcoded.
+- GitHub authentication info might need to be updated in `setup.sh`.
+- Changing Homebrew's default directory breaks some `zshrc` functionality.
+- Zsh directories are set in both `zsh.sh` and `zshenv`.
 
 ## Decommissioning Process
 
@@ -98,7 +100,7 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 ## TODO
 
 - Create missing directories when needed.
-- Look into `pyenv`
 - Test preferences
 - Setup Fork then continue down AppCleaner list
 - Set defaults apps for common file types
+- Switch to `colorls`

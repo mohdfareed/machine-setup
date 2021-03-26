@@ -28,6 +28,7 @@ source $DOTFILES/dots/zshrc > /dev/null
 
 mkdir -p $XDG_CONFIG_HOME/python
 mkdir -p $XDG_CACHE_HOME/python
+mkdir -p $XDG_CONFIG_HOME/python
 ln -siv "$DOTFILES/dots/pythonrc" "$PYTHONSTARTUP"
 
 # prompt the user to selected python version to install

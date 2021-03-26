@@ -8,22 +8,23 @@ export XDG_CONFIG_HOME="$DEV/config"
 # base directory relative to which cache files should be stored
 export XDG_CACHE_HOME="$DEV/cache"
 
+# default editor
+export EDITOR=/usr/local/bin/code
+export VISUAL=/usr/local/bin/code
+
 # zsh and oh-my-zsh directories
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH="$XDG_DATA_HOME/oh-my-zsh"
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}"
 export SHELL_SESSIONS_DISABLE=1
 
-# default editor
-export EDITOR=/usr/local/bin/code
-export VISUAL=/usr/local/bin/code
-
 # python
-export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
+export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 
-# rbenv
+# ruby
+export GEM_HOME="$XDG_DATA_HOME/gem"
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
