@@ -8,7 +8,7 @@ plugins=(
 )
 
 # zsh
-export HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
+export HISTFILE="$XDG_DATA_HOME/zsh/history"
 setopt CORRECT_ALL # offer to correct commands and arguments
 source $ZDOTDIR/.aliases
 source $ZDOTDIR/.lazy_loader
@@ -22,12 +22,15 @@ if [[ -d "/usr/local/Cellar/pyenv" ]] ; then
 
 fi
 
-# add brew's ruby to path TODO: brew's ruby gem dir
+# add brew's ruby and its gems to path
 export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="$(gem environment gemdir)/bin:$PATH"
+export PATH="$GEM_HOME/bin:$PATH"
 # lazy load rbenv. Execute rbenv to load
 if [[ -d "/usr/local/Cellar/rbenv" ]] ; then
-    rbenv_init() { eval "$(rbenv init -)" }
+    rbenv_init() {
+        unset GEM_HOME # use rbenv's gem installation dir
+        eval "$(rbenv init -)"
+    }
     lazy_load rbenv_init rbenv
 fi
 

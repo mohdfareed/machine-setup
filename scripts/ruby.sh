@@ -22,7 +22,7 @@ prompt() {
 
 
 tput clear
-echo "${bold}Setting up rbenv...${clear}"
+echo "${bold}Setting up ruby...${clear}"
 
 # check if brew is installed
 which brew > /dev/null
