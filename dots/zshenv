@@ -20,11 +20,11 @@ export SHELL_SESSIONS_DISABLE=1
 
 # python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export PYTHON_EGG_CACHE="$XDG_CACHE_HOME/python-eggs"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 
 # ruby
-export GEM_HOME="$XDG_DATA_HOME/gem"
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
 export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
 export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
