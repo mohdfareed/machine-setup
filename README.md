@@ -4,7 +4,9 @@
 
 **0. Setup FileVault:**
 
-**1. Install Xcode CommandLine Tools:**
+**1. Sign in to the Mac Apple Store:**
+
+**2. Install Xcode CommandLine Tools:**
 
 Run the following code and wait for the installation to complete.
 
@@ -12,7 +14,7 @@ Run the following code and wait for the installation to complete.
 xcode-select --install
 ```
 
-**2. Run installation script:**
+**3. Run installation script:**
 
 Run the following code and follow on-screen instructions.
 
@@ -20,7 +22,7 @@ Run the following code and follow on-screen instructions.
 zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 ```
 
-**3. Set login applications:**
+**4. Set login applications:**
 
 - Swish
 - Mos
@@ -29,7 +31,7 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - Amphetamine
 - OpenInTerminal
 
-**4. Change preferences:**
+**5. Change preferences:**
 
 - System Preferences ->
   - Displays ->
@@ -67,14 +69,14 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
     - Battery charge >15% + power adapted is not connected
     - Allow display to sleep
 
-**5. Install applications:**
+**6. Install applications:**
 
 - Parallels Desktop
   - Setup Windows, Linux, and macOS virtual machines with snapshots
 - iA Writer
 - Microsoft Office
 
-**6. Setup Time Machine:**
+**7. Setup Time Machine:**
 
 ## Miscellaneous
 
@@ -99,8 +101,8 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 
 ## TODO
 
+- Cleanup setup.
 - Create missing directories when needed.
 - Test preferences
 - Setup Fork then continue down AppCleaner list
 - Set defaults apps for common file types
-- Fix `colorls` coloring
