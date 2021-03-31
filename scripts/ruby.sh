@@ -42,25 +42,5 @@ gem install solargraph
 gem install ruby-debug-ide
 # fast implementation of the standard Ruby debugger
 gem install debase -v '>= 0.2.5.beta'
-
-# prompt the user for confirmation, skip installation if needed
-prompt() {
-    echo -e "\a"
-    echo "Would you like to install ${gbold}$1${clear}? [Y|n]"
-    read answer
-
-    case $answer in
-        [Nn]* )
-            ;;
-        * )
-            gem install $1
-            ;;
-    esac
-}
-
-prompt pry      # runtime developer console and IRB alternative
-prompt byebug   # Ruby debugger
-prompt rails    # full-stack web framework
-prompt colorize # methods to set text color, background color, text effects
-
-gem update
+# runtime developer console and IRB alternative
+prompt pry

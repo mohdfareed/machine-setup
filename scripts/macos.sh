@@ -14,7 +14,9 @@ fi
 
 source $DOTFILES/dots/zshenv
 # create link to personal music in Music folder
-ln -siv $iCloud/Music $HOME/Music/Personal
+if [[ -d $iCloud/Music ]] ; then
+	ln -siv $iCloud/Music $HOME/Music/Personal
+fi
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'
 # ask for the administrator password upfront
@@ -33,7 +35,7 @@ defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
 # when switching to an application, switch to a space with open windows
 defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
 # automatically rearrange spaces based on most recent use
-defaults weire com.apple.dock mru-spaces -bool false
+defaults write com.apple.dock mru-spaces -bool false
 # automatically hide and show the Dock
 defaults write com.apple.dock autohide -bool true
 # play feedback when volume is changed
@@ -105,23 +107,6 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
 # show path bar
 defaults write com.apple.finder ShowPathbar -bool true
-# set toolbar items FIXME: OpenInTerminal needs to be opened and enabled
-# in preferences first, breaks order otherwise.
-defaults write com.apple.finder "NSToolbar Configuration Browser" '{
-    "TB Item Identifiers" =     (
-        "com.apple.finder.BACK",
-        NSToolbarFlexibleSpaceItem,
-        "com.apple.finder.SWCH",
-        NSToolbarSpaceItem,
-        "com.apple.finder.ARNG",
-        "com.apple.finder.NFLD",
-        "com.apple.finder.TRSH",
-        "wang.jianing.app.OpenInTerminal.OpenInTerminalFinderExtension",
-        NSToolbarSpaceItem,
-        "com.apple.finder.SRCH"
-    );
-    "TB Display Mode" = 2;
-}'
 # avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # keep folders on top when sorting by name
@@ -161,6 +146,7 @@ defaults write com.apple.finder FK_DefaultListViewSettings '{
     viewOptionsVersion = 1;
 }'
 
+# FIXME: does nothing
 # Safari
 # ======
 
@@ -186,6 +172,7 @@ defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
 # show events in year view
 defaults write com.apple.iCal "Show heat map in Year View" -bool true
 
+# FIXME: does not work
 # Transmission
 # ============
 echo $(brew list) | grep -q " transmission "
@@ -242,7 +229,7 @@ fi
 
 echo $(brew list) | grep -q " swish "
 if [[ $? = 0 ]] ; then
-	# show app icon in menubar
+	# show app icon in menubar # FIXME: does not work
 	defaults write co.highlyopinionated.swish showInMenuBar -bool false
 	# show tooltip when performing an action
 	defaults write co.highlyopinionated.swish tooltipSize -int 4
@@ -252,6 +239,7 @@ if [[ $? = 0 ]] ; then
 	defaults write co.highlyopinionated.swish actions -string '["menubarAppSwitcher","snapMax","spacesMove","snapCenter","snapQuarters","appNewTab","appQuit","snapHalves"]'
 fi
 
+# FIXME: Doesn't work
 # Mos
 # ===
 
@@ -269,6 +257,7 @@ if [[ $? = 0 ]] ; then
 	defaults write com.caldis.Mos duration -float 2
 fi
 
+# FIXME: Does not work
 # OpenInTerminal
 # ==============
 

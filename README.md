@@ -102,8 +102,9 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 ## TODO
 
 - Cleanup setup.
-- Create missing directories when needed.
-- Test preferences
 - Setup Fork then continue down AppCleaner list
+- Check default settings of macOS
 - Set defaults apps for common file types
-- switch from `exa` to `lsd`
+- Test preferences
+- Disable new apps security warning
+- Can't hide menubar icons
