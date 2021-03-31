@@ -239,6 +239,7 @@ fi
 
 # Swish
 # =====
+
 echo $(brew list) | grep -q " swish "
 if [[ $? = 0 ]] ; then
 	# show app icon in menubar

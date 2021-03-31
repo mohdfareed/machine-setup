@@ -12,7 +12,10 @@ export XDG_CACHE_HOME="$DEV/cache"
 export EDITOR=/usr/local/bin/code
 export VISUAL=/usr/local/bin/code
 
-# zsh and oh-my-zsh directories
+# lsd colors
+export LS_COLORS='ex=35'
+
+# zsh and oh-my-zsh
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH="$XDG_DATA_HOME/oh-my-zsh"
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${ZSH_VERSION}"

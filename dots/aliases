@@ -7,9 +7,8 @@ Music="$HOME/Music/Personal"
 # open notebook with vscode
 alias notes='code $Notebook'
 
-# exa
-alias le="exa -a --git --group-directories-first"
-alias lle="exa -a --git --group-directories-first -lh"
+# lsd
+alias lsd="lsd -lA --total-size --group-dirs first -I .git"
 
 # download video from URL
 function dl-video {

@@ -43,8 +43,8 @@ brew install zsh
 brew install zsh-syntax-highlighting
 # Distributed revision control system
 brew install git
-# Modern replacement for 'ls'
-brew install exa
+# Clone of ls with colorful output, file type icons, and more
+brew install lsd
 # Play, record, convert, and stream audio and video
 brew install ffmpeg # youtube-dl dependency
 # Download YouTube videos from the command-line
