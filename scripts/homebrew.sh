@@ -79,8 +79,6 @@ prompt --cask google-chrome
 prompt --cask appcleaner
 # System monitor for the menu bar
 prompt --cask stats
-# QuickLook plug-in that renders source code with syntax highlighting
-prompt --cask qlcolorcode
 
 ## fonts
 

@@ -51,4 +51,5 @@ prompt 1505779553 # Dashlane
 prompt 441258766  # Magnet
 prompt 1438243180 # Dark Reader
 prompt 1320666476 # Wipr
+prompt 1519213509 # iPreview
 prompt 937984704  # Amphetamine

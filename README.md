@@ -108,3 +108,6 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - Test preferences
 - Disable new apps security warning
 - Can't hide menubar icons
+- Increase Key Repeat speed from keyboard settings.
+- Check iPreview settings
+- Add `dl-audio` and `dl-video` usage message
