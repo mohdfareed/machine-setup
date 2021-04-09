@@ -40,10 +40,12 @@ defaults write com.apple.dock mru-spaces -bool false
 defaults write com.apple.dock autohide -bool true
 # play feedback when volume is changed
 defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
-# set desktop wallpaper
-wp=$(find $DOTFILES/other -maxdepth 1 -name "wallpaper.*" | head -n 1)
-osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$wp\""
-osascript -e 'tell application "Finder" to set desktop picture to POSIX file "$wp"'
+# add wallpapers to preferences
+defaults write com.apple.systempreferences DSKDesktopPrefPane "{
+    UserFolderPaths =     (
+        \"$DOTFILES/other/Wallpapers\"
+    );
+}"
 
 # trackpad, mouse, and keyboard
 # =============================
