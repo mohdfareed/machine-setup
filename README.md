@@ -14,12 +14,12 @@ Run the following code and wait for the installation to complete.
 xcode-select --install
 ```
 
-**3. Run installation script:**
+**3. Run setup script:**
 
 Run the following code and follow on-screen instructions.
 
 ```sh
-zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
+zsh -c "$(curl -fsSL https://git.io/JOwI4)"
 ```
 
 **4. Set login applications:**
@@ -38,17 +38,23 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
     - Display -> Set external display's resolution scaling
     - Arrangement -> Set external as main
   - Internet Accounts: add Google and University as mail accounts
-  - Keyboard -> Shortcuts
+  - Keyboard -> Shortcuts -> Services
     - Launchpad -> Show Launchpad: `⌃⇧↓`
     - Mission Control -> Show Desktop: `⌃⇧↑`
-    - Services: choose services
+    - Services->
+      - Text -> Disable all
+      - Files and Folders:
+        - New Terminal at Folder
+        - Index
+        - New Note
+        - Open in VSCode
   - Extensions -> setup extensions
-  - *Language & Region -> 24-Hour Time: true
-  - *Dock & Menu Bar -> Spotlight -> Show in Menu Bar: false
-  - *Software Update -> Automatically keep Mac up to date
+  - Language & Region -> 24-Hour Time: true
+  - Dock & Menu Bar -> Spotlight -> Show in Menu Bar: false
+  - Software Update -> Automatically keep Mac up to date
 - Finder -> Sidebar: customize and remove tags manually
   - Toolbar: customize
-- Safari -> Extensions -> choose extensions (dark reader, IINA, Wipr)
+- Safari -> Extensions -> choose extensions (dark reader, IINA, AdGuard)
   - Setup Dashlane: Sign-in, enable Touch ID, and background refresh
 - OpenInTerminal -> General ->
   - Default Text Editor: Visual Studio Code
@@ -90,7 +96,7 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - Dotfiles and dev directories have to be changed in both `zshenv` and `setup.sh`.
 - Dotfiles directory structure is hardcoded.
 - GitHub authentication info might need to be updated in `setup.sh`.
-- Changing Homebrew's default directory breaks some `zshrc` functionality.
+- Changing Homebrew's default directory breaks `zshrc` functionality.
 - Zsh directories are set in both `zsh.sh` and `zshenv`.
 
 ## Decommissioning Process
@@ -111,3 +117,6 @@ zsh -c "$(curl -fsSL https://git.io/Jmd2z)"
 - Increase Key Repeat speed from keyboard settings.
 - Check iPreview settings
 - Add `dl-audio` and `dl-video` usage message
+- Check if lazy loading works if package is not installed
+- `exa` vs `lsd`
+- Check if python and ruby packages migrate between update

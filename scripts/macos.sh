@@ -82,6 +82,7 @@ defaults write com.apple.controlstrip FullCustomized '(
 # add workflows
 open "$DOTFILES/other/automator/Index.workflow"
 open "$DOTFILES/other/automator/New Note.workflow"
+open "$DOTFILES/other/automator/Open in VSCode.workflow"
 
 # Terminal
 # ========
@@ -151,6 +152,7 @@ defaults write com.apple.finder FK_DefaultListViewSettings '{
 # FIXME: does nothing
 # Safari
 # ======
+open -a Safari
 
 # open ‘safe’ files automatically after downloading
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
@@ -179,6 +181,8 @@ defaults write com.apple.iCal "Show heat map in Year View" -bool true
 # ============
 echo $(brew list) | grep -q " transmission "
 if [[ $? = 0 ]] ; then
+	open -a Transmission
+
 	# automatically size windows to fit all transfers
 	default write org.m0k.transmission AutoSize -bool true
 	# show total upload rate badge on dock icon
@@ -204,6 +208,8 @@ fi
 
 echo $(brew list) | grep -q " iina "
 if [[ $? = 0 ]] ; then
+	open -a IINA
+
 	# quit after all windows are closed
 	defaults write com.colliderli.iina quitWhenNoOpenedWindow -bool true
 	# match system appearance
@@ -231,8 +237,8 @@ fi
 
 echo $(brew list) | grep -q " swish "
 if [[ $? = 0 ]] ; then
-	# show app icon in menubar # FIXME: does not work
-	defaults write co.highlyopinionated.swish showInMenuBar -bool false
+	open -a Swish
+
 	# show tooltip when performing an action
 	defaults write co.highlyopinionated.swish tooltipSize -int 4
 	# resize adjacent window when two windows are snapped next to each other
@@ -247,6 +253,8 @@ fi
 
 echo $(brew list) | grep -q " mos "
 if [[ $? = 0 ]] ; then
+	open -a Mos
+
 	# reverse the mouse wheel scroll direction
 	defaults write com.caldis.Mos reverse -bool 0
 	# hide menubar icon. Re-run Mos again to show the hidden icon
@@ -257,16 +265,6 @@ if [[ $? = 0 ]] ; then
 	defaults write com.caldis.Mos speed -float 1
 	# sets the duration of the scroll animation
 	defaults write com.caldis.Mos duration -float 2
-fi
-
-# FIXME: Does not work
-# OpenInTerminal
-# ==============
-
-echo $(brew list) | grep -q " openinterminal "
-if [[ $? = 0 ]] ; then
-	# show app icon in menubar
-	defaults write wang.jianing.app.OpenInTerminal "NSStatusItem Visible Item-0" -bool false
 fi
 
 # Kill affected applications
@@ -283,7 +281,6 @@ for app in "ControlStrip" \
 	"Mos" \
 	"IINA" \
 	"TextEdit" \
-	"OpenInTerminal" \
 	"SystemUIServer" \
 	"cfprefsd"; do
 	killall "${app}" &> /dev/null
