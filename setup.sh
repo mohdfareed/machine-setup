@@ -11,14 +11,14 @@ scripts="$DOTFILES/scripts"
 username="mohdfareed" # github username
 pat='3b82f82e9087eb0db848fada1b1f239ee43a46db' # github personal access token
 
+tput clear
+echo "${bold}Setting up device...${clear}"
+
 echo
 echo "Cloning dotfiles repo..."
 # clone repo and its submodules
 git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git $DOTFILES
 git -C $DOTFILES submodule update --init
-
-tput clear
-echo "${bold}Setting up device...${clear}"
 
 # setup homebrew and install its formulae and casks
 source $scripts/homebrew.sh
@@ -33,7 +33,7 @@ source $scripts/terminal_setup.sh
 source $scripts/git.sh
 
 echo -e "\a"
-echo "Would you like to setup ${gbold}python${clear}? [Y|n]"
+echo "Would you like to setup ${gbold}Python${clear}? [Y|n]"
 read answer
 
 case $answer in
@@ -42,12 +42,12 @@ case $answer in
 esac
 
 echo -e "\a"
-echo "Would you like to setup ${gbold}rbenv${clear}? [Y|n]"
+echo "Would you like to setup ${gbold}Ruby${clear}? [Y|n]"
 read answer
 
 case $answer in
     [Nn]* ) ;;
-    * ) source $scripts/rbenv.sh;;
+    * ) source $scripts/ruby.sh;;
 esac
 
 echo -e "\a"
@@ -64,4 +64,4 @@ source $scripts/macos.sh
 
 echo -e "\a"
 "Restart for some of the changes to take effect."
-echo "${gbold}Installation complete!${clear}"
+echo "${gbold}Setup complete!${clear}"

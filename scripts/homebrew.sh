@@ -43,12 +43,14 @@ brew install zsh
 brew install zsh-syntax-highlighting
 # Distributed revision control system
 brew install git
-# Clone of ls with colorful output, file type icons, and more
-brew install lsd
+# Modern replacement for 'ls'
+brew install exa
 # Play, record, convert, and stream audio and video
 brew install ffmpeg # youtube-dl dependency
 # Download YouTube videos from the command-line
 brew install youtube-dl
+# Mac App Store command-line interface
+brew install mas
 # Open-source code editor
 brew install --cask visual-studio-code
 # Free and open-source media player
@@ -58,8 +60,6 @@ brew install --cask keka
 brew install --cask kekaexternalhelper
 # Open-source BitTorrent client
 brew install --cask transmission
-# Mac App Store command-line interface
-brew install --cask mas
 # Control windows and applications right from your trackpad
 brew install --cask swish
 # Smooths scrolling and set mouse scroll directions independently

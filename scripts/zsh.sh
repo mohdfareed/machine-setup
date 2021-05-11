@@ -20,6 +20,7 @@ sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
 mkdir -p "$XDG_CONFIG_HOME/zsh"
 mkdir -p "$XDG_DATA_HOME/zsh"
 mkdir -p "$XDG_CACHE_HOME/zsh"
+
 # symlink files
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
