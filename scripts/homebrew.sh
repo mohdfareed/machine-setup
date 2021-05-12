@@ -66,6 +66,8 @@ brew install --cask swish
 brew install --cask mos
 # Tool to control external monitor brightness & volume
 brew install --cask monitorcontrol
+# Finder Toolbar app to open the current directory in Terminal or Editor
+brew install --cask openinterminal
 
 ## Optional formulae and casks
 
