@@ -8,25 +8,56 @@ Music="$HOME/Music/Personal"
 
 # open notebook with vscode
 alias notes='code $Notebook'
-# lsd
-alias lsd="lsd -lA --total-size --group-dirs first -I .git"
-# download music with  or without video
+# exa
+alias le="exa -a --git --group-directories-first"
+alias lle="exa -a --git --group-directories-first -lh"
+# download to music folder with or without video
 alias dl-music="dl-audio -d $Music"
 alias dl-vmusic="dl-video -d $Music"
 
 # download video from URL
 function dl-video {
-    dir=("-d" "$HOME/Downloads")
-    zparseopts -D -K -- d:=dir
+    usage="usage: $0 [-d dir] URL"
+
+    dir="${HOME}/Downloads"
+    while getopts "d:" opt; do
+        case ${opt} in
+            d)
+                dir=$OPTARG
+                shift
+                shift
+                ;;
+    esac
+    done
+
+    if [[ $# -gt 1 ]] ; then
+        echo $usage 1>&2
+        return 1
+    fi
 
     youtube-dl --write-sub --write-auto-sub --embed-subs \
-        --merge-output-format mp4 -o "${dir[2]}/%(title)s.%(ext)s" $1
+        --merge-output-format mp4 -o "$dir/%(title)s.%(ext)s" $1
 }
 
 # download audio from URL
 function dl-audio {
-    dir=("-d" "$HOME/Downloads")
-    zparseopts -D -K -- d:=dir
+    usage="usage: $0 [-d dir] URL"
+
+    dir="${HOME}/Downloads"
+    while getopts "d:" opt; do
+        case ${opt} in
+            d)
+                dir=$OPTARG
+                shift
+                shift
+                ;;
+    esac
+    done
+
+    if [[ $# -gt 1 ]] ; then
+        echo $usage 1>&2
+        return 1
+    fi
 
     youtube-dl -x --audio-format mp3 -o "${dir[2]}/%(title)s.%(ext)s" $1
 }
