@@ -63,5 +63,5 @@ esac
 source $scripts/macos.sh
 
 echo -e "\a"
-"Restart for some of the changes to take effect."
+echo "Restart for some of the changes to take effect."
 echo "${gbold}Setup complete!${clear}"

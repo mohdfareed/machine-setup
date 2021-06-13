@@ -22,15 +22,6 @@ Run the following code and follow on-screen instructions.
 zsh -c "$(curl -fsSL https://git.io/JZbBu)"
 ```
 
-**4. Set login applications:**
-
-- Swish
-- Mos
-- MonitorControl
-- Magnet
-- Amphetamine
-- OpenInTerminal
-
 **5. Change preferences:**
 
 Change OS and application [preferences](preferences.md) manually.

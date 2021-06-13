@@ -95,7 +95,7 @@ ln -siv "$DOTFILES/other/automator/New Note.workflow" \
 # profile's path and name
 p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | head -n 1)
 p_name=$(basename $p_file .terminal)
-open $p_file # add profile to terminal app
+open -g $p_file # add profile to terminal app
 
 # default Terminal profile
 defaults write com.apple.Terminal "Default Window Settings" "$p_name"
@@ -135,16 +135,10 @@ defaults write com.apple.TextEdit RichText -int 0
 defaults write com.apple.TextEdit NSFixedPitchFont -string "SFMono-Regular"
 defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
 
-# FIXME: Doesn't work
+# FIXME: not working
 # Safari
 # ======
-open -Wga Safari
-echo "${bold}Exit Safari to continue...${clear}"
 
-# open ‘safe’ files automatically after downloading
-defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
-# save articles in Reading List for offline reading automatically
-defaults write com.apple.Safari ReadingListSaveArticlesOfflineAutomatically -bool true
 # enable the Develop menu and the Web Inspector
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
@@ -154,8 +148,6 @@ defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool 
 
 echo $(brew list) | grep -q " iina "
 if [[ $? = 0 ]] ; then
-	open -a IINA
-
 	# quit after all windows are closed
 	defaults write com.colliderli.iina quitWhenNoOpenedWindow -bool true
 	# match system appearance
@@ -191,53 +183,28 @@ if [[ $? = 0 ]] ; then
 	defaults write co.highlyopinionated.swish actions -string '["menubarAppSwitcher","snapMax","spacesMove","snapCenter","snapQuarters","appNewTab","appQuit","snapHalves"]'
 fi
 
-# FIXME: Doesn't work
-# Mos
-# ===
-
-echo $(brew list) | grep -q " mos "
-if [[ $? = 0 ]] ; then
-	open -Wga mos
-	echo "${bold}Exit Mos to continue...${clear}"
-
-	# reverse the mouse wheel scroll direction
-	defaults write com.caldis.Mos reverse -bool false
-	# hide menubar icon. Re-run Mos again to show the hidden icon
-	defaults write com.caldis.Mos hideStatusItem -bool true
-	# sets the minimum scroll distance
-	defaults write com.caldis.Mos step -float 78
-	# sets the scrolling acceleration
-	defaults write com.caldis.Mos speed -float 1
-	# sets the duration of the scroll animation
-	defaults write com.caldis.Mos duration -float 2
-fi
-
-# FIXME: Doesn't work
 # Transmission
 # ============
 echo $(brew list) | grep -q " transmission "
 if [[ $? = 0 ]] ; then
-	open -Wga transmission
-	echo "${bold}Exit Transmission to continue...${clear}"
-
 	# automatically size windows to fit all transfers
-	default write org.m0k.transmission AutoSize -bool true
+	defaults write org.m0k.transmission AutoSize -bool true
 	# show total upload rate badge on dock icon
-	default write org.m0k.transmission BadgeDownloadRate -bool true
+	defaults write org.m0k.transmission BadgeDownloadRate -bool true
 	# show total upload rate badge on dock icon
-	default write org.m0k.transmission BadgeUploadRate -bool false
+	defaults write org.m0k.transmission BadgeUploadRate -bool false
 	# prompt for removal of active transfers only when downloading
-	default write org.m0k.transmission CheckRemoveDownloading -bool true
+	defaults write org.m0k.transmission CheckRemoveDownloading -bool true
 	# prompt for quitting with active transfers only when downloading
-	default write org.m0k.transmission CheckQuitDownloading -bool true
+	defaults write org.m0k.transmission CheckQuitDownloading -bool true
 	# display a window when opening torrent files only when there are multiple files
-	default write org.m0k.transmission DownloadAskMulti -bool true
+	defaults write org.m0k.transmission DownloadAskMulti -bool true
 	# display a window when opening a magnet link
-	default write org.m0k.transmission MagnetOpenAsk -bool true
+	defaults write org.m0k.transmission MagnetOpenAsk -bool true
 	# download to DownloadFolder instead of the location of the torrent file
-	default write org.m0k.transmission DownloadLocationConstant -bool true
+	defaults write org.m0k.transmission DownloadLocationConstant -bool true
 	# the default download location
-	default write org.m0k.transmission DownloadFolder -string "$HOME/Downloads"
+	defaults write org.m0k.transmission DownloadFolder -string "$HOME/Downloads"
 fi
 
 # Kill affected applications
@@ -248,9 +215,7 @@ for app in \
 	"Dock" \
 	"Finder" \
 	"Safari" \
-	"Transmission" \
 	"Swish" \
-	"Mos" \
 	"IINA" \
 	"TextEdit" \
 	"SystemUIServer" \

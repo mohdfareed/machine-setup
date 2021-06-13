@@ -68,6 +68,8 @@ brew install --cask mos
 brew install --cask monitorcontrol
 # Finder Toolbar app to open the current directory in Terminal or Editor
 brew install --cask openinterminal
+# Messaging app with a focus on speed and security
+brew install --cask telegram
 
 ## Optional formulae and casks
 
