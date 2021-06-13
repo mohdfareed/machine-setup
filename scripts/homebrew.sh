@@ -46,7 +46,7 @@ brew install git
 # Modern replacement for 'ls'
 brew install exa
 # Play, record, convert, and stream audio and video
-brew install ffmpeg # youtube-dl dependency
+brew install ffmpeg
 # Download YouTube videos from the command-line
 brew install youtube-dl
 # Mac App Store command-line interface

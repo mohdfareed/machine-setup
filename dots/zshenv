@@ -23,6 +23,8 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export PYTHON_EGG_CACHE="$XDG_CACHE_HOME/python-eggs"
 export PYLINTHOME="$XDG_CACHE_HOME/pylint"
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
+export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyter
 
 # ruby
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"

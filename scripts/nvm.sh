@@ -15,9 +15,6 @@ if [[ $? != 0 ]] ; then
     return 1
 fi
 
-brew install nvm
-brew cleanup
-
 if [[ ! -d $DOTFILES ]] ; then
     echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1
@@ -25,6 +22,9 @@ fi
 
 source $DOTFILES/dots/zshenv
 source $DOTFILES/dots/zshrc > /dev/null
+
+brew install nvm
+brew cleanup
 
 # get the latest version number of nvm
 version=$(nvm list-remote > /dev/null | tail -1)

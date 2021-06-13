@@ -109,7 +109,6 @@ zsh -c "$(curl -fsSL https://git.io/JOwI4)"
 
 ## TODO
 
-- Cleanup setup.
 - Check default settings of macOS
 - Test preferences
 - Check if python and ruby packages migrate between update

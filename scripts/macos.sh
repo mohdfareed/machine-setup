@@ -63,8 +63,6 @@ defaults write .GlobalPreferences KeyRepeat -int 2
 defaults write .GlobalPreferences InitialKeyRepeat -int 25
 # show input menu in menu bar
 defaults write com.apple.TextInputMenu visible -bool true
-# touch bar global presentation mode
-defaults write com.apple.touchbar.agent PresentationModeGlobal -string "fullControlStrip"
 # control strip customization
 defaults write com.apple.controlstrip FullCustomized '(
     "com.apple.system.group.brightness",
@@ -73,6 +71,12 @@ defaults write com.apple.controlstrip FullCustomized '(
     "com.apple.system.group.media",
     "com.apple.system.group.volume",
     "com.apple.system.workflows",
+    "com.apple.system.screencapture"
+)'
+defaults write com.apple.controlstrip MiniCustomized '(
+    "com.apple.system.group.brightness",
+    "com.apple.system.group.volume",
+    "com.apple.system.mute",
     "com.apple.system.screencapture"
 )'
 
@@ -84,8 +88,6 @@ ln -siv "$DOTFILES/other/automator/Index.workflow" \
 		"$HOME/Library/Services/Index.workflow"
 ln -siv "$DOTFILES/other/automator/New Note.workflow" \
 		"$HOME/Library/Services/New Note.workflow"
-ln -siv "$DOTFILES/other/automator/Open in VSCode.workflow" \
-		"$HOME/Library/Services/Open in VSCode.workflow"
 
 # Terminal
 # ========
@@ -136,7 +138,8 @@ defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
 # FIXME: Doesn't work
 # Safari
 # ======
-open -a Safari
+open -Wga Safari
+echo "${bold}Exit Safari to continue...${clear}"
 
 # open ‘safe’ files automatically after downloading
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
@@ -194,6 +197,9 @@ fi
 
 echo $(brew list) | grep -q " mos "
 if [[ $? = 0 ]] ; then
+	open -Wga mos
+	echo "${bold}Exit Mos to continue...${clear}"
+
 	# reverse the mouse wheel scroll direction
 	defaults write com.caldis.Mos reverse -bool false
 	# hide menubar icon. Re-run Mos again to show the hidden icon
@@ -211,7 +217,8 @@ fi
 # ============
 echo $(brew list) | grep -q " transmission "
 if [[ $? = 0 ]] ; then
-	open -a Transmission
+	open -Wga transmission
+	echo "${bold}Exit Transmission to continue...${clear}"
 
 	# automatically size windows to fit all transfers
 	default write org.m0k.transmission AutoSize -bool true
