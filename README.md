@@ -22,18 +22,18 @@ Run the following code and follow on-screen instructions.
 zsh -c "$(curl -fsSL https://git.io/JZbBu)"
 ```
 
-**5. Change preferences:**
+**4. Change preferences:**
 
 Change OS and application [preferences](preferences.md) manually.
 
-**6. Install applications:**
+**5. Install applications:**
 
 - Parallels Desktop
   - Setup Windows, Linux, and macOS virtual machines with snapshots
 - iA Writer
 - Microsoft Office
 
-**7. Setup Time Machine:**
+**6. Setup Time Machine:**
 
 ## Miscellaneous
 
@@ -54,8 +54,3 @@ Change OS and application [preferences](preferences.md) manually.
 - Backup terminal profile to `dotfiles/other`
 - Backup virtual machines
 - Choose the changes to preferences and formulae, casks, and apps to push
-
-## TODO
-
-- Check default settings of macOS
-- Check if python and ruby packages migrate between update (check python, ruby, and nvm scripts in general)
