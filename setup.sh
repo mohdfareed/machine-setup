@@ -9,7 +9,7 @@ DOTFILES="$DEV/dotfiles"
 
 scripts="$DOTFILES/scripts"
 username="mohdfareed" # github username
-pat='3b82f82e9087eb0db848fada1b1f239ee43a46db' # github personal access token
+pat='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' # github personal access token
 
 tput clear
 echo "${bold}Setting up device...${clear}"
