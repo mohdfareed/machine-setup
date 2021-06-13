@@ -52,8 +52,10 @@ zsh -c "$(curl -fsSL https://git.io/JOwI4)"
   - Language & Region -> 24-Hour Time: true
   - Dock & Menu Bar -> Spotlight -> Show in Menu Bar: false
   - Software Update -> Automatically keep Mac up to date
-- Finder -> Sidebar: customize and remove tags manually
+- Finder ->
+  - Sidebar: customize and remove tags
   - Toolbar: customize
+  - View Options: Calculate all sizes
 - Safari -> Extensions -> choose extensions (dark reader, IINA, AdGuard)
   - Setup Dashlane: Sign-in, enable Touch ID, and background refresh
 - OpenInTerminal -> General ->
@@ -108,15 +110,6 @@ zsh -c "$(curl -fsSL https://git.io/JOwI4)"
 ## TODO
 
 - Cleanup setup.
-- Setup Fork then continue down AppCleaner list
 - Check default settings of macOS
-- Set defaults apps for common file types
 - Test preferences
-- Disable new apps security warning
-- Can't hide menubar icons
-- Increase Key Repeat speed from keyboard settings.
-- Check iPreview settings
-- Add `dl-audio` and `dl-video` usage message
-- Check if lazy loading works if package is not installed
-- `exa` vs `lsd`
 - Check if python and ruby packages migrate between update

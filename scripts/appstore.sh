@@ -50,6 +50,6 @@ prompt 409183694  # Keynote
 prompt 1505779553 # Dashlane
 prompt 441258766  # Magnet
 prompt 1438243180 # Dark Reader
-prompt 1440147259 # AdGuard
+prompt 1320666476 # Wipr
 prompt 1564688210 # Glance
 prompt 937984704  # Amphetamine

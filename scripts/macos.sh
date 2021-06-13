@@ -26,10 +26,8 @@ sudo -v
 # =======
 
 # set computer name and local host name
-scutil --set ComputerName "Mohd's MacBook Pro"
-scutil --set LocalHostName "Mohds-MacBook-Pro"
-# prefer tabs when opening documents
-defaults write .GlobalPreferences AppleWindowTabbingMode -string "always"
+scutil --set ComputerName "Mohd's MacBook"
+scutil --set LocalHostName "Mohds-MacBook"
 # reduce wallpaper tinting in windows
 defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
 # when switching to an application, switch to a space with open windows
@@ -59,10 +57,12 @@ defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -bool
 # mouse acceleration
 defaults write .GlobalPreferences com.apple.mouse.scaling -int -1
 
+# key repeat
+defaults write .GlobalPreferences KeyRepeat -int 2
+# delay until key repeat
+defaults write .GlobalPreferences InitialKeyRepeat -int 25
 # show input menu in menu bar
 defaults write com.apple.TextInputMenu visible -bool true
-# Show input menu in the login screen
-sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
 # touch bar global presentation mode
 defaults write com.apple.touchbar.agent PresentationModeGlobal -string "fullControlStrip"
 # control strip customization
@@ -80,9 +80,12 @@ defaults write com.apple.controlstrip FullCustomized '(
 # ==========
 
 # add workflows
-open "$DOTFILES/other/automator/Index.workflow"
-open "$DOTFILES/other/automator/New Note.workflow"
-open "$DOTFILES/other/automator/Open in VSCode.workflow"
+ln -siv "$DOTFILES/other/automator/Index.workflow" \
+		"$HOME/Library/Services/Index.workflow"
+ln -siv "$DOTFILES/other/automator/New Note.workflow" \
+		"$HOME/Library/Services/New Note.workflow"
+ln -siv "$DOTFILES/other/automator/Open in VSCode.workflow" \
+		"$HOME/Library/Services/Open in VSCode.workflow"
 
 # Terminal
 # ========
@@ -117,39 +120,20 @@ defaults write com.apple.finder _FXSortFoldersFirst -bool true
 defaults write com.apple.finder _FXSortFoldersFirstOnDesktop -bool true
 # enable snap-to-grid for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-# show preview pane
-defaults write com.apple.finder ShowPreviewPane -bool true
 # use list view in all Finder windows by default
 defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
-# default list view settings
-defaults write com.apple.finder FK_DefaultListViewSettings '{
-    calculateAllSizes = 1;
-    columns = (
-        {
-            ascending = 1;
-            identifier = name;
-            visible = 1;
-        },
-        {
-            ascending = 1;
-            identifier = size;
-            visible = 1;
-        },
-        {
-            ascending = 1;
-            identifier = kind;
-            visible = 1;
-        }
-    );
-    showIconPreview = 1;
-    sortColumn = name;
-    useRelativeDates = 1;
-    viewOptionsVersion = 1;
-}'
 
-# FIXME: does nothing
+# TextEdit
+# ========
+
+# use plain text mode for new TextEdit documents
+defaults write com.apple.TextEdit RichText -int 0
+# plain text font
+defaults write com.apple.TextEdit NSFixedPitchFont -string "SFMono-Regular"
+defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
+
+# FIXME: Doesn't work
 # Safari
 # ======
 open -a Safari
@@ -161,47 +145,6 @@ defaults write com.apple.Safari ReadingListSaveArticlesOfflineAutomatically -boo
 # enable the Develop menu and the Web Inspector
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-
-# TextEdit
-# ========
-
-# use plain text mode for new TextEdit documents
-defaults write com.apple.TextEdit RichText -int 0
-defaults write com.apple.TextEdit NSFixedPitchFont -string "SFMono-Regular"
-defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
-
-# Calendar
-# ========
-
-# show events in year view
-defaults write com.apple.iCal "Show heat map in Year View" -bool true
-
-# FIXME: does not work
-# Transmission
-# ============
-echo $(brew list) | grep -q " transmission "
-if [[ $? = 0 ]] ; then
-	open -a Transmission
-
-	# automatically size windows to fit all transfers
-	default write org.m0k.transmission AutoSize -bool true
-	# show total upload rate badge on dock icon
-	default write org.m0k.transmission BadgeDownloadRate -bool true
-	# show total upload rate badge on dock icon
-	default write org.m0k.transmission BadgeUploadRate -bool false
-	# prompt for removal of active transfers only when downloading
-	default write org.m0k.transmission CheckRemoveDownloading -bool true
-	# prompt for quitting with active transfers only when downloading
-	default write org.m0k.transmission CheckQuitDownloading -bool true
-	# display a window when opening torrent files only when there are multiple files
-	default write org.m0k.transmission DownloadAskMulti -bool true
-	# display a window when opening a magnet link
-	default write org.m0k.transmission MagnetOpenAsk -bool true
-	# download to DownloadFolder instead of the location of the torrent file
-	default write org.m0k.transmission DownloadLocationConstant -bool true
-	# the default download location
-	default write org.m0k.transmission DownloadFolder -string "$HOME/Downloads"
-fi
 
 # IINA
 # ====
@@ -237,8 +180,6 @@ fi
 
 echo $(brew list) | grep -q " swish "
 if [[ $? = 0 ]] ; then
-	open -a Swish
-
 	# show tooltip when performing an action
 	defaults write co.highlyopinionated.swish tooltipSize -int 4
 	# resize adjacent window when two windows are snapped next to each other
@@ -253,12 +194,10 @@ fi
 
 echo $(brew list) | grep -q " mos "
 if [[ $? = 0 ]] ; then
-	open -a Mos
-
 	# reverse the mouse wheel scroll direction
-	defaults write com.caldis.Mos reverse -bool 0
+	defaults write com.caldis.Mos reverse -bool false
 	# hide menubar icon. Re-run Mos again to show the hidden icon
-	defaults write com.caldis.Mos hideStatusItem -bool 1
+	defaults write com.caldis.Mos hideStatusItem -bool true
 	# sets the minimum scroll distance
 	defaults write com.caldis.Mos step -float 78
 	# sets the scrolling acceleration
@@ -267,15 +206,41 @@ if [[ $? = 0 ]] ; then
 	defaults write com.caldis.Mos duration -float 2
 fi
 
+# FIXME: Doesn't work
+# Transmission
+# ============
+echo $(brew list) | grep -q " transmission "
+if [[ $? = 0 ]] ; then
+	open -a Transmission
+
+	# automatically size windows to fit all transfers
+	default write org.m0k.transmission AutoSize -bool true
+	# show total upload rate badge on dock icon
+	default write org.m0k.transmission BadgeDownloadRate -bool true
+	# show total upload rate badge on dock icon
+	default write org.m0k.transmission BadgeUploadRate -bool false
+	# prompt for removal of active transfers only when downloading
+	default write org.m0k.transmission CheckRemoveDownloading -bool true
+	# prompt for quitting with active transfers only when downloading
+	default write org.m0k.transmission CheckQuitDownloading -bool true
+	# display a window when opening torrent files only when there are multiple files
+	default write org.m0k.transmission DownloadAskMulti -bool true
+	# display a window when opening a magnet link
+	default write org.m0k.transmission MagnetOpenAsk -bool true
+	# download to DownloadFolder instead of the location of the torrent file
+	default write org.m0k.transmission DownloadLocationConstant -bool true
+	# the default download location
+	default write org.m0k.transmission DownloadFolder -string "$HOME/Downloads"
+fi
+
 # Kill affected applications
 # ==========================
 
-for app in "ControlStrip" \
-	"Calendar" \
+for app in \
+    "ControlStrip" \
 	"Dock" \
 	"Finder" \
 	"Safari" \
-	"Terminal" \
 	"Transmission" \
 	"Swish" \
 	"Mos" \
