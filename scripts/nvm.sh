@@ -14,12 +14,13 @@ if [[ $? != 0 ]] ; then
     echo "${rbold}Error:${clear} Homebrew is not installed..."
     return 1
 fi
-
+# check if DOTFILES directory exists
 if [[ ! -d $DOTFILES ]] ; then
     echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1
 fi
 
+# source zshenv and zshrc
 source $DOTFILES/dots/zshenv
 source $DOTFILES/dots/zshrc > /dev/null
 

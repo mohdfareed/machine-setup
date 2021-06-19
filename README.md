@@ -54,3 +54,4 @@ Change OS and application [preferences](preferences.md) manually.
 - Backup terminal profile to `dotfiles/other`
 - Backup virtual machines
 - Choose the changes to preferences and formulae, casks, and apps to push
+- Sign out from device
