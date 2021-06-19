@@ -134,21 +134,21 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>if [[ $# -lt 1 ]]; then
+					<string>if [[ $# -le 0 ]]; then
     echo "usage: $0 file ..." 1&gt;&amp;2
     exit 1
-elif [[ $# -eq 1 ]]; then
+elif [[ $# -le 2 ]]; then
     id=$(date '+%y%m%d%H%M%S')
 	mv $1 "$(dirname $1)/$id.${1#*.}"
     exit 0
-elif [[ $# -le 26 ]]; then
+elif [[ $# -le 52 ]]; then
     x=( {a..z} )
-elif [[ $# -le 676 ]]; then
+elif [[ $# -le 1352 ]]; then
     x=( {a..z}{a..z} )
-elif [[ $# -le 17576 ]]; then
+elif [[ $# -le 35152 ]]; then
     x=( {a..z}{a..z}{a..z} )
 else
-    echo "maximum of 16,000 files can be indexed at once" 1&gt;&amp;2
+    echo "maximum of 17,500 files can be indexed at once" 1&gt;&amp;2
     exit 1
 fi
 
@@ -278,7 +278,7 @@ done
 				<key>isViewVisible</key>
 				<integer>1</integer>
 				<key>location</key>
-				<string>422.500000:657.000000</string>
+				<string>422.500000:685.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -415,7 +415,7 @@ done
 				<key>isViewVisible</key>
 				<integer>1</integer>
 				<key>location</key>
-				<string>422.500000:846.000000</string>
+				<string>422.500000:874.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Display Notification.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -425,14 +425,14 @@ done
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>99F22B92-FAE0-4025-893A-E415E1B73D8D</key>
+		<key>21AC5F1D-C553-4DE5-80CA-F4297EA15FF0</key>
 		<dict>
 			<key>from</key>
 			<string>C7B51799-E71E-4596-8343-04C999ECCED5 - C7B51799-E71E-4596-8343-04C999ECCED5</string>
 			<key>to</key>
 			<string>58AB4F8E-667F-446F-B338-30F5D4EFBB7E - 58AB4F8E-667F-446F-B338-30F5D4EFBB7E</string>
 		</dict>
-		<key>B792B0A1-BB4B-4594-AC5B-8939047D2E18</key>
+		<key>AAEA7A7E-D131-48EF-99AB-1614360DBCD2</key>
 		<dict>
 			<key>from</key>
 			<string>58AB4F8E-667F-446F-B338-30F5D4EFBB7E - 58AB4F8E-667F-446F-B338-30F5D4EFBB7E</string>
