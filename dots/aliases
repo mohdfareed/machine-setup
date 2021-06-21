@@ -1,10 +1,10 @@
 #!/usr/bin/env zsh
 
 # notebook and iCloud directories
+Projects="$DEV/projects"
 iCloud="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 Notebook="$iCloud/Notebook"
-Projects="$DEV/projects"
-Music="$HOME/Music/Personal"
+Music="$iCloud/Music"
 
 # open notebook with vscode
 alias notes='code $Notebook'

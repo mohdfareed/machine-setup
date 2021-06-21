@@ -13,10 +13,15 @@ if [[ ! -d $DOTFILES ]] ; then
 fi
 
 source $DOTFILES/dots/zshenv
+# create link to projects on desktop
+if [[ -d $DEV/projects ]] ; then
+	ln -siv $DEV/projects ~/Desktop/Projects
+fi
 # create link to personal music in Music folder
 if [[ -d $iCloud/Music ]] ; then
 	ln -siv $iCloud/Music $HOME/Music/Personal
 fi
+
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'
 # ask for the administrator password upfront

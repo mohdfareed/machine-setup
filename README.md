@@ -55,3 +55,7 @@ Change OS and application [preferences](preferences.md) manually.
 - Backup virtual machines
 - Choose the changes to preferences and formulae, casks, and apps to push
 - Sign out from device
+
+## Todo
+
+- Add comment anchors to hardcoded sections
