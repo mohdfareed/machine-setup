@@ -33,8 +33,6 @@ if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then
 fi
 ln -siv $DOTFILES/other/common/common.zsh-theme $ZSH/themes
 
-source $ZDOTDIR/.zshrc
-
 # remove last login time prompt
 touch $HOME/.hushlogin
 # delete old zshrc files
