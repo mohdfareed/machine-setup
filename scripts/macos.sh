@@ -39,10 +39,6 @@ defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
 defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
 # automatically rearrange spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
-# automatically hide and show the Dock
-defaults write com.apple.dock autohide -bool true
-# play feedback when volume is changed
-defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 # add wallpapers to preferences
 defaults write com.apple.systempreferences DSKDesktopPrefPane "{
     UserFolderPaths =     (
@@ -66,33 +62,9 @@ defaults write .GlobalPreferences com.apple.mouse.scaling -int -1
 defaults write .GlobalPreferences KeyRepeat -int 2
 # delay until key repeat
 defaults write .GlobalPreferences InitialKeyRepeat -int 25
-# show input menu in menu bar
-defaults write com.apple.TextInputMenu visible -bool true
-# control strip customization
-defaults write com.apple.controlstrip FullCustomized '(
-    "com.apple.system.group.brightness",
-    "com.apple.system.launchpad",
-    "com.apple.system.group.keyboard-brightness",
-    "com.apple.system.group.media",
-    "com.apple.system.group.volume",
-    "com.apple.system.workflows",
-    "com.apple.system.screencapture"
-)'
-defaults write com.apple.controlstrip MiniCustomized '(
-    "com.apple.system.group.brightness",
-    "com.apple.system.group.volume",
-    "com.apple.system.mute",
-    "com.apple.system.screencapture"
-)'
 
 # Extensions
 # ==========
-
-# add workflows
-ln -siv "$DOTFILES/other/automator/Index.workflow" \
-		"$HOME/Library/Services/Index.workflow"
-ln -siv "$DOTFILES/other/automator/New Note.workflow" \
-		"$HOME/Library/Services/New Note.workflow"
 
 # Terminal
 # ========
