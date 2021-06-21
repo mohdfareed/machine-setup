@@ -42,14 +42,16 @@ if [[ $? != 0 ]] ; then
     return 1
 fi
 
-# prompt the user to choose the apps to install
-prompt 497799835  # Xcode
+# install apps
+mas install 441258766  # Magnet
+mas install 1438243180 # Dark Reader
+mas install 1320666476 # Wipr
+mas install 1564688210 # Glance
+mas install 937984704  # Amphetamine
+
+# prompt the user install optional apps
+prompt 1505779553 # Dashlane
 prompt 409201541  # Pages
 prompt 409203825  # Numbers
 prompt 409183694  # Keynote
-prompt 1505779553 # Dashlane
-prompt 441258766  # Magnet
-prompt 1438243180 # Dark Reader
-prompt 1320666476 # Wipr
-prompt 1564688210 # Glance
-prompt 937984704  # Amphetamine
+prompt 497799835  # Xcode
