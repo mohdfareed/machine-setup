@@ -26,9 +26,24 @@ source $DOTFILES/dots/zshrc > /dev/null
 
 # install python and pyenv
 brew install python
-brew install pyenv
 brew cleanup
 
 # link pythonrc
 mkdir -p $XDG_CONFIG_HOME/python
 ln -siv "$DOTFILES/dots/pythonrc" "$PYTHONSTARTUP"
+
+# prompt the user for confirmation to install pyenv
+echo -e "\a"
+echo "Would you like to install ${gbold}pyenv${clear}? [Y|n]"
+read answer
+
+case $answer in
+        [Nn]* )
+            return 1
+            ;;
+        * )
+            ;;
+esac
+
+brew install pyenv
+brew cleanup

@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# notebook and iCloud directories
+# directories
 Projects="$DEV/projects"
 iCloud="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 Notebook="$iCloud/Notebook"

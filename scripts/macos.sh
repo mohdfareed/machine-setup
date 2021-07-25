@@ -6,7 +6,7 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up macOS preferences...${clear}"
 
-# check if dotfiles repo exists
+# check if dotfiles exists
 if [[ ! -d $DOTFILES ]] ; then
     echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
     return 1
@@ -16,10 +16,6 @@ source $DOTFILES/dots/zshenv
 # create link to projects on desktop
 if [[ -d $DEV/projects ]] ; then
 	ln -siv $DEV/projects ~/Desktop/Projects
-fi
-# create link to personal music in Music folder
-if [[ -d $iCloud/Music ]] ; then
-	ln -siv $iCloud/Music $HOME/Music/Personal
 fi
 
 # close open System Preferences panes, to prevent them from overriding settings
@@ -86,12 +82,10 @@ defaults write com.apple.Terminal ShowLineMarks -bool false
 # set Home directory as the default location for new Finder windows
 defaults write com.apple.finder NewWindowTarget 'PfHm'
 defaults write com.apple.finder NewWindowTargetPath "file://${HOME}/"
-# when performing a search, search the current folder by default
+# when performing a search, use the current folder by default
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # show the ~/Library folder
 chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
-# show path bar
-defaults write com.apple.finder ShowPathbar -bool true
 # avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # keep folders on top when sorting by name

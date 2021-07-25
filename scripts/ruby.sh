@@ -26,7 +26,6 @@ source $DOTFILES/dots/zshrc > /dev/null
 
 # install ruby and rbenv
 brew install ruby
-brew install rbenv
 brew cleanup
 
 # add gems directory to path
@@ -44,3 +43,19 @@ gem install ruby-debug-ide
 gem install debase -v '>= 0.2.5.beta'
 # runtime developer console and IRB alternative
 prompt pry
+
+# prompt the user for confirmation to install rbenv
+echo -e "\a"
+echo "Would you like to install ${gbold}rbenv${clear}? [Y|n]"
+read answer
+
+case $answer in
+        [Nn]* )
+            return 1
+            ;;
+        * )
+            ;;
+esac
+
+brew install rbenv
+brew cleanup

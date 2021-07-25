@@ -24,11 +24,8 @@ git -C $DOTFILES submodule update --init
 source $scripts/homebrew.sh
 # install App Store applications
 source $scripts/appstore.sh
-
 # setup zsh
 source $scripts/zsh.sh
-# setup terminal
-source $scripts/terminal_setup.sh
 # setup git
 source $scripts/git.sh
 
