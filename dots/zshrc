@@ -8,10 +8,7 @@ plugins=(
 )
 
 # zsh
-export HISTFILE="$XDG_DATA_HOME/zsh/history"
-setopt CORRECT_ALL # offer to correct commands and arguments
-source $ZDOTDIR/.aliases
-source $ZDOTDIR/.lazy_loader
+export HISTFILE="$XDG_DATA_HOME/zsh/zsh_history"
 
 # path
 export PATH="/usr/local/sbin:$PATH"                    # homebrew
