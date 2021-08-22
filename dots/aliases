@@ -4,60 +4,41 @@
 Projects="$DEV/projects"
 iCloud="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 Notebook="$iCloud/Notebook"
-Music="$iCloud/Music"
 
 # open notebook with vscode
 alias notes='code $Notebook'
 # exa
-alias le="exa -a --git --group-directories-first"
-alias lle="exa -a --git --group-directories-first -lh"
-# download to music folder with or without video
-alias dl-music="dl-audio -d $Music"
-alias dl-vmusic="dl-video -d $Music"
+alias le="exa -a --git --icons --group-directories-first"
+alias lle="exa -a --git --icons --group-directories-first -hl"
 
 # download video from URL
 function dl-video {
-    usage="usage: $0 [-d dir] URL"
-
+    usage="usage: $0 URL [dir]"
     dir="${HOME}/Downloads"
-    while getopts "d:" opt; do
-        case ${opt} in
-            d)
-                dir=$OPTARG
-                shift
-                shift
-                ;;
-    esac
-    done
 
-    if [[ $# -gt 1 ]] ; then
-        echo $usage 1>&2
+    if [[ $# -eq 2 ]] ; then
+        dir=$2
+    elif [ $# -ne 1 ]; then
+        echo $usage
         return 1
     fi
 
-    youtube-dl --write-sub --write-auto-sub --embed-subs \
-        --merge-output-format mp4 -o "$dir/%(title)s.%(ext)s" $1
+    youtube-dl --write-sub --write-auto-sub --embed-subs --embed-thumbnail \
+        --add-metadata --merge-output-format mp4 -o "$dir/%(title)s.%(ext)s" $1
 }
 
 # download audio from URL
 function dl-audio {
-    usage="usage: $0 [-d dir] URL"
-
+    usage="usage: $0 URL [dir]"
     dir="${HOME}/Downloads"
-    while getopts "d:" opt; do
-        case ${opt} in
-            d)
-                dir=$OPTARG
-                shift
-                shift
-                ;;
-    esac
-    done
 
-    if [[ $# -gt 1 ]] ; then
-        echo $usage 1>&2
+    if [[ $# -eq 2 ]] ; then
+        dir=$2
+    elif [ $# -ne 1 ]; then
+        echo $usage
         return 1
     fi
 
-    youtube-dl -x --audio-format mp3 -o "${dir[2]}/%(title)s.%(ext)s" $1
+    youtube-dl -x -embed-thumbnail --add-metadata --audio-format mp3 \
+        -o "${dir}/%(title)s.%(ext)s" $1
 }
