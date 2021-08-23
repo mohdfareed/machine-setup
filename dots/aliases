@@ -1,24 +1,26 @@
 #!/usr/bin/env zsh
 
 # directories
-Projects="$DEV/projects"
 iCloud="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 Notebook="$iCloud/Notebook"
+Projects="$iCloud/Projects"
 
-# open notebook with vscode
 alias notes='code $Notebook'
+alias restart='exec zsh -l'
 # exa
-alias le="exa -a --git --icons --group-directories-first"
-alias lle="exa -a --git --icons --group-directories-first -hl"
+alias le="exa --group-directories-first --icons --sort=Name"
+alias lte="le -T -L"
+alias lle="le -hlmU --git --no-user"
+alias llte="lle -T -L"
 
 # download video from URL
 function dl-video {
     usage="usage: $0 URL [dir]"
     dir="${HOME}/Downloads"
 
-    if [[ $# -eq 2 ]] ; then
+    if   [[ $# -eq 2 ]]; then
         dir=$2
-    elif [ $# -ne 1 ]; then
+    elif [[ $# -ne 1 ]]; then
         echo $usage
         return 1
     fi
@@ -32,9 +34,9 @@ function dl-audio {
     usage="usage: $0 URL [dir]"
     dir="${HOME}/Downloads"
 
-    if [[ $# -eq 2 ]] ; then
+    if   [[ $# -eq 2 ]]; then
         dir=$2
-    elif [ $# -ne 1 ]; then
+    elif [[ $# -ne 1 ]]; then
         echo $usage
         return 1
     fi
