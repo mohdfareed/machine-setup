@@ -1,0 +1,17 @@
+{
+    "spellright.language": [
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "plaintext",
+        "shellscript",
+        ""
+    ],
+    "spellright.ignoreRegExpsByClass": {
+        "shellscript": [
+            "/\\$\\(.*\\)/g",
+            "/\\$\\{.*\\}/g"
+        ]
+    },
+}
