@@ -10,32 +10,8 @@ plugins=(
 # zsh
 export HISTFILE="$XDG_DATA_HOME/zsh/zsh_history"
 
-# path
-export PATH="/usr/local/sbin:$PATH"                    # homebrew
-export PATH="/usr/local/opt/python/libexec/bin:$PATH"  # brew's python
-export PATH="/usr/local/opt/ruby/bin:$PATH"            # brew's ruby
-export PATH="/usr/local/lib/ruby/gems/3.0.0/bin:$PATH" # brew's ruby gems
-
-# lazy load pyenv. Execute pyenv to load
-if [[ -d "/usr/local/Cellar/pyenv" ]] ; then
-    pyenv_init() { eval "$(pyenv init -)" }
-    lazy_load pyenv_init pyenv
-
-fi
-# lazy load rbenv. Execute rbenv to load
-if [[ -d "/usr/local/Cellar/rbenv" ]] ; then
-    rbenv_init() { eval "$(rbenv init -)" }
-    lazy_load rbenv_init rbenv
-fi
-# lazy load nvm. Execute nvm to load
-if [[ -d "/usr/local/Cellar/nvm" ]] ; then
-    nvm_init() {
-        . /usr/local/opt/nvm/nvm.sh
-        . /usr/local/opt/nvm/etc/bash_completion.d/nvm
-    }
-    lazy_load nvm_init nvm
-fi
-
+# load aliases
+source $ZDOTDIR/.aliases
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 # load zsh syntax highlighting
