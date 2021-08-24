@@ -6,13 +6,6 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up Zsh...${clear}"
 
-if [[ ! -d $DOTFILES ]] ; then
-    echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
-    return 1
-fi
-
-source $DOTFILES/dots/zshenv
-
 # install oh-my-zsh
 sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
 
