@@ -2,16 +2,9 @@
 
 clear='\033[0m'
 bold='\033[1m'
-rbold='\033[1;31m'
 
 tput clear
 echo "${bold}Setting up git...${clear}"
-
-if [[ ! -d $DOTFILES ]] ; then
-    echo "${rbold}Error:${clear} DOTFILES directory does not exist..."
-    return 1
-fi
-
 source $DOTFILES/dots/zshenv
 
 # symlink git configuration files
