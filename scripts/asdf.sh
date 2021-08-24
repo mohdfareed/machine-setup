@@ -38,6 +38,7 @@ asdf global nodejs latest
 
 echo
 echo "${bold}Setting up sqlite...${clear}"
+mkdir -p "$XDG_DATA_HOME/sqlite" # create history directory
 # installed latest sqlite version and set it as default
 asdf plugin add sqlite
 asdf install sqlite latest > /dev/null
