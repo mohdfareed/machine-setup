@@ -13,34 +13,41 @@ alias lte='le -T -L'
 alias lle='le -hlmU --git --no-user'
 alias llte='lle -T -L'
 
-# download video from URL
-function dl-video {
-    usage="usage: $0 URL [dir]"
-    dir="${HOME}/Downloads"
-
-    if   [[ $# -eq 2 ]]; then
-        dir=$2
-    elif [[ $# -ne 1 ]]; then
-        echo $usage
-        return 1
-    fi
-
-    youtube-dl --write-sub --write-auto-sub --embed-subs --embed-thumbnail \
-        --add-metadata --merge-output-format mp4 -o "$dir/%(title)s.%(ext)s" $1
+# uninstall homebrew package with its dependencies
+function uninstall {
+    usage="usage: $0 package"
+    brew uninstall $1
+    brew autoremove
+    brew cleanup
 }
 
-# download audio from URL
-function dl-audio {
-    usage="usage: $0 URL [dir]"
+# download video from URL
+function dl-video {
+    usage="usage: $0 [-a] URL [dir]"
+    audio=false
     dir="${HOME}/Downloads"
 
-    if   [[ $# -eq 2 ]]; then
+    if [[ $1 == '-a' ]] ; then
+        audio=true
+        shift
+    fi
+
+    if (($# == 2)) ; then
+        if [[ ! -d $2 ]] ; then
+            echo "\033[0;31mERROR:\033[0m '$2' is not a valid directory."
+            return 1
+        fi
         dir=$2
-    elif [[ $# -ne 1 ]]; then
+    elif (($# != 1)) ; then
         echo $usage
         return 1
     fi
 
-    youtube-dl -x -embed-thumbnail --add-metadata --audio-format mp3 \
-        -o "${dir}/%(title)s.%(ext)s" $1
+    sub=(--write-sub --write-auto-sub --sub-lang en --embed-subs)
+    cmd=(--embed-thumbnail --add-metadata -o "$dir/%(title)s.%(ext)s")
+    if [[ $audio != true ]] ; then
+        youtube-dl $sub $cmd --merge-output-format mp4 $1
+    else
+        youtube-dl -x $cmd --audio-format mp3 $1
+    fi
 }
