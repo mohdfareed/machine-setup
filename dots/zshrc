@@ -9,6 +9,10 @@ plugins=(
 
 # zsh
 export HISTFILE="$XDG_DATA_HOME/zsh/zsh_history"
+# homebrew
+export PATH="/usr/local/sbin:$PATH"
+# asdf
+. $(brew --prefix asdf)/libexec/asdf.sh
 
 # load aliases
 source $ZDOTDIR/.aliases
