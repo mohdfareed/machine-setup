@@ -6,6 +6,11 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up macOS preferences...${clear}"
 
+# create link to projects in dev directory
+if [[ -d $Projects ]] ; then
+	ln -siv $Projects $DEV/projects
+fi
+
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'
 # ask for the administrator password upfront
