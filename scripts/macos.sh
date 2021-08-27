@@ -31,7 +31,7 @@ defaults write com.apple.dock mru-spaces -bool false
 # add wallpapers to preferences
 defaults write com.apple.systempreferences DSKDesktopPrefPane "{
     UserFolderPaths =     (
-        \"$DOTFILES/other/Wallpapers\"
+        \"$DOTFILES/resources/Wallpapers\"
     );
 }"
 
@@ -55,7 +55,7 @@ defaults write .GlobalPreferences InitialKeyRepeat -int 25
 # ========
 
 # profile's path and name
-p_file=$(find $DOTFILES/other -maxdepth 1 -name "*.terminal" | head -n 1)
+p_file=$(find $DOTFILES/resources -maxdepth 1 -name "*.terminal" | head -n 1)
 p_name=$(basename $p_file .terminal)
 open -g $p_file # add profile to terminal app
 # default Terminal profile

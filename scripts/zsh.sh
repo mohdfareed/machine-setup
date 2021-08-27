@@ -20,10 +20,10 @@ ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
 
 # link oh-my-zsh theme
-if [[ ! -f $DOTFILES/other/common/common.zsh-theme ]]; then
+if [[ ! -f $DOTFILES/resources/common/common.zsh-theme ]]; then
     git -C $DOTFILES submodule update --init
 fi
-ln -siv $DOTFILES/other/common/common.zsh-theme $ZSH/themes
+ln -siv $DOTFILES/resources/common/common.zsh-theme $ZSH/themes
 
 # remove last login time prompt
 touch $HOME/.hushlogin
