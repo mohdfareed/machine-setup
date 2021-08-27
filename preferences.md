@@ -1,6 +1,6 @@
 # Preferences
 
-The following are OS and application preferences that are done manually.
+The following are OS and application preferences that are set manually.
 
 ## Login Applications
 

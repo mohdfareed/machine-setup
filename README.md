@@ -55,3 +55,11 @@ Change OS and application [preferences](preferences.md) manually.
 - Backup virtual machines
 - Choose the changes to preferences and formulae, casks, and apps to push
 - Sign out from device
+
+## TODO
+
+- Add extra script for unnecessary setup
+- Switch to The Unarchiver
+- Setup GPG key for signing
+- Run unnexessary scripts manually
+- Add unnecessary testing scripts to use in extra scripts
