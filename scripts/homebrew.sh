@@ -43,6 +43,8 @@ brew install --cask mos
 brew install --cask telegram
 
 brew tap homebrew/cask-fonts
+brew install font-fira-code
+brew install font-fira-code-nerd-font
 brew install font-sf-pro
 brew install font-sf-compact
 brew install font-sf-mono
