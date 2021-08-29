@@ -26,6 +26,8 @@ scutil --set LocalHostName "Mohds-MacBook"
 defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
 # when switching to an application, switch to a space with open windows
 defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
+# don't close windows when quitting an app
+defaults write .GlobalPreferences NSQuitAlwaysKeepsWindows -bool true
 # automatically rearrange spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
 # add wallpapers to preferences
