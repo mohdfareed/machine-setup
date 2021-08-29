@@ -7,7 +7,6 @@
 	editor = code --wait
 [color]
 	ui = auto
-
 [diff]
   tool = vscode
 [difftool "vscode"]
