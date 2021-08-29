@@ -16,6 +16,9 @@ export PATH="/usr/local/sbin:$PATH"
 
 # load aliases
 source $ZDOTDIR/.aliases
+# load functions
+source $ZDOTDIR/.functions
+
 # load oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 # load zsh syntax highlighting
