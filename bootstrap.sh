@@ -17,11 +17,11 @@ git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git $DOTFILES
 git -C $DOTFILES submodule update --init
 
 source $scripts/homebrew.sh # setup homebrew
+source $scripts/zsh.sh      # setup zsh
+source $scripts/git.sh      # setup git
+source $scripts/asdf.sh     # setup asdf
 source $scripts/appstore.sh # install App Store applications
-source $scripts/zsh.sh # setup zsh
-source $scripts/git.sh # setup git
-source $scripts/asdf.sh # setup asdf
-source $scripts/macos.sh # setup macOS preferences
+source $scripts/macos.sh    # setup macOS preferences
 
 echo -e "\a"
 echo "Restart for some of the changes to take effect."
