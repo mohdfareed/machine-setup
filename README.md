@@ -1,6 +1,6 @@
 # Dotfiles
 
-## Installation Process
+## Installation
 
 **0. Setup FileVault:**
 
@@ -35,6 +35,20 @@ Change OS and applications [preferences](preferences.md) manually.
 
 **6. Setup Time Machine:**
 
+## Scripts
+
+### git
+
+Installs `git`, `gpg`, and `pinentr-mac` through HomeBrew, links configuration files, and imports commits signing key.
+
+Required environment variables:
+
+- `$DOTFILES`
+- `$XDG_CONFIG_HOME` - sourced within the script through zshenv
+- `$GNUPGHOME` - sourced within the script through zshenv
+
+The paths to the dotfiles and the signing key and its owner trust are hardcoded. The passphrase for the key is printed before importing the key.
+
 ## Miscellaneous
 
 - [Hachidori](https://malupdaterosx.moe/hachidori/)
@@ -59,7 +73,5 @@ Change OS and applications [preferences](preferences.md) manually.
 ## TODO
 
 - Add extra script for unnecessary setup
-- Switch to The Unarchiver
-- Setup GPG key for signing
 - Run unnecessary scripts manually
 - Add unnecessary testing scripts to use in extra scripts

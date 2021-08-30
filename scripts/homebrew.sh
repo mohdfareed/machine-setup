@@ -23,9 +23,6 @@ echo "${bold}Installing Homebrew formulae and casks...${clear}"
 
 brew install zsh
 brew install zsh-syntax-highlighting
-brew install git
-brew install gpg
-brew install pinentry-mac
 brew install asdf
 brew install exa
 brew install mas
