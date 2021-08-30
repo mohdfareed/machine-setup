@@ -18,6 +18,7 @@ mkdir -p "$XDG_CACHE_HOME/zsh"
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"
 ln -siv "$DOTFILES/dots/zshrc" "$ZDOTDIR/.zshrc"
 ln -siv "$DOTFILES/dots/aliases" "$ZDOTDIR/.aliases"
+ln -siv "$DOTFILES/dots/functions" "$ZDOTDIR/.functions"
 
 # link oh-my-zsh theme
 if [[ ! -f $DOTFILES/resources/common/common.zsh-theme ]]; then
