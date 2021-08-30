@@ -35,9 +35,7 @@ Change OS and applications [preferences](preferences.md) manually.
 
 **6. Setup Time Machine:**
 
-## Scripts
-
-### git
+## git
 
 Installs `git`, `gpg`, and `pinentr-mac` through HomeBrew, links configuration files, and imports commits signing key.
 
@@ -47,6 +45,14 @@ Required environment variables:
 - `$GNUPGHOME`
 
 The passphrase for the key is printed before importing the key.
+
+## asdf
+
+Installs `asdf` and links configuration file.
+
+Required environment variables:
+
+- `$ASDF_CONFIG_FILE`
 
 ## Miscellaneous
 

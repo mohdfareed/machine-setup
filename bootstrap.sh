@@ -19,7 +19,7 @@ git -C $DOTFILES submodule update --init
 source $scripts/homebrew.sh # setup homebrew
 source $scripts/zsh.sh      # setup zsh
 source $git/git.sh          # setup git
-source $scripts/asdf.sh     # setup asdf
+source $asdf/asdf.sh        # setup asdf
 source $scripts/appstore.sh # install App Store applications
 source $scripts/macos.sh    # setup macOS preferences
 

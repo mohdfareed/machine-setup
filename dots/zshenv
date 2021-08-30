@@ -2,9 +2,10 @@ export DEV="$HOME/Developer"
 export DOTFILES="$DEV/dotfiles"
 
 # XDG base directories
-export XDG_DATA_HOME="$DEV/data"
 export XDG_CONFIG_HOME="$DEV/config"
 export XDG_CACHE_HOME="$DEV/cache"
+export XDG_DATA_HOME="$DEV/data"
+export XDG_STATE_HOME="$DEV/state"
 
 # default editor
 export EDITOR=/usr/local/bin/code
