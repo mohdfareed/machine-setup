@@ -4,7 +4,7 @@
 
 **0. Setup FileVault:**
 
-**1. Sign in to the Mac Apple Store:**
+**1. Sign in to the App Store:**
 
 **2. Install Xcode CommandLine Tools:**
 
@@ -24,7 +24,7 @@ zsh -c "$(curl -fsSL https://git.io/JZbBu)"
 
 **4. Change preferences:**
 
-Change OS and application [preferences](preferences.md) manually.
+Change OS and applications [preferences](preferences.md) manually.
 
 **5. Install applications:**
 
@@ -44,22 +44,22 @@ Change OS and application [preferences](preferences.md) manually.
 
 ## Caveats
 
-- Dotfiles and dev directories have to be changed in both `zshenv` and `setup.sh`.
+- Dotfiles directory is set in both `zshenv` and `bootstrap.sh`.
 - Dotfiles repository structure is hardcoded.
-- GitHub authentication info might need to be updated in `setup.sh`.
-- Zsh directories are set in both `zsh.sh` and `zshenv`.
+- GitHub authentication info might need to be updated in `bootstrap.sh`.
 
 ## Decommissioning Process
 
-- Backup terminal profile to `dotfiles/resources`
-- Backup virtual machines
-- Choose the changes to preferences and formulae, casks, and apps to push
-- Sign out from device
+- Backup terminal profile to `dotfiles/resources`.
+- Backup gpg and ssh keys.
+- Backup virtual machines.
+- Choose the changes to preferences and formulae, casks, and apps to push.
+- Sign out from the device and Find My app.
 
 ## TODO
 
 - Add extra script for unnecessary setup
 - Switch to The Unarchiver
 - Setup GPG key for signing
-- Run unnexessary scripts manually
+- Run unnecessary scripts manually
 - Add unnecessary testing scripts to use in extra scripts
