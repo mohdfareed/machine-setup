@@ -1,21 +1,24 @@
 [user]
-	name = Mohammed Fareed
-	email = 52881835+mohdfareed@users.noreply.github.com
+    name = Mohammed Fareed
+    email = 52881835+mohdfareed@users.noreply.github.com
+    signingkey = C28743AF05651D96
 [init]
-	defaultBranch = main
+    defaultBranch = main
+[commit]
+    gpgsign = true
 [core]
-	editor = code --wait
+    editor = code --wait
 [color]
-	ui = auto
+    ui = auto
 [diff]
-  tool = vscode
+    tool = vscode
 [difftool "vscode"]
-  cmd = code --wait --diff $LOCAL $REMOTE
+    cmd = code --wait --diff $LOCAL $REMOTE
 [merge]
-  tool = vscode
+    tool = vscode
 [mergetool "vscode"]
-  cmd = code --wait $MERGED
+    cmd = code --wait $MERGED
 
 [alias]
-	graph = log --graph --abbrev-commit --name-status
-	graphcompact = log --graph --abbrev-commit --oneline
+    graph = log --graph --abbrev-commit --name-status
+    graphcompact = log --graph --abbrev-commit --oneline
