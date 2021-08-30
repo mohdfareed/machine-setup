@@ -43,11 +43,10 @@ Installs `git`, `gpg`, and `pinentr-mac` through HomeBrew, links configuration f
 
 Required environment variables:
 
-- `$DOTFILES`
-- `$XDG_CONFIG_HOME` - sourced within the script through zshenv
-- `$GNUPGHOME` - sourced within the script through zshenv
+- `$XDG_CONFIG_HOME`
+- `$GNUPGHOME`
 
-The paths to the dotfiles and the signing key and its owner trust are hardcoded. The passphrase for the key is printed before importing the key.
+The passphrase for the key is printed before importing the key.
 
 ## Miscellaneous
 
@@ -72,6 +71,7 @@ The paths to the dotfiles and the signing key and its owner trust are hardcoded.
 
 ## TODO
 
+- Input passphrase for gpg key through script
 - Add extra script for unnecessary setup
 - Run unnecessary scripts manually
 - Add unnecessary testing scripts to use in extra scripts
