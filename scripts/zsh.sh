@@ -10,9 +10,9 @@ echo "${bold}Setting up Zsh...${clear}"
 sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
 
 # create directories
-mkdir -p "$XDG_CONFIG_HOME/zsh"
-mkdir -p "$XDG_DATA_HOME/zsh"
-mkdir -p "$XDG_CACHE_HOME/zsh"
+mkdir -p $ZDOTDIR
+mkdir -p $(dirname $ZSH_COMPDUMP)
+mkdir -p $(dirname $HISTFILE)
 
 # symlink files
 ln -siv "$DOTFILES/dots/zshenv" "$HOME/.zshenv"

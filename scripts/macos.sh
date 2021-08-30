@@ -24,10 +24,10 @@ scutil --set ComputerName "Mohd's MacBook"
 scutil --set LocalHostName "Mohds-MacBook"
 # reduce wallpaper tinting in windows
 defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
-# when switching to an application, switch to a space with open windows
-defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
 # don't close windows when quitting an app
 defaults write .GlobalPreferences NSQuitAlwaysKeepsWindows -bool true
+# when switching to an application, switch to a space with open windows
+defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
 # automatically rearrange spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
 # add wallpapers to preferences
@@ -65,6 +65,8 @@ defaults write com.apple.Terminal "Default Window Settings" "$p_name"
 defaults write com.apple.Terminal "Startup Window Settings" "$p_name"
 # line marks
 defaults write com.apple.Terminal ShowLineMarks -bool false
+# secure keyboard entry
+defaults write com.apple.terminal SecureKeyboardEntry -bool true
 
 # Finder
 # ======
@@ -102,17 +104,3 @@ defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
 # enable the Develop menu and the Web Inspector
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-
-# Kill affected applications
-# ==========================
-
-for app in \
-    "ControlStrip" \
-	"Dock" \
-	"Finder" \
-	"Safari" \
-	"TextEdit" \
-	"SystemUIServer" \
-	"cfprefsd"; do
-	killall "${app}" &> /dev/null
-done
