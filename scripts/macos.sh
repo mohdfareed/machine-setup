@@ -24,10 +24,6 @@ scutil --set ComputerName "Mohd's MacBook"
 scutil --set LocalHostName "Mohds-MacBook"
 # reduce wallpaper tinting in windows
 defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
-# don't close windows when quitting an app
-defaults write .GlobalPreferences NSQuitAlwaysKeepsWindows -bool true
-# when switching to an application, switch to a space with open windows
-defaults write .GlobalPreferences AppleSpacesSwitchOnActivate -bool false
 # automatically rearrange spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
 # add wallpapers to preferences
@@ -84,8 +80,6 @@ chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library
 # enable snap-to-grid for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-# use list view in all Finder windows by default
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 # avoid creating .DS_Store files on network volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
@@ -95,12 +89,5 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 # use plain text mode for new TextEdit documents
 defaults write com.apple.TextEdit RichText -int 0
 # plain text font
-defaults write com.apple.TextEdit NSFixedPitchFont -string "SFMono-Regular"
+defaults write com.apple.TextEdit NSFixedPitchFont -string "FiraCodeNerdFontComplete-Regular"
 defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
-
-# Safari
-# ======
-
-# enable the Develop menu and the Web Inspector
-defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
