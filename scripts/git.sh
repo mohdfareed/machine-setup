@@ -16,6 +16,9 @@ ln -siv "$DOTFILES/dots/gitignore" "$XDG_CONFIG_HOME/git/ignore"
 mkdir -pm 0700 $GNUPGHOME
 echo "pinentry-program /usr/local/bin/pinentry-mac" >> $GNUPGHOME/gpg-agent.conf
 
-echo "Passphrase: ${bold}iJDKCS6qn59o${clear}"
-gpg --import $DOTFILES/resources/gpg_private.key > /dev/null
-echo "test" | gpg --clearsign > /dev/null
+echo "Passphrase: ${bold}WYy85#1X3dP#OlOS${clear}"
+gpg_dir=$DOTFILES/resources
+
+gpg --import $gpg_dir/gpg-public.key > /dev/null
+gpg --allow-secret-key-import --import $gpg_dir/gpg-private.key > /dev/null
+gpg --import-ownertrust $gpg_dir/gpg-ownertrust > /dev/null

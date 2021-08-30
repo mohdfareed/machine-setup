@@ -1,7 +1,7 @@
 [user]
     name = Mohammed Fareed
     email = 52881835+mohdfareed@users.noreply.github.com
-    signingkey = C28743AF05651D96
+    signingkey = 451D3CBBC9F4B104
 [init]
     defaultBranch = main
 [commit]
