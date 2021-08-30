@@ -2,7 +2,6 @@
 
 # uninstall homebrew package with its dependencies
 function uninstall {
-    usage="usage: $0 package"
     brew uninstall $1
     brew autoremove
     brew cleanup

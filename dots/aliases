@@ -6,7 +6,7 @@ Notebook="$iCloud/Notebook"
 Projects="$iCloud/Projects"
 
 alias notes='code $Notebook' # open notebook in vscode
-alias rzsh='exec zsh -l'     # reset current shell session
+alias rsh='exec zsh -l'      # reset current shell session
 
 # exa
 alias le='exa --group-directories-first --icons --sort=Name'
