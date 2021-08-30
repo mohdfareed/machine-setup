@@ -5,10 +5,10 @@ bold='\033[1m'
 gbold='\033[1;32m'
 
 DOTFILES="$HOME/Developer/dotfiles"
-
 scripts="$DOTFILES/scripts"
-username="mohdfareed" # github username
-pat='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' # github personal access token
+
+username="mohdfareed"                           # github username
+pat=$(cat $DOTFILES/resources/github_token.txt) # github personal access token
 
 tput clear
 echo "Cloning dotfiles repo..."
