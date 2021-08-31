@@ -7,7 +7,26 @@ function uninstall {
     brew cleanup
 }
 
-# download video from URL
+# zip a folder's content protected with password without compression
+function zip-encrypt {
+    usage="usage: $0 dir"
+    if (($# != 1)) ; then
+        echo $usage
+        return 1
+    fi
+    if [[ ! -d $1 ]] ; then
+        echo "\033[0;31mERROR:\033[0m '$1' is not a valid directory."
+        return 1
+    fi
+
+    cd $1
+    dir_name=${PWD##*/}
+    zip -er0 $dir_name.zip . -x ".DS_Store" -x "._*"
+    mv $dir_name.zip ..
+    cd - >> /dev/null
+}
+
+# download video (or audio) from URL
 function dl-video {
     usage="usage: $0 [-a] URL [dir]"
     audio=false
