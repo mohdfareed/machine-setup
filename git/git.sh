@@ -6,8 +6,8 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up git...${clear}"
 
-source $DOTFILES/dots/zshenv
 git_dir=$(dirname $0)
+source $(dirname $git_dir)/zsh/zshenv
 
 brew install git
 brew install gpg
