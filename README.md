@@ -35,6 +35,17 @@ Change OS and applications [preferences](preferences.md) manually.
 
 **6. Setup Time Machine:**
 
+## zsh
+
+Installs `zsh` and `oh-my-zsh`, creates needed directories, links configuration files and theme, and cleans up home directory.
+
+Required environment variables:
+
+- `$ZSH`
+- `$ZDOTDIR`
+- `$ZSH_COMPDUMP`
+- `$HISTFILE`
+
 ## git
 
 Installs `git`, `gpg`, and `pinentr-mac` through HomeBrew, links configuration files, and imports commits signing key.

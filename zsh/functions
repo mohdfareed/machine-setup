@@ -2,6 +2,12 @@
 
 # uninstall homebrew package with its dependencies
 function uninstall {
+    usage="usage: $0 package"
+    if (($# != 1)) ; then
+        echo $usage
+        return 1
+    fi
+
     brew uninstall $1
     brew autoremove
     brew cleanup

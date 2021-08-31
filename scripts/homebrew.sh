@@ -21,8 +21,6 @@ chmod -R go-w "$(brew --prefix)/share"
 
 echo "${bold}Installing Homebrew formulae and casks...${clear}"
 
-brew install zsh
-brew install zsh-syntax-highlighting
 brew install exa
 brew install mas
 brew install youtube-dl

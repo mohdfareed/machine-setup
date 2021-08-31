@@ -1,3 +1,3 @@
-[submodule "resources/common"]
-	path = resources/common
+[submodule "zsh/common"]
+	path = zsh/common
 	url = https://github.com/jackharrisonsherlock/common
