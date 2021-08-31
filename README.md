@@ -92,6 +92,8 @@ Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTR
 - [Telegram](https://macos.telegram.org)
   - Messaging app with a focus on speed and security
   - `brew install --cask telegram`
+- [Batteries for Mac](https://www.fadel.io/batteries)
+  - Show battery level of devices on the same network
 - [Hachidori](https://malupdaterosx.moe/hachidori/)
   - Updates anime list automatically while watching
   - Start Auto Scrobble at launch
@@ -101,6 +103,7 @@ Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTR
 
 ## Caveats
 
+- XDG base directories are set following the [GO implementation](https://github.com/adrg/xdg).
 - Dotfiles directory is set in both `zshenv` and `bootstrap.sh`.
 - Dotfiles repository structure is hardcoded.
 - GitHub PAT might need to be updated in `bootstrap.sh`.
