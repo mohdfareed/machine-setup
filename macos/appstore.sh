@@ -7,12 +7,7 @@ red='\e[31m'
 tput clear
 echo "${bold}Installing App Store applications${clear}"
 
-# check if mas is installed
-which mas > /dev/null
-if [[ $? != 0 ]] ; then
-    echo "${red}Error:${clear} mas is not installed"
-    return 1
-fi
+brew install mas
 # check if the user is signed-in to the App Store
 mas account > /dev/null
 if [[ $? != 0 ]] ; then

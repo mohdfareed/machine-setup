@@ -6,10 +6,7 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up macOS preferences...${clear}"
 
-# create link to projects in dev directory
-if [[ -d $Projects ]] ; then
-	ln -siv $Projects $DEV/projects
-fi
+macos_dir=$(dirname $0)
 
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'
@@ -29,7 +26,7 @@ defaults write com.apple.dock mru-spaces -bool false
 # add wallpapers to preferences
 defaults write com.apple.systempreferences DSKDesktopPrefPane "{
     UserFolderPaths =     (
-        \"$DOTFILES/resources/Wallpapers\"
+        \"$macos_dir/Wallpapers\"
     );
 }"
 
@@ -52,13 +49,11 @@ defaults write .GlobalPreferences InitialKeyRepeat -int 25
 # Terminal
 # ========
 
-# profile's path and name
-p_file=$(find $DOTFILES/resources -maxdepth 1 -name "*.terminal" | head -n 1)
-p_name=$(basename $p_file .terminal)
-open -g $p_file # add profile to terminal app
+# add profile to terminal app
+open -g Default.terminal
 # default Terminal profile
-defaults write com.apple.Terminal "Default Window Settings" "$p_name"
-defaults write com.apple.Terminal "Startup Window Settings" "$p_name"
+defaults write com.apple.Terminal "Default Window Settings" "Default"
+defaults write com.apple.Terminal "Startup Window Settings" "Default"
 # line marks
 defaults write com.apple.Terminal ShowLineMarks -bool false
 # secure keyboard entry
