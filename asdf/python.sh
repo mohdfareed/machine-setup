@@ -17,3 +17,5 @@ ln -siv "$python_dir/pythonrc" "$PYTHONSTARTUP"
 asdf plugins add python
 asdf install python latest > /dev/null
 asdf global python latest
+
+asdf reshim

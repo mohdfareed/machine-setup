@@ -54,6 +54,28 @@ Required environment variables:
 
 - `$ASDF_CONFIG_FILE`
 
+## python
+
+Links python's startup file and installs latest python through `asdf`. Startup files manages python's interactive shell's history file.
+
+Required environment variables:
+
+- `$PYTHONSTARTUP`
+
+## ruby
+
+Installs latest ruby through `asdf` with some gems.
+
+## node
+
+Creates directories needed by `npm` and `REPL` and installs latest node though `asdf`.
+
+Required environment variables:
+
+- `$NPM_CONFIG_USERCONFIG`
+- `$NPM_CONFIG_CACHE`
+- `$NODE_REPL_HISTORY`
+
 ## Miscellaneous
 
 - [Hachidori](https://malupdaterosx.moe/hachidori/)
