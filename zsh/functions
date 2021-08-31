@@ -1,5 +1,20 @@
 #!/usr/bin/env zsh
 
+# print file's content to console
+function pfile {
+    usage="usage: $0 file"
+    if (($# != 1)) ; then
+        echo $usage
+        return 1
+    fi
+    if [[ ! -f $1 ]] ; then
+        echo "\033[0;31mERROR:\033[0m '$1' is not a valid file path."
+        return 1
+    fi
+
+    echo "$(< $1)"
+}
+
 # uninstall homebrew package with its dependencies
 function uninstall {
     usage="usage: $0 package"
