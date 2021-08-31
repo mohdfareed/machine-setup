@@ -76,6 +76,23 @@ Required environment variables:
 - `$NPM_CONFIG_CACHE`
 - `$NODE_REPL_HISTORY`
 
+## databases
+
+Sets up `sqlite` and `postgresql`.
+
+### sqlite
+
+Creates history directory and installs latest sqlite through `asdf`.
+
+### postgresql
+
+Creates needed directories and installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTRA_CONFIGURE_OPTIONS` to compile with `openssl` libraries.
+
+Required environment variables:
+
+- `$PSQLRC`
+- `$PSQL_HISTORY`
+
 ## Miscellaneous
 
 - [Hachidori](https://malupdaterosx.moe/hachidori/)
