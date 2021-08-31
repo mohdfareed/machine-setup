@@ -1,5 +1,11 @@
 #!/usr/bin/env zsh
 
+# time the startup of the interactive shell
+function timezsh {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
+
 # print file's content to console
 function pfile {
     usage="usage: $0 file"
