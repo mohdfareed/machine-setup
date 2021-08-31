@@ -134,3 +134,7 @@ defaults write org.m0k.transmission DownloadFolder -string "$HOME/Downloads"
     - Display count > 0 (External)
     - Battery charge >15% + power adapted is not connected
     - Allow display to sleep
+
+- Hachidori -> General ->
+  - Start Auto Scrobble at launch
+  - Set newly scrobbled titles to private

@@ -12,9 +12,7 @@
 xcode-select --install
 ```
 
-**3. Run bootstrap script:**
-
-Run the following code and follow on-screen instructions.
+**3. Run the bootstrap script:**
 
 ```sh
 zsh -c "$(curl -fsSL https://git.io/JEQad)"
@@ -51,15 +49,15 @@ Sets up `asdf`, version manager for multiple runtimes.
 
 ### python
 
-Links python's startup file and installs latest python through `asdf`. Startup files manages python's interactive shell's history file.
+Links python's startup file and installs the latest Python through `asdf`. The startup file manages python's interactive shell's history file.
 
 ### ruby
 
-Installs latest ruby through `asdf` with some gems.
+Installs latest Ruby through `asdf` with some gems.
 
 ### node
 
-Creates directories needed by `npm` and `REPL` and installs latest node though `asdf`.
+Creates directories needed by `npm` and `REPL` and installs the latest Node.js through `asdf`.
 
 ### databases
 
@@ -67,11 +65,11 @@ Sets up `sqlite` and `postgresql`.
 
 #### sqlite
 
-Creates history directory and installs latest sqlite through `asdf`.
+Creates history directory and installs latest SQLite through `asdf`.
 
 #### postgresql
 
-Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTRA_CONFIGURE_OPTIONS` to compile with `openssl` libraries.
+Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTRA_CONFIGURE_OPTIONS` to compile with `openssl` libraries.
 
 ## Miscellaneous
 
@@ -85,10 +83,18 @@ Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTR
   - Show battery level of devices on the same network
 - [Hachidori](https://malupdaterosx.moe/hachidori/)
   - Updates anime list automatically while watching
-  - Start Auto Scrobble at launch
-  - Set newly scrobbled titles to private
 - [Shukofukurou](https://malupdaterosx.moe/shukofukurou-for-macos/)
   - Manages Anime and Manga AniList and MyAnimeList lists
+- [Keka](https://www.keka.io/)
+  - File archiver and unarchiver
+- [Fork](https://git-fork.com/)
+  - macOS native GIT client
+- [Google Chrome](https://www.google.com/chrome/)
+  - Web browser
+- [Stats](https://github.com/exelban/stats)
+  - System monitor for the menu bar
+- [Grok](https://www.trygrok.com)
+  - Code-centric documentation in VSCode
 
 ## Caveats
 
