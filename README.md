@@ -8,79 +8,68 @@
 
 **2. Install Xcode CommandLine Tools:**
 
-Run the following code and wait for the installation to complete.
-
 ```sh
 xcode-select --install
 ```
 
-**3. Run setup script:**
+**3. Run bootstrap script:**
 
 Run the following code and follow on-screen instructions.
 
 ```sh
-zsh -c "$(curl -fsSL https://git.io/JZbBu)"
+zsh -c "$(curl -fsSL https://git.io/JEQad)"
 ```
 
-**4. Change preferences:**
+**4. Setup Time Machine:**
 
-Change OS and applications [preferences](preferences.md) manually.
+## Scripts
 
-**5. Install applications:**
-
-- Parallels Desktop
-  - Setup Windows, Linux, and macOS virtual machines with snapshots
-- iA Writer
-- Microsoft Office
-
-**6. Setup Time Machine:**
-
-## homebrew
+### homebrew
 
 Installs HomeBrew along with formulae, casks, and fonts.
 
-## zsh
+### zsh
 
 Sets up `zsh` and `oh-my-zsh`. Requires HomeBrew.
 
-## git
+### git
 
 Sets up `git` along with a `gpg` signing key. Requires HomeBrew.  
 The passphrase is printed before importing the key.
 
-## appstore
+### appstore
 
 Installs `mas` and select apps from the App Store. Requires HomeBrew and to be signed in to the App Store.
 
-## macos
+### macos
 
 Sets basic macOS preferences.
 
-## asdf
+### asdf
 
 Sets up `asdf`, version manager for multiple runtimes.
 
-## python
+### python
 
 Links python's startup file and installs latest python through `asdf`. Startup files manages python's interactive shell's history file.
 
-## ruby
+### ruby
 
 Installs latest ruby through `asdf` with some gems.
 
-## node
+### node
 
 Creates directories needed by `npm` and `REPL` and installs latest node though `asdf`.
 
-## databases
+### databases
 
 Sets up `sqlite` and `postgresql`.
 
-### sqlite
+#### sqlite
 
 Creates history directory and installs latest sqlite through `asdf`.
 
-### postgresql
+#### postgresql
 
 Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTRA_CONFIGURE_OPTIONS` to compile with `openssl` libraries.
 
@@ -119,4 +108,4 @@ Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTR
 
 ## TODO
 
-- Input passphrase for gpg key through script
+- Input passphrase for `gpg` key through a script
