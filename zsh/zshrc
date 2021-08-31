@@ -7,7 +7,7 @@ plugins=(
     osx               # provides a few utilities on macOS
 )
 
-# zsh
+# zsh history file
 export HISTFILE="$XDG_DATA_HOME/zsh/zsh_history"
 # homebrew
 export PATH="/usr/local/sbin:$PATH"

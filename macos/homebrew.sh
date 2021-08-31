@@ -11,6 +11,10 @@ echo "${bold}Installing Homebrew...${clear}"
 # fix “zsh compinit: insecure directories” message
 chmod -R go-w "$(brew --prefix)/share"
 
+brew tap homebrew/core
+brew tap homebrew/cask
+brew tap homebrew/cask-fonts
+
 brew install exa
 brew install youtube-dl
 brew install ffmpeg
@@ -21,14 +25,11 @@ brew install --cask iina
 brew install --cask the-unarchiver
 brew install --cask transmission
 brew install --cask openinterminal
-brew install --cask swish
 
-brew install --cask monitorcontrol
-brew install --cask appcleaner
-brew install --cask mos
-brew install --cask telegram
+brew install --cask swish          # trackpad
+brew install --cask monitorcontrol # external monitors
+brew install --cask mos            # mouse
 
-brew tap homebrew/cask-fonts
 brew install font-fira-code
 brew install font-fira-code-nerd-font
 brew install font-sf-pro

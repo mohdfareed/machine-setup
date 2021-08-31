@@ -19,10 +19,10 @@ fi
 mas install 441258766  # Magnet
 mas install 1438243180 # Dark Reader
 mas install 1320666476 # Wipr
-mas install 1519213509 # iPreview
 mas install 937984704  # Amphetamine
 mas install 517914548  # Dashlane
+mas install 497799835  # Xcode
 mas install 409201541  # Pages
 mas install 409203825  # Numbers
 mas install 409183694  # Keynote
-mas install 497799835  # Xcode
+mas install 1519213509 # iPreview

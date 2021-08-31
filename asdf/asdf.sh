@@ -6,8 +6,8 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up asdf...${clear}"
 
-source $DOTFILES/dots/zshenv
 asdf_dir=$(dirname $0)
+source $(dirname $asdf_dir)/zsh/zshenv
 
 brew install asdf
 
