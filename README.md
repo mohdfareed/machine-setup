@@ -35,43 +35,34 @@ Change OS and applications [preferences](preferences.md) manually.
 
 **6. Setup Time Machine:**
 
+## homebrew
+
+Installs HomeBrew along with formulae, casks, and fonts.
+
 ## zsh
 
-Installs `zsh` and `oh-my-zsh`, creates needed directories, links configuration files and theme, and cleans up home directory.
-
-Required environment variables:
-
-- `$ZSH`
-- `$ZDOTDIR`
-- `$ZSH_COMPDUMP`
-- `$HISTFILE`
+Sets up `zsh` and `oh-my-zsh`. Requires HomeBrew.
 
 ## git
 
-Installs `git`, `gpg`, and `pinentr-mac` through HomeBrew, links configuration files, and imports commits signing key.
+Sets up `git` along with a `gpg` signing key. Requires HomeBrew.  
+The passphrase is printed before importing the key.
 
-Required environment variables:
+## appstore
 
-- `$XDG_CONFIG_HOME`
-- `$GNUPGHOME`
+Installs `mas` and select apps from the App Store. Requires HomeBrew and to be signed in to the App Store.
 
-The passphrase for the key is printed before importing the key.
+## macos
+
+Sets basic macOS preferences.
 
 ## asdf
 
-Installs `asdf` and links configuration file.
-
-Required environment variables:
-
-- `$ASDF_CONFIG_FILE`
+Sets up `asdf`, version manager for multiple runtimes.
 
 ## python
 
 Links python's startup file and installs latest python through `asdf`. Startup files manages python's interactive shell's history file.
-
-Required environment variables:
-
-- `$PYTHONSTARTUP`
 
 ## ruby
 
@@ -80,12 +71,6 @@ Installs latest ruby through `asdf` with some gems.
 ## node
 
 Creates directories needed by `npm` and `REPL` and installs latest node though `asdf`.
-
-Required environment variables:
-
-- `$NPM_CONFIG_USERCONFIG`
-- `$NPM_CONFIG_CACHE`
-- `$NODE_REPL_HISTORY`
 
 ## databases
 
@@ -97,19 +82,22 @@ Creates history directory and installs latest sqlite through `asdf`.
 
 ### postgresql
 
-Creates needed directories and installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTRA_CONFIGURE_OPTIONS` to compile with `openssl` libraries.
-
-Required environment variables:
-
-- `$PSQLRC`
-- `$PSQL_HISTORY`
+Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTRA_CONFIGURE_OPTIONS` to compile with `openssl` libraries.
 
 ## Miscellaneous
 
+- [AppCleaner](https://freemacsoft.net/appcleaner/)
+  - Application uninstaller
+  - `brew install --cask appcleaner`
+- [Telegram](https://macos.telegram.org)
+  - Messaging app with a focus on speed and security
+  - `brew install --cask telegram`
 - [Hachidori](https://malupdaterosx.moe/hachidori/)
+  - Updates anime list automatically while watching
   - Start Auto Scrobble at launch
   - Set newly scrobbled titles to private
 - [Shukofukurou](https://malupdaterosx.moe/shukofukurou-for-macos/)
+  - Manages Anime and Manga AniList and MyAnimeList lists
 
 ## Caveats
 
@@ -128,6 +116,4 @@ Required environment variables:
 ## TODO
 
 - Input passphrase for gpg key through script
-- Add extra script for unnecessary setup
-- Run unnecessary scripts manually
-- Add unnecessary testing scripts to use in extra scripts
+- Cleanup zshenv
