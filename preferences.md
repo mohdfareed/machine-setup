@@ -32,9 +32,8 @@ The following are OS and application preferences that are set manually.
 ## Safari
 
 - Extensions -> choose the following:
-  - Dark Reader/Dark Mode for Safari
+  - Dark Reader
   - Wiper 1..3
-  - Dashlane: Sign-in, enable Touch ID, and background refresh then disable
 
 ## Mos
 
@@ -126,13 +125,6 @@ defaults write org.m0k.transmission DownloadFolder -string "$HOME/Downloads"
 
 - OpenInTerminal -> General ->
   - Default Text Editor: Visual Studio Code
-
-- Keka ->
-  - General -> Set Keka as the default decompressor
-  - Compression -> Show file in Finder after compression: false
-  - Extraction -> Show content in Finder after extraction: false
-  - File Access -> Enable home folder/external volumes access
-  - Finder Extension -> Show icons in actions: false
 
 - MonitorControl -> Advanced -> Hide OSD: true
 

@@ -103,12 +103,13 @@ Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTR
 
 - Dotfiles directory is set in both `zshenv` and `bootstrap.sh`.
 - Dotfiles repository structure is hardcoded.
-- GitHub authentication info might need to be updated in `bootstrap.sh`.
+- GitHub PAT might need to be updated in `bootstrap.sh`.
+- `bootstrap.sh` link in README might need to be updated.
 
 ## Decommissioning Process
 
 - Backup terminal profile to `dotfiles/resources`.
-- Backup gpg and ssh keys.
+- Backup `gpg` and `ssh` keys.
 - Backup virtual machines.
 - Choose the changes to preferences and formulae, casks, and apps to push.
 - Sign out from the device and Find My app.
@@ -116,4 +117,3 @@ Installs latest postgresql through `asdf`. It sets the variables `$POSTGRES_EXTR
 ## TODO
 
 - Input passphrase for gpg key through script
-- Cleanup zshenv
