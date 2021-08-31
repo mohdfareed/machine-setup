@@ -20,5 +20,8 @@ gem install byebug  # ruby debugger
 gem install solargraph     # code completion, documentation, and static analysis
 gem install ruby-debug-ide # an interface which glues ruby-debug to IDEs
 gem install debase -v '>= 0.2.5.beta' # implementation of standard Ruby debugger
-
 asdf reshim
+
+# add environment variables
+cat env_vars >> $ZDOTDIR/env_vars
+echo >> $ZDOTDIR/env_vars

@@ -15,6 +15,11 @@ mkdir -p $(dirname $SQLITE_HISTORY) # create history directory
 asdf plugin add sqlite
 asdf install sqlite latest > /dev/null
 asdf global sqlite latest
+asdf reshim
+
+# add environment variables
+cat sqlite_env_vars >> $ZDOTDIR/env_vars
+echo >> $ZDOTDIR/env_vars
 
 # postgresql setup
 # ============
@@ -35,5 +40,8 @@ POSTGRES_EXTRA_CONFIGURE_OPTIONS="--with-uuid=e2fs --with-openssl \
 asdf plugins add postgres
 asdf install postgres latest > /dev/null
 asdf global postgres latest
-
 asdf reshim
+
+# add environment variables
+cat psql_env_vars >> $ZDOTDIR/env_vars
+echo >> $ZDOTDIR/env_vars

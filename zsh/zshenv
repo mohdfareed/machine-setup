@@ -6,6 +6,7 @@ export XDG_CONFIG_HOME="$DEV/config"
 export XDG_CACHE_HOME="$DEV/cache"
 export XDG_DATA_HOME="$DEV/data"
 export XDG_STATE_HOME="$DEV/state"
+export XDG_RUNTIME_DIR="$DEV/runtime"
 
 # default editor
 export EDITOR=/usr/local/bin/code
@@ -21,34 +22,4 @@ export SHELL_SESSIONS_DISABLE=1
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export GPG_TTY="$(tty)"
 
-# asdf
-export ASDF_DATA_DIR="$XDG_DATA_HOME/asdf"
-export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
-export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$(dirname $ASDF_CONFIG_FILE)/tool-versions"
-
-# python
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
-export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
-export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
-
-# ruby
-export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
-export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME/bundle"
-export BUNDLE_USER_CACHE="$XDG_CACHE_HOME/bundle"
-export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME/bundle"
-export SOLARGRAPH_CACHE="$XDG_CACHE_HOME/solargraph"
-
-# node
-export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
-export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
-export NODE_REPL_HISTORY="$XDG_DATA_HOME/node/node_history"
-
-# sqlite
-export SQLITE_HISTORY="$XDG_DATA_HOME/sqlite/sqlite_history"
-
-# postgresql
-export PSQLRC="$XDG_CONFIG_HOME/psql/psqlrc"
-export PSQL_HISTORY="$XDG_DATA_HOME/psql/psql_history"
-export PGPASSFILE="$XDG_CONFIG_HOME/psql/pgpass"
-export PGSERVICEFILE="$XDG_CONFIG_HOME/psql/pg_service.conf"
+source $ZDOTDIR/env_vars

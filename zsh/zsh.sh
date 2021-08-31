@@ -26,6 +26,10 @@ ln -siv "$zsh_dir/aliases" "$ZDOTDIR/aliases"
 ln -siv "$zsh_dir/functions" "$ZDOTDIR/functions"
 ln -siv "$zsh_dir/common/common.zsh-theme" "$ZSH/themes"
 
+# holds optional environment variables
+# sources by zshenv
+touch $ZDOTDIR/env_vars
+
 # remove last login time prompt
 touch $HOME/.hushlogin
 # delete old zshrc files

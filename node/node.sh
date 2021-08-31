@@ -6,7 +6,8 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up node.js...${clear}"
 
-source $DOTFILES/dots/zshenv
+node_dir=$(dirname $0)
+source $(dirname $node_dir)/zsh/zshenv
 
 # create needed directories
 mkdir -p $(dirname $NPM_CONFIG_USERCONFIG)
@@ -17,5 +18,8 @@ mkdir -p $NPM_CONFIG_CACHE
 asdf plugin add nodejs
 asdf install nodejs latest > /dev/null
 asdf global nodejs latest
-
 asdf reshim
+
+# add environment variables
+cat env_vars >> $ZDOTDIR/env_vars
+echo >> $ZDOTDIR/env_vars
