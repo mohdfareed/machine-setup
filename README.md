@@ -95,22 +95,26 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
   - System monitor for the menu bar
 - [Grok](https://www.trygrok.com)
   - Code-centric documentation in VSCode
+- [Peek](https://www.bigzlabs.com/peek.html)
+  - Quick Look extension
+  - Better Markdown handling (MathJax support)
+  - Lacks `.zip` support
 
 ## Caveats
 
-- XDG base directories are set following the [GO implementation](https://github.com/adrg/xdg).
-- Dotfiles directory is set in both `zshenv` and `bootstrap.sh`.
-- Dotfiles repository structure is hardcoded.
-- GitHub PAT might need to be updated in `bootstrap.sh`.
-- `bootstrap.sh` link in README might need to be updated.
+- XDG base directories are set following the [GO implementation](https://github.com/adrg/xdg)
+- Dotfiles directory is set in both `zshenv` and `bootstrap.sh`
+- Dotfiles repository structure is hardcoded
+- GitHub PAT might need to be updated in `bootstrap.sh`
+- `bootstrap.sh` link in README might need to be updated
 
 ## Decommissioning Process
 
-- Backup terminal profile to `dotfiles/resources`.
-- Backup `gpg` and `ssh` keys.
-- Backup virtual machines.
-- Choose the changes to preferences and formulae, casks, and apps to push.
-- Sign out from the device and Find My app.
+- Backup terminal profile to `dotfiles/macos`
+- Backup `gpg` and `ssh` keys
+- Backup virtual machines
+- Choose the changes to preferences and formulae, casks, and apps to push
+- Sign out from the device and Find My app
 
 ## TODO
 
