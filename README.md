@@ -99,6 +99,10 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
   - Quick Look extension
   - Better Markdown handling (MathJax support)
   - Lacks `.zip` support
+- [Minimalist](https://minimalistpassword.com/)
+  - Fully native password manager
+- [Elpass](https://elpass.app/)
+  - Free password manager
 
 ## Caveats
 
