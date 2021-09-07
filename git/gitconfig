@@ -20,5 +20,5 @@
     cmd = code --wait $MERGED
 
 [alias]
-    graph = log --graph --abbrev-commit --name-status
-    graphcompact = log --graph --abbrev-commit --oneline
+    graph = log --graph --abbrev-commit
+    graphcompact = log --graph --oneline
