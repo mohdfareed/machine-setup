@@ -37,7 +37,7 @@ POSTGRES_EXTRA_CONFIGURE_OPTIONS="--with-uuid=e2fs --with-openssl \
 --with-includes=/usr/local/include:$(brew --prefix openssl)/include"
 
 # installed latest postgresql version and set it as default
-asdf plugins add postgres
+asdf plugin add postgres
 asdf install postgres latest > /dev/null
 asdf global postgres latest
 asdf reshim

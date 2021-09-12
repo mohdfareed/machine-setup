@@ -14,7 +14,7 @@ mkdir -p $(dirname $PYTHONSTARTUP)
 ln -siv "$python_dir/pythonrc" "$PYTHONSTARTUP"
 
 # installed latest python version and set it as default
-asdf plugins add python
+asdf plugin add python
 asdf install python latest > /dev/null
 asdf global python latest
 asdf reshim
