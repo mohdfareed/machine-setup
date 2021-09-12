@@ -6,7 +6,7 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up macOS preferences...${clear}"
 
-macos_dir=$(dirname $0)
+macos_dir=$(dirname "$0")
 
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'
@@ -64,7 +64,7 @@ defaults write com.apple.terminal SecureKeyboardEntry -bool true
 
 # set Home directory as the default location for new Finder windows
 defaults write com.apple.finder NewWindowTarget 'PfHm'
-defaults write com.apple.finder NewWindowTargetPath "file://${HOME}/"
+defaults write com.apple.finder NewWindowTargetPath "file://$HOME/"
 # when performing a search, use the current folder by default
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # keep folders on top when sorting by name

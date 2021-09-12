@@ -9,7 +9,7 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up sqlite...${clear}"
 
-mkdir -p $(dirname $SQLITE_HISTORY) # create history directory
+mkdir -p "$(dirname "$SQLITE_HISTORY")" # create history directory
 
 # installed latest sqlite version and set it as default
 asdf plugin add sqlite
@@ -18,8 +18,8 @@ asdf global sqlite latest
 asdf reshim
 
 # add environment variables
-cat sqlite_env_vars >> $ZDOTDIR/env_vars
-echo >> $ZDOTDIR/env_vars
+cat sqlite_env_vars >> "$ZDOTDIR/env_vars"
+echo >> "$ZDOTDIR/env_vars"
 
 # postgresql setup
 # ============
@@ -28,8 +28,8 @@ echo
 echo "${bold}Setting up postgresql...${clear}"
 
 # create needed directories
-mkdir $(dirname $PSQLRC)
-mkdir $(dirname $PSQL_HISTORY)
+mkdir "$(dirname "$PSQLRC")"
+mkdir "$(dirname "$PSQL_HISTORY")"
 
 #  compile with openssl libraries
 POSTGRES_EXTRA_CONFIGURE_OPTIONS="--with-uuid=e2fs --with-openssl \
@@ -43,5 +43,5 @@ asdf global postgres latest
 asdf reshim
 
 # add environment variables
-cat psql_env_vars >> $ZDOTDIR/env_vars
-echo >> $ZDOTDIR/env_vars
+cat psql_env_vars >> "$ZDOTDIR/env_vars"
+echo >> "$ZDOTDIR/env_vars"

@@ -11,10 +11,13 @@ pat="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" # github personal access token
 tput clear
 echo "Cloning dotfiles repo..."
 # clone repo and its submodules
-git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git $DOTFILES
-git -C $DOTFILES submodule update --init
+git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git "$DOTFILES"
+git -C "$DOTFILES" submodule update --init
 
 cd "$DOTFILES"
+source "macos/homebrew.sh" # setup homebrew
+source "zsh/zsh.sh"        # setup zsh
+source "git/git.sh"        # setup git
 cd - > /dev/null
 
 echo -e "\a"

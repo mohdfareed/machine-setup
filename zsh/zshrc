@@ -12,14 +12,14 @@ export HISTFILE="$XDG_DATA_HOME/zsh/zsh_history"
 # homebrew
 export PATH="/usr/local/sbin:$PATH"
 # asdf
-. $(brew --prefix asdf)/libexec/asdf.sh
+. "$(brew --prefix asdf)/libexec/asdf.sh"
 
 # load aliases
-source $ZDOTDIR/aliases
+source "$ZDOTDIR/aliases"
 # load functions
-source $ZDOTDIR/functions
+source "$ZDOTDIR/functions"
 
 # load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 # load zsh syntax highlighting
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

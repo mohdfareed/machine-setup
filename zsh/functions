@@ -13,12 +13,12 @@ function pfile {
         echo $usage
         return 1
     fi
-    if [[ ! -f $1 ]] ; then
+    if [[ ! -f "$1" ]] ; then
         echo "\033[0;31mERROR:\033[0m '$1' is not a valid file path."
         return 1
     fi
 
-    echo "$(< $1)"
+    echo $(< $1)
 }
 
 # uninstall homebrew package with its dependencies
@@ -41,23 +41,23 @@ function zip_encrypt {
         echo $usage
         return 1
     fi
-    if [[ ! -d $1 ]] ; then
-        echo "\033[0;31mERROR:\033[0m '$1' is not a valid directory."
+    if [[ ! -d "$1" ]] ; then
+        echo "\033[0;31mERROR:\033[0m '$1' is not a valid directory"
         return 1
     fi
 
-    cd $1
+    cd "$1"
     dir_name=${PWD##*/}
-    zip -er0 $dir_name.zip . -x ".DS_Store" -x "._*"
-    mv $dir_name.zip ..
-    cd - >> /dev/null
+    zip -er0 "$dir_name.zip" . -x ".DS_Store" -x "._*"
+    mv "$dir_name.zip" ..
+    cd - > /dev/null
 }
 
 # download video (or audio) from URL
 function dl_video {
     usage="usage: $0 [-a] URL [dir]"
     audio=false
-    dir="${HOME}/Downloads"
+    dir="$HOME/Downloads"
 
     if [[ $1 == '-a' ]] ; then
         audio=true
@@ -65,11 +65,11 @@ function dl_video {
     fi
 
     if (($# == 2)) ; then
-        if [[ ! -d $2 ]] ; then
+        if [[ ! -d "$2" ]] ; then
             echo "\033[0;31mERROR:\033[0m '$2' is not a valid directory."
             return 1
         fi
-        dir=$2
+        dir="$2"
     elif (($# != 1)) ; then
         echo $usage
         return 1
@@ -78,8 +78,8 @@ function dl_video {
     sub=(--write-sub --write-auto-sub --sub-lang en --embed-subs)
     cmd=(--embed-thumbnail --add-metadata -o "$dir/%(title)s.%(ext)s")
     if [[ $audio != true ]] ; then
-        youtube-dl $sub $cmd --merge-output-format mp4 $1
+        youtube-dl $sub $cmd --merge-output-format mp4 "$1"
     else
-        youtube-dl -x $cmd --audio-format mp3 $1
+        youtube-dl -x $cmd --audio-format mp3 "$1"
     fi
 }
