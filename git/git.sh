@@ -15,8 +15,8 @@ brew install pinentry-mac
 
 # symlink git configuration files
 mkdir -p "$XDG_CONFIG_HOME/git"
-ln -siv "$git_dir/gitconfig" "$XDG_CONFIG_HOME/git/config"
-ln -siv "$git_dir/gitignore" "$XDG_CONFIG_HOME/git/ignore"
+ln -sfv "$git_dir/gitconfig" "$XDG_CONFIG_HOME/git/config"
+ln -sfv "$git_dir/gitignore" "$XDG_CONFIG_HOME/git/ignore"
 
 # setup gpg key
 mkdir -pm 0700 "$GNUPGHOME"

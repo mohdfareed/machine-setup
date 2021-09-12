@@ -11,7 +11,7 @@ source "$(dirname "$python_dir")/zsh/zshenv"
 
 # symlink python startup file
 mkdir -p "$(dirname "$PYTHONSTARTUP")"
-ln -siv "$python_dir/pythonrc" "$PYTHONSTARTUP"
+ln -sfv "$python_dir/pythonrc" "$PYTHONSTARTUP"
 
 # installed latest python version and set it as default
 asdf plugin add python

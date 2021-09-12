@@ -20,11 +20,11 @@ mkdir -p "$(dirname "$ZSH_COMPDUMP")"
 mkdir -p "$(dirname "$HISTFILE")"
 
 # symlink files
-ln -siv "$zsh_dir/zshenv" "$HOME/.zshenv"
-ln -siv "$zsh_dir/zshrc" "$ZDOTDIR/.zshrc"
-ln -siv "$zsh_dir/aliases" "$ZDOTDIR/aliases"
-ln -siv "$zsh_dir/functions" "$ZDOTDIR/functions"
-ln -siv "$zsh_dir/common/common.zsh-theme" "$ZSH/themes"
+ln -sfv "$zsh_dir/zshenv" "$HOME/.zshenv"
+ln -sfv "$zsh_dir/zshrc" "$ZDOTDIR/.zshrc"
+ln -sfv "$zsh_dir/aliases" "$ZDOTDIR/aliases"
+ln -sfv "$zsh_dir/functions" "$ZDOTDIR/functions"
+ln -sfv "$zsh_dir/common/common.zsh-theme" "$ZSH/themes"
 
 # holds optional environment variables
 # sourced by zshenv
