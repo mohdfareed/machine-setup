@@ -45,7 +45,7 @@ Sets basic macOS preferences.
 
 ### asdf
 
-Sets up `asdf`, version manager for multiple runtimes.
+Sets up `asdf`, version manager for multiple runtimes. The data directory is set manually because it cannot contain white space.
 
 ### python
 
