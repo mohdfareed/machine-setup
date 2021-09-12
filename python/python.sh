@@ -20,5 +20,5 @@ asdf global python latest
 asdf reshim
 
 # add environment variables
-cat env_vars >> "$ZDOTDIR/env_vars"
+cat "$python_dir/env_vars" >> "$ZDOTDIR/env_vars"
 echo >> "$ZDOTDIR/env_vars"

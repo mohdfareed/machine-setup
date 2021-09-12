@@ -6,6 +6,9 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up ruby...${clear}"
 
+ruby_dir=$(dirname "$0")
+source "$(dirname "$ruby_dir")/zsh/zshenv"
+
 # installed latest ruby version and set it as default
 asdf plugin add ruby
 asdf install ruby latest > /dev/null
@@ -23,5 +26,5 @@ gem install debase -v '>= 0.2.5.beta' # implementation of standard Ruby debugger
 asdf reshim
 
 # add environment variables
-cat env_vars >> "$ZDOTDIR/env_vars"
+cat "$ruby_dir/env_vars" >> "$ZDOTDIR/env_vars"
 echo >> "$ZDOTDIR/env_vars"

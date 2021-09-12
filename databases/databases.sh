@@ -9,6 +9,8 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up sqlite...${clear}"
 
+db_dir=$(dirname "$0")
+source "$(dirname "$db_dir")/zsh/zshenv"
 mkdir -p "$(dirname "$SQLITE_HISTORY")" # create history directory
 
 # installed latest sqlite version and set it as default
@@ -18,7 +20,7 @@ asdf global sqlite latest
 asdf reshim
 
 # add environment variables
-cat sqlite_env_vars >> "$ZDOTDIR/env_vars"
+cat "$db_dir/sqlite_env_vars" >> "$ZDOTDIR/env_vars"
 echo >> "$ZDOTDIR/env_vars"
 
 # postgresql setup
@@ -43,5 +45,5 @@ asdf global postgres latest
 asdf reshim
 
 # add environment variables
-cat psql_env_vars >> "$ZDOTDIR/env_vars"
+cat "$db_dir/psql_env_vars" >> "$ZDOTDIR/env_vars"
 echo >> "$ZDOTDIR/env_vars"
