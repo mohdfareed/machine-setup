@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # time the startup of the interactive shell
-function timezsh {
+function zsh_time {
   shell=${1-$SHELL}
   for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
@@ -35,7 +35,7 @@ function uninstall {
 }
 
 # zip a folder's content protected with password without compression
-function zip-encrypt {
+function zip_encrypt {
     usage="usage: $0 dir"
     if (($# != 1)) ; then
         echo $usage
@@ -54,7 +54,7 @@ function zip-encrypt {
 }
 
 # download video (or audio) from URL
-function dl-video {
+function dl_video {
     usage="usage: $0 [-a] URL [dir]"
     audio=false
     dir="${HOME}/Downloads"
