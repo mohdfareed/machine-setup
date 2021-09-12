@@ -14,9 +14,8 @@ echo "Cloning dotfiles repo..."
 git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git $DOTFILES
 git -C $DOTFILES submodule update --init
 
-source $scripts/homebrew.sh # setup homebrew
-source $zsh/zsh.sh          # setup zsh
-source $git/git.sh          # setup git
+cd "$DOTFILES"
+cd - > /dev/null
 
 echo -e "\a"
 echo "Restart for some of the changes to take effect."
