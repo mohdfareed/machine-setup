@@ -8,7 +8,7 @@ plugins=(
 )
 
 # zsh history file
-export HISTFILE="$XDG_DATA_HOME/zsh/zsh_history"
+export HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
 # homebrew
 export PATH="/usr/local/sbin:$PATH"
 # asdf
