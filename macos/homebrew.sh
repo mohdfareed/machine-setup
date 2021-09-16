@@ -22,9 +22,10 @@ brew install --cask the-unarchiver
 brew install --cask transmission
 brew install --cask openinterminal
 
-brew install --cask swish          # trackpad
-brew install --cask monitorcontrol # external monitors
-brew install --cask mos            # mouse
+brew install --cask swish          # trackpad utility
+brew install --cask monitorcontrol # external monitors controls
+brew install --cask mos            # mouse smooth scroll utility
+brew install --cask zoom           # zoom virtual meetings platform
 
 brew tap homebrew/cask-fonts
 
