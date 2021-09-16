@@ -25,7 +25,7 @@ ln -sfv "$zsh_dir/zshenv" "$HOME/.zshenv"
 ln -sfv "$zsh_dir/zshrc" "$ZDOTDIR/.zshrc"
 ln -sfv "$zsh_dir/aliases" "$ZDOTDIR/aliases"
 ln -sfv "$zsh_dir/functions" "$ZDOTDIR/functions"
-ln -sfv "$zsh_dir/common/common.zsh-theme" "$ZSH/themes"
+ln -sfv "$zsh_dir/themes/common/common.zsh-theme" "$ZSH/themes"
 
 # holds optional environment variables
 # sourced by zshenv
