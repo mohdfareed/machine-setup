@@ -11,6 +11,7 @@ source "$zsh_dir/zshenv"
 
 brew install zsh
 brew install zsh-syntax-highlighting
+brew install zsh-completions
 # install oh-my-zsh
 sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
 
