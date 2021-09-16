@@ -1,5 +1,5 @@
 # theme
-ZSH_THEME="common"
+ZSH_THEME="typewritten"
 
 # plugins
 plugins=(
