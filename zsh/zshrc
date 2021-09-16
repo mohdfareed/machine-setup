@@ -14,12 +14,9 @@ export PATH="/usr/local/sbin:$PATH"
 # asdf
 . "$(brew --prefix asdf)/libexec/asdf.sh"
 
-# load aliases
-source "$ZDOTDIR/aliases"
-# load functions
-source "$ZDOTDIR/functions"
 
-# load oh-my-zsh
-source "$ZSH/oh-my-zsh.sh"
-# load zsh syntax highlighting
+source "$ZSH/oh-my-zsh.sh"  # oh-my-zsh
+source "$ZDOTDIR/aliases"   # aliases
+source "$ZDOTDIR/functions" # functions
+# syntax highlighting
 source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"

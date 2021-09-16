@@ -12,7 +12,7 @@ tput clear
 echo "Cloning dotfiles repo..."
 # clone repo and its submodules
 git clone https://$username:$pat@github.com/mohdfareed/dotfiles.git "$DOTFILES"
-git -C "$DOTFILES" submodule update --init
+git -C "$DOTFILES" submodule update --init --recursive
 
 cd "$DOTFILES"
 source "macos/homebrew.sh" # setup homebrew
