@@ -79,8 +79,6 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
 - [Telegram](https://macos.telegram.org)
   - Messaging app with a focus on speed and security
   - `brew install --cask telegram`
-- [Batteries for Mac](https://www.fadel.io/batteries)
-  - Show battery level of devices on the same network
 - [Hachidori](https://malupdaterosx.moe/hachidori/)
   - Updates anime list automatically while watching
 - [Shukofukurou](https://malupdaterosx.moe/shukofukurou-for-macos/)
@@ -103,6 +101,18 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
   - Fully native password manager
 - [Elpass](https://elpass.app/)
   - Free password manager
+- [Batteries](https://www.fadel.io/batteries)
+  - Tracks all your devices' batteries from your Mac
+- [Raycast](https://www.raycast.com)
+  - Extensible Spotlight
+- [Dash](https://kapeli.com/dash)
+  - API Documentation Browser and Code Snippet Manager
+- [Dropover](https://dropoverapp.com)
+  - Stash, gather or move any draggable content
+- [TextSniper](https://textsniper.app)
+  - Extract text from images and other digital documents
+- [Calca](http://calca.io)
+  - Symbolic calculator with built-in grapher
 
 ## Caveats
 
