@@ -43,6 +43,10 @@ Installs `mas` and select apps from the App Store. Requires HomeBrew and to be s
 
 Sets basic macOS preferences.
 
+### [Raycast](https://github.com/mohdfareed/raycast.git)
+
+Private repo is cloned. Configuration in repo must be imported in Raycast.
+
 ### asdf
 
 Sets up `asdf`, version manager for multiple runtimes. The data directory is set manually because it cannot contain white space.
@@ -103,8 +107,6 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
   - Free password manager
 - [Batteries](https://www.fadel.io/batteries)
   - Tracks all your devices' batteries from your Mac
-- [Raycast](https://www.raycast.com)
-  - Extensible Spotlight
 - [Dash](https://kapeli.com/dash)
   - API Documentation Browser and Code Snippet Manager
 - [Dropover](https://dropoverapp.com)
@@ -113,6 +115,10 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
   - Extract text from images and other digital documents
 - [Calca](http://calca.io)
   - Symbolic calculator with built-in grapher
+- [Peek](https://www.bigzlabs.com/peek.html)
+  - Code and Markdown quicklook extension
+- [HyperDock](https://bahoom.com/hyperdock)
+  - Window preview in dock
 
 ## Caveats
 
@@ -121,6 +127,7 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
 - Dotfiles repository structure is hardcoded
 - GitHub PAT might need to be updated in `bootstrap.sh`
 - `bootstrap.sh` link in README might need to be updated
+- macOS script sets up Raycast which requires git authentication
 
 ## Decommissioning Process
 

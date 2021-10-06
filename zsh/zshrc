@@ -14,7 +14,6 @@ export PATH="/usr/local/sbin:$PATH"
 # asdf
 . "$(brew --prefix asdf)/libexec/asdf.sh"
 
-
 source "$ZSH/oh-my-zsh.sh"  # oh-my-zsh
 source "$ZDOTDIR/aliases"   # aliases
 source "$ZDOTDIR/functions" # functions

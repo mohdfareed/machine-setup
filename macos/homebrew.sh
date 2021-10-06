@@ -17,6 +17,7 @@ brew install ffmpeg
 brew install atomicparsley
 
 brew install --cask visual-studio-code
+brew install --cask raycast
 brew install --cask iina
 brew install --cask the-unarchiver
 brew install --cask transmission

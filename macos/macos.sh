@@ -86,3 +86,8 @@ defaults write com.apple.TextEdit RichText -int 0
 # plain text font
 defaults write com.apple.TextEdit NSFixedPitchFont -string "FiraCodeNerdFontComplete-Regular"
 defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
+
+# Raycast
+# =======
+
+git clone https://github.com/mohdfareed/raycast.git "$DEV/raycast"
