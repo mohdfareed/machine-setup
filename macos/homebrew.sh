@@ -22,6 +22,7 @@ brew install --cask iina
 brew install --cask the-unarchiver
 brew install --cask transmission
 brew install --cask openinterminal
+brew install --cask sf-symbols
 
 brew install --cask swish          # trackpad utility
 brew install --cask monitorcontrol # external monitors controls
