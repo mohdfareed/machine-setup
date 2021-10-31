@@ -140,3 +140,4 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
 ## TODO
 
 - Input passphrase for `gpg` key through a script
+- Setup update scripts
