@@ -119,6 +119,16 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
   - Code and Markdown quicklook extension
 - [HyperDock](https://bahoom.com/hyperdock)
   - Window preview in dock
+- [TopNotch](https://topnotch.app)
+  - Hide notch on MacBook Pro
+- [Termius](https://termius.com)
+  - macOS and iOS SSH client.
+- [TablePlus](https://tableplus.com)
+  - Native database client.
+- [Rectangle](https://rectangleapp.com)
+  - macOS window manager.
+- [AltTab](https://alt-tab-macos.netlify.app)
+  - Windows switcher with preview.
 
 ## Caveats
 
