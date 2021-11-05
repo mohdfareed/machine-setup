@@ -129,6 +129,8 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
   - macOS window manager.
 - [AltTab](https://alt-tab-macos.netlify.app)
   - Windows switcher with preview.
+- [Command-Tab Plus 2](https://noteifyapp.com/command-tab-plus/)
+  - Windows switcher with preview.
 
 ## Caveats
 

@@ -22,7 +22,6 @@ brew install --cask iina
 brew install --cask the-unarchiver
 brew install --cask transmission
 brew install --cask openinterminal
-brew install --cask background-music
 brew install --cask alt-tab
 brew install --cask sf-symbols
 
