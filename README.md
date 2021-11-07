@@ -15,7 +15,7 @@ xcode-select --install
 **Run the bootstrap script:**
 
 ```sh
-zsh -c "$(curl -fsSL https://git.io/JEQad)"
+zsh -c "$(curl -fsSL https://git.io/JX4FH)"
 ```
 
 **Setup Time Machine:**
