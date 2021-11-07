@@ -22,16 +22,12 @@ brew install --cask iina
 brew install --cask the-unarchiver
 brew install --cask transmission
 brew install --cask openinterminal
-brew install --cask alt-tab
-brew install --cask sf-symbols
 
 brew install --cask swish          # trackpad utility
 brew install --cask monitorcontrol # external monitors controls
 brew install --cask mos            # mouse smooth scroll utility
-brew install --cask zoom           # zoom virtual meetings platform
 
 brew tap homebrew/cask-fonts
-
 brew install font-fira-code
 brew install font-fira-code-nerd-font
 brew install font-sf-pro

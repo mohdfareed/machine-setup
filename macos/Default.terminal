@@ -1149,6 +1149,8 @@
 	</data>
 	<key>BackgroundSettingsForInactiveWindows</key>
 	<true/>
+	<key>CursorBlink</key>
+	<false/>
 	<key>CursorColor</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
@@ -1252,7 +1254,7 @@
 	GgAAAAAAAAIBAAAAAAAAADUAAAAAAAAAAAAAAAAAABMd
 	</data>
 	<key>CursorType</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>Font</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
@@ -1368,12 +1370,14 @@
 	</data>
 	<key>ShowActiveProcessArgumentsInTabTitle</key>
 	<false/>
+	<key>ShowActiveProcessArgumentsInTitle</key>
+	<true/>
 	<key>ShowActiveProcessInTabTitle</key>
 	<false/>
 	<key>ShowActiveProcessInTitle</key>
 	<false/>
 	<key>ShowActivityIndicatorInTab</key>
-	<true/>
+	<false/>
 	<key>ShowCommandKeyInTitle</key>
 	<false/>
 	<key>ShowComponentsWhenTabHasCustomTitle</key>
@@ -1384,6 +1388,8 @@
 	<false/>
 	<key>ShowRepresentedURLInTitle</key>
 	<false/>
+	<key>ShowRepresentedURLPathInTabTitle</key>
+	<true/>
 	<key>ShowRepresentedURLPathInTitle</key>
 	<false/>
 	<key>ShowShellCommandInTitle</key>
