@@ -20,7 +20,6 @@ The following are OS and application preferences that are set manually.
     - Text -> Disable all
     - Files and Folders:
       - Index
-      - New Note
 - Extensions -> setup extensions
 - Language & Region -> 24-Hour Time: true
 - Software Update -> Automatically keep Mac up to date
