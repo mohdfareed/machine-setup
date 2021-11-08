@@ -1,4 +1,0 @@
-# asdf
-export ASDF_DATA_DIR="$HOME/Library/asdf"
-export ASDF_CONFIG_FILE="$XDG_CONFIG_HOME/asdf/asdfrc"
-export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME="$(dirname "$ASDF_CONFIG_FILE")/tool-versions"

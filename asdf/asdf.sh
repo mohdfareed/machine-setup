@@ -14,7 +14,3 @@ brew install asdf
 # symlink asdf configuration file
 mkdir -p "$(dirname "$ASDF_CONFIG_FILE")"
 ln -sfv "$asdf_dir/asdfrc" "$ASDF_CONFIG_FILE"
-
-# add environment variables
-cat "$asdf_dir/env_vars" >> "$ZDOTDIR/env_vars"
-echo >> "$ZDOTDIR/env_vars"
