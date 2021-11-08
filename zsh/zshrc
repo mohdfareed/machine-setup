@@ -4,7 +4,7 @@ ZSH_THEME="common"
 # plugins
 plugins=(
     colored-man-pages # adds colors to man pages
-    osx               # provides a few utilities on macOS
+    macos             # provides a few utilities on macOS
 )
 
 # zsh history file
