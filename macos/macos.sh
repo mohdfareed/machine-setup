@@ -50,7 +50,7 @@ defaults write .GlobalPreferences InitialKeyRepeat -int 25
 # ========
 
 # add profile to terminal app
-open -g Default.terminal
+open -g $macos_dir/Default.terminal
 # default Terminal profile
 defaults write com.apple.Terminal "Default Window Settings" "Default"
 defaults write com.apple.Terminal "Startup Window Settings" "Default"
@@ -62,9 +62,6 @@ defaults write com.apple.terminal SecureKeyboardEntry -bool true
 # Finder
 # ======
 
-# set Home directory as the default location for new Finder windows
-defaults write com.apple.finder NewWindowTarget 'PfHm'
-defaults write com.apple.finder NewWindowTargetPath "file://$HOME/"
 # when performing a search, use the current folder by default
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # keep folders on top when sorting by name
@@ -83,6 +80,9 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
 # use plain text mode for new TextEdit documents
 defaults write com.apple.TextEdit RichText -int 0
+# set windows dimensions
+defaults write com.apple.TextEdit WidthInChars -int 80
+defaults write com.apple.TextEdit HeightInChars -int 24
 # plain text font
 defaults write com.apple.TextEdit NSFixedPitchFont -string "FiraCodeNerdFontComplete-Regular"
 defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14

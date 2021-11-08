@@ -1508,8 +1508,10 @@
 	<false/>
 	<key>WindowTitle</key>
 	<string>Terminal</string>
+	<key>columnCount</key>
+	<integer>84</integer>
 	<key>name</key>
-	<string>Personal</string>
+	<string>Default</string>
 	<key>type</key>
 	<string>Window Settings</string>
 </dict>
