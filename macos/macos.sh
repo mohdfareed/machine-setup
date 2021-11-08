@@ -29,6 +29,7 @@ defaults write com.apple.systempreferences DSKDesktopPrefPane "{
         \"$macos_dir/Wallpapers\"
     );
 }"
+defaults write com.apple.dock autohide -bool true
 
 # trackpad, mouse, and keyboard
 # =============================
