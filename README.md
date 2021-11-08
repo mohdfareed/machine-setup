@@ -10,6 +10,7 @@
 
 ```sh
 xcode-select --install
+xcodebuild -license accept
 ```
 
 **Run the bootstrap script:**
