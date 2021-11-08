@@ -21,8 +21,8 @@ source "macos/homebrew.sh" # setup homebrew
 source "zsh/zsh.sh"        # setup zsh
 source "git/git.sh"        # setup git
 source "asdf/asdf.sh"      # setup asdf
-source "macos/macos.sh"    # setup asdf
-cd - >/dev/null
+source "macos/appstore.sh" # install apps from appstore
+source "macos/macos.sh"    # setup macos preferences
 
 echo -e "\a"
 echo "Restart for some of the changes to take effect."
