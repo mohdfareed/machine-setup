@@ -6,7 +6,7 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up macOS preferences...${clear}"
 
-macos_dir=$(dirname "$0")
+macos_dir=$(dirname "${0:a}")
 
 # close open System Preferences panes, to prevent them from overriding settings
 osascript -e 'tell application "System Preferences" to quit'

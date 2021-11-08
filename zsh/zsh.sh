@@ -6,7 +6,7 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up Zsh...${clear}"
 
-zsh_dir=$(dirname "$0")
+zsh_dir=$(dirname "${0:a}")
 source "$zsh_dir/zshenv"
 
 brew install zsh

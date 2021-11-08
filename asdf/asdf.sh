@@ -6,7 +6,7 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up asdf...${clear}"
 
-asdf_dir=$(dirname "$0")
+asdf_dir=$(dirname "${0:a}")
 source "$(dirname "$asdf_dir")/zsh/zshenv"
 
 brew install asdf

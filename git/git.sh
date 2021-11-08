@@ -6,7 +6,7 @@ bold='\033[1m'
 tput clear
 echo "${bold}Setting up git...${clear}"
 
-git_dir=$(dirname "$0")
+git_dir=$(dirname "${0:a}")
 source "$(dirname "$git_dir")/zsh/zshenv"
 
 brew install git
