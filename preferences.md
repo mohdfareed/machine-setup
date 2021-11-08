@@ -27,6 +27,7 @@ The following are OS and application preferences that are set manually.
 ## Finder
 
 - View Options: Calculate all sizes
+- General: New Finder windows show: iCloud Drive
 
 ## Safari
 

@@ -94,5 +94,7 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
 
 ## TODO
 
-- Input passphrase for `gpg` key through a script
 - Setup update scripts
+- Fix zsh script `ln` causing "File-system is readonly" error
+  - The problem is with the themes folder. Subfolders don't have a problem
+- OMZ themes can't be symbolically linked
