@@ -31,9 +31,17 @@ The following are OS and application preferences that are set manually.
 
 ## Safari
 
+- Advanced ->
+  - Show Develop menu in menu bar: Enable
+  - Save articles for offline reading automatically: Enable
 - Extensions -> choose the following:
   - Dark Reader
   - Wiper 1..3
+
+```sh
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+```
 
 ## Mos
 
