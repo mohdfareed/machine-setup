@@ -83,3 +83,16 @@ function dl_video {
         youtube-dl -x $cmd --audio-format mp3 "$1"
     fi
 }
+
+# start zsh_codex
+function zsh_codex {
+    zsh_codex_script="$ZSH_CUSTOM/plugins/zsh_codex/zsh_codex.plugin.zsh"
+
+    if [[ ! -f "$zsh_codex_script" ]]; then
+            echo "\033[0;31mERROR:\033[0m zsh_codex does not exist."
+            return 1
+    fi
+
+    source "$zsh_codex_script"
+    bindkey '^X' create_completion # auto-complete zsh_codex suggestion
+}
