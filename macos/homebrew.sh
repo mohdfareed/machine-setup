@@ -26,6 +26,7 @@ brew install --cask openinterminal
 brew install --cask swish          # trackpad utility
 brew install --cask monitorcontrol # external monitors controls
 brew install --cask mos            # mouse smooth scroll utility
+brew install --cask appcleaner     # Application uninstaller
 
 brew tap homebrew/cask-fonts
 brew install font-fira-code
