@@ -56,3 +56,17 @@
   - macOS dark mode.
 - [SF Symbols](https://developer.apple.com/sf-symbols/)
   - macOS symbols.
+- [MIMESTREAM](https://mimestream.com)
+  - Native macOS Gmail client.
+- [Replacicon](https://replacicon.app)
+  - Find and replace app icons.
+- [Diagrams](https://diagrams.app)
+  - Native macOS diagraming app.
+- [nota](https://nota.md)
+  - Markdown editor.
+- [WikiLens](https://marketplace.visualstudio.com/items?itemName=lostintangent.wikilens)
+  - Wiki-like markdown editor for VSCode.
+- [Archiver 4](https://archiverapp.com)
+  - macOS native archiver.
+  - Extracts and compresses with encryption.
+  - Lets you preview the archive before extracting (not through quicklook).

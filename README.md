@@ -100,3 +100,5 @@ Installs latest PostgreSQL through `asdf`. It sets the variables `$POSTGRES_EXTR
 - OMZ themes can't be symbolically linked
 - Check Transmission's preferences regarding opening new windows
 - Set MonitorControl preferences
+- Swish does not move windows between desktops
+- Write better setup instructions
