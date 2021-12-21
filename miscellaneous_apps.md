@@ -70,3 +70,6 @@
   - macOS native archiver.
   - Extracts and compresses with encryption.
   - Lets you preview the archive before extracting (not through quicklook).
+- [Vinegar](https://appadvice.com/app/vinegar-tube-cleaner/1591303229)
+  - Replace the YouTube player with a minimal HTML video tag.
+  - Removes ads, prevents tracking, restores picture-in-picture, and keeps videos playing in the background.
