@@ -16,7 +16,7 @@ xcodebuild -license accept
 **Run the bootstrap script:**
 
 ```sh
-zsh -c "$(curl -fsSL https://git.io/JX4FH)"
+zsh -c "$(curl -fsSL https://tinyurl.com/ycksh3b3)"
 ```
 
 **Setup Time Machine:**
