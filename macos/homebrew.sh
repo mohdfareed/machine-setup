@@ -8,6 +8,8 @@ echo "${bold}Installing Homebrew...${clear}"
 
 # install homebrew
 /bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"
+# add homebrew to path
+eval "$(/opt/homebrew/bin/brew shellenv)"
 # fix “zsh compinit: insecure directories” message
 chmod -R go-w "$(brew --prefix)/share"
 

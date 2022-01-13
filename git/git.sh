@@ -20,7 +20,7 @@ ln -sfv "$git_dir/gitignore" "$XDG_CONFIG_HOME/git/ignore"
 
 # setup gpg key
 mkdir -pm 0700 "$GNUPGHOME"
-echo "pinentry-program /usr/local/bin/pinentry-mac" >>"$GNUPGHOME/gpg-agent.conf"
+echo "pinentry-program /opt/homebrew/bin/pinentry-mac" >>"$GNUPGHOME/gpg-agent.conf"
 echo "Passphrase: ${bold}WYy85#1X3dP#OlOS${clear}"
 
 # import key and fix owner trust level
