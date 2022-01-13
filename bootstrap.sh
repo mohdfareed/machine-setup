@@ -20,6 +20,7 @@ cd "$DOTFILES"
 source "macos/homebrew.sh" # setup homebrew
 source "zsh/zsh.sh"        # setup zsh
 source "git/git.sh"        # setup git
+source "asdf/asdf.sh"      # setup asdf
 source "macos/appstore.sh" # install apps from appstore
 source "macos/macos.sh"    # setup macos preferences
 
