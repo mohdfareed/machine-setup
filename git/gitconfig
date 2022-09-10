@@ -1,7 +1,9 @@
 [user]
     name = Mohammed Fareed
-    email = 52881835+mohdfareed@users.noreply.github.com
-    signingkey = 451D3CBBC9F4B104
+    email = mohdf.fareed@icloud.com
+    signingkey = 45752BF553D65F05
+    ; RIT email = mff9108@rit.edu
+    ; RIT signingkey = 7914CE516B7DF7FE
 [init]
     defaultBranch = main
 [commit]
