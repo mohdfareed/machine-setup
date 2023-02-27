@@ -1,17 +1,24 @@
+; global settings
 [user]
     name = Mohammed Fareed
-    email = mohdf.fareed@icloud.com
-    signingkey = 45752BF553D65F05
-    ; RIT email = mff9108@rit.edu
-    ; RIT signingkey = 7914CE516B7DF7FE
+    email = mohdf.fareed@icloud.com ; RIT email = mff9108@rit.edu
+    signingkey = 45752BF553D65F05   ; RIT signingkey = 7914CE516B7DF7FE
 [init]
     defaultBranch = main
 [commit]
-    gpgsign = true
-[core]
-    editor = code --wait
+    gpgsign = true ; sign commits using GPG key
+[fetch]
+    prune = true ; remove remote-tracking branches for deleted remote branches
+
+; terminal settings
+[status]
+    short = true ; git status uses --short option by default
 [color]
     ui = auto
+
+; vscode settings
+[core]
+    editor = code --wait
 [diff]
     tool = vscode
 [difftool "vscode"]
@@ -21,6 +28,9 @@
 [mergetool "vscode"]
     cmd = code --wait $MERGED
 
+; git aliases
 [alias]
     graph = log --graph --abbrev-commit
-    graphcompact = log --graph --oneline
+
+    graphc = log --graph --format=format:'%C(bold blue)%h%C(reset) - \
+%s %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
