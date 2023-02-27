@@ -18,8 +18,9 @@ source "$(dirname "$python_dir")/zsh/zshenv"
 mkdir -p "$(dirname "$PYTHONSTARTUP")"
 ln -sfv "$python_dir/pythonrc" "$PYTHONSTARTUP"
 
+## TODO: install python with with brew directly
 # installed latest python version and set it as default
-asdf plugin add python
-asdf install python latest >/dev/null
-asdf global python latest
-asdf reshim
+# asdf plugin add python
+# asdf install python latest >/dev/null
+# asdf global python latest
+# asdf reshim
