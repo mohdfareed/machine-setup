@@ -2,13 +2,17 @@
 [user]
     name = Mohammed Fareed
     email = mohdf.fareed@icloud.com ; RIT email = mff9108@rit.edu
-    signingkey = 45752BF553D65F05   ; RIT signingkey = 7914CE516B7DF7FE
-[init]
-    defaultBranch = main
+	signingkey = /Users/mohdfareed/.ssh/id_ed25519
 [commit]
     gpgsign = true ; sign commits using GPG key
+[gpg]
+	format = ssh
+[init]
+    defaultBranch = main
 [fetch]
     prune = true ; remove remote-tracking branches for deleted remote branches
+[pull]
+    rebase = true ; rebase local commits on top of the updated upstream branch
 
 ; terminal settings
 [status]
