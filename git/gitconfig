@@ -1,7 +1,8 @@
 ; global settings
 [user]
     name = Mohammed Fareed
-    email = mohdf.fareed@icloud.com ; RIT email = mff9108@rit.edu
+    ;email = mohdf.fareed@icloud.com ; RIT email = mff9108@rit.edu
+    email = mff9108@rit.edu
 	signingkey = /Users/mohdfareed/.ssh/id_ed25519
 [commit]
     gpgsign = true ; sign commits using GPG key
