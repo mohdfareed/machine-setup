@@ -21,10 +21,10 @@ The module has the following log severities:
 - `DEBUG`: Logged but not printed to console unless debug mode is enabled.
 """
 
-from .colors import *
-from io import TextIOWrapper
 import os
 import time
+from io import TextIOWrapper
+from .colors import *
 
 
 verbose_mode: bool = False
