@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-from colors import Bold, BrightRed, BrightGreen
+from scripts.lib import display
+import scripts.git as git
+import scripts.homebrew as homebrew
+import scripts.macos as macos
+import scripts.python as python
+import scripts.zsh as zsh
 
 
 def main():
-    info("Setting up Homebrew...")
-
-
-
-def error(message): print(BrightRed(message))
-
-
-def success(message): print(BrightGreen(message))
-
-
-def info(message): print(Bold(message))
+    display.debug = True
+    homebrew.setup()
+    git.setup()
+    zsh.setup()
+    python.setup()
+    macos.setup()
 
 
 if __name__ == "__main__":
