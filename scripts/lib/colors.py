@@ -58,6 +58,9 @@ def reverse(text): return Decoration.reversed + text + reset
 def strikethrough(text): return Decoration.strikethrough + text + reset
 
 
+def black(text): return Color.black + text + reset
+
+
 def red(text): return Color.red + text + reset
 
 
@@ -76,6 +79,9 @@ def magenta(text): return Color.magenta + text + reset
 def cyan(text): return Color.cyan + text + reset
 
 
+def bright_black(text): return Color.bright_black + text + reset
+
+
 def bright_red(text): return Color.bright_red + text + reset
 
 
@@ -92,3 +98,7 @@ def bright_magenta(text): return Color.bright_magenta + text + reset
 
 
 def bright_cyan(text): return Color.bright_cyan + text + reset
+
+
+def __getattr__(name):
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
