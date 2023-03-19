@@ -1,10 +1,8 @@
-from .lib import display
+from .lib.display import Display
+from .lib.shell import *
 
-def setup():
+
+def setup(display: Display = Display(no_logging=True)):
     display.header("Setting up Homebrew...")
-    display.error("Homebrew error message.")
-    display.warning("Homebrew warning message.")
-    display.info("Homebrew information.")
-    display.success("Homebrew success message.")
-    display.output("Homebrew output message.")
-    display.log("Homebrew log message.")
+    display("Installing Homebrew...")
+    # run(["/bin/bash", "-c", "$(curl -fsSL https://git.io/JIY6g)"])

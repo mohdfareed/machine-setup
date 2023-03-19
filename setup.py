@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
 
-import scripts.lib.display as display
+from scripts.lib.display import Display
 import scripts.git as git
 import scripts.homebrew as homebrew
 import scripts.macos as macos
 import scripts.python as python
 import scripts.zsh as zsh
 
+no_logging: bool = True
+"""Do not log output to a file."""
 verbose: bool = False
-"""Print verbose messages."""
+"""Print verbose output."""
 debug: bool = False
-"""Print debug messages."""
+"""Print debug output."""
 
 
 def main():
     # set display mode
-    display.debug_mode = debug
-    display.verbose_mode = verbose
+    display = Display(verbose_mode=verbose,
+                      debug_mode=debug,
+                      no_logging=no_logging)
     # print setup display mode
     if debug:
         display.debug("Debug mode is enabled.")
@@ -26,11 +29,11 @@ def main():
     display.header("Setting up machine...")
 
     # setup components
-    homebrew.setup()
-    git.setup()
-    zsh.setup()
-    python.setup()
-    macos.setup()
+    homebrew.setup(display)
+    # git.setup()
+    # zsh.setup()
+    # python.setup()
+    # macos.setup()
 
     # inform user that setup is complete and a restart is required
     display.print("")
@@ -47,11 +50,14 @@ if __name__ == "__main__":
                         help="print verbose messages")
     parser.add_argument("-d", "--debug", action="store_true",
                         help="print debug messages")
+    parser.add_argument("--no-log", action="store_true",
+                        help="don't log output to a file")
     args = parser.parse_args()
 
     # assign arguments to global variables
     verbose = args.verbose
     debug = args.debug
+    no_logging = args.no_log
 
     # run main function
     main()
