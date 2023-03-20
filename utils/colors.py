@@ -3,7 +3,7 @@ sequences. The module also provides constants for the 16 ANSI colors and
 decorations through the `Color`, `BackgroundColor` and `Decoration` classes.
 """
 
-reset = '\u001b[0m'
+RESET = '\u001b[0m'
 """Reset all colors and decorations.
 """
 
@@ -68,7 +68,7 @@ def bold(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Decoration.bold + text + reset
+    return Decoration.bold + text + RESET
 
 
 def underline(text: str) -> str:
@@ -80,7 +80,7 @@ def underline(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Decoration.underline + text + reset
+    return Decoration.underline + text + RESET
 
 
 def reverse(text: str) -> str:
@@ -92,7 +92,7 @@ def reverse(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Decoration.reversed + text + reset
+    return Decoration.reversed + text + RESET
 
 
 def strikethrough(text: str) -> str:
@@ -104,7 +104,7 @@ def strikethrough(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Decoration.strikethrough + text + reset
+    return Decoration.strikethrough + text + RESET
 
 
 def black(text: str) -> str:
@@ -116,7 +116,7 @@ def black(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.black + text + reset
+    return Color.black + text + RESET
 
 
 def red(text: str) -> str:
@@ -128,7 +128,7 @@ def red(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.red + text + reset
+    return Color.red + text + RESET
 
 
 def green(text: str) -> str:
@@ -140,7 +140,7 @@ def green(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.green + text + reset
+    return Color.green + text + RESET
 
 
 def yellow(text: str) -> str:
@@ -152,7 +152,7 @@ def yellow(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.yellow + text + reset
+    return Color.yellow + text + RESET
 
 
 def blue(text: str) -> str:
@@ -164,7 +164,7 @@ def blue(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.blue + text + reset
+    return Color.blue + text + RESET
 
 
 def magenta(text: str) -> str:
@@ -176,7 +176,7 @@ def magenta(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.magenta + text + reset
+    return Color.magenta + text + RESET
 
 
 def cyan(text: str) -> str:
@@ -188,7 +188,7 @@ def cyan(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.cyan + text + reset
+    return Color.cyan + text + RESET
 
 
 def bright_black(text: str) -> str:
@@ -200,7 +200,7 @@ def bright_black(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.bright_black + text + reset
+    return Color.bright_black + text + RESET
 
 
 def bright_red(text: str) -> str:
@@ -212,7 +212,7 @@ def bright_red(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.bright_red + text + reset
+    return Color.bright_red + text + RESET
 
 
 def bright_green(text: str) -> str:
@@ -224,7 +224,7 @@ def bright_green(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.bright_green + text + reset
+    return Color.bright_green + text + RESET
 
 
 def bright_yellow(text: str) -> str:
@@ -236,7 +236,7 @@ def bright_yellow(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.bright_yellow + text + reset
+    return Color.bright_yellow + text + RESET
 
 
 def bright_blue(text: str) -> str:
@@ -248,7 +248,7 @@ def bright_blue(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.bright_blue + text + reset
+    return Color.bright_blue + text + RESET
 
 
 def bright_magenta(text: str) -> str:
@@ -260,7 +260,7 @@ def bright_magenta(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.bright_magenta + text + reset
+    return Color.bright_magenta + text + RESET
 
 
 def bright_cyan(text: str) -> str:
@@ -272,7 +272,7 @@ def bright_cyan(text: str) -> str:
     Returns:
         str: The formatted text.
     """
-    return Color.bright_cyan + text + reset
+    return Color.bright_cyan + text + RESET
 
 
 def __getattr__(name):

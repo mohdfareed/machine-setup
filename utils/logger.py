@@ -22,11 +22,11 @@ class Logger:
         will prevent the log method from taking any action. Defaults to `False`.
 
         Args:
-            dummy (bool): Set to `True` to create a no-op dummy logger.
+            dummy (bool): Set to `True` to not create a log file.
         """
         self.is_dummy = dummy
         """Whether the logger is a dummy logger. If set to `True`, the log method
-        is a no-op and no log file is created.
+        is a no-op. Defaults to `False`.
         """
         if self.is_dummy:
             return
@@ -53,7 +53,7 @@ class Logger:
             message (str): The message to log.
             severity (str): The severity level of the message.
         """
-        if self.is_dummy:
+        if self.is_dummy or not self.log_file:
             return
 
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

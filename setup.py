@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from machine_setup import *
+from setup_modules import *
 from utils import Display
 
 no_logging: bool = True
@@ -27,7 +27,7 @@ def main():
     display.header("Setting up machine...")
 
     # setup components
-    homebrew.setup(display)
+    setup_homebrew(display)
     # git.setup()
     # zsh.setup()
     # python.setup()

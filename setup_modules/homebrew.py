@@ -3,7 +3,9 @@ machine.
 """
 
 from utils import Display
-from utils import shell
+from utils import Shell
+
+_shell = Shell()
 
 
 def setup(display: Display = Display(no_logging=True)):
@@ -15,10 +17,10 @@ def setup(display: Display = Display(no_logging=True)):
         display (Display, optional): The display for printing messages.
     """
     display.header("Setting up Homebrew...")
-    display.print("Installing Homebrew...")
 
-    shell.run("echo hello world", display.print, display.error)
-    shell.run_quiet("echo hello world", shell.loader, display.verbose)
+    _shell.run("echo hello world", display.print, display.error)
+    _shell.run_quiet("sleep 2", display.verbose, "Installing Homebrew")
+    display.success("Homebrew installed successfully!")
 
 
 if __name__ == "__main__":

@@ -153,6 +153,11 @@ class Display:
             builtins.print(magenta(message))
         logger.log(message, "DEBUG")
 
+    def __call__(self) -> None:
+        """Prints a newline to the console without logging it to the log file.
+        """
+        print("")
+
 
 def __getattr__(name):
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
