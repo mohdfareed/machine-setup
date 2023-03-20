@@ -1,0 +1,279 @@
+"""Colors module that provides functions for formatting text using ANSI escape
+sequences. The module also provides constants for the 16 ANSI colors and
+decorations through the `Color`, `BackgroundColor` and `Decoration` classes.
+"""
+
+reset = '\u001b[0m'
+"""Reset all colors and decorations.
+"""
+
+
+class Color:
+    """The 16 foreground ANSI color codes.
+    """
+    black = '\u001b[30m'
+    red = '\u001b[31m'
+    green = '\u001b[32m'
+    yellow = '\u001b[33m'
+    blue = '\u001b[34m'
+    magenta = '\u001b[35m'
+    cyan = '\u001b[36m'
+    white = '\u001b[37m'
+    bright_black = '\u001b[30;1m'
+    bright_red = '\u001b[31;1m'
+    bright_green = '\u001b[32;1m'
+    bright_yellow = '\u001b[33;1m'
+    bright_blue = '\u001b[34;1m'
+    bright_magenta = '\u001b[35;1m'
+    bright_cyan = '\u001b[36;1m'
+    bright_white = '\u001b[37;1m'
+
+
+class BackgroundColor:
+    """The 16 background ANSI color codes.
+    """
+    black = '\u001b[40m'
+    red = '\u001b[41m'
+    green = '\u001b[42m'
+    yellow = '\u001b[44m'
+    blue = '\u001b[44m'
+    magenta = '\u001b[45m'
+    cyan = '\u001b[46m'
+    white = '\u001b[47m'
+    bright_black = '\u001b[40;1m'
+    bright_red = '\u001b[41;1m'
+    bright_green = '\u001b[42;1m'
+    bright_yellow = '\u001b[44;1m'
+    bright_blue = '\u001b[44;1m'
+    bright_magenta = '\u001b[45;1m'
+    bright_cyan = '\u001b[46;1m'
+    bright_white = '\u001b[47;1m'
+
+
+class Decoration:
+    """ANSI decoration codes.
+    """
+    bold = '\u001b[01m'
+    underline = '\u001b[04m'
+    reversed = '\u001b[07m'
+    strikethrough = '\u001b[09m'
+
+
+def bold(text: str) -> str:
+    """Sets the text to bold.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Decoration.bold + text + reset
+
+
+def underline(text: str) -> str:
+    """Sets the text to underlined.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Decoration.underline + text + reset
+
+
+def reverse(text: str) -> str:
+    """Reverses the foreground and background colors.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Decoration.reversed + text + reset
+
+
+def strikethrough(text: str) -> str:
+    """Sets the text to strikethrough.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Decoration.strikethrough + text + reset
+
+
+def black(text: str) -> str:
+    """Sets the text to black.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.black + text + reset
+
+
+def red(text: str) -> str:
+    """Sets the text to red.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.red + text + reset
+
+
+def green(text: str) -> str:
+    """Sets the text to green.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.green + text + reset
+
+
+def yellow(text: str) -> str:
+    """Sets the text to yellow.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.yellow + text + reset
+
+
+def blue(text: str) -> str:
+    """Sets the text to blue.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.blue + text + reset
+
+
+def magenta(text: str) -> str:
+    """Sets the text to magenta.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.magenta + text + reset
+
+
+def cyan(text: str) -> str:
+    """Sets the text to cyan.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.cyan + text + reset
+
+
+def bright_black(text: str) -> str:
+    """Sets the text to bright black.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.bright_black + text + reset
+
+
+def bright_red(text: str) -> str:
+    """Sets the text to bright red.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.bright_red + text + reset
+
+
+def bright_green(text: str) -> str:
+    """Sets the text to bright green.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.bright_green + text + reset
+
+
+def bright_yellow(text: str) -> str:
+    """Sets the text to bright yellow.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.bright_yellow + text + reset
+
+
+def bright_blue(text: str) -> str:
+    """Sets the text to bright blue.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.bright_blue + text + reset
+
+
+def bright_magenta(text: str) -> str:
+    """Sets the text to bright magenta.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.bright_magenta + text + reset
+
+
+def bright_cyan(text: str) -> str:
+    """Sets the text to bright cyan.
+
+    Args:
+        text (str): The text to format.
+
+    Returns:
+        str: The formatted text.
+    """
+    return Color.bright_cyan + text + reset
+
+
+def __getattr__(name):
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

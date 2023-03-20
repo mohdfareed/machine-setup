@@ -18,11 +18,12 @@ class Logger:
         filename `setup_{current_date}_{current_time}.log`. If a file with that
         name already exists, a counter is appended to the filename.
 
-        To create a dummy log object and avoid file creation, simply set the
-        `dummy` argument to `True`. This will prevent the log method from
-        taking any action.
-        """
+        A dummy logger can be created that does not create a log file. This
+        will prevent the log method from taking any action. Defaults to `False`.
 
+        Args:
+            dummy (bool): Set to `True` to create a no-op dummy logger.
+        """
         self.is_dummy = dummy
         """Whether the logger is a dummy logger. If set to `True`, the log method
         is a no-op and no log file is created.

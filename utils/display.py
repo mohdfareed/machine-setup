@@ -1,11 +1,15 @@
+"""Module that provides a Display class for printing messages to the console
+and logging them to a timestamped file with a severity.
+"""
 
 import builtins
+
 from .colors import *
 from .logger import Logger
 
 
 class Display:
-    """Display module that provides functions for printing messages to the
+    """Display class that provides functions for printing messages to the
     console and logging them to a timestamped file with a severity.
 
     The module has a verbose mode that can be enabled by setting `verbose_mode`
@@ -46,7 +50,7 @@ class Display:
         """Whether debug mode is enabled. If set to `True`, log messages are printed in
         magenta to the console. Defaults to `False`.
         """
-        self._logger = Logger(dummy=True) if no_logging else Logger()
+        self._logger = Logger(dummy=no_logging)
         """The logger object that manages the main log file of the module.
         """
 
@@ -148,9 +152,6 @@ class Display:
         if self.debug_mode:
             builtins.print(magenta(message))
         logger.log(message, "DEBUG")
-
-    def __call__(self, message: str):
-        print(message)
 
 
 def __getattr__(name):

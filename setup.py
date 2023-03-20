@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
 
-from scripts.lib.display import Display
-import scripts.git as git
-import scripts.homebrew as homebrew
-import scripts.macos as macos
-import scripts.python as python
-import scripts.zsh as zsh
+from machine_setup import *
+from utils import Display
 
 no_logging: bool = True
 """Do not log output to a file."""
@@ -25,7 +21,9 @@ def main():
         display.debug("Debug mode is enabled.")
     if verbose:
         display.verbose("Verbose mode is enabled.")
+
     # print setup header
+    # ask user if they want to run specific scripts
     display.header("Setting up machine...")
 
     # setup components
