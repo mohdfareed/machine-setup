@@ -4,12 +4,6 @@
 
 **NEW NOTES:**
 
-- ssh key filename is hardcoded in `setup.sh` and `config` in `$ICLOUD/.setup/` and the global `gitconfig`.
-- Copies of the private/public pair are in `$ICLOUD/.setup/ssh/`.
-- Renaming or regenerating a key has to be done following [SSH commit signature verification](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification#ssh-commit-signature-verification).
-- repo's name is hardcoded into `$ICLOUD/.setup/setup.sh`
-- Logging filename is defined in the `display` module.
-
 **Setup FileVault:**
 
 **Sign in to the App Store:**

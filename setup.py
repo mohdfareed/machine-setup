@@ -15,7 +15,8 @@ debug: bool = True
 def main():
     """Run the main function of the setup script. This function is called when
     the script is run from the command line. It will prompt the user to run
-    a setup function for every setup module."""
+    a setup function for every setup module. By default, the setup is run in
+    verbose and debug mode without logging output to a file."""
 
     # set display mode
     display = Display(verbose, debug, no_logging)
@@ -26,10 +27,9 @@ def main():
         display.verbose("Verbose mode is enabled.")
 
     # print setup header
-    # ask user if they want to run specific scripts
     display.header("Setting up machine...")
 
-    # setup components
+    # prompt user to setup components
     _prompt_setup(setup_homebrew, "Homebrew", display)
     _prompt_setup(setup_git, "Git", display)
     _prompt_setup(setup_zsh, "Zsh", display)

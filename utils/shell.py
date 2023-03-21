@@ -103,12 +103,14 @@ def interactive() -> None:
     """Runs the shell in interactive mode.
     """
     from .display import Display
-    from .colors import red
+    from .colors import (bright_red as red,
+                         bright_green as green,
+                         bright_blue as blue)
 
     display = Display(no_logging=True)
     shell_instance = Shell()
     print("Shell interface written in Python. Shell: " + shell_instance.shell)
-    print("Type 'exit' to stop.")
+    print(blue("Type 'exit' to stop.\n"))
 
     exit_code = 0
     while True:
@@ -116,7 +118,7 @@ def interactive() -> None:
         if exit_code != 0:
             print(red("> "), end="")
         else:
-            print("> ", end="")
+            print(green("> "), end="")
         # read a command and break if it is "exit"
         command = input()
         if command == "exit":
@@ -181,4 +183,5 @@ def __getattr__(name):
 
 
 if __name__ == "__main__":
+    print("Running shell in interactive mode:\n")
     interactive()
