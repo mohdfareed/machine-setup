@@ -2,7 +2,7 @@
 [user]
     name = Mohammed Fareed
     email = mohdf.fareed@icloud.com
-	signingkey = /Users/mohdfareed/.ssh/personal_id
+	signingkey = /Users/mohdfareed/.ssh/id_ed25519.pub
 [commit]
     gpgsign = true ; sign commits using GPG key
 [gpg]

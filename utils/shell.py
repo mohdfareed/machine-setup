@@ -8,7 +8,12 @@ from typing import Callable
 
 LOADING_STR: str = "Loading"
 """The default string to print while waiting for a command to complete. It is
-followed by a loading animation."""
+followed by a loading animation.
+"""
+
+LOADING_ANIMATION: list[str] = ["", ".", "..", "..."]
+"""The default loading animation used when waiting for a command to exit.
+"""
 
 
 class Shell:
@@ -19,14 +24,15 @@ class Shell:
     a provided function.
     """
 
-    def __init__(self, shell: str = "/bin/zsh"):
+    def __init__(self, shell: str = "/bin/zsh") -> None:
         """Create a new Shell object with the provided shell command.
 
         Args:
             shell (str): The shell to use for commands execution.
         """
         self.shell = shell
-        """The shell to use for commands execution."""
+        """The shell to use for commands execution.
+        """
 
     def run(self, cmd: str, printer: Callable, error_printer: Callable) -> int:
         """Runs a shell command and prints the output and errors using the
@@ -51,15 +57,17 @@ class Shell:
         return process.returncode
 
     def run_quiet(self, cmd: str, printer: Callable,
+                  loading_printer: Callable = print,
                   loading_string: str = LOADING_STR) -> int:
         """Runs a shell command and waits for it to complete. A loading
-        animation is printed while the command is running. The output of the
-        command is printed using the provided `printer` function. The printer
-        should not print to the standard output.
+        animation is printed to `loading_printer` while the command is running.
+        The output of the command is printed using the provided `printer`
+        function. Printers should not both print to the same stream.
 
         Args:
             cmd (str): The command to run.
-            printer (function): The printer function which accepts a string.
+            printer (function): The standard output and error printer.
+            loading_printer (function, optional): The loading animation printer.
             loading_str (str): The loading string to print.
 
         Returns:
@@ -69,15 +77,17 @@ class Shell:
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
 
-        _loader(process.poll, loading_string)  # show loading animation
+        # show loading animation
+        _loader(process.poll, loading_printer, loading_string)
         output = process.communicate()  # get the standard output and error
 
         # print the standard outputs and errors then return the exit code
         if output[0].decode().strip() != "":
             printer(output[0].decode().strip())
+        printer(loading_string + " done.")  # print completion indicator
         return process.returncode
 
-    def interactive(self):
+    def interactive(self) -> None:
         """Runs the shell in interactive mode.
         """
         from utils.display import Display
@@ -101,31 +111,40 @@ class Shell:
             exit_code = self.run_quiet(command, Display(no_logging=True).debug)
 
     def __call__(self, cmd: str, printer: Callable,
+                 loading_printer: Callable = print,
                  loading_string: str = LOADING_STR) -> int:
-        return self.run_quiet(cmd, printer, loading_string)
+        return self.run_quiet(cmd, printer, loading_printer, loading_string)
 
 
-def _loader(condition: Callable, loading_string):
-    """Prints a loading animation until `condition` does not return `None`.
+def _loader(condition: Callable,
+            loading_printer: Callable, loading_string: str) -> None:
+    """Prints a loading animation until `condition` does not return `None`. The
+    loading animation is printed using the provided `loading_string`. When the
+    animation stops, the `loading_string` is printed followed by " done.".
 
     Args:
         condition (function): The function that returns `None` to stop.
+        loading_printer (function): The printer of the loading animation.
+        loading_string (str): The loading string to print.
     """
     import time
-    time.sleep(0.05)
+    time.sleep(0.05)  # wait for the process to start
 
     counter = 0
     while condition() is None:
         # print the loading string and animation
-        print(loading_string + "." * counter, end='\r')
-        time.sleep(0.25)  # wait to print the next frame
+        complete_string = loading_string + LOADING_ANIMATION[counter]
+        loading_printer(complete_string + "\r")
+        # wait after printing the animation for 1 second
+        time.sleep(1 / len(LOADING_ANIMATION))
         # clear the line and increment the counter
-        print(" " * (len(loading_string) + counter), end='\r')
-        counter = (counter + 1) % 4
+        print(" " * len(complete_string) + "\r")
+        counter = (counter + 1) % len(LOADING_ANIMATION)
+    print(loading_string + " done.")
 
 
 def _print_process_output(process: subprocess.Popen,
-                          printer: Callable, error_printer: Callable):
+                          printer: Callable, error_printer: Callable) -> None:
     """Prints the output of a process line by line until the process
     completes.
 

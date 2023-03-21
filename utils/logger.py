@@ -13,7 +13,7 @@ class Logger:
     instantiated and closed when the class is destroyed.
     """
 
-    def __init__(self, dummy: bool = False):
+    def __init__(self, dummy: bool = False) -> None:
         """Create a new log file at the current working directory with the
         filename `setup_{current_date}_{current_time}.log`. If a file with that
         name already exists, a counter is appended to the filename.
@@ -45,7 +45,7 @@ class Logger:
         closed when the module is exited.
         """
 
-    def log(self, message: str, severity: str):
+    def log(self, message: str, severity: str) -> None:
         """Log a message to the log file with a timestamp and the specified
         severity in the format: `[timestamp] severity: {message}`.
 

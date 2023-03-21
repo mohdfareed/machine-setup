@@ -11,6 +11,7 @@ RESET = '\u001b[0m'
 class Color:
     """The 16 foreground ANSI color codes.
     """
+
     black = '\u001b[30m'
     red = '\u001b[31m'
     green = '\u001b[32m'
@@ -32,6 +33,7 @@ class Color:
 class BackgroundColor:
     """The 16 background ANSI color codes.
     """
+
     black = '\u001b[40m'
     red = '\u001b[41m'
     green = '\u001b[42m'
@@ -53,6 +55,7 @@ class BackgroundColor:
 class Decoration:
     """ANSI decoration codes.
     """
+
     bold = '\u001b[01m'
     underline = '\u001b[04m'
     reversed = '\u001b[07m'
