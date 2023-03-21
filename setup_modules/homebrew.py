@@ -10,6 +10,7 @@ _shell = Shell()
 
 def setup(display: Display = Display(no_logging=True)):
     """Setup Homebrew on a new machine by installing Homebrew and its packages.
+
     A `Display` object is used to print messages and log them to a file. A
     non-logging `Display` object is used by default.
 
@@ -18,8 +19,11 @@ def setup(display: Display = Display(no_logging=True)):
     """
     display.header("Setting up Homebrew...")
 
-    _shell.run("echo hello world", display.print, display.error)
-    _shell.run_quiet("sleep 2", display.verbose, "Installing Homebrew")
+    _shell.run("echo first hello world", display.print, display.error)
+    _shell.run_quiet("echo second hello world && sleep 3",
+                     display.verbose, display.print,
+                     loading_string="Installing Homebrew")
+
     display.success("Homebrew installed successfully!")
 
 
