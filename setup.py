@@ -2,20 +2,23 @@
 
 from setup_modules import *
 from utils import Display
+from typing import Callable
 
 no_logging: bool = True
 """Do not log output to a file."""
-verbose: bool = False
+verbose: bool = True
 """Print verbose output."""
-debug: bool = False
+debug: bool = True
 """Print debug output."""
 
 
 def main():
+    """Run the main function of the setup script. This function is called when
+    the script is run from the command line. It will prompt the user to run
+    a setup function for every setup module."""
+
     # set display mode
-    display = Display(verbose_mode=verbose,
-                      debug_mode=debug,
-                      no_logging=no_logging)
+    display = Display(verbose, debug, no_logging)
     # print setup display mode
     if debug:
         display.debug("Debug mode is enabled.")
@@ -27,16 +30,28 @@ def main():
     display.header("Setting up machine...")
 
     # setup components
-    setup_homebrew(display)
-    # git.setup()
-    # zsh.setup()
-    # python.setup()
-    # macos.setup()
+    _prompt_setup(setup_homebrew, "Homebrew", display)
+    _prompt_setup(setup_git, "Git", display)
+    _prompt_setup(setup_zsh, "Zsh", display)
+    _prompt_setup(setup_python, "Python", display)
+    _prompt_setup(setup_macos, "macOS", display)
 
     # inform user that setup is complete and a restart is required
-    display.print("")
+    print("")  # leave a blank line
     display.success("Machine setup complete!")
     display.info("Please restart your machine for some changes to apply.")
+
+
+def _prompt_setup(setup_function: Callable, name: str, display: Display):
+    """Prompt the user to run a setup function with a `Display` object.
+
+    Args:
+        setup_function (function): The setup function to run.
+        display (Display): The display for printing output.
+    """
+    answer = input(f"Do you want to setup {name}? (y/n [n]) ")
+    if answer and answer.lower()[0] == "y":
+        setup_function(display)
 
 
 if __name__ == "__main__":

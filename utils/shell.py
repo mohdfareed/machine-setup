@@ -15,6 +15,11 @@ LOADING_ANIMATION: list[str] = ["", ".", "..", "..."]
 """The default loading animation used when waiting for a command to exit.
 """
 
+_line_up = '\033[1A'
+"""The ANSI escape sequence for moving the cursor up one line."""
+_line_clear = '\x1b[2K'
+"""The ANSI escape sequence for clearing the current line."""
+
 
 class Shell:
     """Shell class that provides functions for executing shell commands.
@@ -25,7 +30,7 @@ class Shell:
     """
 
     def __init__(self, shell: str = "/bin/zsh") -> None:
-        """Create a new Shell object with the provided shell command.
+        """Create a new Shell object with the provided shell.
 
         Args:
             shell (str): The shell to use for commands execution.
@@ -56,18 +61,19 @@ class Shell:
         _print_process_output(process, printer, error_printer)
         return process.returncode
 
-    def run_quiet(self, cmd: str, printer: Callable,
-                  loading_printer: Callable = print,
+    def run_quiet(self, cmd: str, command_printer: Callable,
+                  printer: Callable,
                   loading_string: str = LOADING_STR) -> int:
         """Runs a shell command and waits for it to complete. A loading
-        animation is printed to `loading_printer` while the command is running.
-        The output of the command is printed using the provided `printer`
-        function. Printers should not both print to the same stream.
+        animation is printed using `builtins.print` while the command is
+        running. The output of the command is printed using the provided
+        `command_printer` function. A completion message is printed using the
+        provided `printer` function.
 
         Args:
             cmd (str): The command to run.
-            printer (function): The standard output and error printer.
-            loading_printer (function, optional): The loading animation printer.
+            command_printer (function): The command outputs printer.
+            printer (function, optional): The completion message printer.
             loading_str (str): The loading string to print.
 
         Returns:
@@ -78,37 +84,14 @@ class Shell:
                                    stderr=subprocess.STDOUT)
 
         # show loading animation
-        _loader(process.poll, loading_printer, loading_string)
+        _loader(process.poll, loading_string)
         output = process.communicate()  # get the standard output and error
 
         # print the standard outputs and errors then return the exit code
         if output[0].decode().strip() != "":
-            printer(output[0].decode().strip())
-        printer(loading_string + " done.")  # print completion indicator
+            command_printer(output[0].decode().strip())
+        printer(loading_string + " done.")
         return process.returncode
-
-    def interactive(self) -> None:
-        """Runs the shell in interactive mode.
-        """
-        from utils.display import Display
-        from .colors import red
-        print("Shell interface written in Python. Type 'exit' to stop.")
-
-        exit_code = 0
-        while True:
-            # print prompt based on the exit code of the previous command
-            if exit_code != 0:
-                print(red("> "), end="")
-            else:
-                print("> ", end="")
-            # read a command and break if it is "exit"
-            command = input()
-            if command == "exit":
-                break
-
-            # run the command and print output
-            # exit_code = run(command, print, print)
-            exit_code = self.run_quiet(command, Display(no_logging=True).debug)
 
     def __call__(self, cmd: str, printer: Callable,
                  loading_printer: Callable = print,
@@ -116,15 +99,39 @@ class Shell:
         return self.run_quiet(cmd, printer, loading_printer, loading_string)
 
 
-def _loader(condition: Callable,
-            loading_printer: Callable, loading_string: str) -> None:
+def interactive() -> None:
+    """Runs the shell in interactive mode.
+    """
+    from .display import Display
+    from .colors import red
+
+    display = Display(no_logging=True)
+    shell_instance = Shell()
+    print("Shell interface written in Python. Shell: " + shell_instance.shell)
+    print("Type 'exit' to stop.")
+
+    exit_code = 0
+    while True:
+        # print prompt based on the exit code of the previous command
+        if exit_code != 0:
+            print(red("> "), end="")
+        else:
+            print("> ", end="")
+        # read a command and break if it is "exit"
+        command = input()
+        if command == "exit":
+            break
+
+        # run the command and print output
+        exit_code = shell_instance.run(command, display.print, display.error)
+
+
+def _loader(condition: Callable, loading_string: str) -> None:
     """Prints a loading animation until `condition` does not return `None`. The
-    loading animation is printed using the provided `loading_string`. When the
-    animation stops, the `loading_string` is printed followed by " done.".
+    loading animation is printed using the provided `loading_string`.
 
     Args:
         condition (function): The function that returns `None` to stop.
-        loading_printer (function): The printer of the loading animation.
         loading_string (str): The loading string to print.
     """
     import time
@@ -133,14 +140,12 @@ def _loader(condition: Callable,
     counter = 0
     while condition() is None:
         # print the loading string and animation
-        complete_string = loading_string + LOADING_ANIMATION[counter]
-        loading_printer(complete_string + "\r")
+        print(loading_string + LOADING_ANIMATION[counter])
         # wait after printing the animation for 1 second
         time.sleep(1 / len(LOADING_ANIMATION))
         # clear the line and increment the counter
-        print(" " * len(complete_string) + "\r")
+        print(_line_up + _line_clear + _line_up)
         counter = (counter + 1) % len(LOADING_ANIMATION)
-    print(loading_string + " done.")
 
 
 def _print_process_output(process: subprocess.Popen,
@@ -176,4 +181,4 @@ def __getattr__(name):
 
 
 if __name__ == "__main__":
-    Shell().interactive()
+    interactive()
