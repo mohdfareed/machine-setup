@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from setup_modules import *
-from utils import Display
-from utils import Shell
+from setup_modules import homebrew, git, zsh, python, macos
+from utils.display import Display
+from utils.shell import Shell
 from typing import Callable
 import os
 
@@ -19,21 +19,20 @@ def main():
     the script is run from the command line. It will prompt the user to run
     a setup function for every setup module. By default, the setup is run in
     verbose and debug mode without logging output to a file."""
-    display, shell = _setup_env()
+    display, shell = _init_setup()
 
     # print setup header
     display.header("Setting up machine...")
     # get resources if not already present
     shell.run_quiet(f"git submodule init && git submodule update",
-                    display.verbose, display.print,
-                    "Initializing resources submodule")
+                    display.verbose, display.print, "Initializing resources")
 
     # prompt user to setup components
-    _prompt_setup(setup_homebrew, "Homebrew", display)
-    _prompt_setup(setup_git, "Git", display)
-    _prompt_setup(setup_zsh, "Zsh", display)
-    _prompt_setup(setup_python, "Python", display)
-    _prompt_setup(setup_macos, "macOS", display)
+    _prompt_setup(homebrew.setup, "Homebrew", display)
+    _prompt_setup(git.setup, "Git", display)
+    _prompt_setup(zsh.setup, "Zsh", display)
+    _prompt_setup(python.setup, "Python", display)
+    _prompt_setup(macos.setup, "macOS", display)
 
     # inform user that setup is complete and a restart is required
     print("")  # leave a blank line
@@ -41,7 +40,7 @@ def main():
     display.info("Please restart your machine for some changes to apply.")
 
 
-def _setup_env() -> tuple[Display, Shell]:
+def _init_setup() -> tuple[Display, Shell]:
     """Setup objects for the setup script. It sets the working directory,
     creates a `Display` and `Shell` object, and prints the setup display mode.
 

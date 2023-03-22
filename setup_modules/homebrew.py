@@ -2,8 +2,8 @@
 machine.
 """
 
-from utils import Display
-from utils import Shell
+from utils.display import Display
+from utils.shell import Shell
 
 _shell = Shell()
 

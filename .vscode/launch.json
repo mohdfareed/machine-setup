@@ -20,6 +20,22 @@
       "module": "utils.shell",
       "console": "integratedTerminal",
       "justMyCode": true
+    },
+    {
+      "name": "Python: Current Script",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Python: Current Module",
+      "type": "python",
+      "request": "launch",
+      "module": "${fileDirnameBasename}.${fileBasenameNoExtension}",
+      "console": "integratedTerminal",
+      "justMyCode": true
     }
   ]
 }
