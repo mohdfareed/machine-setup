@@ -4,6 +4,7 @@ from setup_modules import *
 from utils import Display
 from utils import Shell
 from typing import Callable
+import os
 
 no_logging: bool = True
 """Do not log output to a file."""
@@ -18,28 +19,14 @@ def main():
     the script is run from the command line. It will prompt the user to run
     a setup function for every setup module. By default, the setup is run in
     verbose and debug mode without logging output to a file."""
+    display, shell = _setup_env()
 
-    # create a shell instance and set display mode
-    display = Display(verbose, debug, no_logging)
-    shell = Shell()
-
-    # print setup display mode
-    if debug:
-        display.debug("Debug mode is enabled.")
-    if verbose:
-        display.verbose("Verbose mode is enabled.")
     # print setup header
     display.header("Setting up machine...")
-
-    # resources repo and path
-    repo = "git@github.com:mohdfareed/setup-resources.git"
-    resources = "resources"
-    # print resources path for debugging
-    display.debug(f"resources: {resources}")
-    # clone resources repo
-    shell.run_quiet(f"git clone --recurse-submodules {repo} {resources}",
+    # get resources if not already present
+    shell.run_quiet(f"git submodule init && git submodule update",
                     display.verbose, display.print,
-                    "Cloning resources repository")
+                    "Initializing resources submodule")
 
     # prompt user to setup components
     _prompt_setup(setup_homebrew, "Homebrew", display)
@@ -54,8 +41,29 @@ def main():
     display.info("Please restart your machine for some changes to apply.")
 
 
+def _setup_env() -> tuple[Display, Shell]:
+    """Setup objects for the setup script. It sets the working directory,
+    creates a `Display` and `Shell` object, and prints the setup display mode.
+
+    Returns:
+        tuple[Display, Shell]: A list containing the `Display` and `Shell`.
+    """
+    # set the working directory to the directory of this file
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    # create a shell instance and set display mode
+    display = Display(verbose, debug, no_logging)
+    shell = Shell()
+    # print setup display mode
+    display.debug("Debug mode is enabled.") if debug else None
+    display.verbose("Verbose mode is enabled.") if verbose else None
+
+    return display, shell
+
+
 def _prompt_setup(setup_function: Callable, name: str, display: Display):
-    """Prompt the user to run a setup function with a `Display` object.
+    """Prompt the user to run a setup function with a `Display` object. It will
+    run the function if the user enters "y" or "yes". The function should take
+    a `Display` object as its only argument.
 
     Args:
         setup_function (function): The setup function to run.
