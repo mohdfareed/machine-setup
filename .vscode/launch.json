@@ -5,11 +5,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Setup File",
+      "name": "Python: Setup Script",
       "type": "python",
       "request": "launch",
       "program": "./setup.py",
       "args": ["--verbose", "--debug", "--no-log"],
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Python: Shell Module",
+      "type": "python",
+      "request": "launch",
+      "module": "utils.shell",
       "console": "integratedTerminal",
       "justMyCode": true
     }
