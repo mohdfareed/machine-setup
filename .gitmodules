@@ -1,6 +1,4 @@
-[submodule "zsh/themes/common"]
-	path = zsh/themes/common
-	url = https://github.com/jackharrisonsherlock/common
-[submodule "zsh/themes/typewritten"]
-	path = zsh/themes/typewritten
-	url = https://github.com/reobin/typewritten
+[submodule "resources"]
+	path = resources
+	url = git@github.com:mohdfareed/setup-resources.git
+	branch = main

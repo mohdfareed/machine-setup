@@ -1,5 +1,0 @@
-# python
-export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
-export PYLINTHOME="$XDG_CACHE_HOME/pylint"
-export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
-export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
