@@ -2,6 +2,7 @@
 
 from setup_modules import *
 from utils import Display
+from utils import Shell
 from typing import Callable
 
 no_logging: bool = True
@@ -18,16 +19,27 @@ def main():
     a setup function for every setup module. By default, the setup is run in
     verbose and debug mode without logging output to a file."""
 
-    # set display mode
+    # create a shell instance and set display mode
     display = Display(verbose, debug, no_logging)
+    shell = Shell()
+
     # print setup display mode
     if debug:
         display.debug("Debug mode is enabled.")
     if verbose:
         display.verbose("Verbose mode is enabled.")
-
     # print setup header
     display.header("Setting up machine...")
+
+    # resources repo and path
+    repo = "git@github.com:mohdfareed/setup-resources.git"
+    resources = "resources"
+    # print resources path for debugging
+    display.debug(f"resources: {resources}")
+    # clone resources repo
+    shell.run_quiet(f"git clone --recurse-submodules {repo} {resources}",
+                    display.verbose, display.print,
+                    "Cloning resources repository")
 
     # prompt user to setup components
     _prompt_setup(setup_homebrew, "Homebrew", display)
