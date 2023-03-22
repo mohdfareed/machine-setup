@@ -1,6 +1,7 @@
-"""Shell module that contains a `Shell` class for executing shell commands. It
-either prints the output of the command to a provided function or prints a
-loading animation while the command is running.
+"""Shell module that contains a `Shell` class for executing shell commands. The
+module provides an interactive mode of the shell that can be used in the
+terminal. This modules also holds the default loading string and animation used
+by any instance of the `Shell` class.
 """
 
 import subprocess
@@ -15,9 +16,9 @@ LOADING_ANIMATION: list[str] = ["", ".", "..", "..."]
 """The default loading animation used when waiting for a command to exit.
 """
 
-_line_up = '\033[1A'
+_LINE_UP = '\033[1A'
 """The ANSI escape sequence for moving the cursor up one line."""
-_line_clear = '\x1b[2K'
+_LINE_CLEAR = '\x1b[2K'
 """The ANSI escape sequence for clearing the current line."""
 
 
@@ -100,7 +101,9 @@ class Shell:
 
 
 def interactive() -> None:
-    """Runs the shell in interactive mode.
+    """Runs the shell in interactive mode. No output is logged when running in
+    this mode. The shell used is the default shell of the `Shell` class, of
+    which an instance is created for this mode.
     """
     from .display import Display
     from .colors import (bright_red as red,
@@ -146,7 +149,7 @@ def _loader(condition: Callable, loading_string: str) -> None:
         # wait after printing the animation for 1 second
         time.sleep(1 / len(LOADING_ANIMATION))
         # clear the line and increment the counter
-        print(_line_up + _line_clear + _line_up)
+        print(_LINE_UP + _LINE_CLEAR + _LINE_UP)
         counter = (counter + 1) % len(LOADING_ANIMATION)
 
 

@@ -1,5 +1,6 @@
 """Library of modules containing setup methods used for setting up a new
-machine. These methods are imported and used by the `setup.py` script.
+machine. These methods are imported and used by the main `setup.py` script. The
+modules in this library depend on modules in the `utils` library.
 """
 
 from .homebrew import setup as setup_homebrew
