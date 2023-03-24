@@ -5,8 +5,6 @@ machine.
 from utils.display import Display
 from utils.shell import Shell
 
-_shell = Shell()
-
 
 def setup(display: Display = Display(no_logging=True)):
     """Setup macOS on a new machine by installing applications and configuring
@@ -18,4 +16,5 @@ def setup(display: Display = Display(no_logging=True)):
     Args:
         display (Display, optional): The display for printing messages.
     """
+    shell = Shell()
     display.header("macOS setup script.")

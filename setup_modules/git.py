@@ -5,8 +5,6 @@ machine.
 from utils.display import Display
 from utils.shell import Shell
 
-_shell = Shell()
-
 
 def setup(display: Display = Display(no_logging=True)):
     """Setup git on a new machine by installing it through Homebrew and
@@ -18,6 +16,7 @@ def setup(display: Display = Display(no_logging=True)):
     Args:
         display (Display, optional): The display for printing messages.
     """
+    shell = Shell()
     display.header("Git setup script.")
 
 

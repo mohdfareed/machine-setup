@@ -5,8 +5,6 @@ machine.
 from utils.display import Display
 from utils.shell import Shell
 
-_shell = Shell()
-
 
 def setup(display: Display = Display(no_logging=True)):
     """Setup Zsh on a new machine by symlinking its configuration files.
@@ -17,4 +15,5 @@ def setup(display: Display = Display(no_logging=True)):
     Args:
         display (Display, optional): The display for printing messages.
     """
+    shell = Shell()
     display.header("zsh setup script.")

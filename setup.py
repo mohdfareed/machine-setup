@@ -6,6 +6,8 @@ from utils.shell import Shell
 from typing import Callable
 import os
 
+# TODO: add an unattended mode that does not prompt the user to run setup
+
 no_logging: bool = True
 """Do not log output to a file."""
 verbose: bool = True

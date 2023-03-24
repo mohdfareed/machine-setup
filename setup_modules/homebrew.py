@@ -3,7 +3,6 @@ machine.
 """
 
 import os
-import traceback
 from utils.display import Display
 from utils.shell import Shell
 from resources import homebrew_packages
@@ -62,7 +61,7 @@ def setup(display: Display = Display(no_logging=True)) -> None:
         display.debug(str(e))
         return
 
-    # output Homebrew packages
+    # output Homebrew packages as debug logs
     display.debug("Packages found:\n    " + "\n    ".join(packages))
     display.debug("Casks found:\n    " + "\n    ".join(casks))
     display.debug("Fonts found:\n    " + "\n    ".join(fonts))
