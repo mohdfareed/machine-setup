@@ -62,19 +62,16 @@ class Shell:
         _print_process_output(process, printer, error_printer)
         return process.returncode
 
-    def run_quiet(self, cmd: str, command_printer: Callable,
-                  printer: Callable,
+    def run_quiet(self, cmd: str, printer: Callable,
                   loading_string: str = LOADING_STR) -> int:
         """Runs a shell command and waits for it to complete. A loading
         animation is printed using `builtins.print` while the command is
         running. The output of the command is printed using the provided
-        `command_printer` function. A completion message is printed using the
-        provided `printer` function.
+        `printer` function.
 
         Args:
             cmd (str): The command to run.
-            command_printer (function): The command outputs printer.
-            printer (function, optional): The completion message printer.
+            printer (function, optional): The command outputs printer.
             loading_str (str): The loading string to print.
 
         Returns:
@@ -90,14 +87,12 @@ class Shell:
 
         # print the standard outputs and errors then return the exit code
         if output[0].decode().strip() != "":
-            command_printer(output[0].decode().strip())
-        printer(loading_string + " done.")
+            printer(output[0].decode().strip())
         return process.returncode
 
-    def __call__(self, cmd: str, printer: Callable,
-                 loading_printer: Callable = print,
+    def __call__(self, cmd: str, printer: Callable = print,
                  loading_string: str = LOADING_STR) -> int:
-        return self.run_quiet(cmd, printer, loading_printer, loading_string)
+        return self.run_quiet(cmd, printer, loading_string)
 
 
 def interactive() -> None:
