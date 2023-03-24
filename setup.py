@@ -14,18 +14,25 @@ debug: bool = True
 """Print debug output."""
 
 
-def main():
+def main() -> None:
     """Run the main function of the setup script. This function is called when
     the script is run from the command line. It will prompt the user to run
     a setup function for every setup module. By default, the setup is run in
     verbose and debug mode without logging output to a file."""
-    display, shell = _init_setup()
-
-    # print setup header
+    # set the working directory to the directory of this file
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    display, shell = _init()  # initialize display and shell
     display.header("Setting up machine...")
+
+    # check if git is installed
+    if shell.run('command -v git', display.debug, display.error) != 0:
+        display.error("Git is not installed.")
+        return
     # get resources if not already present
-    shell.run_quiet(f"git submodule init && git submodule update",
-                    display.verbose, display.print, "Initializing resources")
+    if shell.run_quiet("git submodule init && git submodule update --remote",
+                       display.verbose, "Initializing resources") != 0:
+        display.error("Failed to initialize resources.")
+        return
 
     # prompt user to setup components
     _prompt_setup(homebrew.setup, "Homebrew", display)
@@ -35,20 +42,18 @@ def main():
     _prompt_setup(macos.setup, "macOS", display)
 
     # inform user that setup is complete and a restart is required
-    print("")  # leave a blank line
-    display.success("Machine setup complete!")
+    display.success("\nMachine setup complete!")
     display.info("Please restart your machine for some changes to apply.")
 
 
-def _init_setup() -> tuple[Display, Shell]:
+def _init() -> tuple[Display, Shell]:
     """Setup objects for the setup script. It sets the working directory,
     creates a `Display` and `Shell` object, and prints the setup display mode.
 
     Returns:
         tuple[Display, Shell]: A list containing the `Display` and `Shell`.
     """
-    # set the working directory to the directory of this file
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
     # create a shell instance and set display mode
     display = Display(verbose, debug, no_logging)
     shell = Shell()
@@ -59,18 +64,18 @@ def _init_setup() -> tuple[Display, Shell]:
     return display, shell
 
 
-def _prompt_setup(setup_function: Callable, name: str, display: Display):
+def _prompt_setup(function: Callable, name: str, display: Display) -> None:
     """Prompt the user to run a setup function with a `Display` object. It will
     run the function if the user enters "y" or "yes". The function should take
     a `Display` object as its only argument.
 
     Args:
-        setup_function (function): The setup function to run.
+        function (function): The setup function to run.
         display (Display): The display for printing output.
     """
     answer = input(f"Do you want to setup {name}? (y/n [n]) ")
     if answer and answer.lower()[0] == "y":
-        setup_function(display)
+        function(display)
 
 
 if __name__ == "__main__":
