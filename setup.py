@@ -31,7 +31,7 @@ def main() -> None:
         display.error("Git is not installed.")
         return
     # get resources if not already present
-    if shell.run_quiet("git submodule init && git submodule update --remote",
+    if shell.run_quiet('git submodule update --init --recursive --remote',
                        display.verbose, "Initializing resources") != 0:
         display.error("Failed to initialize resources.")
         return
