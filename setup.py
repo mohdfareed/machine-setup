@@ -8,6 +8,8 @@ import os
 
 # TODO: add an unattended mode that does not prompt the user to run setup
 
+silent: bool = False
+"""Do not prompt the user during setup."""
 no_logging: bool = True
 """Do not log output to a file."""
 verbose: bool = True
@@ -29,28 +31,32 @@ def main() -> None:
     # check if git is installed
     if shell.run('command -v git', display.debug, display.error) != 0:
         display.error("Git is not installed.")
-        return
+        exit(1)
+    display.verbose("Git installation found.")
     # get resources if not already present
     if shell.run_quiet('git submodule update --init --recursive --remote',
                        display.verbose, "Initializing resources") != 0:
         display.error("Failed to initialize resources.")
-        return
+        exit(1)
+    display.verbose("Resources initialized.")
 
     # prompt user to setup components
     _prompt_setup(homebrew.setup, "Homebrew", display)
-    _prompt_setup(git.setup, "Git", display)
     _prompt_setup(zsh.setup, "Zsh", display)
+    _prompt_setup(git.setup, "Git", display)
     _prompt_setup(python.setup, "Python", display)
     _prompt_setup(macos.setup, "macOS", display)
 
     # inform user that setup is complete and a restart is required
-    display.success("\nMachine setup complete!")
+    display.success("")
+    display.success("Machine setup complete!")
     display.info("Please restart your machine for some changes to apply.")
 
 
 def _init() -> tuple[Display, Shell]:
-    """Setup objects for the setup script. It sets the working directory,
-    creates a `Display` and `Shell` object, and prints the setup display mode.
+    """Initialize a `Display` and `Shell` for the setup script and prints the
+    display mode. If the script is run in silent mode, it will prompt the user
+    for their password to get sudo privileges.
 
     Returns:
         tuple[Display, Shell]: A list containing the `Display` and `Shell`.
@@ -62,22 +68,40 @@ def _init() -> tuple[Display, Shell]:
     # print setup display mode
     display.debug("Debug mode is enabled.") if debug else None
     display.verbose("Verbose mode is enabled.") if verbose else None
+    display.info("Logging is disabled.") if no_logging else None
+    if not silent:
+        return display, shell
+
+    # prompt user for sudo privileges if running in silent mode
+    display.warning("Silent mode is enabled.")
+    display.header("Sudo privileges are required to run in silent mode.")
+    # create a shell instance with sudo privileges
+    try:
+        shell = Shell(sudo=True, display=display)
+    except PermissionError:
+        display.error("Failed to get sudo privileges.")
+        exit(1)
+    display.verbose("Sudo privileges granted.")
 
     return display, shell
 
 
-def _prompt_setup(function: Callable, name: str, display: Display) -> None:
-    """Prompt the user to run a setup function with a `Display` object. It will
-    run the function if the user enters "y" or "yes". The function should take
-    a `Display` object as its only argument.
+def _prompt_setup(procedure: Callable, name: str, display: Display) -> None:
+    """Prompt the user to run a setup procedure with a `Display` object. It
+    will run the procedure if the user enters "y" or "yes". The procedure
+    should take a `Display` object as its only argument.
 
     Args:
-        function (function): The setup function to run.
+        procedure (function): The setup procedure to run.
         display (Display): The display for printing output.
     """
+    if silent:
+        procedure(display)
+        return
+
     answer = input(f"Do you want to setup {name}? (y/n [n]) ")
     if answer and answer.lower()[0] == "y":
-        function(display)
+        procedure(display)
 
 
 if __name__ == "__main__":
@@ -91,12 +115,15 @@ if __name__ == "__main__":
                         help="print debug messages")
     parser.add_argument("--no-log", action="store_true",
                         help="don't log output to a file")
+    parser.add_argument("-s", "--silent", action="store_true",
+                        help="don't prompt user for input")
     args = parser.parse_args()
 
     # assign arguments to global variables
     verbose = args.verbose
     debug = args.debug
     no_logging = args.no_log
+    silent = args.silent
 
     # run main function
     main()

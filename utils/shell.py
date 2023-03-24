@@ -6,6 +6,7 @@ by any instance of the `Shell` class.
 
 import subprocess
 from typing import Callable
+from utils.display import Display
 
 LOADING_STR: str = "Loading"
 """The default string to print while waiting for a command to complete. It is
@@ -14,6 +15,10 @@ followed by a loading animation.
 
 LOADING_ANIMATION: list[str] = ["", ".", "..", "..."]
 """The default loading animation used when waiting for a command to exit.
+"""
+
+SHELL: str = '/bin/zsh'
+"""The default shell to use for executing commands.
 """
 
 _LINE_UP = '\033[1A'
@@ -30,15 +35,32 @@ class Shell:
     a provided function.
     """
 
-    def __init__(self, shell: str = "/bin/zsh") -> None:
-        """Create a new Shell object with the provided shell.
+    def __init__(self, shell: str = SHELL, sudo: bool = False,
+                 display: Display = Display(no_logging=True)) -> None:
+        """Create a new Shell object with the provided shell. If `sudo` is
+        `True`, the user will be prompted for their password to get sudo
+        privileges. The `display` object is used to print password prompts.
 
         Args:
             shell (str): The shell to use for commands execution.
+            sudo (bool): Whether to get sudo privileges.
+            display (Display): The display object to use for printing.
         """
         self.shell = shell
         """The shell to use for commands execution.
         """
+
+        if sudo and display is None:
+            raise ValueError("If `sudo` is set, `display` must be provided.")
+
+        # set sudo privileges
+        if sudo:
+            # use sudo to run a dummy command to get the user's password
+            command = 'sudo -k -p "Enter your password to continue:" -v'
+            returncode = self.run(command, display.print, display.error)
+            # check if the user entered the correct password
+            if returncode != 0:
+                raise PermissionError("Failed to get sudo privileges.")
 
     def run(self, cmd: str, printer: Callable, error_printer: Callable) -> int:
         """Runs a shell command and prints the output and errors using the
@@ -67,7 +89,8 @@ class Shell:
         """Runs a shell command and waits for it to complete. A loading
         animation is printed using `builtins.print` while the command is
         running. The output of the command is printed using the provided
-        `printer` function.
+        `printer` function. If `sudo` is `True`, a `display` object is
+        required.
 
         Args:
             cmd (str): The command to run.
@@ -87,7 +110,7 @@ class Shell:
 
         # print the standard outputs and errors then return the exit code
         if output[0].decode().strip() != "":
-            printer(output[0].decode().strip())
+            printer(cmd + "\n" + output[0].decode().strip())
         return process.returncode
 
     def __call__(self, cmd: str, printer: Callable = print,
