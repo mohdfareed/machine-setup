@@ -9,7 +9,7 @@
       "type": "python",
       "request": "launch",
       "program": "./setup.py",
-      "args": ["--verbose", "--debug", "--no-log"],
+      "args": ["--verbose", "--debug", "--silent", "--no-log"],
       "console": "integratedTerminal",
       "justMyCode": true
     },

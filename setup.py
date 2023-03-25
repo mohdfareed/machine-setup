@@ -6,8 +6,6 @@ from utils.shell import Shell
 from typing import Callable
 import os
 
-# TODO: add an unattended mode that does not prompt the user to run setup
-
 silent: bool = False
 """Do not prompt the user during setup."""
 no_logging: bool = True
@@ -33,19 +31,20 @@ def main() -> None:
         display.error("Git is not installed.")
         exit(1)
     display.verbose("Git installation found.")
+
     # get resources if not already present
     if shell.run_quiet('git submodule update --init --recursive --remote',
                        display.verbose, "Initializing resources") != 0:
         display.error("Failed to initialize resources.")
         exit(1)
-    display.verbose("Resources initialized.")
+    display.success("Resources initialized.")
 
     # prompt user to setup components
-    _prompt_setup(homebrew.setup, "Homebrew", display)
-    _prompt_setup(zsh.setup, "Zsh", display)
-    _prompt_setup(git.setup, "Git", display)
-    _prompt_setup(python.setup, "Python", display)
-    _prompt_setup(macos.setup, "macOS", display)
+    _prompt_setup(homebrew.setup, "Homebrew", display, shell)
+    _prompt_setup(zsh.setup, "Zsh", display, shell)
+    _prompt_setup(git.setup, "Git", display, shell)
+    _prompt_setup(python.setup, "Python", display, shell)
+    _prompt_setup(macos.setup, "macOS", display, shell)
 
     # inform user that setup is complete and a restart is required
     display.success("")
@@ -77,7 +76,7 @@ def _init() -> tuple[Display, Shell]:
     display.header("Sudo privileges are required to run in silent mode.")
     # create a shell instance with sudo privileges
     try:
-        shell = Shell(sudo=True, display=display)
+        shell = Shell(sudo=True)
     except PermissionError:
         display.error("Failed to get sudo privileges.")
         exit(1)
@@ -86,7 +85,8 @@ def _init() -> tuple[Display, Shell]:
     return display, shell
 
 
-def _prompt_setup(procedure: Callable, name: str, display: Display) -> None:
+def _prompt_setup(procedure: Callable, name: str,
+                  display: Display, shell: Shell) -> None:
     """Prompt the user to run a setup procedure with a `Display` object. It
     will run the procedure if the user enters "y" or "yes". The procedure
     should take a `Display` object as its only argument.
@@ -96,12 +96,12 @@ def _prompt_setup(procedure: Callable, name: str, display: Display) -> None:
         display (Display): The display for printing output.
     """
     if silent:
-        procedure(display)
+        procedure(display, shell, silent=True)
         return
 
     answer = input(f"Do you want to setup {name}? (y/n [n]) ")
     if answer and answer.lower()[0] == "y":
-        procedure(display)
+        procedure(display, shell)
 
 
 if __name__ == "__main__":

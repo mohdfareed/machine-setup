@@ -8,7 +8,8 @@ from utils.shell import Shell
 from resources import homebrew_packages
 
 
-def setup(display: Display = Display(no_logging=True)) -> None:
+def setup(display: Display = Display(no_logging=True), shell: Shell = Shell(),
+          silent: bool = False) -> None:
     """Setup Homebrew on a new machine by installing Homebrew and its packages.
 
     A `Display` object is used to print messages and log them to a file. A
@@ -17,7 +18,6 @@ def setup(display: Display = Display(no_logging=True)) -> None:
     Args:
         display (Display, optional): The display for printing messages.
     """
-    shell = Shell()
     display.header("Setting up Homebrew...")
 
     # Install Homebrew if it is not installed
@@ -68,17 +68,23 @@ def setup(display: Display = Display(no_logging=True)) -> None:
     display.debug("MAS apps found:\n    " + "\n    ".join(mas[0]))
 
     # install Homebrew packages
+    display.print("Installing Homebrew packages:")
     for package in packages:
         display.verbose(f"Installing {package}...")
-        _prompt_package(package, 'package', display, shell)
+        _prompt_package(package, 'package', display, shell, silent)
+    # install Homebrew casks and fonts
+    display.print("Installing Homebrew casks and fonts:")
     for cask in casks + fonts:  # fonts are installed as casks
         display.verbose(f"Installing {cask}...")
-        _prompt_package(cask, 'cask', display, shell)
+        _prompt_package(cask, 'cask', display, shell, silent)
+    # install MAS apps
+    display.print("Installing App store applications:")
     for app in mas[1]:
-        display.verbose(f"Installing {app}: {mas[0][mas[1].index(app)]}...")
-        _prompt_package(app, 'mas', display, shell,
+        display.verbose(f"Installing {app} ({mas[0][mas[1].index(app)]})...")
+        _prompt_package(app, 'mas', display, shell, silent,
                         name=mas[0][mas[1].index(app)])
 
+    display.success("")
     display.success("Homebrew was setup successfully.")
 
 
@@ -132,7 +138,6 @@ def _parse_packages(file_path: str) -> tuple[list[str], list[str], list[str],
         tuple[list[str], list[str], list[str], list[list[str]]]]: the packages
         in the order brew, cask, font, and mas.
     """
-
     packages = []
     casks = []
     fonts = []
@@ -163,7 +168,7 @@ def _parse_packages(file_path: str) -> tuple[list[str], list[str], list[str],
 
 
 def _prompt_package(package: str, type: str, display: Display, shell: Shell,
-                    name: str | None = None) -> None:
+                    silent: bool, name: str | None = None) -> None:
     """Prompt the user to install a Homebrew package. It will install the
     package if the user enters "y" or "yes".
 
@@ -171,15 +176,19 @@ def _prompt_package(package: str, type: str, display: Display, shell: Shell,
         package (str): The name of the package to install.
         type (str): The type of the package (e.g. "package", "cask", or "mas").
         display (Display): The display for printing messages.
+        shell (Shell): The shell for running installation commands.
+        silent (bool): Whether to install the package silently without prompts.
         name (str): The name of the package to display to the user. If None,
         the package name will be used.
     """
     # set name to package if name is None
     name = name if name else package
-    # prompt user to install package
-    answer = input(f"Do you want to install {name}? (y/n [n]) ")
-    if not answer or answer.lower()[0] != "y":
-        return
+    # prompt user to install package if not silent
+    if not silent:
+        answer = input(f"Do you want to install {name}? (y/n [n]) ")
+        if not answer or answer.lower()[0] != "y":
+            display.verbose(f"Skipped installing {name}.")
+            return
 
     # set command based on type
     if type == "mas":
@@ -194,9 +203,9 @@ def _prompt_package(package: str, type: str, display: Display, shell: Shell,
                                  loading_string=f"Installing {name}")
     # check if package was installed successfully
     if returncode == 0:
-        display.success(f"{name} was installed.")
+        display.success(f"    {name} was installed.")
     else:
-        display.error(f"Failed to install {name}.")
+        display.error(f"    Failed to install {name}.")
 
 
 if __name__ == "__main__":

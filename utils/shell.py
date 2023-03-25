@@ -35,34 +35,27 @@ class Shell:
     a provided function.
     """
 
-    def __init__(self, shell: str = SHELL, sudo: bool = False,
-                 display: Display = Display(no_logging=True)) -> None:
+    def __init__(self, shell: str = SHELL, sudo: bool = False) -> None:
         """Create a new Shell object with the provided shell. If `sudo` is
-        `True`, the user will be prompted for their password to get sudo
-        privileges. The `display` object is used to print password prompts.
+        `True`, the user will be prompted for their password.
 
         Args:
             shell (str): The shell to use for commands execution.
             sudo (bool): Whether to get sudo privileges.
-            display (Display): The display object to use for printing.
         """
-        self.shell = shell
+        self.shell: str = shell
         """The shell to use for commands execution.
         """
+        self._password: str
+        """The password used to get sudo privileges.
+        """
 
-        if sudo and display is None:
-            raise ValueError("If `sudo` is set, `display` must be provided.")
-
-        # set sudo privileges
+        # set the user's password if sudo is enabled
         if sudo:
-            # use sudo to run a dummy command to get the user's password
-            command = 'sudo -k -p "Enter your password to continue:" -v'
-            returncode = self.run(command, display.print, display.error)
-            # check if the user entered the correct password
-            if returncode != 0:
-                raise PermissionError("Failed to get sudo privileges.")
+            self._password = _password_prompt()
 
-    def run(self, cmd: str, printer: Callable, error_printer: Callable) -> int:
+    def run(self, cmd: str, printer: Callable, error_printer: Callable,
+            sudo: bool = False) -> int:
         """Runs a shell command and prints the output and errors using the
         provided `printer` and `error_printer` functions.
 
@@ -73,10 +66,17 @@ class Shell:
             cmd (str): The command to run.
             printer (function): The function used to print the output.
             error_printer (function): The function used to print errors.
+            sudo (bool): Whether to run command with sudo privileges.
 
         Returns:
             The exit code of the command.
         """
+        # get sudo privileges if sudo is enabled
+        if sudo:
+            if not self._password:
+                self._password = _password_prompt()
+            _set_sudo_privileges(self._password)
+
         process = subprocess.Popen(cmd, shell=True, executable=self.shell,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE)
@@ -85,7 +85,7 @@ class Shell:
         return process.returncode
 
     def run_quiet(self, cmd: str, printer: Callable,
-                  loading_string: str = LOADING_STR) -> int:
+                  loading_string: str = LOADING_STR, sudo: bool = False) -> int:
         """Runs a shell command and waits for it to complete. A loading
         animation is printed using `builtins.print` while the command is
         running. The output of the command is printed using the provided
@@ -96,10 +96,17 @@ class Shell:
             cmd (str): The command to run.
             printer (function, optional): The command outputs printer.
             loading_str (str): The loading string to print.
+            sudo (bool): Whether to run command with sudo privileges.
 
         Returns:
             The exit code of the command.
         """
+        # get sudo privileges if sudo is enabled
+        if sudo:
+            if not self._password:
+                self._password = _password_prompt()
+            _set_sudo_privileges(self._password)
+
         process = subprocess.Popen(cmd, shell=True, executable=self.shell,
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT)
@@ -197,6 +204,33 @@ def _print_process_output(process: subprocess.Popen,
         # break if the process has completed and there is no output
         if process.poll() is not None and not (stdout or stderr):
             break
+
+
+def _password_prompt(prompt: str = "Enter your password to continue: ") -> str:
+    """Prompts the user for a password and returns it.
+
+    Args:
+        prompt (str): The prompt to display to the user.
+
+    Returns:
+        The password entered by the user.
+    """
+    import getpass
+    return getpass.getpass(prompt)
+
+
+def _set_sudo_privileges(password: str) -> None:
+    """Sets the sudo privileges for the current user.
+
+    Args:
+        password (str): The password of the user.
+    """
+    from os import system
+    command = f'echo {password} | sudo -Svp ""'
+    returncode = system(command)
+    # check if the user entered the correct password
+    if returncode != 0:
+        raise PermissionError("Failed to get sudo privileges.")
 
 
 def __getattr__(name):
