@@ -5,6 +5,8 @@ machine.
 import os
 from utils.display import Display
 from utils.shell import Shell
+from utils.colors import LINE_UP, LINE_CLEAR
+from typing import Callable
 from resources import homebrew_packages
 
 
@@ -26,7 +28,6 @@ def setup(display: Display = Display(no_logging=True), shell: Shell = Shell(),
         return
 
     # add homebrew to path
-    display.verbose("Adding Homebrew to path...")
     command = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
     returncode = shell.run(command, display.verbose, display.error)
     if returncode != 0:
@@ -35,7 +36,6 @@ def setup(display: Display = Display(no_logging=True), shell: Shell = Shell(),
     display.verbose("Added Homebrew to path.")
 
     # fix “zsh compinit: insecure directories” message
-    display.verbose("Fixing zsh `compinit` message...")
     command = 'chmod -R go-w "$(brew --prefix)/share"'
     returncode = shell.run(command, display.verbose, display.error)
     if returncode != 0:
@@ -44,7 +44,6 @@ def setup(display: Display = Display(no_logging=True), shell: Shell = Shell(),
     display.verbose("Fixed zsh `compinit` message.")
 
     # add fonts tap
-    display.verbose("Adding fonts tap...")
     command = 'brew tap homebrew/cask-fonts'
     returncode = shell.run_quiet(command, display.verbose, "Adding fonts tap")
     if returncode != 0:
@@ -52,37 +51,37 @@ def setup(display: Display = Display(no_logging=True), shell: Shell = Shell(),
         return
     display.verbose("Added fonts tap.")
 
-    # read Homebrew packages
-    display.verbose("Parsing Homebrew packages...")
+    # parse Homebrew packages file
     try:
-        packages, casks, fonts, mas = _parse_packages(homebrew_packages)
+        packages = _parse_packages(homebrew_packages)
     except Exception as e:
         display.error("Failed to parse Homebrew packages file.")
         display.debug(str(e))
         return
+    display.verbose("Parsed Homebrew packages file.")
 
-    # output Homebrew packages as debug logs
-    display.debug("Packages found:\n    " + "\n    ".join(packages))
-    display.debug("Casks found:\n    " + "\n    ".join(casks))
-    display.debug("Fonts found:\n    " + "\n    ".join(fonts))
-    display.debug("MAS apps found:\n    " + "\n    ".join(mas[0]))
+    # prompt for Homebrew packages to install if not in silent mode
+    if not silent:
+        packages = _select_packages(packages, display.print)
+        display.verbose("Homebrew packages selected.")
 
     # install Homebrew packages
-    display.print("Installing Homebrew packages:")
-    for package in packages:
+    display.print("Installing Homebrew packages...")
+    for package in packages[0]:
         display.verbose(f"Installing {package}...")
-        _prompt_package(package, 'package', display, shell, silent)
+        _install_package(package, 'package', display, shell)
+
     # install Homebrew casks and fonts
-    display.print("Installing Homebrew casks and fonts:")
-    for cask in casks + fonts:  # fonts are installed as casks
+    display.print("Installing Homebrew casks and fonts...")
+    for cask in packages[1]:
         display.verbose(f"Installing {cask}...")
-        _prompt_package(cask, 'cask', display, shell, silent)
+        _install_package(cask, 'cask', display, shell)
+
     # install MAS apps
-    display.print("Installing App store applications:")
-    for app in mas[1]:
-        display.verbose(f"Installing {app} ({mas[0][mas[1].index(app)]})...")
-        _prompt_package(app, 'mas', display, shell, silent,
-                        name=mas[0][mas[1].index(app)])
+    display.print("Installing App store applications...")
+    for app in packages[2].keys():
+        display.verbose(f"Installing {packages[2][app]} ({app})...")
+        _install_package(app, 'mas', display, shell, packages[2][app])
 
     display.success("")
     display.success("Homebrew was setup successfully.")
@@ -124,24 +123,20 @@ def _install_brew(display: Display, shell: Shell) -> bool:
     return False
 
 
-def _parse_packages(file_path: str) -> tuple[list[str], list[str], list[str],
-                                             list[list[str]]]:
+def _parse_packages(file_path: str) -> tuple[list, list, dict]:
     """Parse a file containing Homebrew packages. The file is expected to have
-    packages separated by newlines. Packages can be of four types: brew, cask,
-    font, and mas. The mas list contains two lists: the first contains the
-    package IDs and the second contains the package names.
+    packages separated by newlines. Packages can be of three types: brew, cask,
+    and mas. The mas is a dictionary of ids as keys and names as values.
 
     Args:
         file_path (str): The path to the file containing Homebrew packages.
 
     Returns:
-        tuple[list[str], list[str], list[str], list[list[str]]]]: the packages
-        in the order brew, cask, font, and mas.
+        tuple[list, list, dict]: the packages in the order brew, cask, and mas.
     """
     packages = []
     casks = []
-    fonts = []
-    mas = [[], []]  # [id, name]
+    mas = {}
 
     # check if file exists
     if not os.path.isfile(file_path):
@@ -154,23 +149,70 @@ def _parse_packages(file_path: str) -> tuple[list[str], list[str], list[str],
             if line.startswith('brew '):
                 packages.append(line.split('"')[1])
 
-            elif line.startswith('cask "font-'):
-                fonts.append(line.split('"')[1])
-
             elif line.startswith('cask '):
                 casks.append(line.split('"')[1])
 
             elif line.startswith('mas '):
-                mas[1].append(line.split('"')[2].split(':')[1].strip())
-                mas[0].append(line.split('"')[1])
+                id = line.split('"')[2].split(':')[1].strip()
+                name = line.split('"')[1]
+                mas[id] = name
 
-    return packages, casks, fonts, mas
+    return packages, casks, mas
 
 
-def _prompt_package(package: str, type: str, display: Display, shell: Shell,
-                    silent: bool, name: str | None = None) -> None:
-    """Prompt the user to install a Homebrew package. It will install the
-    package if the user enters "y" or "yes".
+def _select_packages(packages: tuple[list, list, dict],
+                     printer: Callable) -> tuple[list, list, dict]:
+    """Prompt the user to choose which packages to install. It takes a tuple of
+    packages in the order brew, cask, font, and mas. It returns a tuple of the
+    same format with the packages that the user chose.
+
+    Args:
+        packages (tuple): The list of packages from which to choose.
+        printer (Display): The display for printing prompts.
+    """
+
+    while True:
+        chosen_packages = _prompt_package(packages[0])
+        chosen_casks = _prompt_package(packages[1])
+        chosen_mas = _prompt_package(list(packages[2].values()))
+        chosen_mas = {k: v for k, v in packages[2].items() if v in chosen_mas}
+
+        # print chosen packages
+
+        printer("Selected packages:")
+        printer("\n".join(chosen_packages))
+
+        printer("Selected casks and fonts:")
+        printer("\n".join(chosen_casks))
+
+        printer("Selected App Store apps:")
+        printer("\n".join(list(chosen_mas.values())))
+
+        # prompt user to confirm packages
+        answer = input("Do you want to continue? (y/n [n]): ")
+        if answer and answer.lower()[0] == "y":
+            return chosen_packages, chosen_casks, chosen_mas
+
+
+def _prompt_package(packages: list[str]) -> list[str]:
+    """Prompt the user to choose which packages to install from a list of
+    packages.
+
+    Args:
+        packages (list[str]): The list of packages from which to choose.
+    """
+    selected_packages = []
+    for package in packages:
+        answer = input(f"Do you want to install '{package}'? (y/n [n]): ")
+        print(LINE_UP + LINE_CLEAR + LINE_UP)
+        if answer.lower() == "y":
+            selected_packages.append(package)
+    return selected_packages
+
+
+def _install_package(package: str, type: str, display: Display, shell: Shell,
+                     name: str | None = None) -> None:
+    """Install a package using Homebrew of the given type.
 
     Args:
         package (str): The name of the package to install.
@@ -183,12 +225,6 @@ def _prompt_package(package: str, type: str, display: Display, shell: Shell,
     """
     # set name to package if name is None
     name = name if name else package
-    # prompt user to install package if not silent
-    if not silent:
-        answer = input(f"Do you want to install {name}? (y/n [n]) ")
-        if not answer or answer.lower()[0] != "y":
-            display.verbose(f"Skipped installing {name}.")
-            return
 
     # set command based on type
     if type == "mas":

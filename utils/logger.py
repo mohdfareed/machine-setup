@@ -57,7 +57,7 @@ class Logger:
             return
 
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        log_entry = f"[{timestamp}] {severity}: {message}\n"
+        log_entry = f"[{timestamp}] {severity}: {message.strip()}\n"
         self.log_file.write(log_entry)
 
 

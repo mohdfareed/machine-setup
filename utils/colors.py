@@ -6,6 +6,12 @@ decorations through the `Color`, `BackgroundColor` and `Decoration` classes.
 RESET = '\u001b[0m'
 """Reset all colors and decorations.
 """
+LINE_UP = '\033[1A'
+"""The ANSI escape sequence for moving the cursor up one line.
+"""
+LINE_CLEAR = '\x1b[2K'
+"""The ANSI escape sequence for clearing the current line.
+"""
 
 
 class Color:

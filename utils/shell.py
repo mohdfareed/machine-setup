@@ -6,7 +6,7 @@ by any instance of the `Shell` class.
 
 import subprocess
 from typing import Callable
-from utils.display import Display
+from .colors import LINE_CLEAR, LINE_UP
 
 LOADING_STR: str = "Loading"
 """The default string to print while waiting for a command to complete. It is
@@ -20,11 +20,6 @@ LOADING_ANIMATION: list[str] = ["", ".", "..", "..."]
 SHELL: str = '/bin/zsh'
 """The default shell to use for executing commands.
 """
-
-_LINE_UP = '\033[1A'
-"""The ANSI escape sequence for moving the cursor up one line."""
-_LINE_CLEAR = '\x1b[2K'
-"""The ANSI escape sequence for clearing the current line."""
 
 
 class Shell:
@@ -174,7 +169,7 @@ def _loader(condition: Callable, loading_string: str) -> None:
         # wait after printing the animation for 1 second
         time.sleep(1 / len(LOADING_ANIMATION))
         # clear the line and increment the counter
-        print(_LINE_UP + _LINE_CLEAR + _LINE_UP)
+        print(LINE_UP + LINE_CLEAR + LINE_UP)
         counter = (counter + 1) % len(LOADING_ANIMATION)
 
 
