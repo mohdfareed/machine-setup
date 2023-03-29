@@ -1,4 +1,4 @@
 [submodule "resources"]
 	path = resources
-	url = git@github.com:mohdfareed/machine-setup-resources.git
+	url = git@github.com:mohdfareed/machine-resources.git
 	branch = main
