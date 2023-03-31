@@ -31,7 +31,7 @@ class Logger:
         if self.is_dummy:
             return
 
-        current_datetime = datetime.now().strftime("%Y%m%d_%H%M%S")
+        current_datetime = datetime.now().strftime("%y%m%d_%H%M%S")
         filename = f"{os.getcwd()}/setup_{current_datetime}.log"
         counter = 1
         while os.path.exists(filename):

@@ -124,7 +124,7 @@ def _parse_packages(file_path: str) -> tuple[list, list, dict]:
                 casks.append(line.split('"')[1])
             # parse mas package IDs and their names
             elif line.startswith('mas '):
-                id = line.split('"')[2].split(':')[1].strip()
+                id = line.split(':')[1].split()[0]
                 mas[id] = line.split('"')[1]
 
     return packages, casks, mas
