@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["compinit", "shellenv"]
+  "cSpell.words": [
+    "compinit",
+    "hushlogin",
+    "shellenv"
+  ]
 }

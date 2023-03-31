@@ -142,12 +142,10 @@ def _install_package(display, package, type, name) -> None:
         raise ValueError(f"Invalid package type: {type}")
 
     # set command based on type
-    if type == 'brew':
-        cmd = f"brew install {package}"
-    elif type == 'cask':
+    if type == 'cask':
         cmd = f"brew install --cask {package}"
     else:
-        cmd = f"mas install {package}"
+        cmd = f"{type} install {package}"
 
     # install package
     display.debug(f"    Installing {name}...")
