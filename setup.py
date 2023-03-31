@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-import os
 
+import utils.shell as _shell  # the shell interface
 from setup_modules import git, homebrew, macos, python, shell
 from utils.display import Display
-from utils.shell import Shell
 
 
 def main(display: Display) -> None:
@@ -11,29 +10,33 @@ def main(display: Display) -> None:
     the script is run from the command line. It will prompt the user to run
     a setup function for every setup module. By default, the setup is run in
     verbose and debug mode without logging output to a file.
+
+    Args:
+        display (Display): The display for printing messages.
     """
     display.header("Setting up machine...")
 
-    # set the working directory to the directory of this file
-    os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    # create a shell instance for executing shell commands
-    _shell = Shell()
-
     # get resources if not already present
-    if _shell.run_quiet('git submodule update --init --recursive --remote',
-                        display.debug, "Initializing resources") != 0:
+    display.debug("Initializing resources...")
+    cmd = 'git submodule update --init --recursive --remote'
+    if _shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
         raise RuntimeError("Failed to initialize resources.")
     display.success("Resources initialized.")
 
     # prompt user to setup components
-    homebrew.setup(display, _shell)
-    shell.setup(display, _shell)
-    git.setup(display, _shell)
-    python.setup(display, _shell)
-    macos.setup(display, _shell)
+    display.debug("Running setup modules...")
+    homebrew.setup(display)
+    shell.setup(display)
+    git.setup(display)
+    python.setup(display)
+    macos.setup(display)
+
+    display.success("")
+    display.success("Machine setup complete!")
+    display.info("Please restart your machine for some changes to apply.")
 
 
-def _init(verbose: bool, debug: bool, no_logging: bool) -> Display:
+def _init(verbose, debug, no_logging) -> Display:
     """Initialize the display for printing messages and logging them to a file.
     """
     display = Display(verbose, debug, no_logging)
@@ -62,9 +65,6 @@ if __name__ == "__main__":
 
     try:  # run main function and handle exceptions
         main(display)
-        display.success("")
-        display.success("Machine setup complete!")
-        display.info("Please restart your machine for some changes to apply.")
     except Exception as exception:
         display.error(exception.__str__())
         display.error("")

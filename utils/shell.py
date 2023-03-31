@@ -1,11 +1,11 @@
-"""Shell module that contains a `Shell` class for executing shell commands. The
-module provides an interactive mode of the shell that can be used in the
-terminal. This modules also holds the default loading string and animation used
-by any instance of the `Shell` class.
+"""Shell module executing shell commands. The module provides a `run` function
+for running shell commands and `run_quiet` for running commands without
+printing their output. The provides an interactive mode of the shell.
 """
 
 import subprocess
 from typing import Callable
+
 from .colors import LINE_CLEAR, LINE_UP
 
 LOADING_STR: str = "Loading"
@@ -77,10 +77,10 @@ def interactive() -> None:
     """Runs the shell in interactive mode. No output is logged when running in
     this mode. The shell used is the default shell of the module.
     """
+    from .colors import bright_blue as blue
+    from .colors import bright_green as green
+    from .colors import bright_red as red
     from .display import Display
-    from .colors import (bright_red as red,
-                         bright_green as green,
-                         bright_blue as blue)
 
     display = Display(no_logging=True)
     print("Shell interface written in Python. Shell: " + SHELL)
