@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import utils.shell as _shell  # the shell interface
-from setup_modules import git, homebrew, macos, python, shell
+from setup_modules import git, homebrew, macos, python, zsh
+from utils import shell
 from utils.display import Display
 
 
@@ -19,14 +19,14 @@ def main(display: Display) -> None:
     # get resources if not already present
     display.debug("Initializing resources...")
     cmd = 'git submodule update --init --recursive --remote'
-    if _shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
+    if shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
         raise RuntimeError("Failed to initialize resources.")
     display.success("Resources initialized.")
 
     # prompt user to setup components
     display.debug("Running setup modules...")
     homebrew.setup(display)
-    shell.setup(display)
+    zsh.setup(display)
     git.setup(display)
     python.setup(display)
     macos.setup(display)

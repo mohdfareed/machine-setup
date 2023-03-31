@@ -2,7 +2,9 @@
 machine.
 """
 
-from utils import shell
+import os
+
+from resources import zshrc
 from utils.display import Display
 
 DISPLAY: Display = Display(no_logging=True)
@@ -17,16 +19,17 @@ def setup(display=DISPLAY) -> None:
 
     Args:
         display (Display, optional): The display for printing messages.
-        shell (Shell, optional): The shell for running commands.
-        silent (bool, optional): Whether to run the script silently.
     """
     display.header("Setting up shell...")
+    home = os.path.expanduser("~")
 
-    # symlink files
-    # ln -sfv "$zsh_dir/zshrc" "$ZDOTDIR/.zshrc"
+    # symlink configuration file
+    zshrc_symlink = os.path.join(home, ".zshrc")
+    os.remove(zshrc_symlink) if os.path.exists(zshrc_symlink) else None
+    os.symlink(zshrc, zshrc_symlink)
 
     # remove last login time prompt
-    # touch "$HOME/.hushlogin"
+    open(os.path.join(home, ".hushlogin"), "a").close()
 
 
 if __name__ == "__main__":
