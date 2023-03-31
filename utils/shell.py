@@ -22,108 +22,60 @@ SHELL: str = '/bin/zsh'
 """
 
 
-class Shell:
-    """Shell class that provides functions for executing shell commands.
-    Commands can be executed in a verbose or quiet mode. The verbose mode
-    prints the outputs to a provided `printer` function. The quiet mode prints
-    a loading animation while the command is running and prints the output to
-    a provided function.
+def run(cmd: str, printer: Callable, error: Callable | None = None) -> int:
+    """Runs a shell command and prints the output and errors using the
+    provided `printer(str)`. Errors can be printed using a different `error`
+    function.
+
+    Args:
+        cmd (str): The command to run.
+        printer (function): The function used to print the output.
+        error (function, optional): The function used to print errors. If
+        `None`, the `printer` function is used.
+
+    Returns:
+        The exit code of the command.
     """
+    error = error or printer
+    process = subprocess.Popen(cmd, shell=True, executable=SHELL,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
 
-    def __init__(self, shell: str = SHELL, sudo: bool = False) -> None:
-        """Create a new Shell object with the provided shell. If `sudo` is
-        `True`, the user will be prompted for their password.
+    _print_output(process, printer, error)
+    return process.returncode
 
-        Args:
-            shell (str): The shell to use for commands execution.
-            sudo (bool): Whether to get sudo privileges.
-        """
-        self.shell: str = shell
-        """The shell to use for commands execution.
-        """
-        self._password: str
-        """The password used to get sudo privileges.
-        """
 
-        # set the user's password if sudo is enabled
-        if sudo:
-            self._password = _password_prompt()
+def run_quiet(cmd: str, printer: Callable, loading_string=LOADING_STR) -> int:
+    """Runs a shell command and waits for it to complete. A loading
+    animation is printed using `builtins.print` while the command is
+    running. The output of the command is printed using the provided
+    `printer` function.
 
-    def run(self, cmd: str, printer: Callable, error_printer: Callable,
-            sudo: bool = False) -> int:
-        """Runs a shell command and prints the output and errors using the
-        provided `printer` and `error_printer` functions.
+    Args:
+        cmd (str): The command to run.
+        printer (function, optional): The command outputs printer.
+        loading_str (str): The loading string to print.
 
-        The `printer` and `error_printer` functions should take a string as an
-        argument.
+    Returns:
+        The exit code of the command.
+    """
+    process = subprocess.Popen(cmd, shell=True, executable=SHELL,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
 
-        Args:
-            cmd (str): The command to run.
-            printer (function): The function used to print the output.
-            error_printer (function): The function used to print errors.
-            sudo (bool): Whether to run command with sudo privileges.
+    # show loading animation
+    _loader(process.poll, loading_string)
+    output = process.communicate()  # get the standard output and error
 
-        Returns:
-            The exit code of the command.
-        """
-        # get sudo privileges if sudo is enabled
-        if sudo:
-            if not self._password:
-                self._password = _password_prompt()
-            _set_sudo_privileges(self._password)
-
-        process = subprocess.Popen(cmd, shell=True, executable=self.shell,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.PIPE)
-
-        _print_process_output(process, printer, error_printer)
-        return process.returncode
-
-    def run_quiet(self, cmd: str, printer: Callable,
-                  loading_string: str = LOADING_STR, sudo: bool = False) -> int:
-        """Runs a shell command and waits for it to complete. A loading
-        animation is printed using `builtins.print` while the command is
-        running. The output of the command is printed using the provided
-        `printer` function. If `sudo` is `True`, a `display` object is
-        required.
-
-        Args:
-            cmd (str): The command to run.
-            printer (function, optional): The command outputs printer.
-            loading_str (str): The loading string to print.
-            sudo (bool): Whether to run command with sudo privileges.
-
-        Returns:
-            The exit code of the command.
-        """
-        # get sudo privileges if sudo is enabled
-        if sudo:
-            if not self._password:
-                self._password = _password_prompt()
-            _set_sudo_privileges(self._password)
-
-        process = subprocess.Popen(cmd, shell=True, executable=self.shell,
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT)
-
-        # show loading animation
-        _loader(process.poll, loading_string)
-        output = process.communicate()  # get the standard output and error
-
-        # print the standard outputs and errors then return the exit code
-        if output[0].decode().strip() != "":
-            printer(cmd + "\n" + output[0].decode().strip())
-        return process.returncode
-
-    def __call__(self, cmd: str, printer: Callable = print,
-                 loading_string: str = LOADING_STR) -> int:
-        return self.run_quiet(cmd, printer, loading_string)
+    # print the standard outputs and errors then return the exit code
+    if output[0].decode().strip() != "":
+        printer(cmd + "\n" + output[0].decode().strip())
+    return process.returncode
 
 
 def interactive() -> None:
     """Runs the shell in interactive mode. No output is logged when running in
-    this mode. The shell used is the default shell of the `Shell` class, of
-    which an instance is created for this mode.
+    this mode. The shell used is the default shell of the module.
     """
     from .display import Display
     from .colors import (bright_red as red,
@@ -131,8 +83,7 @@ def interactive() -> None:
                          bright_blue as blue)
 
     display = Display(no_logging=True)
-    shell_instance = Shell()
-    print("Shell interface written in Python. Shell: " + shell_instance.shell)
+    print("Shell interface written in Python. Shell: " + SHELL)
     print(blue("Type 'exit' to stop.\n"))
 
     exit_code = 0
@@ -148,10 +99,10 @@ def interactive() -> None:
             break
 
         # run the command and print output
-        exit_code = shell_instance.run(cmd, display.print, display.error)
+        exit_code = run(cmd, display.print, display.error)
 
 
-def _loader(condition: Callable, loading_string: str) -> None:
+def _loader(condition, loading_string):
     """Prints a loading animation until `condition` does not return `None`. The
     loading animation is printed using the provided `loading_string`.
 
@@ -173,8 +124,7 @@ def _loader(condition: Callable, loading_string: str) -> None:
         counter = (counter + 1) % len(LOADING_ANIMATION)
 
 
-def _print_process_output(process: subprocess.Popen,
-                          printer: Callable, error_printer: Callable) -> None:
+def _print_output(process, printer, error_printer):
     """Prints the output of a process line by line until the process
     completes.
 
@@ -184,48 +134,24 @@ def _print_process_output(process: subprocess.Popen,
         error_printer (function): The printer of the standard error.
     """
 
-    stdout = stderr = ""
+    output, error = "", ""
     while True:
         # read a line from the process's output and error
         if process.stdout is not None:
-            stdout = process.stdout.readline().decode().strip()
+            output = process.stdout.readline().decode().strip()
         if process.stderr is not None:
-            stderr = process.stderr.readline().decode().strip()
-        # print the output and error if they are not empty
-        if stdout:
-            printer(stdout)
-        if stderr:
-            error_printer(stderr)
+            error = process.stderr.readline().decode().strip()
+
+        # print the output if it is not empty
+        if output:
+            printer(output)
+        # print the error if it is not empty
+        if error:
+            error_printer(error)
+
         # break if the process has completed and there is no output
-        if process.poll() is not None and not (stdout or stderr):
+        if process.poll() is not None and not (output or error):
             break
-
-
-def _password_prompt(prompt: str = "Enter your password to continue: ") -> str:
-    """Prompts the user for a password and returns it.
-
-    Args:
-        prompt (str): The prompt to display to the user.
-
-    Returns:
-        The password entered by the user.
-    """
-    import getpass
-    return getpass.getpass(prompt)
-
-
-def _set_sudo_privileges(password: str) -> None:
-    """Sets the sudo privileges for the current user.
-
-    Args:
-        password (str): The password of the user.
-    """
-    from os import system
-
-    # prompt the user for password
-    cmd = f'echo {password} | sudo -Svp ""'
-    if system(cmd) != 0:
-        raise PermissionError("Failed to get sudo privileges.")
 
 
 def __getattr__(name):
@@ -233,5 +159,5 @@ def __getattr__(name):
 
 
 if __name__ == "__main__":
-    print("Running shell in interactive mode:\n")
+    print("Running shell in interactive mode.\n")
     interactive()
