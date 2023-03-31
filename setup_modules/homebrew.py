@@ -44,10 +44,6 @@ def setup(display=DISPLAY) -> None:
         raise RuntimeError("Failed to add fonts tap.")
     display.debug("Added fonts tap.")
 
-    # confirm packages before parsing and installing
-    display.info(f"\nPackages file: {homebrew_packages}")
-    input(f"Press any key to continue...\n")
-
     # parse Homebrew packages file
     packages = _parse_packages(homebrew_packages)
     display.debug("Parsed Homebrew packages file:" + homebrew_packages)
@@ -55,17 +51,43 @@ def setup(display=DISPLAY) -> None:
     # install Homebrew packages
     display.print("Installing Homebrew packages...")
     for package in packages[0]:
-        _install_package(display, package, 'brew', package)
+        install_package(display, package, 'brew', package)
     # install Homebrew casks and fonts
     display.print("Installing Homebrew casks and fonts...")
     for cask in packages[1]:
-        _install_package(display, cask, 'cask', cask)
+        install_package(display, cask, 'cask', cask)
     # install MAS apps
     display.print("Installing App store applications...")
     for app, app_name in packages[2].items():
-        _install_package(display, app, 'mas', app_name)
+        install_package(display, app, 'mas', app_name)
 
     display.success("Homebrew was setup successfully.")
+
+
+def install_package(display: Display, package: str, type: str, name: str):
+    """Install a package using Homebrew of the given type.
+
+    Args:
+        display (Display): The display for printing messages.
+        package (str): The name of the package to install.
+        type (str): The type of the package to install (brew, cask, or mas).
+        name (str): The name of the package to display to the user.
+    """
+    if type not in ['brew', 'cask', 'mas']:
+        raise ValueError(f"Invalid package type: {type}")
+
+    # set command based on type
+    if type == 'cask':
+        cmd = f"brew install --cask {package}"
+    else:
+        cmd = f"{type} install {package}"
+
+    # install package
+    display.debug(f"    Installing {name}...")
+    if shell.run_quiet(cmd, display.verbose, f"    Installing {name}") != 0:
+        display.error(f"    Failed to install {name}.")
+        return
+    display.success(f"    {name} was installed.")
 
 
 def _install_brew(display):
@@ -128,31 +150,6 @@ def _parse_packages(file_path: str) -> tuple[list, list, dict]:
                 mas[id] = line.split('"')[1]
 
     return packages, casks, mas
-
-
-def _install_package(display, package, type, name) -> None:
-    """Install a package using Homebrew of the given type.
-
-    Args:
-        package (str): The name of the package to install.
-        type (str): The type of the package to install (brew, cask, or mas).
-        name (str): The name of the package to display to the user.
-    """
-    if type not in ['brew', 'cask', 'mas']:
-        raise ValueError(f"Invalid package type: {type}")
-
-    # set command based on type
-    if type == 'cask':
-        cmd = f"brew install --cask {package}"
-    else:
-        cmd = f"{type} install {package}"
-
-    # install package
-    display.debug(f"    Installing {name}...")
-    if shell.run_quiet(cmd, display.verbose, f"    Installing {name}") != 0:
-        display.error(f"    Failed to install {name}.")
-        return
-    display.success(f"    {name} was installed.")
 
 
 if __name__ == "__main__":

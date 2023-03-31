@@ -2,10 +2,10 @@
 machine.
 """
 
-import os
-
 from resources import zshrc
 from utils.display import Display
+from utils import symlink, HOME, shell
+from .homebrew import install_package
 
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""
@@ -21,15 +21,25 @@ def setup(display=DISPLAY) -> None:
         display (Display, optional): The display for printing messages.
     """
     display.header("Setting up shell...")
-    home = os.path.expanduser("~")
+
+    # check if homebrew is installed
+    if shell.run('command -v brew', display.verbose, display.error) != 0:
+        raise RuntimeError("Could not find Homebrew.")
+    display.debug("Homebrew was found.")
+
+    # install zsh and pure prompt
+    install_package(display, "zsh", 'brew', "Zsh")
+    install_package(display, "pure", 'brew', "Pure prompt")
+    display.debug("Packages were installed.")
 
     # symlink configuration file
-    zshrc_symlink = os.path.join(home, ".zshrc")
-    os.remove(zshrc_symlink) if os.path.exists(zshrc_symlink) else None
-    os.symlink(zshrc, zshrc_symlink)
-
+    symlink(zshrc, "~/.zshrc")
+    display.debug("Created symbolic links.")
     # remove last login time prompt
-    open(os.path.join(home, ".hushlogin"), "a").close()
+    open(f"{HOME}/.hushlogin", "a").close()
+    display.debug("Removed last login time prompt.")
+
+    display.success("Shell was setup successfully.")
 
 
 if __name__ == "__main__":
