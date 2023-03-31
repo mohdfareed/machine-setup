@@ -1,118 +1,46 @@
 #!/usr/bin/env python3
-
 import os
-from typing import Callable
 
-from setup_modules import git, homebrew, macos, python, zsh
+from setup_modules import git, homebrew, macos, python, shell
 from utils.display import Display
 from utils.shell import Shell
 
-silent: bool = False
-"""Do not prompt the user during setup."""
-no_logging: bool = True
-"""Do not log output to a file."""
-verbose: bool = True
-"""Print verbose output."""
-debug: bool = True
-"""Print debug output."""
 
-_display: Display
-"""The display for printing messages."""
-_shell: Shell
-"""The shell for running commands."""
-
-
-def main() -> None:
+def main(display: Display) -> None:
     """Run the main function of the setup script. This function is called when
     the script is run from the command line. It will prompt the user to run
     a setup function for every setup module. By default, the setup is run in
-    verbose and debug mode without logging output to a file."""
-    global _display, _shell
+    verbose and debug mode without logging output to a file.
+    """
+    display.header("Setting up machine...")
 
     # set the working directory to the directory of this file
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    _init()  # initialize display and shell
-    _display.header("Setting up machine...")
-
-    # check if git is installed
-    if _shell.run('command -v git', _display.debug, _display.error) != 0:
-        _display.error("Git is not installed.")
-        exit(1)
-    _display.verbose("Git installation found.")
+    # create a shell instance for executing shell commands
+    _shell = Shell()
 
     # get resources if not already present
     if _shell.run_quiet('git submodule update --init --recursive --remote',
-                        _display.debug, "Initializing resources") != 0:
-        _display.error("Failed to initialize resources.")
-        exit(1)
-    _display.success("Resources initialized.")
+                        display.debug, "Initializing resources") != 0:
+        raise RuntimeError("Failed to initialize resources.")
+    display.success("Resources initialized.")
 
     # prompt user to setup components
-    _prompt_setup(homebrew.setup, "Homebrew")
-    _prompt_setup(zsh.setup, "Zsh")
-    _prompt_setup(git.setup, "Git")
-    _prompt_setup(python.setup, "Python")
-    _prompt_setup(macos.setup, "macOS")
-
-    _display.success("")
-    _display.success("Machine setup complete!")
-    _display.info("Please restart your machine for some changes to apply.")
+    homebrew.setup(display, _shell)
+    shell.setup(display, _shell)
+    git.setup(display, _shell)
+    python.setup(display, _shell)
+    macos.setup(display, _shell)
 
 
-def _init():
-    """Initialize the `Display` and `Shell` for the setup script and prints the
-    display mode. If the script is run in silent mode, it will prompt the user
-    for their password to get sudo privileges.
+def _init(verbose: bool, debug: bool, no_logging: bool) -> Display:
+    """Initialize the display for printing messages and logging them to a file.
     """
-    global silent, no_logging, verbose, debug, _display, _shell
-
-    # create a shell instance and set display mode
-    _display, _shell = Display(verbose, debug, no_logging), Shell()
-    # print setup display mode
-    _display.debug("Debug mode is enabled.") if debug else None
-    _display.verbose("Verbose mode is enabled.") if verbose else None
-    _display.info("Logging is disabled.") if no_logging else None
-    if not silent:
-        return
-
-    # prompt user for sudo privileges if running in silent mode
-    _display.warning("Silent mode is enabled.")
-    _display.header("Sudo privileges are required to run in silent mode.")
-    # create a shell instance with sudo privileges
-    try:
-        _shell = Shell(sudo=True)
-    except PermissionError:
-        _display.error("Failed to get sudo privileges.")
-        exit(1)
-    _display.verbose("Sudo privileges granted.")
-
-
-def _prompt_setup(setup: Callable, name: str):
-    """Prompt the user to run a setup procedure with a `Display` object. It
-    will run the procedure if the user enters "y" or "yes". The procedure
-    should take a `Display` object as its only argument.
-
-    Args:
-        setup (function): The setup function to run.
-        name (str): The name of the setup function.
-    """
-    global silent, _display, _shell
-
-    # prompt user for confirmation if not running in silent mode
-    if not silent:
-        answer = input(f"\nDo you want to setup {name}? (y/n [y]) ")
-        if answer and answer.lower()[0] == "n":
-            _display.info(f"Skipped {name}.")
-            return
-
-    try:
-        setup(_display, _shell, silent)
-    except (KeyboardInterrupt, Exception) as exception:
-        _display.error(exception.__str__())
-        answer = input(f"Do you want to continue? (y/n [n]) ")
-        if not answer or answer.lower()[0] != "y":
-            _display.error(f"\nFailed to setup machine.")
-            exit(1)
+    display = Display(verbose, debug, no_logging)
+    display.debug("Debug mode is enabled.") if debug else None
+    display.verbose("Verbose mode is enabled.") if verbose else None
+    display.info("Logging is disabled.") if no_logging else None
+    return display
 
 
 if __name__ == "__main__":
@@ -121,17 +49,23 @@ if __name__ == "__main__":
     # parse command line arguments
     parser = argparse.ArgumentParser(description="Machine setup script.")
     parser.add_argument("-v", "--verbose", action="store_true",
-                        help="print verbose messages")
+                        help="print verbose messages, including commands")
     parser.add_argument("-d", "--debug", action="store_true",
                         help="print debug messages")
     parser.add_argument("--no-log", action="store_true",
                         help="don't log output to a file")
-    parser.add_argument("-s", "--silent", action="store_true",
-                        help="don't prompt user for input")
     args = parser.parse_args()
 
-    # assign arguments to global variables
-    verbose, debug = args.verbose, args.debug
-    no_logging, silent = args.no_log, args.silent
-    # run main function
-    main()
+    # create a display instance for logging and printing messages
+    verbose, debug, no_logging = args.verbose, args.debug, args.no_log
+    display = _init(verbose, debug, no_logging)
+
+    try:  # run main function and handle exceptions
+        main(display)
+        display.success("")
+        display.success("Machine setup complete!")
+        display.info("Please restart your machine for some changes to apply.")
+    except Exception as exception:
+        display.error(exception.__str__())
+        display.error("")
+        display.error(f"Failed to setup machine.")
