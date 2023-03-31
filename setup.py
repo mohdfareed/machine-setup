@@ -42,7 +42,7 @@ def main() -> None:
 
     # get resources if not already present
     if _shell.run_quiet('git submodule update --init --recursive --remote',
-                        _display.verbose, "Initializing resources") != 0:
+                        _display.debug, "Initializing resources") != 0:
         _display.error("Failed to initialize resources.")
         exit(1)
     _display.success("Resources initialized.")
@@ -67,8 +67,7 @@ def _init():
     global silent, no_logging, verbose, debug, _display, _shell
 
     # create a shell instance and set display mode
-    _display = Display(verbose, debug, no_logging)
-    _shell = Shell()
+    _display, _shell = Display(verbose, debug, no_logging), Shell()
     # print setup display mode
     _display.debug("Debug mode is enabled.") if debug else None
     _display.verbose("Verbose mode is enabled.") if verbose else None
@@ -99,14 +98,21 @@ def _prompt_setup(setup: Callable, name: str):
     """
     global silent, _display, _shell
 
-    # run setup function if running in silent mode
-    if silent:
-        setup(_display, _shell, silent=True)
-        return
-    # prompt user for confirmation otherwise
-    answer = input(f"Do you want to setup {name}? (y/n [n]) ")
-    if answer and answer.lower()[0] == "y":
-        setup(_display, _shell)
+    # prompt user for confirmation if not running in silent mode
+    if not silent:
+        answer = input(f"\nDo you want to setup {name}? (y/n [y]) ")
+        if answer and answer.lower()[0] == "n":
+            _display.info(f"Skipped {name}.")
+            return
+
+    try:
+        setup(_display, _shell, silent)
+    except (KeyboardInterrupt, Exception) as exception:
+        _display.error(exception.__str__())
+        answer = input(f"Do you want to continue? (y/n [n]) ")
+        if not answer or answer.lower()[0] != "y":
+            _display.error(f"\nFailed to setup machine.")
+            exit(1)
 
 
 if __name__ == "__main__":
@@ -125,10 +131,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # assign arguments to global variables
-    verbose = args.verbose
-    debug = args.debug
-    no_logging = args.no_log
-    silent = args.silent
-
+    verbose, debug = args.verbose, args.debug
+    no_logging, silent = args.no_log, args.silent
     # run main function
     main()

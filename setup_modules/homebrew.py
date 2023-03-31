@@ -3,15 +3,21 @@ machine.
 """
 
 import os
+from enum import Enum
+
+from resources import homebrew_packages
 from utils.display import Display
 from utils.shell import Shell
-from utils.colors import LINE_UP, LINE_CLEAR
-from typing import Callable
-from resources import homebrew_packages
+
+_display: Display = Display(no_logging=True)
+"""The display for printing messages."""
+_shell: Shell = Shell()
+"""The shell for running commands."""
+_silent: bool = False
+"""Whether to run the script silently."""
 
 
-def setup(display: Display = Display(no_logging=True), shell: Shell = Shell(),
-          silent: bool = False) -> None:
+def setup(display=_display, shell=_shell, silent=_silent) -> None:
     """Setup Homebrew on a new machine by installing Homebrew and its packages.
 
     A `Display` object is used to print messages and log them to a file. A
@@ -19,108 +25,90 @@ def setup(display: Display = Display(no_logging=True), shell: Shell = Shell(),
 
     Args:
         display (Display, optional): The display for printing messages.
+        shell (Shell, optional): The shell for running commands.
+        silent (bool, optional): Whether to run the script silently.
     """
-    display.header("Setting up Homebrew...")
+    global _display, _shell, _silent
+
+    # use provided display and shell if any
+    _display, _shell, _silent = display, shell, silent
+    _display.header("Setting up Homebrew...")
 
     # Install Homebrew if it is not installed
-    display.verbose("Installing Homebrew...")
-    if not _install_brew(display, shell):
-        return
+    _install_brew()
 
     # add homebrew to path
-    command = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-    returncode = shell.run(command, display.verbose, display.error)
-    if returncode != 0:
-        display.error("Failed to add Homebrew to path.")
-        return
-    display.verbose("Added Homebrew to path.")
+    cmd = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+    if _shell.run(cmd, _display.debug, _display.error) != 0:
+        raise RuntimeError("Failed to add Homebrew to path.")
+    _display.verbose("Added Homebrew to path.")
 
     # fix “zsh compinit: insecure directories” message
-    command = 'chmod -R go-w "$(brew --prefix)/share"'
-    returncode = shell.run(command, display.verbose, display.error)
-    if returncode != 0:
-        display.error("Failed to fix zsh `compinit` message.")
-        return
-    display.verbose("Fixed zsh `compinit` message.")
+    cmd = 'chmod -R go-w "$(brew --prefix)/share"'
+    if _shell.run(cmd, _display.debug, _display.error) != 0:
+        raise RuntimeError("Failed to fix zsh `compinit` message.")
+    _display.verbose("Fixed zsh `compinit` message.")
 
     # add fonts tap
-    command = 'brew tap homebrew/cask-fonts'
-    returncode = shell.run_quiet(command, display.verbose, "Adding fonts tap")
-    if returncode != 0:
-        display.error("Failed to add fonts tap.")
-        return
-    display.verbose("Added fonts tap.")
+    cmd = 'brew tap homebrew/cask-fonts'
+    if _shell.run_quiet(cmd, _display.debug, "Adding fonts tap") != 0:
+        raise RuntimeError("Failed to add fonts tap.")
+    _display.verbose("Added fonts tap.")
+
+    # confirm packages if not silent before parsing and installing
+    if not _silent:
+        _display.info(f"\nPackages file: {homebrew_packages}")
+        _display.warning(f"Check packages in the file before continuing.")
+        answer = input(f"Do you want to continue setup? (y/n [y]) ")
+        if answer or answer.lower()[0] == "n":
+            raise KeyboardInterrupt("Packages installation cancelled.")
 
     # parse Homebrew packages file
-    try:
-        packages = _parse_packages(homebrew_packages)
-    except Exception as e:
-        display.error("Failed to parse Homebrew packages file.")
-        display.debug(str(e))
-        return
-    display.verbose("Parsed Homebrew packages file.")
-
-    # prompt for Homebrew packages to install if not in silent mode
-    if not silent:
-        packages = _select_packages(packages, display.print)
-        display.verbose("Homebrew packages selected.")
+    packages = _parse_packages(homebrew_packages)
+    _display.verbose("Parsed Homebrew packages file:" + homebrew_packages)
 
     # install Homebrew packages
-    display.print("Installing Homebrew packages...")
+    _display.print("Installing Homebrew packages...")
     for package in packages[0]:
-        display.verbose(f"Installing {package}...")
-        _install_package(package, 'package', display, shell)
-
+        _install_package(package, 'brew', package)
     # install Homebrew casks and fonts
-    display.print("Installing Homebrew casks and fonts...")
+    _display.print("Installing Homebrew casks and fonts...")
     for cask in packages[1]:
-        display.verbose(f"Installing {cask}...")
-        _install_package(cask, 'cask', display, shell)
-
+        _install_package(cask, 'cask', cask)
     # install MAS apps
-    display.print("Installing App store applications...")
-    for app in packages[2].keys():
-        display.verbose(f"Installing {packages[2][app]} ({app})...")
-        _install_package(app, 'mas', display, shell, packages[2][app])
+    _display.print("Installing App store applications...")
+    for app, app_name in packages[2].items():
+        _install_package(app, 'mas', app_name)
 
-    display.success("")
-    display.success("Homebrew was setup successfully.")
+    _display.success("Homebrew was setup successfully.")
 
 
-def _install_brew(display: Display, shell: Shell) -> bool:
+def _install_brew():
     """Install Homebrew on a new machine by running the Homebrew installation
     script.
 
-    Args:
-        display (Display): The display for printing messages.
-        shell (Shell): The shell for running commands.
-
-    Returns:
-        bool: True if Homebrew was installed successfully, False otherwise.
+    Raises:
+        KeyboardInterrupt: If the installation is cancelled.
     """
+    global _display, _shell
+
     # check if Homebrew is already installed
-    if shell.run('command -v brew', display.debug, display.error) == 0:
-        display.info("Homebrew is already installed.")
+    if _shell.run('command -v brew', _display.debug, _display.error) == 0:
+        _display.info("Homebrew is already installed.")
         # update Homebrew if it is installed
-        returncode = shell.run_quiet('brew update', display.verbose,
-                                     loading_string="Updating Homebrew")
-        # check if Homebrew was updated successfully
-        if returncode == 0:
-            display.success("Homebrew was updated.")
-            return True
-        display.error("Failed to update Homebrew.")
-        return False
+        _display.verbose("Updating Homebrew...")
+        cmd = 'brew update'
+        if _shell.run_quiet(cmd, _display.debug, "Updating Homebrew") != 0:
+            raise RuntimeError("Failed to update Homebrew.")
+        _display.success("Homebrew was updated.")
+        return
 
     # install Homebrew otherwise
-    command = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
-    returncode = shell.run_quiet(command, display.verbose,
-                                 loading_string="Installing Homebrew")
-    # check if Homebrew was installed successfully
-    if returncode == 0:
-        display.success("Homebrew was installed.")
-        return True
-    display.error("Failed to install Homebrew.")
-    return False
+    cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
+    _display.verbose("Installing Homebrew...")
+    if _shell.run_quiet(cmd, _display.debug, "Installing Homebrew") != 0:
+        raise RuntimeError("Failed to install Homebrew.")
+    _display.success("Homebrew was installed.")
 
 
 def _parse_packages(file_path: str) -> tuple[list, list, dict]:
@@ -140,108 +128,51 @@ def _parse_packages(file_path: str) -> tuple[list, list, dict]:
 
     # check if file exists
     if not os.path.isfile(file_path):
-        raise FileNotFoundError(f"Homebrew file not found: {file_path}")
+        raise FileNotFoundError(f"Packages file not found at: {file_path}")
 
     with open(file_path, 'r') as file:
         for line in file:
             line = line.strip()
-
+            # parse brew packages
             if line.startswith('brew '):
                 packages.append(line.split('"')[1])
-
+            # parse cask packages
             elif line.startswith('cask '):
                 casks.append(line.split('"')[1])
-
+            # parse mas package IDs and their names
             elif line.startswith('mas '):
                 id = line.split('"')[2].split(':')[1].strip()
-                name = line.split('"')[1]
-                mas[id] = name
+                mas[id] = line.split('"')[1]
 
     return packages, casks, mas
 
 
-def _select_packages(packages: tuple[list, list, dict],
-                     printer: Callable) -> tuple[list, list, dict]:
-    """Prompt the user to choose which packages to install. It takes a tuple of
-    packages in the order brew, cask, font, and mas. It returns a tuple of the
-    same format with the packages that the user chose.
-
-    Args:
-        packages (tuple): The list of packages from which to choose.
-        printer (Display): The display for printing prompts.
-    """
-
-    while True:
-        chosen_packages = _prompt_package(packages[0])
-        chosen_casks = _prompt_package(packages[1])
-        chosen_mas = _prompt_package(list(packages[2].values()))
-        chosen_mas = {k: v for k, v in packages[2].items() if v in chosen_mas}
-
-        # print chosen packages
-
-        printer("Selected packages:")
-        printer("\n".join(chosen_packages))
-
-        printer("Selected casks and fonts:")
-        printer("\n".join(chosen_casks))
-
-        printer("Selected App Store apps:")
-        printer("\n".join(list(chosen_mas.values())))
-
-        # prompt user to confirm packages
-        answer = input("Do you want to continue? (y/n [n]): ")
-        if answer and answer.lower()[0] == "y":
-            return chosen_packages, chosen_casks, chosen_mas
-
-
-def _prompt_package(packages: list[str]) -> list[str]:
-    """Prompt the user to choose which packages to install from a list of
-    packages.
-
-    Args:
-        packages (list[str]): The list of packages from which to choose.
-    """
-    selected_packages = []
-    for package in packages:
-        answer = input(f"Do you want to install '{package}'? (y/n [n]): ")
-        print(LINE_UP + LINE_CLEAR + LINE_UP)
-        if answer.lower() == "y":
-            selected_packages.append(package)
-    return selected_packages
-
-
-def _install_package(package: str, type: str, display: Display, shell: Shell,
-                     name: str | None = None) -> None:
+def _install_package(package: str, type: str, name: str) -> None:
     """Install a package using Homebrew of the given type.
 
     Args:
         package (str): The name of the package to install.
-        type (str): The type of the package (e.g. "package", "cask", or "mas").
-        display (Display): The display for printing messages.
-        shell (Shell): The shell for running installation commands.
-        silent (bool): Whether to install the package silently without prompts.
-        name (str): The name of the package to display to the user. If None,
-        the package name will be used.
+        type (str): The type of the package to install (brew, cask, or mas).
+        name (str): The name of the package to display to the user.
     """
-    # set name to package if name is None
-    name = name if name else package
+    global _display, _shell
+    if type not in ['brew', 'cask', 'mas']:
+        raise ValueError(f"Invalid package type: {type}")
 
     # set command based on type
-    if type == "mas":
-        command = f"mas install {package}"
-    elif type == "cask":
-        command = f"brew install --cask {package}"
+    if type == 'brew':
+        cmd = f"brew install {package}"
+    elif type == 'cask':
+        cmd = f"brew install --cask {package}"
     else:
-        command = f"brew install {package}"
+        cmd = f"mas install {package}"
 
-    # install package or cask
-    returncode = shell.run_quiet(command, display.verbose,
-                                 loading_string=f"Installing {name}")
-    # check if package was installed successfully
-    if returncode == 0:
-        display.success(f"    {name} was installed.")
-    else:
-        display.error(f"    Failed to install {name}.")
+    # install package
+    _display.verbose(f"    Installing {package}...")
+    if _shell.run_quiet(cmd, _display.debug, f"    Installing {name}") != 0:
+        _display.error(f"    Failed to install {name}.")
+        return
+    _display.success(f"    {name} was installed.")
 
 
 if __name__ == "__main__":

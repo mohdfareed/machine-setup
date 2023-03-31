@@ -143,12 +143,12 @@ def interactive() -> None:
         else:
             print(green("> "), end="")
         # read a command and break if it is "exit"
-        command = input()
-        if command == "exit":
+        cmd = input()
+        if cmd == "exit":
             break
 
         # run the command and print output
-        exit_code = shell_instance.run(command, display.print, display.error)
+        exit_code = shell_instance.run(cmd, display.print, display.error)
 
 
 def _loader(condition: Callable, loading_string: str) -> None:
@@ -221,10 +221,10 @@ def _set_sudo_privileges(password: str) -> None:
         password (str): The password of the user.
     """
     from os import system
-    command = f'echo {password} | sudo -Svp ""'
-    returncode = system(command)
-    # check if the user entered the correct password
-    if returncode != 0:
+
+    # prompt the user for password
+    cmd = f'echo {password} | sudo -Svp ""'
+    if system(cmd) != 0:
         raise PermissionError("Failed to get sudo privileges.")
 
 
