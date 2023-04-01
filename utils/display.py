@@ -30,9 +30,7 @@ class Display:
     - `DEBUG`: Logged but not printed to console unless debugging is enabled.
     """
 
-    def __init__(self,
-                 verbose_mode: bool = False,
-                 debug_mode: bool = False,
+    def __init__(self, verbose: bool = False, debug: bool = False,
                  no_logging: bool = False) -> None:
         """Create a new Display object with the provided verbosity, debugging
         and logging settings.
@@ -42,11 +40,11 @@ class Display:
             debug_mode (bool): Turn on debug mode. Defaults to `False`.
             no_logging (bool): Disable logging. Defaults to `False`.
         """
-        self.verbose_mode = verbose_mode
+        self.verbose_mode = verbose
         """Whether verbose mode is enabled. If set to `True`, log messages are printed
         in black to the console. Defaults to `False`.
         """
-        self.debug_mode = debug_mode
+        self.debug_mode = debug
         """Whether debug mode is enabled. If set to `True`, log messages are printed in
         magenta to the console. Defaults to `False`.
         """

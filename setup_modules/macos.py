@@ -2,11 +2,15 @@
 machine.
 """
 
+from resources import macos_preferences
+from utils import shell
 from utils.display import Display
-from utils.shell import Shell
+
+DISPLAY: Display = Display(verbose=True)
+"""The default display for printing messages."""
 
 
-def setup(display: Display = Display(no_logging=True)):
+def setup(display=DISPLAY) -> None:
     """Setup macOS on a new machine by installing applications and configuring
     the system.
 
@@ -16,5 +20,15 @@ def setup(display: Display = Display(no_logging=True)):
     Args:
         display (Display, optional): The display for printing messages.
     """
-    shell = Shell()
     display.header("macOS setup script.")
+
+    # run the macOS preferences script
+    if shell.run(f'. {macos_preferences}', display.verbose) != 0:
+        display.info("Check the log file for more information.")
+        raise RuntimeError("Setting macOS preferences failed.")
+
+    display.success("macOS was setup successfully.")
+
+
+if __name__ == "__main__":
+    setup()
