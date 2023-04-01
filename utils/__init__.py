@@ -39,7 +39,7 @@ def copy(source: str, target: str) -> None:
 
     _os.makedirs(_os.path.dirname(target), exist_ok=True)    # create structure
     _os.remove(target) if _os.path.exists(target) else None  # overwrite
-    _os.system(f"cp {source} {target}")                      # create copy
+    _os.system(f"cp '{source}' '{target}'")                      # create copy
 
 
 def create_file(file: str, overwrite: bool = False):
@@ -53,7 +53,7 @@ def create_file(file: str, overwrite: bool = False):
     if overwrite:                                        # overwrite
         _os.remove(file) if _os.path.exists(file) else None
     _os.makedirs(_os.path.dirname(file), exist_ok=True)  # create structure
-    _os.system(f"touch {file}")                          # create file
+    _os.system(f"touch '{file}'")                          # create file
 
 
 def create_dir(directory: str):

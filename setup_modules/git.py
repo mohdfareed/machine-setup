@@ -44,8 +44,6 @@ def setup(display=DISPLAY) -> None:
     display.debug(f"Symlinked: {gitconfig}")
     display.debug(f"       to: {_gitignore}")
 
-    # setup ssh
-    setup_ssh(display, quiet=True)
     # set github as a known host if it doesn't exist
     if shell.run_quiet(f"ssh-keygen -F github.com", display.verbose) != 0:
         create_file("~/.ssh/known_hosts")

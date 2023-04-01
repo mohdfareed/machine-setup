@@ -160,6 +160,7 @@ class Display:
         Args:
             message (str): The message.
         """
+        _ = message
         pass
 
     def __call__(self) -> None:
