@@ -66,6 +66,7 @@ def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
 
 if __name__ == "__main__":
     import argparse
+
     # parse command line arguments
     parser = argparse.ArgumentParser(description="SSH setup script.")
     parser.add_argument("--ssh-dir", type=str, required=True,

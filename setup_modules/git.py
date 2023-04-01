@@ -7,7 +7,6 @@ from utils import abs_path, create_file, shell, symlink
 from utils.display import Display
 
 from .homebrew import install_package
-from .ssh import setup as setup_ssh
 
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""

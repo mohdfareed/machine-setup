@@ -34,11 +34,9 @@ def setup(display=DISPLAY) -> None:
     # install zsh and plugins
     install_package(display, "zsh")
     install_package(display, "zsh-completions")
+    install_package(display, "zsh-autosuggestions")
     install_package(display, "zsh-syntax-highlighting")
-    # install themes
-    install_package(display, "pure")
     install_package(display, "spaceship")
-    install_package(display, "typewritten")
     display.debug("Packages were installed.")
 
     # symlink configuration file
