@@ -85,13 +85,11 @@ def read(cmd: str) -> str:
     Raises:
         RuntimeError: If the command failed.
     """
-    process = subprocess.Popen(cmd, shell=True, executable=SHELL,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
+    process = subprocess.run(cmd, capture_output=True, shell=True)
     if process.returncode != 0:
-        error = process.communicate()[1].decode().strip()
+        error = process.stderr.decode().strip()
         raise RuntimeError("Command failed: " + cmd + "\n" + error)
-    return process.communicate()[0].decode().strip()
+    return process.stdout.decode().strip()
 
 
 def interactive() -> None:
