@@ -128,12 +128,13 @@ def _parse_packages(file_path: str) -> tuple[list, list]:
     with open(file_path, 'r') as file:
         for line in file:
             line = line.strip()
+            line = line.split('#')[0].strip()  # remove comments
             # parse brew packages
-            if line.startswith('brew '):
-                packages.append(line.split('"')[1])
+            if line.startswith('brew'):
+                packages.append(line.split(' ')[1])
             # parse cask packages
             elif line.startswith('cask '):
-                casks.append(line.split('"')[1])
+                casks.append(line.split(' ')[1])
 
     return packages, casks
 

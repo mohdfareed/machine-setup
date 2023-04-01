@@ -3,7 +3,7 @@ machine.
 """
 
 from resources import python_packages
-from utils import abs_path, create_file, shell, symlink
+from utils import shell
 from utils.display import Display
 
 from .homebrew import install_package
