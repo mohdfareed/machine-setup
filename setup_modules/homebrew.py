@@ -83,11 +83,11 @@ def install_package(display: Display, package: str, type: str, name: str):
         cmd = f"{type} install {package}"
 
     # install package
-    display.debug(f"    Installing {name}...")
+    display.debug(f"Installing {name}...")
     if shell.run_quiet(cmd, display.verbose, f"    Installing {name}") != 0:
         display.error(f"    Failed to install {name}.")
         return
-    display.success(f"    {name} was installed.")
+    display.success(f"{name} was installed.")
 
 
 def _install_brew(display):
