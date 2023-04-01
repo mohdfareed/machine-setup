@@ -34,7 +34,7 @@ def setup(display=DISPLAY) -> None:
     if shell.run('command -v brew', display.verbose, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
     display.debug("Homebrew was found.")
-    install_package(display, "git", 'brew', "Git")
+    install_package(display, "git")
 
     # symlink configuration file
     symlink(gitconfig, _gitconfig)

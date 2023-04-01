@@ -51,43 +51,35 @@ def setup(display=DISPLAY) -> None:
     # install Homebrew packages
     display.print("Installing Homebrew packages...")
     for package in packages[0]:
-        install_package(display, package, 'brew', package)
+        install_package(display, package)
     # install Homebrew casks and fonts
     display.print("Installing Homebrew casks and fonts...")
     for cask in packages[1]:
-        install_package(display, cask, 'cask', cask)
-    # install MAS apps
-    display.print("Installing App store applications...")
-    for app, app_name in packages[2].items():
-        install_package(display, app, 'mas', app_name)
+        install_package(display, cask, cask=True)
 
     display.success("Homebrew was setup successfully.")
 
 
-def install_package(display: Display, package: str, type: str, name: str):
-    """Install a package using Homebrew of the given type.
+def install_package(display: Display, package: str, cask: bool = False):
+    """Install a package or cask using Homebrew.
 
     Args:
         display (Display): The display for printing messages.
         package (str): The name of the package to install.
-        type (str): The type of the package to install (brew, cask, or mas).
-        name (str): The name of the package to display to the user.
+        cask (bool): Whether the package is a cask.
     """
-    if type not in ['brew', 'cask', 'mas']:
-        raise ValueError(f"Invalid package type: {type}")
-
     # set command based on type
-    if type == 'cask':
+    if cask:
         cmd = f"brew install --cask {package}"
     else:
-        cmd = f"{type} install {package}"
+        cmd = f"brew install {package}"
 
     # install package
-    display.debug(f"Installing {name}...")
-    if shell.run_quiet(cmd, display.verbose, f"Installing {name}") != 0:
-        display.error(f"Failed to install {name}.")
+    display.debug(f"Installing {package}...")
+    if shell.run_quiet(cmd, display.verbose, f"Installing {package}") != 0:
+        display.error(f"Failed to install {package}.")
         return
-    display.success(f"{name} was installed.")
+    display.success(f"{package} was installed.")
 
 
 def _install_brew(display):
@@ -116,20 +108,19 @@ def _install_brew(display):
     display.success("Homebrew was installed.")
 
 
-def _parse_packages(file_path: str) -> tuple[list, list, dict]:
+def _parse_packages(file_path: str) -> tuple[list, list]:
     """Parse a file containing Homebrew packages. The file is expected to have
-    packages separated by newlines. Packages can be of three types: brew, cask,
-    and mas. The mas is a dictionary of ids as keys and names as values.
+    packages separated by newlines. Packages can either be brew packages or
+    casks. Casks are expected to be prefixed with `cask`.
 
     Args:
         file_path (str): The path to the file containing Homebrew packages.
 
     Returns:
-        tuple[list, list, dict]: the packages in the order brew, cask, and mas.
+        tuple[list, list]: the packages and casks
     """
     packages = []
     casks = []
-    mas = {}
 
     # check if file exists
     if not os.path.isfile(file_path):
@@ -144,12 +135,8 @@ def _parse_packages(file_path: str) -> tuple[list, list, dict]:
             # parse cask packages
             elif line.startswith('cask '):
                 casks.append(line.split('"')[1])
-            # parse mas package IDs and their names
-            elif line.startswith('mas '):
-                id = line.split(':')[1].split()[0]
-                mas[id] = line.split('"')[1]
 
-    return packages, casks, mas
+    return packages, casks
 
 
 if __name__ == "__main__":
