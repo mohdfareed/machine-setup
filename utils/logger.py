@@ -59,6 +59,7 @@ class Logger:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         log_entry = f"[{timestamp}] {severity}: {message.strip()}\n"
         self.log_file.write(log_entry)
+        self.log_file.flush()
 
 
 def __getattr__(name):

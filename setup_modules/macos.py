@@ -6,7 +6,7 @@ from resources import macos_preferences
 from utils import shell
 from utils.display import Display
 
-DISPLAY: Display = Display(verbose=True)
+DISPLAY: Display = Display(verbose=True, no_logging=True)
 """The default display for printing messages."""
 
 
