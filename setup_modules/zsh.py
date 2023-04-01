@@ -30,9 +30,15 @@ def setup(display=DISPLAY) -> None:
     if shell.run('command -v brew', display.verbose, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
     display.debug("Homebrew was found.")
-    # install zsh and pure prompt
-    install_package(display, "zsh", 'brew', "Zsh")
-    install_package(display, "pure", 'brew', "Pure prompt")
+    # install zsh and plugins
+    install_package(display, "zsh", 'brew', "sh")
+    install_package(display, "zsh-completions", 'brew', "completions")
+    install_package(display, "zsh-syntax-highlighting",
+                    'brew', "syntax highlighting")
+    # install themes
+    install_package(display, "pure", 'brew', "Pure")
+    install_package(display, "spaceship", 'brew', "Spaceship")
+    install_package(display, "typewritten", 'brew', "typewritten")
     display.debug("Packages were installed.")
 
     # symlink configuration file
