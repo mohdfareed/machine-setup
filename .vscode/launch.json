@@ -9,7 +9,8 @@
       "type": "python",
       "request": "launch",
       "program": "./setup.py",
-      "args": ["--verbose", "--debug", "--silent", "--no-log"],
+      "args": ["--ssh-dir", "/Users/mohdfareed/Library/Mobile Documents/com~apple~CloudDocs/.setup/ssh",
+               "--verbose", "--debug", "--no-logging"],
       "console": "integratedTerminal",
       "justMyCode": true
     },

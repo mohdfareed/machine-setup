@@ -18,9 +18,9 @@ def symlink(source: str, target: str) -> None:
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
 
-    _os.makedirs(_os.path.dirname(target), exist_ok=True)    # create structure
-    _os.remove(target) if _os.path.exists(target) else None  # overwrite
-    _os.symlink(source, target)                             # create symlink
+    _os.makedirs(_os.path.dirname(target), exist_ok=True)  # create structure
+    _os.remove(target)                                     # overwrite
+    _os.symlink(source, target)                            # create symlink
 
 
 def copy(source: str, target: str) -> None:
@@ -37,9 +37,9 @@ def copy(source: str, target: str) -> None:
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
 
-    _os.makedirs(_os.path.dirname(target), exist_ok=True)    # create structure
-    _os.remove(target) if _os.path.exists(target) else None  # overwrite
-    _os.system(f"cp '{source}' '{target}'")                      # create copy
+    _os.makedirs(_os.path.dirname(target), exist_ok=True)  # create structure
+    _os.remove(target)                                     # overwrite
+    _os.system(f"cp '{source}' '{target}'")                # create copy
 
 
 def create_file(file: str, overwrite: bool = False):
@@ -75,7 +75,7 @@ def remove(path: str):
         path (str): The path to the file or directory to remove.
     """
     path = abs_path(path)
-    _os.remove(path) if _os.path.exists(path) else None  # remove file
+    _os.remove(path)  # remove file
 
 
 def abs_path(path: str) -> str:
