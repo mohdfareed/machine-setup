@@ -2,8 +2,6 @@
 machine.
 """
 
-import os
-
 from resources import homebrew_packages
 from utils import shell
 from utils.display import Display
@@ -119,6 +117,7 @@ def _parse_packages(file_path: str) -> tuple[list, list]:
     Returns:
         tuple[list, list]: the packages and casks
     """
+    import os
     packages = []
     casks = []
 
