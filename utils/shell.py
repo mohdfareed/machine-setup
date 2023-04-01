@@ -73,6 +73,27 @@ def run_quiet(cmd: str, printer: Callable, loading_string=LOADING_STR) -> int:
     return process.returncode
 
 
+def read(cmd: str) -> str:
+    """Runs a shell command and returns the standard output.
+
+    Args:
+        cmd (str): The command to run.
+
+    Returns:
+        The standard output of the command.
+
+    Raises:
+        RuntimeError: If the command failed.
+    """
+    process = subprocess.Popen(cmd, shell=True, executable=SHELL,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+    if process.returncode != 0:
+        error = process.communicate()[1].decode().strip()
+        raise RuntimeError("Command failed: " + cmd + "\n" + error)
+    return process.communicate()[0].decode().strip()
+
+
 def interactive() -> None:
     """Runs the shell in interactive mode. No output is logged when running in
     this mode. The shell used is the default shell of the module.
