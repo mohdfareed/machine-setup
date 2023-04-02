@@ -2,7 +2,7 @@
 machine.
 """
 
-from resources import macos_preferences
+from resources import macos_preferences, dark_profile, light_profile
 from utils import shell
 from utils.display import Display
 
@@ -21,6 +21,12 @@ def setup(display=DISPLAY) -> None:
         display (Display, optional): The display for printing messages.
     """
     display.header("macOS setup script.")
+
+    # add terminal profiles
+    cmd = f"open -g '{dark_profile}'"
+    shell.run(cmd, display.verbose)
+    cmd = f"open -g '{light_profile}'"
+    shell.run(cmd, display.verbose)
 
     # run the macOS preferences script
     if shell.run(f'. {macos_preferences}', display.verbose) != 0:
