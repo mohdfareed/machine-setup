@@ -53,7 +53,7 @@ def create_file(file: str, overwrite: bool = False):
     if overwrite:                                        # overwrite
         _os.remove(file) if _os.path.exists(file) else None
     _os.makedirs(_os.path.dirname(file), exist_ok=True)  # create structure
-    _os.system(f"touch '{file}'")                          # create file
+    _os.system(f"touch '{file}'")                        # create file
 
 
 def create_dir(directory: str):

@@ -6,8 +6,6 @@ from resources import python_packages
 from utils import shell
 from utils.display import Display
 
-from .homebrew import install_package
-
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""
 
@@ -28,7 +26,6 @@ def setup(display=DISPLAY) -> None:
     if shell.run('command -v brew', display.verbose, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
     display.debug("Homebrew was found.")
-    install_package(display, "python")
 
     # parse packages file
     packages = _parse_packages(python_packages)

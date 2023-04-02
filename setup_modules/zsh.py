@@ -6,8 +6,6 @@ from resources import zshrc
 from utils import abs_path, create_file, shell, symlink
 from utils.display import Display
 
-from .homebrew import install_package
-
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""
 
@@ -30,14 +28,6 @@ def setup(display=DISPLAY) -> None:
     if shell.run('command -v brew', display.verbose, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
     display.debug("Homebrew was found.")
-
-    # install zsh and plugins
-    install_package(display, "zsh")
-    install_package(display, "zsh-completions")
-    install_package(display, "zsh-autosuggestions")
-    install_package(display, "zsh-syntax-highlighting")
-    install_package(display, "spaceship")
-    display.debug("Packages were installed.")
 
     # symlink configuration file
     symlink(zshrc, _zshrc)
