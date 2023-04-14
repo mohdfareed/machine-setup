@@ -4,6 +4,10 @@
     "hushlogin",
     "keygen",
     "keyscan",
+    "raycast",
     "shellenv"
+  ],
+  "cSpell.enableFiletypes": [
+    "!plaintext"
   ]
 }

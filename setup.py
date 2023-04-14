@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 
 from setup_modules import git, homebrew, macos, python, ssh, zsh
-from utils import abs_path, shell
+from utils import shell
 from utils.display import Display
 
 
 def main(display: Display, ssh_dir: str) -> None:
     """Run the main function of the setup script. This function is called when
-    the script is run from the command line. It will prompt the user to run
-    a setup function for every setup module. By default, the setup is run in
+    the script is run from the command line. By default, the setup is run in
     verbose and debug mode without logging output to a file.
 
     Args:
@@ -27,7 +26,7 @@ def main(display: Display, ssh_dir: str) -> None:
         raise RuntimeError("Failed to initialize resources.")
     display.success("Resources initialized.")
 
-    # prompt user to setup components
+    # run setup modules
     display.debug("Running setup modules...")
     homebrew.setup(display)
     zsh.setup(display)
