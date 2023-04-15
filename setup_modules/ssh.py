@@ -2,7 +2,7 @@
 machine.
 """
 
-from utils import abs_path, copy, shell
+from utils import abs_path, chmod, copy, shell
 from utils.display import Display
 
 DISPLAY: Display = Display(no_logging=True)
@@ -50,6 +50,12 @@ def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
     copy(config, _config)
     display.debug(f"Copied: {config}")
     display.debug(f"    to: {_config}")
+
+    try:  # set permissions of ssh keys
+        chmod(_private_key, 600)
+        chmod(_public_key, 644)
+    except:
+        raise RuntimeError("Failed to set permissions of ssh keys.")
 
     # get key fingerprint
     fingerprint = shell.read(f"ssh-keygen -lf '{_public_key}'")

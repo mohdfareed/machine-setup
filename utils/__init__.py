@@ -89,3 +89,15 @@ def abs_path(path: str) -> str:
         str: The absolute path.
     """
     return _os.path.abspath(_os.path.expanduser(path))
+
+
+def chmod(file: str, mode: int):
+    """Change the permissions of a file. The home directory is expanded for the
+    given path.
+
+    Args:
+        file (str): The path to the file to change the permissions of.
+        mode (int): The mode to change the permissions to.
+    """
+    file = abs_path(file)
+    _os.system(f"chmod {mode} '{file}'")
