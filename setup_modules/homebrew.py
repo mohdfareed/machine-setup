@@ -103,6 +103,10 @@ def _install_brew(display):
     display.verbose("Installing Homebrew...")
     if shell.run_quiet(cmd, display.verbose, "Installing Homebrew") != 0:
         raise RuntimeError("Failed to install Homebrew.")
+    # source Homebrew
+    cmd = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+    if shell.run(cmd, display.verbose, display.error) != 0:
+        raise RuntimeError("An error occurred while installing Homebrew.")
     display.success("Homebrew was installed.")
 
 
