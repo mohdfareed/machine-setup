@@ -29,7 +29,8 @@ def setup(display: Display, ssh_dir: str) -> None:
     # run setup modules
     display.debug("Running setup modules...")
     _invoke_setup(display)
-    display.success(""); display.success("Machine setup complete!")
+    display.success("")
+    display.success("Machine setup complete!")
     display.info("Please restart your machine for some changes to apply.")
 
 

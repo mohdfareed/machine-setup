@@ -4,7 +4,7 @@ printing their output. The provides an interactive mode of the shell.
 """
 
 import subprocess
-from typing import Callable
+from typing import Callable, Optional
 
 from .colors import LINE_CLEAR, LINE_UP
 
@@ -22,7 +22,7 @@ SHELL: str = '/bin/zsh'
 """
 
 
-def run(cmd: str, printer: Callable, error: Callable | None = None) -> int:
+def run(cmd: str, printer: Callable, error: Optional[Callable] = None) -> int:
     """Runs a shell command and prints the output and errors using the
     provided `printer(str)`. Errors can be printed using a different `error`
     function.

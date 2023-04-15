@@ -3,6 +3,7 @@ and logging them to a timestamped file with a severity.
 """
 
 import builtins
+from typing import Optional
 
 from .colors import *
 from .logger import Logger
@@ -52,7 +53,7 @@ class Display:
         """The logger object that manages the main log file of the module.
         """
 
-    def header(self, message: str, logger: Logger | None = None) -> None:
+    def header(self, message: str, logger: Optional[Logger] = None) -> None:
         """Prints a bold message to the console proceeded by a newline. The message
         is also logged with the severity of `HEADER` to the log file, including the
         newline.
@@ -65,7 +66,7 @@ class Display:
         builtins.print("\n" + bold(message))
         logger.log(message, "HEADER")
 
-    def error(self, message: str, logger: Logger | None = None) -> None:
+    def error(self, message: str, logger: Optional[Logger] = None) -> None:
         """Prints a message in red to the console. The message is also logged with
         the severity of `ERROR` to the log file.
 
@@ -77,7 +78,7 @@ class Display:
         builtins.print(bright_red(message))
         logger.log(message, "ERROR")
 
-    def warning(self, message: str, logger: Logger | None = None) -> None:
+    def warning(self, message: str, logger: Optional[Logger] = None) -> None:
         """Prints a message in yellow to the console. The message is also logged
         with the severity of `WARNING` to the log file.
 
@@ -89,7 +90,7 @@ class Display:
         builtins.print(bright_yellow(message))
         logger.log(message, "WARNING")
 
-    def info(self, message: str, logger: Logger | None = None) -> None:
+    def info(self, message: str, logger: Optional[Logger] = None) -> None:
         """Prints a message in blue to the console. The message is also logged with
         the severity of `INFO` to the log file.
 
@@ -101,7 +102,7 @@ class Display:
         builtins.print(bright_blue(message))
         logger.log(message, "INFO")
 
-    def success(self, message: str, logger: Logger | None = None) -> None:
+    def success(self, message: str, logger: Optional[Logger] = None) -> None:
         """Prints a message in green to the console. The message is also logged with
         the severity of `SUCCESS` to the log file.
 
@@ -113,7 +114,7 @@ class Display:
         builtins.print(bright_green(message))
         logger.log(message, "SUCCESS")
 
-    def print(self, message: str, logger: Logger | None = None) -> None:
+    def print(self, message: str, logger: Optional[Logger] = None) -> None:
         """Prints a message to the console. The message is also logged with the
         severity of `LOG` to the log file.
 
@@ -125,7 +126,7 @@ class Display:
         builtins.print(message)
         logger.log(message, "LOG")
 
-    def verbose(self, message: str, logger: Logger | None = None) -> None:
+    def verbose(self, message: str, logger: Optional[Logger] = None) -> None:
         """Log a message to the log file with the severity of `VERBOSE`. If verbose
         mode is set, the message is also printed in black to the console.
 
@@ -138,7 +139,7 @@ class Display:
             builtins.print(black(message))
         logger.log(message, "VERBOSE")
 
-    def debug(self, message: str, logger: Logger | None = None) -> None:
+    def debug(self, message: str, logger: Optional[Logger] = None) -> None:
         """Log a message to the log file with the severity of `DEBUG`. If debug
         mode is set, the message is also printed in magenta to the console.
 
