@@ -37,7 +37,7 @@ def setup(display=DISPLAY) -> None:
     display.debug("Fixed zsh `compinit` error.")  # TODO: check if needed
 
     # add fonts tap
-    cmd = 'brew tap homebrew/cask-fonts'
+    cmd = "brew tap homebrew/cask-fonts"
     if shell.run_quiet(cmd, display.verbose, "Adding fonts tap") != 0:
         raise RuntimeError("Failed to add fonts tap.")
     display.debug("Added fonts tap.")
@@ -88,11 +88,11 @@ def _install_brew(display):
         KeyboardInterrupt: If the installation is cancelled.
     """
     # check if Homebrew is already installed
-    if shell.run('command -v brew', display.verbose, display.error) == 0:
+    if shell.run("command -v brew", display.verbose, display.error) == 0:
         display.info("Homebrew is already installed.")
         # update Homebrew if it is installed
         display.debug("Updating Homebrew...")
-        cmd = 'brew update'
+        cmd = "brew update"
         if shell.run_quiet(cmd, display.verbose, "Updating Homebrew") != 0:
             raise RuntimeError("Failed to update Homebrew.")
         display.success("Homebrew was updated.")
@@ -122,6 +122,7 @@ def _parse_packages(file_path: str) -> tuple[list, list]:
         tuple[list, list]: the packages and casks
     """
     import os
+
     packages = []
     casks = []
 
@@ -129,16 +130,16 @@ def _parse_packages(file_path: str) -> tuple[list, list]:
     if not os.path.isfile(file_path):
         raise FileNotFoundError(f"Packages file not found at: {file_path}")
 
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         for line in file:
             line = line.strip()
-            line = line.split('#')[0].strip()  # remove comments
+            line = line.split("#")[0].strip()  # remove comments
             # parse brew packages
-            if line.startswith('brew'):
-                packages.append(line.split(' ')[1].strip('"'))
+            if line.startswith("brew"):
+                packages.append(line.split(" ")[1].strip('"'))
             # parse cask packages
-            elif line.startswith('cask '):
-                casks.append(line.split(' ')[1].strip('"'))
+            elif line.startswith("cask "):
+                casks.append(line.split(" ")[1].strip('"'))
 
     return packages, casks
 

@@ -75,8 +75,12 @@ if __name__ == "__main__":
 
     # parse command line arguments
     parser = argparse.ArgumentParser(description="SSH setup script.")
-    parser.add_argument("--ssh-dir", type=str, required=True,
-                        help="the path to the ssh directory of keys")
+    parser.add_argument(
+        "--ssh-dir",
+        type=str,
+        required=True,
+        help="the path to the ssh directory of keys",
+    )
     args = parser.parse_args()
     # setup ssh using the specified directory
     setup(args.ssh_dir)

@@ -18,9 +18,9 @@ def symlink(source: str, target: str) -> None:
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
 
-    _os.makedirs(_os.path.dirname(target), exist_ok=True)    # create structure
+    _os.makedirs(_os.path.dirname(target), exist_ok=True)  # create structure
     _os.unlink(target) if _os.path.exists(target) else None  # overwrite
-    _os.symlink(source, target)                              # create symlink
+    _os.symlink(source, target)  # create symlink
 
 
 def copy(source: str, target: str) -> None:
@@ -37,9 +37,9 @@ def copy(source: str, target: str) -> None:
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
 
-    _os.makedirs(_os.path.dirname(target), exist_ok=True)    # create structure
+    _os.makedirs(_os.path.dirname(target), exist_ok=True)  # create structure
     _os.remove(target) if _os.path.exists(target) else None  # overwrite
-    _os.system(f"cp '{source}' '{target}'")                  # create copy
+    _os.system(f"cp '{source}' '{target}'")  # create copy
 
 
 def create_file(file: str, overwrite: bool = False):
@@ -50,10 +50,10 @@ def create_file(file: str, overwrite: bool = False):
         file (str): The path to the file to create.
     """
     file = abs_path(file)
-    if overwrite:                                        # overwrite
+    if overwrite:  # overwrite
         _os.remove(file) if _os.path.exists(file) else None
     _os.makedirs(_os.path.dirname(file), exist_ok=True)  # create structure
-    _os.system(f"touch '{file}'")                        # create file
+    _os.system(f"touch '{file}'")  # create file
 
 
 def create_dir(directory: str):

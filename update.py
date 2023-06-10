@@ -15,7 +15,7 @@ def update(display: Display) -> None:
 
     # get resources if not already present
     display.debug("Initializing resources...")
-    cmd = 'git submodule update --init --recursive --remote'
+    cmd = "git submodule update --init --recursive --remote"
     if shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
         raise RuntimeError("Failed to initialize resources.")
     display.success("Resources initialized.")
@@ -29,18 +29,23 @@ def update(display: Display) -> None:
 
 
 def main() -> None:
-    """Initialize the Display and run the main update function.
-    """
+    """Initialize the Display and run the main update function."""
     import argparse
 
     # parse command line arguments
     parser = argparse.ArgumentParser(description="Machine setup script.")
-    parser.add_argument("-v", "--verbose", action="store_true",
-                        help="print verbose messages, including commands")
-    parser.add_argument("-d", "--debug", action="store_true",
-                        help="print debug messages")
-    parser.add_argument("--no-logging", action="store_true",
-                        help="don't log output to a file")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="print verbose messages, including commands",
+    )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="print debug messages"
+    )
+    parser.add_argument(
+        "--no-logging", action="store_true", help="don't log output to a file"
+    )
     args = parser.parse_args()
 
     # create a display instance for logging and printing messages
@@ -56,8 +61,7 @@ def main() -> None:
 
 
 def _init(verbose, debug, no_logging) -> Display:
-    """Initialize the display for printing messages and logging them to a file.
-    """
+    """Initialize display for printing messages and logging them to a file."""
     display = Display(verbose, debug, no_logging)
     display.debug("Debug mode is enabled.") if debug else None
     display.verbose("Verbose mode is enabled.") if verbose else None

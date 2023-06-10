@@ -23,7 +23,7 @@ def setup(display=DISPLAY) -> None:
     display.header("Setting up Python...")
 
     # check if homebrew is installed and install python
-    if shell.run('command -v brew', display.verbose, display.error) != 0:
+    if shell.run("command -v brew", display.verbose, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
     display.debug("Homebrew was found.")
 
@@ -51,21 +51,22 @@ def _parse_packages(file_path: str) -> list[tuple]:
         list[tuple]: the packages names and versions as a list of tuples.
     """
     import os
+
     packages = []
 
     # check if file exists
     if not os.path.isfile(file_path):
         raise FileNotFoundError(f"Packages file not found at: {file_path}")
 
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         for line in file:
             line = line.strip()
             # parse package if not a comment
-            if line and not line.startswith('#'):
-                line = line.split('#')[0].strip()  # remove comments
+            if line and not line.startswith("#"):
+                line = line.split("#")[0].strip()  # remove comments
                 # parse package name and version
-                name = line.split('==')[0].strip()
-                version = line.split('==')[1].strip() if '==' in line else None
+                name = line.split("==")[0].strip()
+                version = line.split("==")[1].strip() if "==" in line else None
                 packages.append((name, version))
 
     return packages

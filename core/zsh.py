@@ -25,7 +25,7 @@ def setup(display=DISPLAY) -> None:
     display.header("Setting up shell...")
 
     # check if homebrew is installed
-    if shell.run('command -v brew', display.verbose, display.error) != 0:
+    if shell.run("command -v brew", display.verbose, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
     display.debug("Homebrew was found.")
 

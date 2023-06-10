@@ -29,7 +29,7 @@ def setup(display=DISPLAY) -> None:
     shell.run(cmd, display.verbose)
 
     # run the macOS preferences script
-    if shell.run(f'. {macos_preferences}', display.verbose) != 0:
+    if shell.run(f". {macos_preferences}", display.verbose) != 0:
         display.info("Check the log file for more information.")
         raise RuntimeError("Setting macOS preferences failed.")
 

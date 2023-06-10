@@ -19,14 +19,14 @@ class Logger:
         name already exists, a counter is appended to the filename.
 
         A dummy logger can be created that does not create a log file. This
-        will prevent the log method from taking any action. Defaults to `False`.
+        prevents the log method from taking any action. Defaults to `False`.
 
         Args:
             dummy (bool): Set to `True` to not create a log file.
         """
         self.is_dummy = dummy
-        """Whether the logger is a dummy logger. If set to `True`, the log method
-        is a no-op. Defaults to `False`.
+        """Whether the logger is a dummy logger. If set to `True`, the log
+        method is a no-op. Defaults to `False`.
         """
         if self.is_dummy:
             return
@@ -38,11 +38,11 @@ class Logger:
             filename = filename.replace(".log", f"_{counter}.log")
             counter += 1
 
-        self.log_file = open(filename, 'w+')
-        """File to which messages are logged. The file is created on module import
-        at working directory with the filename
-        `setup_{current_date}_{current_time}.log`. It is opened in write mode and
-        closed when the module is exited.
+        self.log_file = open(filename, "w+")
+        """File to which messages are logged. The file is created on module
+        import at working directory with the filename
+        `setup_{current_date}_{current_time}.log`. It is opened in write mode
+        and closed when the module is exited.
         """
 
     def log(self, message: str, severity: str) -> None:

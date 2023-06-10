@@ -17,7 +17,7 @@ LOADING_ANIMATION: list[str] = ["", ".", "..", "..."]
 """The default loading animation used when waiting for a command to exit.
 """
 
-SHELL: str = '/bin/zsh'
+SHELL: str = "/bin/zsh"
 """The default shell to use for executing commands.
 """
 
@@ -37,9 +37,13 @@ def run(cmd: str, printer: Callable, error: Optional[Callable] = None) -> int:
         The exit code of the command.
     """
     error = error or printer
-    process = subprocess.Popen(cmd, shell=True, executable=SHELL,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
+    process = subprocess.Popen(
+        cmd,
+        shell=True,
+        executable=SHELL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
 
     _print_output(process, printer, error)
     return process.returncode
@@ -59,9 +63,13 @@ def run_quiet(cmd: str, printer: Callable, loading_string=LOADING_STR) -> int:
     Returns:
         The exit code of the command.
     """
-    process = subprocess.Popen(cmd, shell=True, executable=SHELL,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
+    process = subprocess.Popen(
+        cmd,
+        shell=True,
+        executable=SHELL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
 
     # show loading animation
     _loader(process.poll, loading_string)
@@ -130,6 +138,7 @@ def _loader(condition, loading_string):
         loading_string (str): The loading string to print.
     """
     import time
+
     time.sleep(0.05)  # wait for the process to start
 
     counter = 0

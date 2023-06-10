@@ -3,69 +3,66 @@ sequences. The module also provides constants for the 16 ANSI colors and
 decorations through the `Color`, `BackgroundColor` and `Decoration` classes.
 """
 
-RESET = '\u001b[0m'
+RESET = "\u001b[0m"
 """Reset all colors and decorations.
 """
-LINE_UP = '\033[1A'
+LINE_UP = "\033[1A"
 """The ANSI escape sequence for moving the cursor up one line.
 """
-LINE_CLEAR = '\x1b[2K'
+LINE_CLEAR = "\x1b[2K"
 """The ANSI escape sequence for clearing the current line.
 """
 
 
 class Color:
-    """The 16 foreground ANSI color codes.
-    """
+    """The 16 foreground ANSI color codes."""
 
-    black = '\u001b[30m'
-    red = '\u001b[31m'
-    green = '\u001b[32m'
-    yellow = '\u001b[33m'
-    blue = '\u001b[34m'
-    magenta = '\u001b[35m'
-    cyan = '\u001b[36m'
-    white = '\u001b[37m'
-    bright_black = '\u001b[30;1m'
-    bright_red = '\u001b[31;1m'
-    bright_green = '\u001b[32;1m'
-    bright_yellow = '\u001b[33;1m'
-    bright_blue = '\u001b[34;1m'
-    bright_magenta = '\u001b[35;1m'
-    bright_cyan = '\u001b[36;1m'
-    bright_white = '\u001b[37;1m'
+    black = "\u001b[30m"
+    red = "\u001b[31m"
+    green = "\u001b[32m"
+    yellow = "\u001b[33m"
+    blue = "\u001b[34m"
+    magenta = "\u001b[35m"
+    cyan = "\u001b[36m"
+    white = "\u001b[37m"
+    bright_black = "\u001b[30;1m"
+    bright_red = "\u001b[31;1m"
+    bright_green = "\u001b[32;1m"
+    bright_yellow = "\u001b[33;1m"
+    bright_blue = "\u001b[34;1m"
+    bright_magenta = "\u001b[35;1m"
+    bright_cyan = "\u001b[36;1m"
+    bright_white = "\u001b[37;1m"
 
 
 class BackgroundColor:
-    """The 16 background ANSI color codes.
-    """
+    """The 16 background ANSI color codes."""
 
-    black = '\u001b[40m'
-    red = '\u001b[41m'
-    green = '\u001b[42m'
-    yellow = '\u001b[44m'
-    blue = '\u001b[44m'
-    magenta = '\u001b[45m'
-    cyan = '\u001b[46m'
-    white = '\u001b[47m'
-    bright_black = '\u001b[40;1m'
-    bright_red = '\u001b[41;1m'
-    bright_green = '\u001b[42;1m'
-    bright_yellow = '\u001b[44;1m'
-    bright_blue = '\u001b[44;1m'
-    bright_magenta = '\u001b[45;1m'
-    bright_cyan = '\u001b[46;1m'
-    bright_white = '\u001b[47;1m'
+    black = "\u001b[40m"
+    red = "\u001b[41m"
+    green = "\u001b[42m"
+    yellow = "\u001b[44m"
+    blue = "\u001b[44m"
+    magenta = "\u001b[45m"
+    cyan = "\u001b[46m"
+    white = "\u001b[47m"
+    bright_black = "\u001b[40;1m"
+    bright_red = "\u001b[41;1m"
+    bright_green = "\u001b[42;1m"
+    bright_yellow = "\u001b[44;1m"
+    bright_blue = "\u001b[44;1m"
+    bright_magenta = "\u001b[45;1m"
+    bright_cyan = "\u001b[46;1m"
+    bright_white = "\u001b[47;1m"
 
 
 class Decoration:
-    """ANSI decoration codes.
-    """
+    """ANSI decoration codes."""
 
-    bold = '\u001b[01m'
-    underline = '\u001b[04m'
-    reversed = '\u001b[07m'
-    strikethrough = '\u001b[09m'
+    bold = "\u001b[01m"
+    underline = "\u001b[04m"
+    reversed = "\u001b[07m"
+    strikethrough = "\u001b[09m"
 
 
 def bold(text: str) -> str:
