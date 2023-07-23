@@ -4,10 +4,9 @@
     "hushlogin",
     "keygen",
     "keyscan",
+    "raspberrypi",
     "raycast",
     "shellenv"
   ],
-  "cSpell.enableFiletypes": [
-    "!plaintext"
-  ]
+  "cSpell.enableFiletypes": ["!plaintext"]
 }
