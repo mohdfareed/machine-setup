@@ -1,16 +1,18 @@
-# REQUIREMENTS: $MACHINE set to the path of the machine resource directory
-
 # remove login message
 touch "$HOME/.hushlogin"
 # install packages
-. $MACHINE/install.sh
+. ~/machine/install.sh
 
 # symlink config files
-ln -sf $MACHINE/micro_settings.json $HOME/.config/micro/settings.json
-ln -sf $MACHINE/zshrc               $HOME/.zshrc
+ln -sf ~/machine/zshrc               $HOME/.zshrc
+ln -sf ~/machine/micro_settings.json $HOME/.config/micro/settings.json
+ln -sf ~/machine/file_share.conf     /etc/samba/smb.conf
+
 # load services
-for service in $MACHINE/*.service; do
+for service in ~/machine/*.service; do
     sudo ln -sf $service /etc/systemd/system/$(basename $service)
+    sudo systemctl daemon-reload
+    sudo systemctl enable $(basename $service)
 done
 
 # set zsh as the default shell
