@@ -2,20 +2,9 @@
 sudo apt update && sudo apt full-upgrade -y
 
 # machine packages
-sudo apt install git zsh bat exa micro samba tailscale -y
-sudo apt install zsh-syntax-highlighting zsh-autosuggestions -y
-# snap store and packages
-sudo apt install snapd -y
-sudo snap install core btop
-
-# adguard home
-curl -s -S -L https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | \
-sh -s -- -v
-
-# docker
-curl -sSL https://get.docker.com | sh
-# add user to docker group
-sudo usermod -aG docker $USER
+sudo apt install git zsh zsh-syntax-highlighting zsh-autosuggestions -y
+sudo apt install bat exa micro tailscale snapd nginx -y
+sudo snap install core btop adguard-home docker
 
 # python version manager
 curl https://pyenv.run | bash
