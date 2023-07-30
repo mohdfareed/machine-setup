@@ -16,21 +16,21 @@ def setup(display: Display, ssh_dir: str) -> None:
     display.header("Setting up machine...")
 
     # setup ssh keys if not already present
-    ssh.setup(ssh_dir, display, quiet=True)
+    # ssh.setup(ssh_dir, display, quiet=True)
 
     # get resources if not already present
-    display.debug("Initializing resources...")
-    cmd = "git submodule update --init --recursive --remote"
-    if shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
-        raise RuntimeError("Failed to initialize resources.")
-    display.success("Resources initialized.")
+    # display.debug("Initializing resources...")
+    # cmd = "git submodule update --init --recursive --remote"
+    # if shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
+    #     raise RuntimeError("Failed to initialize resources.")
+    # display.success("Resources initialized.")
 
     # run setup modules
     display.debug("Running setup modules...")
     _invoke_setup(display)
     display.success("")
     display.success("Machine setup complete!")
-    display.info("Please restart your machine for some changes to apply.")
+    display.info("Restart machine for some changes to apply.")
 
 
 def main() -> None:
@@ -86,13 +86,14 @@ def _invoke_setup(display: Display) -> None:
     Args:
         display (Display): The display for printing messages.
     """
-    from core import git, homebrew, macos, python, zsh
+    from core import git, homebrew, macos, python, raspberrypi, zsh
 
-    homebrew.setup(display)
-    zsh.setup(display)
-    git.setup(display)
-    python.setup(display)
-    macos.setup(display)
+    raspberrypi.setup(display)
+    # homebrew.setup(display)
+    # zsh.setup(display)
+    # git.setup(display)
+    # python.setup(display)
+    # macos.setup(display)
 
 
 if __name__ == "__main__":

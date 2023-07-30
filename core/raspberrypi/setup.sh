@@ -5,7 +5,7 @@ touch "$HOME/.hushlogin"
 sudo ln -sf $HOME/machine/zshrc               $HOME/.zshrc
 sudo ln -sf $HOME/machine/micro_settings.json $HOME/.config/micro/settings.json
 # install packages
-. $HOME/machine/install.sh
+. $HOME/machine/scripts/install.sh
 
 # load docker containers and services
 sudo usermod -aG docker $USER
