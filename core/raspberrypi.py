@@ -6,15 +6,18 @@ from core import raspberrypi_scripts
 from resources import micro_settings
 from resources import raspberrypi as raspberrypi_resources
 from resources import shell_config
-from utils import create_file, shell, symlink
+from utils import shell
 from utils.display import Display
+
+HOSTNAME = "raspberrypi.local"
+"""The local hostname of the Raspberry Pi."""
+MACHINE_PATH = "~/machine"
+"""The path to the machine data directory."""
+SCRIPTS_PATH = "~/machine/scripts"
+"""The path to the machine scripts directory."""
 
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""
-
-MACHINE_PATH = "~/machine"
-SCRIPTS_PATH = "~/machine/scripts"
-HOSTNAME = "raspberrypi"
 
 
 def setup(display=DISPLAY) -> None:
@@ -27,9 +30,11 @@ def setup(display=DISPLAY) -> None:
     """
     display.header("Setting up Raspberry Pi...")
 
-    # check if raspberrypi.local exists
+    # check if raspberrypi exists
     if "unknown host" in shell.read(f"ping {HOSTNAME} -c 1"):
         raise RuntimeError("Raspberry Pi is not connected to the network.")
+    # add ssh key to raspberrypi
+    shell.run(f"ssh-copy-id {HOSTNAME}", display.debug)
 
     # copy resources to raspberrypi
     if shell.run(
@@ -47,15 +52,7 @@ def setup(display=DISPLAY) -> None:
 
     # run setup.sh in raspberrypi
     display.info("Setting up Raspberry Pi...")
-    error = shell.run(
-        f"ssh {HOSTNAME} '{SCRIPTS_PATH}/setup.sh'",
-        display.info,
-        display.error,
-    )
-    if error:
-        display.error("Failed to set up Raspberry Pi.")
-        return
-
+    shell.run_quiet(f"ssh {HOSTNAME} '{SCRIPTS_PATH}/setup.sh'", display.debug)
     display.success("Raspberry Pi setup complete.")
 
 
