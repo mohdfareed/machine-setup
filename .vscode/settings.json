@@ -6,7 +6,8 @@
     "keyscan",
     "raspberrypi",
     "raycast",
-    "shellenv"
+    "shellenv",
+    "Tailscale"
   ],
   "cSpell.enableFiletypes": ["!plaintext"],
   "[python]": {

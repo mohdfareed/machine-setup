@@ -1,18 +1,13 @@
 # update and upgrade
 sudo apt update && sudo apt full-upgrade -y
 
+# tailscale
+curl -fsSL https://tailscale.com/install.sh | sh
+
 # machine packages
 sudo apt install git zsh zsh-syntax-highlighting zsh-autosuggestions -y
-sudo apt install bat exa micro tailscale snapd nginx -y
-sudo snap install core btop adguard-home docker
-
-# python version manager
-curl https://pyenv.run | bash
-# python build dependencies
-# source: https://github.com/pyenv/pyenv/wiki#suggested-build-environment
-sudo apt install build-essential libssl-dev zlib1g-dev libbz2-dev \
-     libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev \
-     libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev-y llvm -y
+sudo apt install bat exa micro code snapd -y
+sudo snap install core btop docker
 
 # pure prompt
 mkdir -p "$HOME/.zsh"
