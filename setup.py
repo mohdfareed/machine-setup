@@ -5,7 +5,7 @@ from utils import shell
 from utils.display import Display
 
 
-def setup(display: Display, ssh_dir: str) -> None:
+def setup(display: Display, ssh_dir: str | None) -> None:
     """Run the main function of the setup script. This function is called when
     the script is run from the command line.
 
@@ -16,14 +16,15 @@ def setup(display: Display, ssh_dir: str) -> None:
     display.header("Setting up machine...")
 
     # setup ssh keys if not already present
-    # ssh.setup(ssh_dir, display, quiet=True)
+    if ssh_dir is not None:
+        ssh.setup(ssh_dir, display, quiet=True)
 
     # get resources if not already present
-    # display.debug("Initializing resources...")
-    # cmd = "git submodule update --init --recursive --remote"
-    # if shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
-    #     raise RuntimeError("Failed to initialize resources.")
-    # display.success("Resources initialized.")
+    display.debug("Initializing resources...")
+    cmd = "git submodule update --init --recursive --remote"
+    if shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
+        raise RuntimeError("Failed to initialize resources.")
+    display.success("Resources initialized.")
 
     # run setup modules
     display.debug("Running setup modules...")
@@ -42,7 +43,6 @@ def main() -> None:
     parser.add_argument(
         "--ssh-dir",
         type=str,
-        required=True,
         help="the path to the ssh directory of keys",
     )
     parser.add_argument(

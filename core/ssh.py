@@ -31,7 +31,8 @@ def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
         display.print("Setting up SSH...")
     else:
         display.debug("")
-        display.debug("Setting up SSH...")
+        display.verbose("Setting up SSH...")
+    display.debug(f"SSH directory: {ssh_dir}")
 
     # set ssh paths
     private_key = abs_path(f"{ssh_dir}/id_ed25519")
@@ -40,16 +41,16 @@ def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
 
     # copy private key
     copy(private_key, _private_key)
-    display.debug(f"Copied: {private_key}")
-    display.debug(f"    to: {_private_key}")
+    display.verbose(f"Copied: {private_key}")
+    display.verbose(f"    to: {_private_key}")
     # copy public key
     copy(public_key, _public_key)
-    display.debug(f"Copied: {public_key}")
-    display.debug(f"    to: {_public_key}")
+    display.verbose(f"Copied: {public_key}")
+    display.verbose(f"    to: {_public_key}")
     # copy config file
     copy(config, _config)
-    display.debug(f"Copied: {config}")
-    display.debug(f"    to: {_config}")
+    display.verbose(f"Copied: {config}")
+    display.verbose(f"    to: {_config}")
 
     try:  # set permissions of ssh keys
         chmod(_private_key, 600)
@@ -63,9 +64,9 @@ def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
     display.debug(f"SSH key fingerprint: {fingerprint}")
     # add key to ssh agent if it doesn't exist
     cmd = f"ssh-add -l | grep -q {fingerprint}"
-    if shell.run_quiet(cmd, display.verbose) != 0:
+    if shell.run_quiet(cmd, display.debug) != 0:
         shell.run(f"ssh-add '{_private_key}'", display.print, display.error)
-        display.debug("Added ssh key to ssh agent.")
+        display.verbose("Added ssh key to ssh agent.")
 
     display.success("SSH was setup successfully.")
 

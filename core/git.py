@@ -28,25 +28,25 @@ def setup(display=DISPLAY) -> None:
     display.header("Setting up Git...")
 
     # check if homebrew is installed and install git
-    if shell.run("command -v brew", display.verbose, display.error) != 0:
+    if shell.run("command -v brew", display.debug, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
-    display.debug("Homebrew was found.")
+    display.verbose("Homebrew was found.")
 
     # symlink configuration file
     symlink(gitconfig, _gitconfig)
-    display.debug(f"Symlinked: {gitconfig}")
-    display.debug(f"       to: {_gitconfig}")
+    display.verbose(f"Symlinked: {gitconfig}")
+    display.verbose(f"       to: {_gitconfig}")
     symlink(gitignore, _gitignore)
-    display.debug(f"Symlinked: {gitconfig}")
-    display.debug(f"       to: {_gitignore}")
+    display.verbose(f"Symlinked: {gitconfig}")
+    display.verbose(f"       to: {_gitignore}")
 
     # set github as a known host if it doesn't exist
-    if shell.run_quiet(f"ssh-keygen -F github.com", display.verbose) != 0:
+    if shell.run_quiet(f"ssh-keygen -F github.com", display.debug) != 0:
         create_file("~/.ssh/known_hosts")
         cmd = f"ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts"
-        if shell.run(cmd, display.verbose, display.error) != 0:
+        if shell.run(cmd, display.debug, display.error) != 0:
             raise RuntimeError("Failed to set github as a known host.")
-        display.debug("Github was set as a known host.")
+        display.verbose("Github was set as a known host.")
 
     display.success("Git was setup successfully.")
 

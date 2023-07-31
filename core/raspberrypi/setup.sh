@@ -1,24 +1,17 @@
 # Set up a Raspberry Pi with the required packages and configuration
 
-# remove login message
-touch "$HOME/.hushlogin"
-
-# symlink config files
-echo "Symlinking config files..."
-sudo ln -sf $HOME/machine/zshrc               $HOME/.zshrc
-sudo ln -sf $HOME/machine/micro_settings.json $HOME/.config/micro/settings.json
-
 # install packages
-echo "Installing packages..."
 . $HOME/machine/scripts/install.sh
 
-# load docker containers
-echo "Loading docker containers..."
-sudo usermod -aG docker $USER
-cd $HOME/machine && sudo docker compose up -d
+# symlink config files
+echo "\nConfiguring machine..."
+sudo mkdir -p $HOME/.config/micro
+sudo ln -sf $HOME/machine/micro_settings.json $HOME/.config/micro/settings.json
+sudo ln -sf $HOME/machine/zshrc               $HOME/.zshrc
+touch "$HOME/.hushlogin" # remove login message
 
 # load system services
-echo "Loading system services..."
+echo "\nLoading system services..."
 for service in ~/machine/*.service; do
     sudo ln -sf $service /etc/systemd/system/$(basename $service)
     sudo systemctl daemon-reload
@@ -27,8 +20,18 @@ for service in ~/machine/*.service; do
     echo "Loaded $service"
 done
 
-# setup zsh and tailscale then reboot
-sudo chsh -s $(which zsh)            # set zsh as the default shell
+# setup docker
+sudo snap disable docker &&  snap enable docker
+sudo addgroup --system docker &&  adduser $USER docker
+# load containers
+newgrp docker
+echo "\nLoading containers..."
+cd $HOME/machine && sudo docker compose up -d
+
+# setup zsh and tailscale
+echo "Setting up tailscale..."
 sudo tailscale up --accept-dns=false # login to tailscale
+sudo chsh -s $(which zsh)            # set zsh as the default shell
+# reboot
 echo "Done! Rebooting..."
 sudo reboot

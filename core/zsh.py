@@ -25,17 +25,17 @@ def setup(display=DISPLAY) -> None:
     display.header("Setting up shell...")
 
     # check if homebrew is installed
-    if shell.run("command -v brew", display.verbose, display.error) != 0:
+    if shell.run("command -v brew", display.debug, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
-    display.debug("Homebrew was found.")
+    display.verbose("Homebrew was found.")
 
     # symlink configuration file
     symlink(zshrc, _zshrc)
-    display.debug(f"Symlinked: {zshrc}")
-    display.debug(f"       to: {_zshrc}")
+    display.verbose(f"Symlinked: {zshrc}")
+    display.verbose(f"       to: {_zshrc}")
     # remove last login time prompt
     create_file("~/.hushlogin")
-    display.debug("Removed last login time prompt.")
+    display.verbose("Removed last login time prompt.")
 
     display.success("Shell was setup successfully.")
 

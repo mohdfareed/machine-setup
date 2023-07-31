@@ -23,13 +23,13 @@ def setup(display=DISPLAY) -> None:
     display.header("Setting up Python...")
 
     # check if homebrew is installed and install python
-    if shell.run("command -v brew", display.verbose, display.error) != 0:
+    if shell.run("command -v python", display.debug, display.error) != 0:
         raise RuntimeError("Could not find Homebrew.")
-    display.debug("Homebrew was found.")
+    display.verbose("Python was found.")
 
     # parse packages file
     packages = _parse_packages(python_packages)
-    display.debug("Packages file was parsed.")
+    display.verbose("Packages file was parsed.")
 
     # TODO: install packages
     for package in packages:

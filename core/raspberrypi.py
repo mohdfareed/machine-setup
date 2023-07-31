@@ -2,6 +2,8 @@
 machine.
 """
 
+import dis
+
 from core import raspberrypi_scripts
 from resources import micro_settings
 from resources import raspberrypi as raspberrypi_resources
@@ -33,26 +35,35 @@ def setup(display=DISPLAY) -> None:
     # check if raspberrypi exists
     if "unknown host" in shell.read(f"ping {HOSTNAME} -c 1"):
         raise RuntimeError("Raspberry Pi is not connected to the network.")
+    display.verbose("Raspberry Pi is connected to the network.")
     # add ssh key to raspberrypi
     shell.run(f"ssh-copy-id {HOSTNAME}", display.debug)
+    display.verbose("Added SSH key to Raspberry Pi.")
+
+    cmd = (  # raspberry pi resources
+        f"rsync -avz {raspberrypi_resources}/* {HOSTNAME}:{MACHINE_PATH} && "
+        f"rsync -avz {shell_config} {HOSTNAME}:{MACHINE_PATH} && "
+        f"rsync -avz {micro_settings} {HOSTNAME}:{MACHINE_PATH} && "
+        f"rsync -avz {raspberrypi_scripts}/* {HOSTNAME}:{SCRIPTS_PATH} && "
+        f"ssh {HOSTNAME} 'chmod +x {SCRIPTS_PATH}/*.sh'"
+    )
 
     # copy resources to raspberrypi
-    if shell.run(
-        f"scp -rp {raspberrypi_resources} {HOSTNAME}:{MACHINE_PATH} && "
-        f"scp -rp {shell_config} {HOSTNAME}:{MACHINE_PATH} && "
-        f"scp -rp {micro_settings} {HOSTNAME}:{MACHINE_PATH} && "
-        f"scp -rp {raspberrypi_scripts} {HOSTNAME}:{SCRIPTS_PATH} && "
-        f"ssh {HOSTNAME} 'chmod +x {SCRIPTS_PATH}/*.sh'",
-        display.debug,
-        display.error,
-    ):
+    if shell.run(cmd, display.debug, display.error):
         display.error("Failed to copy resources to Raspberry Pi.")
         return
-    display.success("Copied resources to Raspberry Pi.")
+    display.verbose("Copied resources to Raspberry Pi.")
 
-    # run setup.sh in raspberrypi
-    display.info("Setting up Raspberry Pi...")
-    shell.run_quiet(f"ssh {HOSTNAME} '{SCRIPTS_PATH}/setup.sh'", display.debug)
+    # add scripts to path
+    cmd = (
+        f"ssh {HOSTNAME} 'sudo ln -sf {SCRIPTS_PATH}/setup.sh "
+        "/usr/local/bin/setup-machine'"
+    )
+    if shell.run(cmd, display.debug, display.error):
+        display.error("Failed to add scripts to path.")
+        return
+    display.verbose("Added scripts to path.")
+
     display.success("Raspberry Pi setup complete.")
 
 

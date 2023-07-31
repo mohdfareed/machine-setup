@@ -26,25 +26,25 @@ def setup(display=DISPLAY) -> None:
 
     # add homebrew to path
     cmd = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-    if shell.run(cmd, display.verbose, display.error) != 0:
+    if shell.run(cmd, display.debug, display.error) != 0:
         raise RuntimeError("Failed to add Homebrew to path.")
-    display.debug("Added Homebrew to path.")
+    display.verbose("Added Homebrew to path.")
 
     # fix “zsh compinit: insecure directories” error
     cmd = 'chmod -R go-w "$(brew --prefix)/share"'
-    if shell.run(cmd, display.verbose, display.error) != 0:
+    if shell.run(cmd, display.debug, display.error) != 0:
         raise RuntimeError("Failed to fix zsh `compinit` message.")
-    display.debug("Fixed zsh `compinit` error.")  # TODO: check if needed
+    display.verbose("Fixed zsh `compinit` error.")  # TODO: check if needed
 
     # add fonts tap
     cmd = "brew tap homebrew/cask-fonts"
-    if shell.run_quiet(cmd, display.verbose, "Adding fonts tap") != 0:
+    if shell.run_quiet(cmd, display.debug, "Adding fonts tap") != 0:
         raise RuntimeError("Failed to add fonts tap.")
-    display.debug("Added fonts tap.")
+    display.verbose("Added fonts tap.")
 
     # parse Homebrew packages file
     packages = _parse_packages(homebrew_packages)
-    display.debug("Parsed Homebrew packages file:" + homebrew_packages)
+    display.verbose("Parsed Homebrew packages file:" + homebrew_packages)
 
     # install Homebrew packages
     display.print("Installing Homebrew packages...")
@@ -74,7 +74,7 @@ def install_package(display: Display, package: str, cask: bool = False):
 
     # install package
     display.debug(f"Installing {package}...")
-    if shell.run_quiet(cmd, display.verbose, f"Installing {package}") != 0:
+    if shell.run_quiet(cmd, display.debug, f"Installing {package}") != 0:
         display.error(f"Failed to install {package}.")
         return
     display.success(f"{package} was installed.")
@@ -88,12 +88,12 @@ def _install_brew(display):
         KeyboardInterrupt: If the installation is cancelled.
     """
     # check if Homebrew is already installed
-    if shell.run("command -v brew", display.verbose, display.error) == 0:
+    if shell.run("command -v brew", display.debug, display.error) == 0:
         display.info("Homebrew is already installed.")
         # update Homebrew if it is installed
-        display.debug("Updating Homebrew...")
+        display.verbose("Updating Homebrew...")
         cmd = "brew update"
-        if shell.run_quiet(cmd, display.verbose, "Updating Homebrew") != 0:
+        if shell.run_quiet(cmd, display.debug, "Updating Homebrew") != 0:
             raise RuntimeError("Failed to update Homebrew.")
         display.success("Homebrew was updated.")
         return
@@ -101,11 +101,11 @@ def _install_brew(display):
     # install Homebrew otherwise
     cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
     display.verbose("Installing Homebrew...")
-    if shell.run_quiet(cmd, display.verbose, "Installing Homebrew") != 0:
+    if shell.run_quiet(cmd, display.debug, "Installing Homebrew") != 0:
         raise RuntimeError("Failed to install Homebrew.")
     # source Homebrew
     cmd = 'eval "$(/opt/homebrew/bin/brew shellenv)"'
-    if shell.run(cmd, display.verbose, display.error) != 0:
+    if shell.run(cmd, display.debug, display.error) != 0:
         raise RuntimeError("An error occurred while installing Homebrew.")
     display.success("Homebrew was installed.")
 

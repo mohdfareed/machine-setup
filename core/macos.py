@@ -24,12 +24,12 @@ def setup(display=DISPLAY) -> None:
 
     # add terminal profiles
     cmd = f"open -g '{terminal_dark}'"
-    shell.run(cmd, display.verbose)
+    shell.run(cmd, display.debug)
     cmd = f"open -g '{terminal_light}'"
-    shell.run(cmd, display.verbose)
+    shell.run(cmd, display.debug)
 
     # run the macOS preferences script
-    if shell.run(f". {macos_preferences}", display.verbose) != 0:
+    if shell.run(f". {macos_preferences}", display.debug) != 0:
         display.info("Check the log file for more information.")
         raise RuntimeError("Setting macOS preferences failed.")
 
