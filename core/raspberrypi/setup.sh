@@ -1,14 +1,15 @@
 # Set up a Raspberry Pi with the required packages and configuration
 
-. $HOME/machine/scripts/install.sh # install packages
-sudo chsh -s $(which zsh)          # set zsh as the default shell
 touch "$HOME/.hushlogin"           # remove login message
+. $HOME/machine/scripts/install.sh # install packages
 
 # symlink config files
 echo "Configuring machine..."
 sudo mkdir -p $HOME/.config/micro
 sudo ln -sf $HOME/machine/micro_settings.json $HOME/.config/micro/settings.json
 sudo ln -sf $HOME/machine/zshrc               $HOME/.zshrc
+# change default shell to zsh
+sudo chsh -s $(which zsh)
 
 # load system services
 echo "Loading system services..."
@@ -20,17 +21,14 @@ for service in ~/machine/*.service; do
     echo "Loaded $service"
 done
 
+# setup tailscale
+. $HOME/machine/scripts/tailscale.sh
 # setup docker
-echo "Loading Docker..."
-sudo snap enable docker
-sudo addgroup --system docker && sudo adduser $USER docker
-echo "Loading containers..."
-cd $HOME/machine && docker compose up -d
-
-# setup zsh and tailscale
-echo "Setting up Tailscale..."
-sudo tailscale up --accept-dns=false # login to tailscale
+. $HOME/machine/scripts/docker.sh
 
 # reboot
+echo "Add the following DNS nameserver to Tailscale DNS settings:"
+echo "    Nameserver: $(tailscale ip -1)"
+echo "    Restrict to Domain: pi"
 echo "Done! Rebooting..."
 # sudo reboot
