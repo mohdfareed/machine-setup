@@ -2,8 +2,6 @@
 machine.
 """
 
-import dis
-
 from core import raspberrypi_scripts
 from resources import micro_settings
 from resources import raspberrypi as raspberrypi_resources
@@ -22,30 +20,31 @@ DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""
 
 
-def setup(display=DISPLAY) -> None:
+def setup(display=DISPLAY, hostname=HOSTNAME) -> None:
     """Setup a Raspberry Pi remotely. This function assumes that the Raspberry
     Pi is connected to the same network as the machine running this script and
     that the Raspberry Pi is accessible via SSH.
 
     Args:
         display (Display, optional): The display for printing messages.
+        hostname (str, optional): The hostname of the Raspberry Pi.
     """
     display.header("Setting up Raspberry Pi...")
 
     # check if raspberrypi exists
-    if "unknown host" in shell.read(f"ping {HOSTNAME} -c 1"):
+    if "unknown host" in shell.read(f"ping {hostname} -c 1"):
         raise RuntimeError("Raspberry Pi is not connected to the network.")
     display.verbose("Raspberry Pi is connected to the network.")
     # add ssh key to raspberrypi
-    shell.run(f"ssh-copy-id {HOSTNAME}", display.debug)
+    shell.run(f"ssh-copy-id {hostname}", display.debug)
     display.verbose("Added SSH key to Raspberry Pi.")
 
     cmd = (  # raspberry pi resources
-        f"rsync -avz {raspberrypi_resources}/* {HOSTNAME}:{MACHINE_PATH} && "
-        f"rsync -avz {shell_config} {HOSTNAME}:{MACHINE_PATH} && "
-        f"rsync -avz {micro_settings} {HOSTNAME}:{MACHINE_PATH} && "
-        f"rsync -avz {raspberrypi_scripts}/* {HOSTNAME}:{SCRIPTS_PATH} && "
-        f"ssh {HOSTNAME} 'chmod +x {SCRIPTS_PATH}/*.sh'"
+        f"rsync -avz {raspberrypi_resources}/* {hostname}:{MACHINE_PATH} && "
+        f"rsync -avz {shell_config} {hostname}:{MACHINE_PATH} && "
+        f"rsync -avz {micro_settings} {hostname}:{MACHINE_PATH} && "
+        f"rsync -avz {raspberrypi_scripts}/* {hostname}:{SCRIPTS_PATH} && "
+        f"ssh {hostname} 'chmod +x {SCRIPTS_PATH}/*.sh'"
     )
 
     # copy resources to raspberrypi
@@ -56,7 +55,7 @@ def setup(display=DISPLAY) -> None:
 
     # add scripts to path
     cmd = (
-        f"ssh {HOSTNAME} 'sudo ln -sf {SCRIPTS_PATH}/setup.sh "
+        f"ssh {hostname} 'sudo ln -sf {SCRIPTS_PATH}/setup.sh "
         "/usr/local/bin/setup-machine'"
     )
     if shell.run(cmd, display.debug, display.error):
