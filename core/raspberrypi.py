@@ -2,22 +2,14 @@
 machine.
 """
 
-from config import micro_settings
-from config import raspberrypi as raspberrypi_resources
-from config import shell_config
-from core import raspberrypi_scripts
-from utils import shell
-from utils.logger import Display
+import utils
+from config import raspberrypi_config, raspberrypi_zshenv, shell_config, micro_settings
 
 HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
-MACHINE_PATH = "~/machine"
-"""The path to the machine data directory."""
-SCRIPTS_PATH = "~/machine/scripts"
-"""The path to the machine scripts directory."""
 
-DISPLAY: Display = Display(no_logging=True)
-"""The default display for printing messages."""
+printer = utils.Printer("raspberrypi")
+"""the main setup printer."""
 
 
 def setup(hostname=HOSTNAME) -> None:
@@ -26,13 +18,13 @@ def setup(hostname=HOSTNAME) -> None:
     that the Raspberry Pi is accessible via SSH.
 
     Args:
-        display (Display, optional): The display for printing messages.
         hostname (str, optional): The hostname of the Raspberry Pi.
     """
-    display.header("Setting up Raspberry Pi...")
+    shell = utils.Shell()
+    printer.title("Setting up Raspberry Pi...")
 
     # check if raspberrypi exists
-    if "unknown host" in shell.read(f"ping {hostname} -c 1"):
+    if "unknown host" in shell(f"ping {hostname} -c 1"):
         raise RuntimeError("Raspberry Pi is not connected to the network.")
     display.verbose("Raspberry Pi is connected to the network.")
     # add ssh key to raspberrypi

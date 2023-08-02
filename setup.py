@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
+import os
+
 import config
 import core
 import utils
-import os
 
 printer = utils.Printer("setup")
 """the main setup printer."""
@@ -53,7 +54,7 @@ def setup_machine(config_path: str) -> None:
     # git.setup()
     # python.setup()
     # macos.setup()
-    # core.raspberrypi.setup()
+    core.raspberrypi.setup()
 
     printer.info("Restart for some changes to apply")
     printer.success("Machine setup complete")

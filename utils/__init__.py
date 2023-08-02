@@ -5,9 +5,11 @@ import inspect as _inspect
 import os as _os
 import shutil as _shutil
 
+from . import printer, shell
 from .printer import Printer
+from .shell import Shell
 
-printer = Printer("utils")
+utils_printer = Printer("utils")
 """Printer of the utils library."""
 
 
@@ -118,8 +120,8 @@ def chmod(file: str, mode: int):
     printer.debug(f"Changed permissions: {file} -> {mode}")
 
 
-def _caller_printer() -> Printer:
+def _caller_printer() -> printer.Printer:
     # get the name of the calling module
     frame = _inspect.stack()[2]
     module = _inspect.getmodule(frame[0])
-    return module.printer if hasattr(module, "printer") else printer
+    return module.printer if hasattr(module, "printer") else utils_printer

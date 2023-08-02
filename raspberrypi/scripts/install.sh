@@ -16,11 +16,17 @@ sudo snap refresh
 # oh-my-zsh
 echo "Installing oh-my-zsh..."
 sh -c "$(curl -fsSL https://git.io/JvzfK)"
+mkdir -p $HOME/.zsh
+
+# auto completion
+echo "Installing zsh-completions prompt..."
+completions=$HOME/.zsh/zsh-completions; rm -rf $completions
+git clone https://github.com/zsh-users/zsh-completions $completions
 
 # pure prompt
 echo "Installing pure prompt..."
-mkdir -p $HOME/.zsh; rm -rf $HOME/.zsh/pure
-git clone https://github.com/sindresorhus/pure.git $HOME/.zsh/pure
+pure=$HOME/.zsh/pure; rm -rf $pure
+git clone https://github.com/sindresorhus/pure.git $pure
 
 # clean packages
 echo "Cleaning packages..."

@@ -38,11 +38,11 @@ VENV_PATH = ".venv"
 def main(config_path: str, overwrite=False, *args) -> None:
     """Clone and set up machine."""
 
-    machine_path = load_machine_path(config_path)   # load machine path
-    resolve_xcode()                                 # resolve xcode license
-    clone_machine(machine_path, overwrite)          # clone repository
-    python = setup_env(machine_path)                # setup virtual environment
-    setup(python, machine_path, config_path, *args) # setup machine
+    machine_path = load_machine_path(config_path)  # load machine path
+    resolve_xcode()  # resolve xcode license
+    clone_machine(machine_path, overwrite)  # clone repository
+    python = setup_env(machine_path)  # setup virtual environment
+    setup(python, machine_path, config_path, *args)  # setup machine
 
 
 def load_machine_path(config_path: str) -> str:
@@ -56,7 +56,7 @@ def load_machine_path(config_path: str) -> str:
     command = f"source '{machine_env}' && echo $MACHINE"
     machine_path = _exec(command, silent=True, text=True)
     _print_info(f"Loaded machine path: {machine_path}")
-    return os.path.abspath(machine_path) # don't follow symlinks
+    return os.path.abspath(machine_path)  # don't follow symlinks
 
 
 def resolve_xcode():

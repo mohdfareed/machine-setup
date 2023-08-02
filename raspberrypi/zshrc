@@ -1,16 +1,19 @@
 # Configuration
 # =============================================================================
 
-# machine paths
-export PATH="$PATH:/snap/bin"        # add snap to path
-export PATH="$PATH:$HOME/.local/bin" # add pip packages to path
-fpath+=($HOME/.zsh/pure)             # add pure prompt to fpath
+# machine paths and environment variables
+export PATH="$PATH:/snap/bin"           # add snap to path
+export PATH="$PATH:$HOME/.local/bin"    # add pip packages to path
+fpath+=($HOME/.zsh/pure)                # add pure prompt to fpath
+fpath+=($HOME/.zsh/zsh-completions/src) # add zsh-completions to fpath
+autoload -Uz compinit
+compinit
 
 # zsh plugins
 plugins=(
 )
 
-# shell config, syntax highlighting, auto-suggestions, and shell env variables
+# shell config, syntax highlighting, auto-suggestions, and auto-completion
 source $MACHINE/config.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh

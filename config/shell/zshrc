@@ -4,6 +4,9 @@
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 fpath+=("$(brew --prefix)/share/zsh/site-functions")
+fpath+=("$(brew --prefix)/share/zsh-completions:$fpath")
+autoload -Uz compinit
+compinit
 # machine paths
 export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock" # docker
@@ -14,7 +17,7 @@ plugins=(
     macos # macos-specific utilities
 )
 
-# shell config, syntax highlighting, auto-suggestions, and env variables
+# shell config, syntax highlighting, auto-suggestions, and auto-completion
 source $MACHINE/config/shell/config.sh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
