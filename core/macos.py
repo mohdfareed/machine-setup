@@ -33,6 +33,10 @@ def setup(display=DISPLAY) -> None:
         display.info("Check the log file for more information.")
         raise RuntimeError("Setting macOS preferences failed.")
 
+    # update the system
+    display.info("Updating the system...")
+    if shell.run("softwareupdate --install --all", display.debug) != 0:
+
     display.success("macOS was setup successfully.")
 
 

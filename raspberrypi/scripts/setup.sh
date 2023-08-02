@@ -8,6 +8,7 @@ echo "Configuring machine..."
 sudo mkdir -p $HOME/.config/micro
 sudo ln -sf $HOME/machine/micro_settings.json $HOME/.config/micro/settings.json
 sudo ln -sf $HOME/machine/zshrc               $HOME/.zshrc
+sudo ln -sf $HOME/machine/zshenv              $HOME/.zshenv
 # change default shell to zsh
 sudo chsh -s $(which zsh)
 sudo exec zsh

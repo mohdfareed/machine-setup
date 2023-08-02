@@ -2,7 +2,6 @@
 # =============================================================================
 
 # machine paths
-export MACHINE="$HOME/machine"
 export PATH="$PATH:/snap/bin"        # add snap to path
 export PATH="$PATH:$HOME/.local/bin" # add pip packages to path
 fpath+=($HOME/.zsh/pure)             # add pure prompt to fpath
@@ -15,7 +14,6 @@ plugins=(
 source $MACHINE/config.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $MACHINE/shell.env
 
 
 # Functions and Aliases

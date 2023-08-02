@@ -3,10 +3,7 @@
 
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
-fpath+=("$(brew --prefix)/share/zsh/site-functions")
-
 # machine paths
-export MACHINE="$HOME/Developer/machine/config"
 export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock" # docker
 export PATH="$(brew --prefix python)/libexec/bin:$PATH"       # python
@@ -17,10 +14,9 @@ plugins=(
 )
 
 # shell config, syntax highlighting, auto-suggestions, and env variables
-source $MACHINE/shell/config.sh
+source $MACHINE/config/shell/config.sh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $MACHINE/shell/shell.env
 
 
 # Functions and Aliases

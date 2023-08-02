@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import config
+import core
 import utils
-
-# import core
 
 printer = utils.Printer("setup")
 """the main setup printer."""
@@ -22,7 +21,7 @@ def main(config_path: str, log=False, debug=False) -> None:
     try:  # setup the machine
         setup_machine(config_path)
     except Exception as exception:
-        printer.logger.error(exception)  # log exception
+        printer.logger.exception(exception)  # log exception
         printer.error("Failed to setup machine.")
 
 
@@ -34,22 +33,18 @@ def setup_machine(config_path: str) -> None:
         display (Display): The display for printing messages.
         ssh_dir (str): The path to the SSH directory of keys.
     """
+
     printer.title("Setting up machine...")
-
-    # symlink environment config files
-    if config_path:
-        utils.symlink(utils.abspath(config_path, "macos.sh"), config.shell_env)
+    if config_path:  # symlink environment files
+        utils.symlink(utils.abspath(config_path, "machine.sh"), config.zshenv)
         utils.symlink(
-            utils.abspath(config_path, "pi.sh"),
-            config.raspberrypi_env,
+            utils.abspath(config_path, "pi.sh"), config.raspberrypi_zshenv
         )
-
-    # setup ssh
-    # ssh.setup(utils.abspath(config_path))
 
     # run setup scripts
     # homebrew.setup()
     # zsh.setup()
+    # ssh.setup()
     # git.setup()
     # python.setup()
     # macos.setup()
