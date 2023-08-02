@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 
-from core import git, macos, python, raspberrypi, shell, ssh
-from utils import shell
-from utils.display import Display
+import config
+import core
+import utils
+
+printer: utils.Printer
+"""Main setup printer."""
 
 
 def main(config_path: str, log=False, debug=False) -> None:
@@ -14,55 +17,22 @@ def main(config_path: str, log=False, debug=False) -> None:
         debug (bool): Whether to log debug messages.
     """
 
-    setup_logging(to_file=log, debug=debug)
-    setup_display()
+    # setup printer
+    global printer
+    utils.Printer.initialize(to_file=log, debug=debug)
+    printer = utils.Printer("setup")
 
-    try:  # run main function and handle exceptions
-        setup_machine(display, args.ssh_dir)
+    # setup the machine
+    printer.title("Setting up machine...")
+    try:  # run the setup scripts and handle exceptions
+        setup_machine(config_path)
     except Exception as exception:
-        display.error(exception.__str__())
-        display.error("")
-        display.error(f"Failed to setup machine.")
-
-    print("[bold green]chatgpt_bot stopped[/]")
+        printer.logger.error(exception)  # log exception
+        printer.error("Failed to setup machine.")
+    printer.success("Machine setup complete")
 
 
-def setup_logging(to_file, debug):
-    # configure logging
-    logging.captureWarnings(True)
-    root_logger = logging.getLogger()
-    root_logger.level = logging.WARNING  # default level
-
-    # set up logging level for all modules
-    level = logging.DEBUG if debug else logging.INFO
-    for module in LOGGING_MODULES:
-        logging.getLogger(module).setLevel(level)
-    # set up logging level for this module
-    (local_logger := logging.getLogger(__name__)).setLevel(level)
-
-    if not to_file:  # set up logging to file
-        return
-    local_logger.debug("Debug mode enabled")
-    format = (
-        "[%(asctime)s] %(levelname)-8s "
-        "%(message)s - %(name)s [%(filename)s:%(lineno)d]"
-    )
-
-    # create file handler
-    logging_dir = os.path.join(os.getcwd(), "logs")
-    os.makedirs(logging_dir, exist_ok=True)
-    filename = f"{datetime.now():%y%m%d_%H%M%S}.log"
-    file = os.path.join(logging_dir, filename)
-    file_handler = logging.FileHandler(file)
-    formatter = logging.Formatter(format, "%Y-%m-%d %H:%M:%S")
-
-    # setup handler
-    logger.addHandler(file_handler)
-    file_handler.setFormatter(formatter)
-    logger.info(f"Logging to file: {file}")
-
-
-def setup_machine(display: Display, ssh_dir: str | None) -> None:
+def setup_machine(config_path: str) -> None:
     """Run the main function of the setup script. This function is called when
     the script is run from the command line.
 
@@ -70,28 +40,25 @@ def setup_machine(display: Display, ssh_dir: str | None) -> None:
         display (Display): The display for printing messages.
         ssh_dir (str): The path to the SSH directory of keys.
     """
-    display.header("Setting up machine...")
 
-    # setup ssh keys if not already present
-    if ssh_dir is not None:
-        ssh.setup(ssh_dir, display, quiet=True)
-
-    # get resources if not already present
-    display.debug("Initializing resources...")
-    cmd = "git submodule update --init --recursive --remote"
-    if shell.run_quiet(cmd, display.verbose, "Initializing resources") != 0:
-        raise RuntimeError("Failed to initialize resources.")
-    display.success("Resources initialized.")
+    # symlink environment config files
+    if config_path:
+        utils.symlink(utils.abspath(config_path, "macos.sh"), config.shell_env)
+        utils.symlink(
+            utils.abspath(config_path, "pi.sh"),
+            config.raspberrypi_env,
+        )
+    # setup ssh
+    # ssh.setup(utils.abspath(config_path))
 
     # run setup scripts
-    # homebrew.setup(display)
-    # zsh.setup(display)
-    # git.setup(display)
-    # python.setup(display)
-    # macos.setup(display)
-    raspberrypi.setup(display)
-    display.success("Machine setup complete!")
-    display.info("Restart machine for some changes to apply.")
+    # homebrew.setup()
+    # zsh.setup()
+    # git.setup()
+    # python.setup()
+    # macos.setup()
+    # core.raspberrypi.setup()
+    printer.info("Restart machine for some changes to apply.")
 
 
 if __name__ == "__main__":

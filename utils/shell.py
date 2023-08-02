@@ -6,8 +6,6 @@ printing their output. The provides an interactive mode of the shell.
 import subprocess
 from typing import Callable, Optional
 
-from .colors import LINE_CLEAR, LINE_UP
-
 LOADING_STR: str = "Loading"
 """The default string to print while waiting for a command to complete. It is
 followed by a loading animation.
@@ -72,7 +70,7 @@ def run_quiet(cmd: str, printer: Callable, loading_string=LOADING_STR) -> int:
     )
 
     # show loading animation
-    _loader(process.poll, loading_string)
+    # _loader(process.poll, loading_string)
     output = process.communicate()  # get the standard output and error
 
     # print the standard outputs and errors then return the exit code
@@ -100,56 +98,56 @@ def read(cmd: str) -> str:
     return process.stdout.decode().strip()
 
 
-def interactive() -> None:
-    """Runs the shell in interactive mode. No output is logged when running in
-    this mode. The shell used is the default shell of the module.
-    """
-    from .colors import bright_blue as blue
-    from .colors import bright_green as green
-    from .colors import bright_red as red
-    from .display import Display
+# def interactive() -> None:
+#     """Runs the shell in interactive mode. No output is logged when running in
+#     this mode. The shell used is the default shell of the module.
+#     """
+#     from .colors import bright_blue as blue
+#     from .colors import bright_green as green
+#     from .colors import bright_red as red
+#     from .logger import Display
 
-    display = Display(no_logging=True)
-    print("Shell interface written in Python. Shell: " + SHELL)
-    print(blue("Type 'exit' to stop.\n"))
+#     display = Display(no_logging=True)
+#     print("Shell interface written in Python. Shell: " + SHELL)
+#     print(blue("Type 'exit' to stop.\n"))
 
-    exit_code = 0
-    while True:
-        # print prompt based on the exit code of the previous command
-        if exit_code != 0:
-            print(red("> "), end="")
-        else:
-            print(green("> "), end="")
-        # read a command and break if it is "exit"
-        cmd = input()
-        if cmd == "exit":
-            break
+#     exit_code = 0
+#     while True:
+#         # print prompt based on the exit code of the previous command
+#         if exit_code != 0:
+#             print(red("> "), end="")
+#         else:
+#             print(green("> "), end="")
+#         # read a command and break if it is "exit"
+#         cmd = input()
+#         if cmd == "exit":
+#             break
 
-        # run the command and print output
-        exit_code = run(cmd, display.print, display.error)
+#         # run the command and print output
+#         exit_code = run(cmd, display.print, display.error)
 
 
-def _loader(condition, loading_string):
-    """Prints a loading animation until `condition` does not return `None`. The
-    loading animation is printed using the provided `loading_string`.
+# def _loader(condition, loading_string):
+#     """Prints a loading animation until `condition` does not return `None`. The
+#     loading animation is printed using the provided `loading_string`.
 
-    Args:
-        condition (function): The function that returns `None` to stop.
-        loading_string (str): The loading string to print.
-    """
-    import time
+#     Args:
+#         condition (function): The function that returns `None` to stop.
+#         loading_string (str): The loading string to print.
+#     """
+#     import time
 
-    time.sleep(0.05)  # wait for the process to start
+#     time.sleep(0.05)  # wait for the process to start
 
-    counter = 0
-    while condition() is None:
-        # print the loading string and animation
-        print(loading_string + LOADING_ANIMATION[counter])
-        # wait after printing the animation for 1 second
-        time.sleep(1 / len(LOADING_ANIMATION))
-        # clear the line and increment the counter
-        print(LINE_UP + LINE_CLEAR + LINE_UP)
-        counter = (counter + 1) % len(LOADING_ANIMATION)
+#     counter = 0
+#     while condition() is None:
+#         # print the loading string and animation
+#         print(loading_string + LOADING_ANIMATION[counter])
+#         # wait after printing the animation for 1 second
+#         time.sleep(1 / len(LOADING_ANIMATION))
+#         # clear the line and increment the counter
+#         print(LINE_UP + LINE_CLEAR + LINE_UP)
+#         counter = (counter + 1) % len(LOADING_ANIMATION)
 
 
 def _print_output(process, printer, error_printer):
@@ -186,6 +184,6 @@ def __getattr__(name):
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
-if __name__ == "__main__":
-    print("Running shell in interactive mode.\n")
-    interactive()
+# if __name__ == "__main__":
+#     print("Running shell in interactive mode.\n")
+#     interactive()

@@ -13,7 +13,7 @@ zshrc = os.path.join(_config, "shell", "zshrc")
 micro_settings = os.path.join(_config, "shell", "micro_settings.json")
 """The path of micro settings file."""
 shell_env = os.path.join(_config, "shell", "shell.env")
-"""The path of micro settings file."""
+"""The path of shell environment file."""
 gitconfig = os.path.join(_config, "git", "gitconfig")
 """The path of the global gitconfig file."""
 
@@ -32,3 +32,5 @@ terminal_light = os.path.join(_config, "macos", "terminal", "Light.terminal")
 # raspberry pi
 raspberrypi_config = os.path.join(os.path.dirname(_config), "raspberrypi")
 """The path of Raspberry Pi config directory."""
+raspberrypi_env = os.path.join(raspberrypi_config, "shell.env")
+"""The path of Raspberry Pi shell environment file."""

@@ -4,7 +4,7 @@ machine.
 
 from config import macos_preferences, terminal_dark, terminal_light
 from utils import shell
-from utils.display import Display
+from utils.logger import Display
 
 DISPLAY: Display = Display(verbose=True, no_logging=True)
 """The default display for printing messages."""

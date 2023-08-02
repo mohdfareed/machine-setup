@@ -4,7 +4,7 @@ machine.
 
 from config import python_packages
 from utils import shell
-from utils.display import Display
+from utils.logger import Display
 
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""

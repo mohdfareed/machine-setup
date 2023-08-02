@@ -3,13 +3,13 @@ machine.
 """
 
 from config import zshrc
-from utils import abs_path, create_file, shell, symlink
-from utils.display import Display
+from utils import abspath, create_file, shell, symlink
+from utils.logger import Display
 
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""
 
-_zshrc: str = abs_path("~/.zshrc")
+_zshrc: str = abspath("~/.zshrc")
 """The path to the zsh configuration file symlink."""
 
 

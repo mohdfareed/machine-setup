@@ -2,18 +2,12 @@
 machine.
 """
 
-from utils import abs_path, chmod, copy, shell
-from utils.display import Display
+import utils
 
-DISPLAY: Display = Display(no_logging=True)
-"""The default display for printing messages."""
-
-_private_key: str = abs_path("~/.ssh/id_ed25519")
-"""The path to the private ssh key on the machine."""
-_public_key: str = abs_path("~/.ssh/id_ed25519.pub")
-"""The path to the public ssh key on the machine."""
-_config: str = abs_path("~/.ssh/config")
-"""The path to the ssh configuration file on the machine."""
+# the path to the ssh config file
+_config: str = abspath("~/.ssh/config")
+printer = utils.Printer("ssh")
+"""SSH setup printer."""
 
 
 def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
@@ -34,23 +28,18 @@ def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
         display.verbose("Setting up SSH...")
     display.debug(f"SSH directory: {ssh_dir}")
 
+    # copy config file
+    config = abspath(f"{ssh_dir}/config")
+    copy(config, _config)
+
     # set ssh paths
-    private_key = abs_path(f"{ssh_dir}/id_ed25519")
-    public_key = abs_path(f"{ssh_dir}/id_ed25519.pub")
-    config = abs_path(f"{ssh_dir}/config")
+    private_key = abspath(f"{ssh_dir}/id_ed25519")
+    public_key = abspath(f"{ssh_dir}/id_ed25519.pub")
 
     # copy private key
     copy(private_key, _private_key)
-    display.verbose(f"Copied: {private_key}")
-    display.verbose(f"    to: {_private_key}")
     # copy public key
     copy(public_key, _public_key)
-    display.verbose(f"Copied: {public_key}")
-    display.verbose(f"    to: {_public_key}")
-    # copy config file
-    copy(config, _config)
-    display.verbose(f"Copied: {config}")
-    display.verbose(f"    to: {_config}")
 
     try:  # set permissions of ssh keys
         chmod(_private_key, 600)
@@ -69,6 +58,31 @@ def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
         display.verbose("Added ssh key to ssh agent.")
 
     display.success("SSH was setup successfully.")
+
+
+def _setup_key():
+    # copy private key
+    copy(private_key, _private_key)
+    # copy public key
+    copy(public_key, _public_key)
+    # copy config file
+    copy(config, _config)
+
+    try:  # set permissions of ssh keys
+        chmod(_private_key, 600)
+        chmod(_public_key, 644)
+    except:
+        raise RuntimeError("Failed to set permissions of ssh keys.")
+
+    # get key fingerprint
+    fingerprint = shell.read(f"ssh-keygen -lf '{_public_key}'")
+    fingerprint = fingerprint.split(" ")[1]
+    display.debug(f"SSH key fingerprint: {fingerprint}")
+    # add key to ssh agent if it doesn't exist
+    cmd = f"ssh-add -l | grep -q {fingerprint}"
+    if shell.run_quiet(cmd, display.debug) != 0:
+        shell.run(f"ssh-add '{_private_key}'", display.print, display.error)
+        display.verbose("Added ssh key to ssh agent.")
 
 
 if __name__ == "__main__":

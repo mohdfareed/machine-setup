@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 # Deploy a new machine. This will install Xcode Commandline Tools, accept the
 # Xcode license, clone machine-setup, and execute the setup script.
 # The machine path is hardcoded in the configuration files at: ~/machine/config
@@ -41,5 +42,10 @@ if [[ $clone = true ]]; then
     git clone -q https://github.com/$repo $machine_dir
 fi
 
-# run setup script
+# setup virtual environment
+echo "Setting up virtual environment..."
+python venv $machine_dir/.venv &> /dev/null
+source $machine_dir/.venv/bin/activate &> /dev/null
+pip install -q -r $machine_dir/requirements.txt &> /dev/null
+# setup machine
 cd $machine_dir && ./setup.py "$local_config_path"

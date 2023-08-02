@@ -2,17 +2,17 @@
 machine.
 """
 
-from utils import abs_path, create_file, shell, symlink
-from utils.display import Display
+from git import gitconfig, gitignore
 
-from ..git import gitconfig, gitignore
+from utils import abspath, create_file, shell, symlink
+from utils.logger import Display
 
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""
 
-_gitconfig: str = abs_path("~/.gitconfig")
+_gitconfig: str = abspath("~/.gitconfig")
 """The path to the git configuration file on the machine."""
-_gitignore: str = abs_path("~/.gitignore")
+_gitignore: str = abspath("~/.gitignore")
 """The path to the git ignore file on the machine."""
 
 

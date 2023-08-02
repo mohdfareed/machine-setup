@@ -2,12 +2,12 @@
 machine.
 """
 
-from core import raspberrypi_scripts
 from config import micro_settings
 from config import raspberrypi as raspberrypi_resources
 from config import shell_config
+from core import raspberrypi_scripts
 from utils import shell
-from utils.display import Display
+from utils.logger import Display
 
 HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
@@ -20,7 +20,7 @@ DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""
 
 
-def setup(display=DISPLAY, hostname=HOSTNAME) -> None:
+def setup(hostname=HOSTNAME) -> None:
     """Setup a Raspberry Pi remotely. This function assumes that the Raspberry
     Pi is connected to the same network as the machine running this script and
     that the Raspberry Pi is accessible via SSH.
