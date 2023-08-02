@@ -86,7 +86,7 @@ def clone_machine(path: str):
     # clone machine
     _print_info(f"Cloning machine into '{path}'...")
     shutil.rmtree(path, ignore_errors=True)
-    os.system(f"git clone -q '{REPOSITORY}' '{path}'")
+    os.system(f"git clone -q https://github.com/{REPOSITORY} '{path}'")
 
 
 def setup_env(machine_path: str, clean: bool) -> str:
