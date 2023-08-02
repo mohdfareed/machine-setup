@@ -3,6 +3,7 @@
 
 # homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
+fpath+=("$(brew --prefix)/share/zsh/site-functions")
 # machine paths
 export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock" # docker

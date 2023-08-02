@@ -129,7 +129,7 @@ if __name__ == "__main__":
         "--overwrite", action="store_true", help="overwrite repo and venv"
     )
     parser.add_argument(
-        "args", nargs=argparse.REMAINDER, help="setup script arguments"
+        "...", nargs=argparse.REMAINDER, help="setup script arguments"
     )
 
     args = parser.parse_args()

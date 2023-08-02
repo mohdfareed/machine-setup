@@ -3,7 +3,6 @@
 import config
 import core
 import utils
-from rich import print
 import os
 
 printer = utils.Printer("setup")
@@ -20,7 +19,8 @@ def main(config_path: str, log=False, debug=False) -> None:
     """
 
     # initial setup
-    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    config_path = utils.abspath(config_path)
+    os.chdir(os.path.dirname(utils.abspath(__file__)))
     utils.Printer.initialize(to_file=log, debug=debug)
 
     try:  # setup the machine
@@ -40,11 +40,11 @@ def setup_machine(config_path: str) -> None:
     """
 
     printer.title("Setting up machine...")
-    if config_path:  # symlink environment files
-        utils.symlink(utils.abspath(config_path, "machine.sh"), config.zshenv)
-        utils.symlink(
-            utils.abspath(config_path, "pi.sh"), config.raspberrypi_zshenv
-        )
+    # symlink environment files
+    utils.symlink(utils.abspath(config_path, "machine.sh"), config.zshenv)
+    utils.symlink(
+        utils.abspath(config_path, "pi.sh"), config.raspberrypi_zshenv
+    )
 
     # run setup scripts
     # homebrew.setup()
