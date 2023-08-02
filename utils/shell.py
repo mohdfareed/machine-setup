@@ -180,6 +180,13 @@ def _print_output(process, printer, error_printer):
             break
 
 
+def _exec(cmd: str | list, silent=False, safe=False, text=False):
+    # execute command and return output or exit code
+    options: dict = dict(check=not safe, capture_output=silent, text=text)
+    result = subprocess.run(cmd, shell=isinstance(cmd, str), **options)
+    return result.stdout.strip() if text else result.returncode
+
+
 def __getattr__(name):
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 

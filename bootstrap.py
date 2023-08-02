@@ -23,7 +23,6 @@ import argparse
 import os
 import shutil
 import subprocess
-import sys
 import venv
 
 REPOSITORY = "https://github.com/mohdfareed/machine.git"
@@ -51,38 +50,37 @@ def load_machine_path(config_path: str) -> str:
     machine_env = os.path.realpath(os.path.join(config_path, "machine.sh"))
     if not os.path.isfile(machine_env):
         _print_error(f"Machine file not found at: {machine_env}")
-        sys.exit(1)
+        exit(1)
 
     # read MACHINE from config/machine.sh
     command = f"source '{machine_env}' && echo $MACHINE"
-    machine_path = subprocess.run(
-        command, shell=True, stdout=subprocess.PIPE, text=True, check=True
-    ).stdout.strip()
+    machine_path = _exec(command, silent=True, text=True)
+    _print_info(f"Loaded machine path: {machine_path}")
     return os.path.abspath(machine_path) # don't follow symlinks
 
 
 def resolve_xcode():
     try:  # check if xcode commandline tools are installed
-        subprocess.run(["xcode-select", "-p"], check=True)
+        _exec("xcode-select -p", silent=True)
     except subprocess.CalledProcessError:
+        _exec("xcode-select --install", silent=True)  # prompt to install
         _print_error("Xcode Commandline Tools are not installed")
-        sys.exit(1)
+        exit(1)
 
     # accept xcode license
     prompt = "Authenticate to accept Xcode license agreement: "
-    cmd = ["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"]
-    subprocess.run(cmd, check=True)
+    _exec(["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"])
 
 
 def clone_machine(path: str, overwrite=False):
     # overwrite machine if prompted
-    if os.path.exists(path) and overwrite:
+    if overwrite and os.path.exists(path):
         _print_info(f"Overwriting machine...")
         shutil.rmtree(path, ignore_errors=True)
 
-    # clone machine
-    _print_info(f"Cloning machine into '{path}'...")
-    subprocess.run(["git", "clone", "-q", REPOSITORY, path], check=True)
+    if not os.path.exists(path):  # clone machine
+        _print_info(f"Cloning machine into '{path}'...")
+        _exec(["git", "clone", "-q", REPOSITORY, path], silent=True)
 
 
 def setup_env(machine_path: str) -> str:
@@ -91,20 +89,20 @@ def setup_env(machine_path: str) -> str:
     python = os.path.join(machine_venv_path, "bin", "python")
 
     # create virtual environment
-    _print_info("Creating environment...")
+    _print_info("Setting up virtual environment...")
     env_options = dict(with_pip=True, upgrade_deps=True)
     venv.create(machine_venv_path, prompt="setup", **env_options)
 
     # install dependencies
     cmd = [python, "-m", "pip", "install", "-r", req_path, "--upgrade"]
-    subprocess.run(cmd, check=True)
+    _exec(cmd, silent=True)
     return python
 
 
 def setup(python: str, machine_path: str, config_path: str, *args):
     """Execute machine setup script."""
     script = os.path.join(machine_path, SCRIPT)
-    subprocess.run([python, script, config_path, *args])
+    _exec([python, script, config_path, *args], safe=False)
 
 
 def _print_error(error: str) -> None:
@@ -113,6 +111,13 @@ def _print_error(error: str) -> None:
 
 def _print_info(info: str) -> None:
     print(f"\033[1m{info}\033[0m")
+
+
+def _exec(cmd: str | list, silent=False, safe=False, text=False):
+    # execute command and return output or exit code
+    options: dict = dict(check=not safe, capture_output=silent, text=text)
+    result = subprocess.run(cmd, shell=isinstance(cmd, str), **options)
+    return result.stdout.strip() if text else result.returncode
 
 
 if __name__ == "__main__":
@@ -128,4 +133,8 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    main(args.config_path, args.overwrite, args.args)
+    try:
+        main(args.config_path, args.overwrite, *args.args)
+    except:
+        _print_error("Failed to bootstrap machine")
+        exit(1)
