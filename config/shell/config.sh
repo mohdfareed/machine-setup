@@ -1,7 +1,7 @@
 # Oh My Zsh
 # =============================================================================
 
-export ZSH="$HOME/.oh-my-zsh"    # oh-my-zsh directory
+export ZSH="$HOME/.zsh/omz"      # oh-my-zsh directory
 COMPLETION_WAITING_DOTS="true"   # show dots while loading completions
 ENABLE_CORRECTION="true"         # enable command auto-correction
 HYPHEN_INSENSITIVE="true"        # ignore hyphens in commands

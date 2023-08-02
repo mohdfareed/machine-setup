@@ -1,16 +1,14 @@
-"""Setup module containing a `setup` function for setting up Git on a new
-machine.
-"""
+"""SSH setup module."""
 
 import utils
 
 # the path to the ssh config file
-_config: str = abspath("~/.ssh/config")
+_config: str = utils.abspath("~/.ssh/config")
 printer = utils.Printer("ssh")
 """SSH setup printer."""
 
 
-def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
+def setup(keys_path: str, display=DISPLAY, quiet=False) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory.
 
@@ -19,7 +17,6 @@ def setup(ssh_dir: str, display=DISPLAY, quiet=False) -> None:
 
     Args:
         ssh_dir (str): The path to the directory containing the ssh files.
-        display (Display, optional): The display for printing messages.
     """
     if not quiet:
         display.print("Setting up SSH...")

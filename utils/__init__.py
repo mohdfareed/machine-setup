@@ -60,8 +60,9 @@ def create_dir(directory: str, is_file=False):
     if is_file:  # use parent if file
         directory = _os.path.dirname(directory)
 
-    _os.makedirs(directory, exist_ok=True)  # create directory
-    _caller_printer().debug(f"Created directory: {directory}")
+    if not _os.path.exists(directory):  # create directory if it doesn't exist
+        _os.makedirs(directory, exist_ok=True)
+        _caller_printer().debug(f"Created directory: {directory}")
 
 
 def copy(source: str, target: str) -> None:

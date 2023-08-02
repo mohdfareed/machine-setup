@@ -2,20 +2,20 @@
 # ====================
 
 # zsh
-brew "zsh"
-brew "zsh-completions"
-brew "zsh-autosuggestions"
-brew "zsh-syntax-highlighting"
-brew "spaceship"
+brew "zsh"                     # brew managed zsh
+brew "zsh-completions"         # extra completions
+brew "zsh-autosuggestions"     # auto suggestions
+brew "zsh-syntax-highlighting" # syntax highlighting
+brew "pure"                    # pure shell prompt
 
 # general
-brew "git"
-brew "python"
-brew "bat"   # cat replacement
-brew "exa"   # ls replacement
-brew "micro" # text editor
-brew "mas"   # mac app store cli
-brew "btop"  # resource monitor
+brew "git"    # global git
+brew "python" # global python
+brew "bat"    # cat replacement
+brew "exa"    # ls replacement
+brew "micro"  # text editor
+brew "mas"    # mac app store cli
+brew "btop"   # resource monitor
 
 # docker
 brew "colima"         # container runtimes

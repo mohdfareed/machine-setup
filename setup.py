@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import config
-import core
 import utils
 
-printer: utils.Printer
-"""Main setup printer."""
+# import core
+
+printer = utils.Printer("setup")
+"""the main setup printer."""
 
 
 def main(config_path: str, log=False, debug=False) -> None:
@@ -17,19 +18,12 @@ def main(config_path: str, log=False, debug=False) -> None:
         debug (bool): Whether to log debug messages.
     """
 
-    # setup printer
-    global printer
     utils.Printer.initialize(to_file=log, debug=debug)
-    printer = utils.Printer("setup")
-
-    # setup the machine
-    printer.title("Setting up machine...")
-    try:  # run the setup scripts and handle exceptions
+    try:  # setup the machine
         setup_machine(config_path)
     except Exception as exception:
         printer.logger.error(exception)  # log exception
         printer.error("Failed to setup machine.")
-    printer.success("Machine setup complete")
 
 
 def setup_machine(config_path: str) -> None:
@@ -40,6 +34,7 @@ def setup_machine(config_path: str) -> None:
         display (Display): The display for printing messages.
         ssh_dir (str): The path to the SSH directory of keys.
     """
+    printer.title("Setting up machine...")
 
     # symlink environment config files
     if config_path:
@@ -48,6 +43,7 @@ def setup_machine(config_path: str) -> None:
             utils.abspath(config_path, "pi.sh"),
             config.raspberrypi_env,
         )
+
     # setup ssh
     # ssh.setup(utils.abspath(config_path))
 
@@ -58,7 +54,9 @@ def setup_machine(config_path: str) -> None:
     # python.setup()
     # macos.setup()
     # core.raspberrypi.setup()
-    printer.info("Restart machine for some changes to apply.")
+
+    printer.info("Restart for some changes to apply")
+    printer.success("Machine setup complete")
 
 
 if __name__ == "__main__":
@@ -72,7 +70,7 @@ if __name__ == "__main__":
         "-l", "--log", action="store_true", help="log to a file"
     )
     parser.add_argument(
-        "config_path", type=str, help="local machine config path"
+        "config_path", nargs="?", type=str, help="local machine config path"
     )
 
     args = parser.parse_args()
