@@ -1,0 +1,19 @@
+{
+  "clipboard": "terminal",
+  "colorcolumn": 80,
+  "diffgutter": true,
+  "hlsearch": true,
+  "indentchar": "|",
+  "rmtrailingws": true,
+  "scrollbar": true,
+  "softwrap": true,
+  "tabstospaces": true,
+  "wordwrap": true,
+  "autoclose": true,
+  "comment": true,
+  "ftoptions": true,
+  "linter": true,
+  "literate": true,
+  "status": true,
+  "diff": true
+}

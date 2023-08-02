@@ -15,12 +15,11 @@ sudo snap refresh
 
 # oh-my-zsh
 echo "Installing oh-my-zsh..."
-sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended
+sh -c "$(curl -fsSL https://git.io/JvzfK)"
 
 # pure prompt
 echo "Installing pure prompt..."
-mkdir -p $HOME/.zsh
-rm -rf $HOME/.zsh/pure
+mkdir -p $HOME/.zsh; rm -rf $HOME/.zsh/pure
 git clone https://github.com/sindresorhus/pure.git $HOME/.zsh/pure
 
 # clean packages

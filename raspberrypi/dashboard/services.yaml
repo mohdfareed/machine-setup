@@ -1,0 +1,58 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/services
+
+- " ":
+    - Dashboard:
+        icon: "mdi-raspberry-pi"
+        href: http://dashboard.pi
+        description: Raspberry Pi Dashboard
+        server: docker-socket
+        container: dashboard
+        showStats: true
+
+    - Tailscale:
+        icon: "mdi-key"
+        href: https://login.tailscale.com/admin
+        target: _blank
+        description: Tailscale Virtual Private Network
+        widget:
+          type: tailscale
+          deviceid: { { HOMEPAGE_VAR_TS_DEVICE_ID } }
+          key: { { HOMEPAGE_VAR_TS_API_TOKEN } }
+
+    - Proxy:
+        icon: "si-nginx"
+        href: http://proxy.pi
+        description: NGINX Proxy Manager
+        server: docker-socket
+        container: proxy-manager
+        showStats: true
+        widget:
+          type: npm
+          url: http://proxy-manager:81
+          username: { { HOMEPAGE_VAR_USERNAME } }
+          password: { { HOMEPAGE_VAR_PASSWORD } }
+
+    - PiHole:
+        icon: "si-pihole"
+        href: http://pihole.pi
+        description: PiHole DNS Server
+        server: docker-socket
+        container: pihole
+        showStats: true
+        widget:
+          type: pihole
+          url: http://pihole:80
+          key: { { HOMEPAGE_VAR_PIHOLE_API_TOKEN } }
+
+    - Internet Speed:
+        icon: "si-speedtest"
+        href: http://speedtracker.pi
+        description: Internet Speed Tracker
+        server: docker-socket
+        container: speed-tracker
+        showStats: true
+        widget:
+          type: speedtest
+          url: http://speed-tracker:80

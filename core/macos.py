@@ -2,7 +2,7 @@
 machine.
 """
 
-from resources import macos_preferences, terminal_dark, terminal_light
+from config import macos_preferences, terminal_dark, terminal_light
 from utils import shell
 from utils.display import Display
 

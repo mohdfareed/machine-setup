@@ -1,0 +1,47 @@
+# ===== PACKAGES =====
+# ====================
+
+# zsh
+brew "zsh"
+brew "zsh-completions"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+brew "spaceship"
+
+# general
+brew "git"
+brew "python"
+brew "bat"   # cat replacement
+brew "exa"   # ls replacement
+brew "micro" # text editor
+brew "mas"   # mac app store cli
+brew "btop"  # resource monitor
+
+# docker
+brew "colima"         # container runtimes
+brew "docker"         # containerization
+brew "docker-compose" # container orchestration
+
+# ===== CASKS =====
+# =================
+
+# general
+cask "tailscale" # vpn
+cask "raycast"   # spotlight replacement
+cask "mactex"    # latex
+cask "iina"      # video player
+cask "telegram"  # messaging
+
+# development
+cask "visual-studio-code" # code editor
+cask "openinterminal"     # open terminal in current directory
+cask "sf-symbols"         # system font symbols
+
+# utilities
+cask "the-unarchiver" # unzip files
+cask "mouse-fix"      # mouse utility
+cask "monitorcontrol" # exteral monitor utility
+
+# fonts
+cask "font-computer-modern"          # latex font
+cask "font-jetbrains-mono-nerd-font" # code font

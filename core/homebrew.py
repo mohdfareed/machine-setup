@@ -2,7 +2,7 @@
 machine.
 """
 
-from resources import homebrew_packages
+from config import homebrew_packages
 from utils import shell
 from utils.display import Display
 

@@ -1,0 +1,10 @@
+[Unit]
+Description=Code Tunnel Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/code tunnel
+Restart=always
+
+[Install]
+WantedBy=default.target

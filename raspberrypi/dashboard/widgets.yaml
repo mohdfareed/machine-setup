@@ -1,0 +1,22 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/widgets
+
+- search:
+    provider: [google, brave, duckduckgo]
+    target: _blank
+
+- datetime:
+    text_size: md
+    format:
+      dateStyle: long
+      timeStyle: short
+      hour12: true
+
+- resources:
+    expanded: true
+    cpu: true
+    memory: true
+    disk: /
+    cputemp: true
+    uptime: true

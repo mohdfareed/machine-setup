@@ -3,9 +3,9 @@ machine.
 """
 
 from core import raspberrypi_scripts
-from resources import micro_settings
-from resources import raspberrypi as raspberrypi_resources
-from resources import shell_config
+from config import micro_settings
+from config import raspberrypi as raspberrypi_resources
+from config import shell_config
 from utils import shell
 from utils.display import Display
 

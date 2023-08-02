@@ -2,34 +2,30 @@
 and logging them to a timestamped file with a severity.
 """
 
-import builtins
-from typing import Optional
-
-from .colors import *
-from .logger import Logger
+from utils import colors
 
 
 class Display:
     """Display class that provides functions for printing messages to the
     console and logging them to a timestamped file with a severity.
 
-    The module has a verbose mode that can be enabled by setting `verbose_mode`
-    to `True`. It causes log messages to be printed to the console in addition
-    to the log file. Verbose mode defaults to `False`.
     The module has a debug mode that can be enabled by setting `debug_mode`
     to`True`. It causes debug messages to be printed to the console in addition
     to the log file. Debug mode default to `False`.
 
     The module has the following log severities:
-    - `HEADER`: Indicates the start of a new section.
+    - `TITLE`: Indicates the start of a new subprocess.
     - `ERROR`: Indicates a problem or failure.
     - `WARNING`: Indicates a potential problem.
     - `INFO`: Provides additional information.
     - `SUCCESS`: Indicates a successful operation.
-    - `OUTPUT`: Both printed to console and logged.
-    - `VERBOSE`: Logged but not printed to console unless verbosity is enabled.
+    - `VERBOSE`: Both printed to console and logged.
     - `DEBUG`: Logged but not printed to console unless debugging is enabled.
     """
+
+    DEBUG = False
+    """Whether debug mode is enabled. If set to `True`, log messages are
+    printed in magenta to the console. Defaults to `False`."""
 
     def __init__(
         self,
@@ -50,9 +46,7 @@ class Display:
         printed in black to the console. Defaults to `False`.
         """
         self.debug_mode = debug
-        """Whether debug mode is enabled. If set to `True`, log messages are
-        printed in magenta to the console. Defaults to `False`.
-        """
+
         self._logger = Logger(dummy=no_logging)
         """The logger object that manages the main log file of the module.
         """

@@ -1,11 +1,68 @@
 #!/usr/bin/env python3
 
-from core import ssh
+from core import git, macos, python, raspberrypi, shell, ssh
 from utils import shell
 from utils.display import Display
 
 
-def setup(display: Display, ssh_dir: str | None) -> None:
+def main(config_path: str, log=False, debug=False) -> None:
+    """Setup the machine.
+
+    Args:
+        config_path (str): Path to the local config directory.
+        log (bool): Whether to log output to a file.
+        debug (bool): Whether to log debug messages.
+    """
+
+    setup_logging(to_file=log, debug=debug)
+    setup_display()
+
+    try:  # run main function and handle exceptions
+        setup_machine(display, args.ssh_dir)
+    except Exception as exception:
+        display.error(exception.__str__())
+        display.error("")
+        display.error(f"Failed to setup machine.")
+
+    print("[bold green]chatgpt_bot stopped[/]")
+
+
+def setup_logging(to_file, debug):
+    # configure logging
+    logging.captureWarnings(True)
+    root_logger = logging.getLogger()
+    root_logger.level = logging.WARNING  # default level
+
+    # set up logging level for all modules
+    level = logging.DEBUG if debug else logging.INFO
+    for module in LOGGING_MODULES:
+        logging.getLogger(module).setLevel(level)
+    # set up logging level for this module
+    (local_logger := logging.getLogger(__name__)).setLevel(level)
+
+    if not to_file:  # set up logging to file
+        return
+    local_logger.debug("Debug mode enabled")
+    format = (
+        "[%(asctime)s] %(levelname)-8s "
+        "%(message)s - %(name)s [%(filename)s:%(lineno)d]"
+    )
+
+    # create file handler
+    logging_dir = os.path.join(os.getcwd(), "logs")
+    os.makedirs(logging_dir, exist_ok=True)
+    filename = f"{datetime.now():%y%m%d_%H%M%S}.log"
+    file = os.path.join(logging_dir, filename)
+    file_handler = logging.FileHandler(file)
+    formatter = logging.Formatter(format, "%Y-%m-%d %H:%M:%S")
+
+    # setup handler
+    logger.addHandler(file_handler)
+    file_handler.setFormatter(formatter)
+    logger.info(f"Logging to file: {file}")
+
+
+def setup_machine(display: Display, ssh_dir: str | None) -> None:
     """Run the main function of the setup script. This function is called when
     the script is run from the command line.
 
@@ -26,75 +83,30 @@ def setup(display: Display, ssh_dir: str | None) -> None:
         raise RuntimeError("Failed to initialize resources.")
     display.success("Resources initialized.")
 
-    # run setup modules
-    display.debug("Running setup modules...")
-    _invoke_setup(display)
-    display.success("")
-    display.success("Machine setup complete!")
-    display.info("Restart machine for some changes to apply.")
-
-
-def main() -> None:
-    """Initialize the Display and run the main setup function."""
-    import argparse
-
-    # parse command line arguments
-    parser = argparse.ArgumentParser(description="Machine setup script.")
-    parser.add_argument(
-        "--ssh-dir",
-        type=str,
-        help="the path to the ssh directory of keys",
-    )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="print verbose messages, including commands",
-    )
-    parser.add_argument(
-        "-d", "--debug", action="store_true", help="print debug messages"
-    )
-    parser.add_argument(
-        "--no-logging", action="store_true", help="don't log output to a file"
-    )
-    args = parser.parse_args()
-
-    # create a display instance for logging and printing messages
-    verbose, debug, no_logging = args.verbose, args.debug, args.no_logging
-    display = _init(verbose, debug, no_logging)
-
-    try:  # run main function and handle exceptions
-        setup(display, args.ssh_dir)
-    except Exception as exception:
-        display.error(exception.__str__())
-        display.error("")
-        display.error(f"Failed to setup machine.")
-
-
-def _init(verbose, debug, no_logging) -> Display:
-    """Initialize display for printing messages and logging them to a file."""
-    display = Display(verbose, debug, no_logging)
-    display.debug("Debug mode is enabled.") if debug else None
-    display.verbose("Verbose mode is enabled.") if verbose else None
-    display.info("Logging is disabled.") if no_logging else None
-    return display
-
-
-def _invoke_setup(display: Display) -> None:
-    """Invoke the setup modules.
-
-    Args:
-        display (Display): The display for printing messages.
-    """
-    from core import git, homebrew, macos, python, raspberrypi, zsh
-
-    raspberrypi.setup(display)
+    # run setup scripts
     # homebrew.setup(display)
     # zsh.setup(display)
     # git.setup(display)
     # python.setup(display)
     # macos.setup(display)
+    raspberrypi.setup(display)
+    display.success("Machine setup complete!")
+    display.info("Restart machine for some changes to apply.")
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Setup machine.")
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="start in debug mode"
+    )
+    parser.add_argument(
+        "-l", "--log", action="store_true", help="log to a file"
+    )
+    parser.add_argument(
+        "config_path", type=str, help="local machine config path"
+    )
+
+    args = parser.parse_args()
+    main(args.config_path, args.log, args.debug)

@@ -1,0 +1,57 @@
+version: latest
+services:
+  pihole: # UI at 80
+    image: pihole/pihole:latest
+    container_name: pihole
+    restart: unless-stopped
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+    environment:
+      VIRTUAL_HOST: pihole.pi
+      WEBPASSWORD: "mubzej-roftuQ-9dupky"
+    volumes:
+      - "./pihole:/etc/pihole"
+      - "./pihole/dns:/etc/dnsmasq.d"
+
+  proxy-manager: # UI at 81, default creds: admin@example.com changeme
+    image: jc21/nginx-proxy-manager:latest
+    container_name: proxy-manager
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./proxy_manager:/data
+      - ./proxy_manager/encryption:/etc/letsencrypt
+    healthcheck:
+      test: ["CMD", "/bin/check-health"]
+      interval: 10s
+      timeout: 3s
+
+  dashboard: # UI at 3000
+    image: ghcr.io/benphelps/homepage:latest
+    container_name: dashboard
+    restart: unless-stopped
+    environment:
+      HOMEPAGE_VAR_TS_DEVICE_ID: $TS_DEVICE_ID
+      HOMEPAGE_VAR_TS_API_TOKEN: $TS_API_TOKEN
+      HOMEPAGE_VAR_PIHOLE_API_TOKEN: $PIHOLE_TOKEN
+      HOMEPAGE_VAR_USERNAME: $SERVICES_USERNAME
+      HOMEPAGE_VAR_PASSWORD: $SERVICES_PASSWORD
+    volumes:
+      - ./dashboard:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro # docker stats
+
+  speedtracker: # UI at 3000, default creds: admin@example.com password
+    image: ghcr.io/alexjustesen/speedtest-tracker:latest
+    container_name: speed-tracker
+    restart: unless-stopped
+    volumes:
+      - ./speed_tracker:/config
+      - ./speed_tracker/web:/etc/ssl/web
+      - /etc/localtime:/etc/localtime:ro
+
+networks:
+  default:
+    name: nginx

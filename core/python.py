@@ -2,7 +2,7 @@
 machine.
 """
 
-from resources import python_packages
+from config import python_packages
 from utils import shell
 from utils.display import Display
 

@@ -2,9 +2,10 @@
 machine.
 """
 
-from resources import gitconfig, gitignore
 from utils import abs_path, create_file, shell, symlink
 from utils.display import Display
+
+from ..git import gitconfig, gitignore
 
 DISPLAY: Display = Display(no_logging=True)
 """The default display for printing messages."""

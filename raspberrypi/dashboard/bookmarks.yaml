@@ -1,0 +1,13 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/bookmarks
+
+- " ":
+    - Visual Studio Code:
+        - icon: si-visualstudiocode
+          href: https://vscode.dev/tunnel/raspberrypi
+
+- " ":
+    - GitHub:
+        - icon: si-github
+          href: https://github.com/mohdfareed

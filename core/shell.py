@@ -2,7 +2,7 @@
 machine.
 """
 
-from resources import zshrc
+from config import zshrc
 from utils import abs_path, create_file, shell, symlink
 from utils.display import Display
 
