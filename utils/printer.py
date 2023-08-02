@@ -25,40 +25,39 @@ class Printer:
         self.logger = logging.getLogger(self.name)
         """The logger of the printer."""
 
-    def title(self, message: str):
+    def title(self, message: str, *args, **kwargs):
         print()
         formatted_message = f"[bold]{message}[/]"
-        self.print(message, formatted_message)
+        self.print(message, formatted_message, *args, **kwargs)
 
-    def success(self, message: str):
+    def success(self, message: str, *args, **kwargs):
         formatted_message = f"[bold green]{message}[/]"
-        self.print(message, formatted_message)
+        self.print(message, formatted_message, *args, **kwargs)
 
-    def error(self, message: str):
+    def error(self, message: str, *args, **kwargs):
         formatted_message = f"[bold red]{message}[/]"
-        self.print(message, formatted_message)
+        self.print(message, formatted_message, *args, **kwargs)
 
-    def warning(self, message: str):
+    def warning(self, message: str, *args, **kwargs):
         formatted_message = f"[bold yellow]{message}[/]"
-        self.print(message, formatted_message)
+        self.print(message, formatted_message, *args, **kwargs)
 
-    def info(self, message: str):
+    def info(self, message: str, *args, **kwargs):
         formatted_message = f"[bold blue]{message}[/]"
-        self.print(message, formatted_message)
+        self.print(message, formatted_message, *args, **kwargs)
 
-    def debug(self, message: str):
+    def debug(self, message: str, *args, **kwargs):
         formatted_message = f"[magenta]{message}[/]"
         if not debug_mode:
             self.logger.info(message)
             return
-        self.print(message, formatted_message)
+        self.print(message, formatted_message, *args, **kwargs)
 
-    def print(self, message: str, formatted_message: str | None = None):
-        formatted_message = formatted_message or message
-        print(self._format.format(name=self.name, message=formatted_message))
-
-        # self.logger = self.logger or logging.getLogger(self.name)
-        self.logger.info(message)
+    def print(self, msg: str, styled: str | None = None, *args, **kwargs):
+        styled = styled or msg
+        formatted_msg = self._format.format(name=self.name, message=styled)
+        print(formatted_msg, *args, **kwargs)
+        self.logger.info(msg)
 
     @staticmethod
     def initialize(to_file=False, debug=False):
