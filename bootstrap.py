@@ -2,113 +2,109 @@
 """Bootstrap a new machine. This will install Xcode Commandline Tools, accept
 the Xcode license, clone machine, and execute the setup script.
 
-Requirements: Xcode Commandline Tools
-Usage: ./deploy.sh local_config_path
- - local_config_path: path to local config file, which contains two files:
-   - `machine.sh`: machine-specific environment, includes `MACHINE`
-   - `raspberrypi.sh`: raspberry pi environment, includes `MACHINE`
-The environment variable `MACHINE` is the path to the machine repo.
+Requirements: Xcode Commandline Tools and `machine.sh` in config directory.
+The file must have the environment variable `MACHINE`, which is the path to the
+machine repo.
+
+Usage: ./bootstrap.py config_path [-c] [-l] [-d]
+ - config_path: path to local config files, which contains:
+   - `machine.sh`: machine-specific environment, includes `MACHINE` variable
+ - -c | --clean: clean setup environment, overwriting repo and virtual env
+ - *: extra arguments are passed to `setup.py`
 
 External effects:
   - Accepts Xcode license
-  - Clones machine to `~/Developer/machine`
-  - Creates a virtual environment at `~/Developer/machine/.venv`
+  - Clones machine into `MACHINE`
+  - Creates a virtual environment at `MACHINE`
   - Executes `setup.sh` in machine
 """
 
+import argparse
 import os
 import shutil
 import subprocess
 import sys
 import venv
 
+REPOSITORY = "https://github.com/mohdfareed/machine.git"
+"""Repository to clone."""
+SCRIPT = "setup.py"
+"""Machine setup script filename."""
 REQUIREMENTS = "requirements.txt"
 """Virtual environment requirements filename."""
 VENV_PATH = ".venv"
 """Path to the virtual environment."""
-REPOSITORY = "mohdfareed/machine.git"
-"""Repository to clone."""
 
 
-def main(config_path: str, clean=False, log=True, debug=False) -> None:
+def main(config_path: str, overwrite=False, *args) -> None:
     """Clone and set up machine."""
-    # check xcode and accept license
-    resolve_xcode()
 
-    # load machine path
-    config_path = os.path.realpath(config_path)
-    machine_path = load_machine_path(config_path)
-
-    # clone repository
-    clone_machine(machine_path)
-    # setup virtual environment
-    python = setup_env(machine_path, clean)
-
-    # start machine setup
-    cmd = setup_command(log, debug, config_path)
-    os.system(f"cd '{machine_path}' && '{python}' {cmd}")
-
-
-def resolve_xcode():
-    # check if xcode commandline tools are installed
-    if os.system("xcode-select -p > /dev/null 2>&1"):
-        _print_error("Xcode Commandline Tools are not installed")
-        sys.exit(1)
-
-    # accept xcode license
-    prompt = "Authenticate to accept Xcode license agreement: "
-    os.system(f"sudo --prompt '{prompt}' xcodebuild -license accept")
+    machine_path = load_machine_path(config_path)   # load machine path
+    resolve_xcode()                                 # resolve xcode license
+    clone_machine(machine_path, overwrite)          # clone repository
+    python = setup_env(machine_path)                # setup virtual environment
+    setup(python, machine_path, config_path, *args) # setup machine
 
 
 def load_machine_path(config_path: str) -> str:
     # resolve config/machine.sh
-    machine_env = os.path.join(config_path, "machine.sh")
-    if not os.path.exists(machine_env):
+    machine_env = os.path.realpath(os.path.join(config_path, "machine.sh"))
+    if not os.path.isfile(machine_env):
         _print_error(f"Machine file not found at: {machine_env}")
         sys.exit(1)
 
     # read MACHINE from config/machine.sh
     command = f"source '{machine_env}' && echo $MACHINE"
     machine_path = subprocess.run(
-        command, shell=True, stdout=subprocess.PIPE, text=True
+        command, shell=True, stdout=subprocess.PIPE, text=True, check=True
     ).stdout.strip()
-    return machine_path
+    return os.path.abspath(machine_path) # don't follow symlinks
 
 
-def clone_machine(path: str):
-    # prompt for cloning machine if it already exists
-    if os.path.exists(path):
-        print(f"Machine directory already exists at: {path}")
-        answer = input("Do you want to overwrite it? (y|N) ")
-        if not answer.lower() in ["y", "yes"]:
-            return
+def resolve_xcode():
+    try:  # check if xcode commandline tools are installed
+        subprocess.run(["xcode-select", "-p"], check=True)
+    except subprocess.CalledProcessError:
+        _print_error("Xcode Commandline Tools are not installed")
+        sys.exit(1)
+
+    # accept xcode license
+    prompt = "Authenticate to accept Xcode license agreement: "
+    cmd = ["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"]
+    subprocess.run(cmd, check=True)
+
+
+def clone_machine(path: str, overwrite=False):
+    # overwrite machine if prompted
+    if os.path.exists(path) and overwrite:
+        _print_info(f"Overwriting machine...")
+        shutil.rmtree(path, ignore_errors=True)
 
     # clone machine
     _print_info(f"Cloning machine into '{path}'...")
-    shutil.rmtree(path, ignore_errors=True)
-    os.system(f"git clone -q https://github.com/{REPOSITORY} '{path}'")
+    subprocess.run(["git", "clone", "-q", REPOSITORY, path], check=True)
 
 
-def setup_env(machine_path: str, clean: bool) -> str:
-    requirements_path = os.path.join(machine_path, REQUIREMENTS)
+def setup_env(machine_path: str) -> str:
+    req_path = os.path.join(machine_path, REQUIREMENTS)
     machine_venv_path = os.path.join(machine_path, VENV_PATH)
     python = os.path.join(machine_venv_path, "bin", "python")
 
     # create virtual environment
     _print_info("Creating environment...")
-    env_options = dict(clear=clean, with_pip=True, upgrade_deps=True)
+    env_options = dict(with_pip=True, upgrade_deps=True)
     venv.create(machine_venv_path, prompt="setup", **env_options)
 
     # install dependencies
-    cmd = f"{python} -m pip install -r '{requirements_path}' --upgrade"
-    os.system(f"{cmd} > /dev/null 2>&1")
+    cmd = [python, "-m", "pip", "install", "-r", req_path, "--upgrade"]
+    subprocess.run(cmd, check=True)
     return python
 
 
-def setup_command(log, debug, config_path):
-    log = "--log" if log else ""
-    debug = "--debug" if debug else ""
-    return f"./setup.py {log} {debug} '{config_path}'"
+def setup(python: str, machine_path: str, config_path: str, *args):
+    """Execute machine setup script."""
+    script = os.path.join(machine_path, SCRIPT)
+    subprocess.run([python, script, config_path, *args])
 
 
 def _print_error(error: str) -> None:
@@ -120,21 +116,16 @@ def _print_info(info: str) -> None:
 
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Bootstrap machine.")
+    parser = argparse.ArgumentParser(description="Bootstrap machine setup.")
     parser.add_argument(
         "config_path", nargs="?", type=str, help="local machine config path"
     )
     parser.add_argument(
-        "-c", "--clean", action="store_true", help="clean setup environment"
+        "--overwrite", action="store_true", help="overwrite repo and venv"
     )
     parser.add_argument(
-        "-l", "--log", action="store_true", help="log messages to file"
-    )
-    parser.add_argument(
-        "-d", "--debug", action="store_true", help="log debug messages"
+        "args", nargs=argparse.REMAINDER, help="setup script arguments"
     )
 
     args = parser.parse_args()
-    main(args.config_path, args.clean, args.log, args.debug)
+    main(args.config_path, args.overwrite, args.args)

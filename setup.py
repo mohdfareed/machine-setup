@@ -3,6 +3,8 @@
 import config
 import core
 import utils
+from rich import print
+import os
 
 printer = utils.Printer("setup")
 """the main setup printer."""
@@ -17,7 +19,10 @@ def main(config_path: str, log=False, debug=False) -> None:
         debug (bool): Whether to log debug messages.
     """
 
+    # initial setup
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     utils.Printer.initialize(to_file=log, debug=debug)
+
     try:  # setup the machine
         setup_machine(config_path)
     except Exception as exception:
