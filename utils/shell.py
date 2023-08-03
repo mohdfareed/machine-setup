@@ -17,7 +17,7 @@ followed by a loading animation.
 
 
 class Shell:
-    def __init__(self, output_handler=print):
+    def __init__(self, output_handler: typing.Callable = print):
         self.output_handler = output_handler
 
     @typing.overload
@@ -60,9 +60,12 @@ class Shell:
                     self.output_handler(line, end="")
             returncode = process.wait()
             output = process.stdout.read().strip()
+            error = process.stderr.read().strip()
 
         if not safe and returncode != 0:
-            raise subprocess.CalledProcessError(returncode, command)
+            raise subprocess.CalledProcessError(
+                returncode, command, output, error
+            )
         return returncode if not text else output
 
 

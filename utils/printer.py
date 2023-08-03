@@ -9,8 +9,6 @@ import utils
 
 debug_mode = False
 """Whether debug mode is enabled."""
-printer: "Printer"
-"""The main printer."""
 
 
 class Printer:
@@ -62,10 +60,10 @@ class Printer:
     @staticmethod
     def initialize(to_file=False, debug=False):
         """Initialize the global logger of the printer."""
-        global debug_mode, printer
+        global debug_mode
         debug_mode = debug
-        printer = Printer("root")
-        printer.debug(f"Debug mode enabled") if debug else None
+        utils.root_printer = Printer("root")
+        utils.root_printer.debug(f"Debug mode enabled") if debug else None
 
         # setup root logger
         logger = logging.getLogger()
@@ -78,7 +76,7 @@ class Printer:
 
         if to_file:  # create file handler
             file_handler, file = _create_file_handler()
-            printer.info(f"Logging to file: {file}")
+            utils.root_printer.info(f"Logging to file: {file}")
             logger.addHandler(file_handler)
 
 

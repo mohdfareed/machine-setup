@@ -42,10 +42,8 @@ def setup_machine(config_path: str) -> None:
 
     printer.title("Setting up machine...")
     # symlink environment files
-    utils.symlink(utils.abspath(config_path, "machine.sh"), config.zshenv)
-    utils.symlink(
-        utils.abspath(config_path, "pi.sh"), config.raspberrypi_zshenv
-    )
+    utils.symlink(utils.abspath(config_path, "machine.sh"), config.shell_env)
+    utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_env)
 
     # run setup scripts
     # homebrew.setup()
@@ -54,7 +52,7 @@ def setup_machine(config_path: str) -> None:
     # git.setup()
     # python.setup()
     # macos.setup()
-    core.raspberrypi.setup()
+    # core.raspberrypi.setup()
 
     printer.info("Restart for some changes to apply")
     printer.success("Machine setup complete")

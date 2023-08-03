@@ -9,8 +9,8 @@ from . import printer, shell
 from .printer import Printer
 from .shell import Shell
 
-utils_printer = Printer("utils")
-"""Printer of the utils library."""
+root_printer = Printer("root")
+"""The root printer."""
 
 
 def abspath(*paths: str) -> str:
@@ -120,8 +120,12 @@ def chmod(file: str, mode: int):
     printer.debug(f"Changed permissions: {file} -> {mode}")
 
 
-def _caller_printer() -> printer.Printer:
+def _caller_printer() -> Printer:
     # get the name of the calling module
     frame = _inspect.stack()[2]
     module = _inspect.getmodule(frame[0])
-    return module.printer if hasattr(module, "printer") else utils_printer
+    # return root printer if called from root
+    if module.__name__ == __name__:
+        return root_printer
+    # return module printer if it exists
+    return module.printer if hasattr(module, "printer") else root_printer

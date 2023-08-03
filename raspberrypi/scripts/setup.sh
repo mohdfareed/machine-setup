@@ -1,5 +1,8 @@
 # Set up a Raspberry Pi with the required packages and configuration
 
+# machine path
+export MACHINE=$(dirname $(dirname $(realpath $0)))
+
 touch "$HOME/.hushlogin"           # remove login message
 . $HOME/machine/scripts/install.sh # install packages
 

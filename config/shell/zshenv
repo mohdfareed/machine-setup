@@ -1,0 +1,10 @@
+# Environment: macOS
+# =============================================================================
+
+export MACHINE=$(dirname $(dirname $(realpath $0)))
+export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+export ZSH="$HOME/.zsh/omz"
+export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
+
+# source machine-specific environment variables
+source $MACHINE/shell/env.sh

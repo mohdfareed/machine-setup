@@ -2,8 +2,8 @@
 machine.
 """
 
+import config
 import utils
-from config import raspberrypi_config, raspberrypi_zshenv, shell_config, micro_settings
 
 HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
@@ -20,22 +20,23 @@ def setup(hostname=HOSTNAME) -> None:
     Args:
         hostname (str, optional): The hostname of the Raspberry Pi.
     """
-    shell = utils.Shell()
+    shell = utils.Shell(printer.debug)
     printer.title("Setting up Raspberry Pi...")
 
     # check if raspberrypi exists
-    if "unknown host" in shell(f"ping {hostname} -c 1"):
-        raise RuntimeError("Raspberry Pi is not connected to the network.")
-    display.verbose("Raspberry Pi is connected to the network.")
+    if shell(["ping", hostname, "-c", 1], safe=True) != 0:
+        raise RuntimeError("Raspberry Pi is not connected to the network")
+    printer.debug("Raspberry Pi is connected to the network")
     # add ssh key to raspberrypi
-    shell.run(f"ssh-copy-id {hostname}", display.debug)
-    display.verbose("Added SSH key to Raspberry Pi.")
+    shell(f"ssh-copy-id {hostname}")
+    printer.debug("Added SSH key to Raspberry Pi")
+
+    shell(["ssh", hostname, "mkdir", "-p", config.MACHINE_PATH])
 
     cmd = (  # raspberry pi resources
-        f"rsync -avz {raspberrypi_resources}/* {hostname}:{MACHINE_PATH} && "
+        f"rsync -avz {config.pi_config}/* {hostname}:{MACHINE_PATH} && "
         f"rsync -avz {shell_config} {hostname}:{MACHINE_PATH} && "
         f"rsync -avz {micro_settings} {hostname}:{MACHINE_PATH} && "
-        f"rsync -avz {raspberrypi_scripts}/* {hostname}:{SCRIPTS_PATH} && "
         f"ssh {hostname} 'chmod +x {SCRIPTS_PATH}/*.sh'"
     )
 
@@ -46,6 +47,7 @@ def setup(hostname=HOSTNAME) -> None:
     display.verbose("Copied resources to Raspberry Pi.")
 
     # add scripts to path
+    cmd = f"sudo ln -sf ~/machine/setup.sh /usr/local/bin/setup-machine"
     cmd = (
         f"ssh {hostname} 'sudo ln -sf {SCRIPTS_PATH}/setup.sh "
         "/usr/local/bin/setup-machine'"
@@ -56,6 +58,12 @@ def setup(hostname=HOSTNAME) -> None:
     display.verbose("Added scripts to path.")
 
     display.success("Raspberry Pi setup complete.")
+
+
+def load_machine_path():
+    """Load the path to the machine directory on the Raspberry Pi."""
+    config_path = utils.abspath(config.pi_config, "z")
+    return f"pi@{HOSTNAME}:{config.MACHINE_PATH}"
 
 
 if __name__ == "__main__":

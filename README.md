@@ -25,7 +25,9 @@ path to the machine repo. It also includes machine-specific data.
 
 The project has the following **hard-coded** structure:
 
-- `config`: a directory containing configuration files used by the machine
+- `config`: a directory containing configuration files used by the machine. It
+defines references to all the configuration files in the repo. It must be
+updated whenever a new configuration file is added or its path modified.
 - `raspberrypi`: a directory containing configuration files used by a Raspberry
 Pi.
 

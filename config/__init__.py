@@ -1,38 +1,44 @@
 """Machine configuration files."""
 
-import os
+import os as _os
 
-_config = os.path.dirname(os.path.realpath(__file__))
-"""The path to the resources directory."""
+machine = _os.path.dirname(_os.path.realpath(__file__))
+"""The path to the machine configuration directory."""
 
 # shell
-shell_config = os.path.join(_config, "shell", "config.sh")
-"""The path of the shell config file."""
-zshrc = os.path.join(_config, "shell", "zshrc")
+shell_env = _os.path.join(machine, "shell", "env.sh")
+"""The path of the shell environment file."""
+shell_config = _os.path.join(machine, "shell", "config.sh")
+"""The path of the shell configuration file."""
+zshrc = _os.path.join(machine, "shell", "zshrc")
 """The path of zshrc file."""
-micro_settings = os.path.join(_config, "shell", "micro_settings.json")
+zshenv = _os.path.join(machine, "shell", "zshenv")
+"""The path of zshenv file."""
+micro_settings = _os.path.join(machine, "shell", "micro_settings.json")
 """The path of micro settings file."""
-zshenv = os.path.join(_config, "shell", "zshenv")
-"""The path of shell environment file."""
-ssh_keys = os.path.join(_config, "ssh")
-"""The path of the SSH directory of keys."""
-gitconfig = os.path.join(_config, "git", "gitconfig")
+
+# git and ssh
+gitconfig = _os.path.join(machine, "git", "gitconfig")
 """The path of the global gitconfig file."""
+ssh_keys = _os.path.join(machine, "ssh")
+"""The path of the SSH directory of keys."""
 
 # packages
-homebrew_packages = os.path.join(_config, "packages.homebrew")
+homebrew_packages = _os.path.join(machine, "packages.homebrew")
 """The path of Homebrew packages file."""
-python_packages = os.path.join(_config, "packages.python")
+python_packages = _os.path.join(machine, "packages.python")
 """The path of Python packages file."""
 
 # macos
-macos_preferences = os.path.join(_config, "macos", "preferences.sh")
+macos_preferences = _os.path.join(machine, "macos", "preferences.sh")
 """The path of macOS preferences file of shell commands."""
-terminal_dark = os.path.join(_config, "macos", "terminal", "Dark.terminal")
-terminal_light = os.path.join(_config, "macos", "terminal", "Light.terminal")
+terminal_dark = _os.path.join(machine, "macos", "terminal", "Dark.terminal")
+terminal_light = _os.path.join(machine, "macos", "terminal", "Light.terminal")
 
 # raspberry pi
-raspberrypi_config = os.path.join(os.path.dirname(_config), "raspberrypi")
+pi_config = _os.path.join(_os.path.dirname(machine), "raspberrypi")
 """The path of Raspberry Pi config directory."""
-raspberrypi_zshenv = os.path.join(raspberrypi_config, "zshenv")
+pi_env = _os.path.join(pi_config, "env.sh")
+"""The path of Raspberry Pi environment file."""
+pi_zshenv = _os.path.join(pi_config, "zshenv")
 """The path of Raspberry Pi shell environment file."""

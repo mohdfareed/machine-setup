@@ -1,12 +1,11 @@
-# Oh My Zsh
+# OMZ Configuration
 # =============================================================================
 
-export ZSH="$HOME/.zsh/omz"      # oh-my-zsh directory
-COMPLETION_WAITING_DOTS="true"   # show dots while loading completions
-ENABLE_CORRECTION="true"         # enable command auto-correction
-HYPHEN_INSENSITIVE="true"        # ignore hyphens in commands
-ZSH_THEME=""                     # use external theme
-zstyle ':omz:update' mode auto   # update automatically without asking
+COMPLETION_WAITING_DOTS="true" # show dots while loading completions
+ENABLE_CORRECTION="true"       # enable command auto-correction
+HYPHEN_INSENSITIVE="true"      # ignore hyphens in commands
+ZSH_THEME=""                   # use external theme
+zstyle ':omz:update' mode auto # update automatically without asking
 
 plugins+=(
     git               # git aliases
@@ -16,7 +15,7 @@ plugins+=(
 source $ZSH/oh-my-zsh.sh
 
 
-# Configuration
+# Machine Configuration
 # =============================================================================
 
 export EDITOR="$(which micro)" # default to micro as the editor
