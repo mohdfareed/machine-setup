@@ -1,4 +1,4 @@
-# OMZ Configuration
+# Configuration (shared across machines)
 # =============================================================================
 
 COMPLETION_WAITING_DOTS="true" # show dots while loading completions
@@ -15,7 +15,7 @@ plugins+=(
 source $ZSH/oh-my-zsh.sh
 
 
-# Machine Configuration
+# Shell Configuration
 # =============================================================================
 
 unsetopt auto_list             # don't echo choices on ambiguous completion

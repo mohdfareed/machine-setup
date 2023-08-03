@@ -1,4 +1,4 @@
-# Environment: macOS
+# Environment: Raspberry Pi
 # =============================================================================
 
 export PURE="$HOME/.zsh/pure"

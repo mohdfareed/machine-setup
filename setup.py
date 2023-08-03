@@ -41,11 +41,9 @@ def setup_machine(config_path: str) -> None:
     """
 
     printer.title("Setting up machine...")
-    # symlink environment files
-    utils.symlink(
-        utils.abspath(config_path, "machine.sh"), config.shell_profile
-    )
-    utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_env)
+    # symlink profile files
+    utils.symlink(utils.abspath(config_path, "machine.sh"), config.zprofile)
+    utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_zprofile)
 
     # run setup scripts
     # homebrew.setup()

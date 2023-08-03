@@ -1,4 +1,4 @@
-# Environment
+# Environment (shared across machines)
 # =============================================================================
 
 # paths

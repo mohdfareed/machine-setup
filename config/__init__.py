@@ -5,16 +5,16 @@ import os as _os
 # machine configuration files
 machine = _os.path.dirname(_os.path.realpath(__file__))
 """The path to the machine configuration directory."""
-shell_profile = _os.path.join(machine, "zprofile")
-"""The path of the shell profile variables file."""
-shell_config = _os.path.join(machine, "zsh_config.sh")
-"""The path of the shell configuration file."""
-shell_env = _os.path.join(machine, "zsh_env.sh")
-"""The path of the shell environment file."""
+zsh_config = _os.path.join(machine, "zsh_config.sh")
+"""The path of the shared shell configuration file."""
+zsh_env = _os.path.join(machine, "zsh_env.sh")
+"""The path of the shared shell environment file."""
 zshrc = _os.path.join(machine, "zshrc")
 """The path of zshrc file, macOS specific."""
 zshenv = _os.path.join(machine, "zshenv")
 """The path of zshenv file, macOS specific."""
+zprofile = _os.path.join(machine, "zprofile")
+"""The path of the machine shell profile variables file."""
 micro_settings = _os.path.join(machine, "micro_settings.json")
 """The path of micro settings file."""
 ssh_config = _os.path.join(machine, "ssh.config")
@@ -41,3 +41,5 @@ terminal_light = _os.path.join(macos, "terminal", "Light.terminal")
 # raspberry pi
 pi_config = _os.path.join(_os.path.dirname(machine), "raspberrypi")
 """The path of Raspberry Pi config directory."""
+pi_zprofile = _os.path.join(pi_config, "zprofile")
+"""The path of Raspberry Pi profile variables file."""

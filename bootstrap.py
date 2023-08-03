@@ -35,14 +35,14 @@ VENV_PATH = ".venv"
 """Path to the virtual environment."""
 
 
-def main(machine_path: str, overwrite=False, *args) -> None:
+def main(machine_path: str, config_path: str | None, overwrite=False, *args):
     """Clone and set up machine."""
 
     machine_path = os.path.realpath(machine_path)  # load machine path
     resolve_xcode()  # resolve xcode license
     clone_machine(machine_path, overwrite)  # clone repository
     python = setup_env(machine_path)  # setup virtual environment
-    setup(python, machine_path, *args)  # setup machine
+    setup(python, machine_path, config_path, *args)  # setup machine
 
 
 def load_machine_path(config_path: str) -> str:
@@ -99,10 +99,10 @@ def setup_env(machine_path: str) -> str:
     return python
 
 
-def setup(python: str, machine_path: str, *args):
+def setup(python: str, machine_path: str, config_path, *args):
     """Execute machine setup script."""
     script = os.path.join(machine_path, SCRIPT)
-    config_path = os.path.realpath(os.getcwd())
+    config_path = os.path.realpath(config_path or os.getcwd())
     _exec([python, script, config_path, *args], safe=False)
 
 
@@ -123,12 +123,9 @@ def _exec(cmd: str | list, silent=False, safe=False, text=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Bootstrap machine setup.")
-    parser.add_argument(
-        "machine_path", nargs="?", type=str, help="local machine path"
-    )
-    parser.add_argument(
-        "--overwrite", action="store_true", help="overwrite repo and venv"
-    )
+    parser.add_argument("-f", "--force", action="store_true", help="overwrite")
+    parser.add_argument("-p", "--path", type=str, help="path to config files")
+    parser.add_argument("machine_path", type=str, help="local machine path")
     parser.add_argument(
         "args",
         metavar="...",
@@ -138,7 +135,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     try:
-        main(args.machine_path, args.overwrite, *args.args)
+        main(args.machine_path, args.path, args.force, *args.args)
     except Exception as e:
         _print_error(f"Error: {e}")
         _print_error("Failed to bootstrap machine")
