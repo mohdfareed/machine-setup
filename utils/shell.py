@@ -4,7 +4,6 @@ printing their output. The provides an interactive mode of the shell.
 """
 
 import os
-import stat
 import subprocess
 import typing
 
@@ -28,10 +27,10 @@ class Shell:
         self,
         command,
         silent=...,
-        safe=...,
-        text: typing.Literal[False] = ...,
+        text: typing.Literal[True] = ...,
         status=...,
-    ) -> int:
+        safe=...,
+    ) -> tuple[str, int]:
         ...
 
     @typing.overload
@@ -39,22 +38,24 @@ class Shell:
         self,
         command,
         silent=...,
-        safe=...,
-        text: typing.Literal[True] = ...,
+        text: typing.Literal[False] = ...,
         status=...,
-    ) -> str:
+        safe=...,
+    ) -> int:
         ...
 
     def __call__(
-        self, command, silent=False, safe=False, text=False, status=None
-    ) -> typing.Union[int, str]:
+        self, command, silent=False, text=True, status=None, safe=False
+    ) -> typing.Union[int, tuple[str, int]]:
         console = Console()
+        pipe = subprocess.PIPE if text or not silent else subprocess.DEVNULL
+        err = subprocess.STDOUT
+
+        # print loading status
         with console.status(f"[green]{status or LOADING_STR}[/]") as status:
-            out = subprocess.PIPE if text or not silent else subprocess.DEVNULL
-            err = subprocess.STDOUT
             is_shell = isinstance(command, str)
             process = subprocess.Popen(
-                command, shell=is_shell, stdout=out, stderr=err, text=True
+                command, shell=is_shell, stdout=pipe, stderr=err, text=True
             )
 
             # print output
@@ -68,14 +69,18 @@ class Shell:
             if text:  # return output
                 output = process.stdout.read().strip()
 
-        if not safe and returncode != 0:
+        # check return code
+        if output and not safe and returncode != 0:
             if output:
                 printer = utils._caller_printer()
                 printer.error(output)
             raise subprocess.CalledProcessError(
                 returncode, command, output if text else None
             )
-        return output or returncode
+
+        if output:
+            return output, returncode
+        return returncode
 
 
 def interactive() -> None:
@@ -89,7 +94,7 @@ def interactive() -> None:
         print(f"[bright_black]{path} [/][{color}]➜ [/]", end="")
 
     shell = Shell()
-    active_shell: str = shell("echo $0", silent=True, text=True)
+    active_shell: str = shell("echo $0", silent=True)[0]
     print(f"Shell interface written in Python. Active shell: {active_shell}")
     print("[bold blue]Type 'exit' to stop.[/]\n")
 
@@ -102,7 +107,7 @@ def interactive() -> None:
             print("[bold magenta]Exiting shell...[/]")
             break
         # run the command and print output
-        exit_code: int = shell(cmd, safe=True)
+        exit_code: int = shell(cmd, text=False)
 
 
 if __name__ == "__main__":

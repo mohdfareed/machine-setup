@@ -76,7 +76,7 @@ def load_keys(keys: str) -> dict[str, SSHKey]:
 
 
 def setup_key(name: str, key: SSHKey) -> None:
-    printer.print(f"Setting up ssh key: {name}")
+    printer.print(f"Setting up SSH key: [bold]{name}[/]")
     if not key.private_key or not key.public_key:
         printer.error(f"Invalid ssh key pair:")
         printer.error(f"    Private key: {key.private_key}")
@@ -86,25 +86,28 @@ def setup_key(name: str, key: SSHKey) -> None:
     # copy private key and set permissions
     utils.copy(key.private_key, SSH_DIR)
     private_key = os.path.join(SSH_DIR, os.path.basename(key.private_key))
+    private_key = utils.abspath(private_key)
     utils.chmod(private_key, 600)
 
     # copy public key and set permissions
     utils.copy(key.public_key, SSH_DIR)
     public_key = os.path.join(SSH_DIR, os.path.basename(key.public_key))
+    public_key = utils.abspath(public_key)
     utils.chmod(public_key, 644)
 
     # get key fingerprint
-    fingerprint = shell(
-        ["ssh-keygen", "-lf", public_key], silent=True, text=True
-    ).split(" ")[1]
-    printer.debug(f"SSH key {name} fingerprint: {fingerprint}")
+    fingerprint = shell(["ssh-keygen", "-lf", public_key], silent=True)[
+        0
+    ].split(" ")[1]
+    printer.debug(f"Key fingerprint: [bold]{fingerprint}[/]")
 
     # add key to ssh agent if it doesn't exist
-    # cmd = f"ssh-add -l | grep -q {fingerprint}"
-    # if shell.run_quiet(cmd, display.debug) != 0:
-    #     shell.run(f"ssh-add '{_private_key}'", display.print, display.error)
-    #     display.verbose("Added ssh key to ssh agent.")
-    printer.success("SSH key setup complete")
+    shell(f"ssh-add -l | grep -q {fingerprint}", silent=True)
+    cmd = f"ssh-add -l | grep -q {fingerprint}"
+    if shell.run_quiet(cmd, display.debug) != 0:
+        shell.run(f"ssh-add '{_private_key}'", display.print, display.error)
+        display.verbose("Added ssh key to ssh agent.")
+    printer.success("Key setup complete")
 
 
 if __name__ == "__main__":
