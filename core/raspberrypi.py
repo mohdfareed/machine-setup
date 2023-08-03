@@ -39,7 +39,7 @@ def connect(hostname):
         raise RuntimeError("Raspberry Pi is not connected to the network")
     printer.debug("Connection to Raspberry Pi established")
     # add ssh key to raspberrypi
-    shell(f"sudo ssh-copy-id '{hostname}' > /dev/null 2>&1")
+    shell(f"ssh-copy-id '{hostname}' > /dev/null 2>&1")
     printer.debug("Added SSH key to Raspberry Pi")
 
 

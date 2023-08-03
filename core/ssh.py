@@ -99,14 +99,15 @@ def setup_key(name: str, key: SSHKey) -> None:
     fingerprint = shell(["ssh-keygen", "-lf", public_key], silent=True)[
         0
     ].split(" ")[1]
-    printer.debug(f"Key fingerprint: [bold]{fingerprint}[/]")
+    printer.print(f"Key fingerprint: [bold]{fingerprint}[/]")
 
     # add key to ssh agent if it doesn't exist
-    shell(f"ssh-add -l | grep -q {fingerprint}", silent=True)
-    cmd = f"ssh-add -l | grep -q {fingerprint}"
-    if shell.run_quiet(cmd, display.debug) != 0:
-        shell.run(f"ssh-add '{_private_key}'", display.print, display.error)
-        display.verbose("Added ssh key to ssh agent.")
+    cmd = "ssh-add -l | grep -q " + fingerprint
+    if shell(cmd, silent=True, text=False) != 0:
+        shell(f"ssh-add '{private_key}'")
+        printer.print("Added key to SSH agent.")
+    else:
+        printer.print("Key already added to ssh agent.")
     printer.success("Key setup complete")
 
 
