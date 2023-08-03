@@ -2,8 +2,8 @@
 # =============================================================================
 
 # paths
-export ZSHDIR="$MACHINE"
-export ZSH="$HOME/.zsh/omz"
+export MACHINE="$(dirname $(realpath $0))" # machine path
+export ZSH="$HOME/.zsh/omz"                # oh-my-zsh path
 
 # config
 export EDITOR="$(which micro)" # default to micro as the editor

@@ -12,9 +12,9 @@ shell_config = _os.path.join(machine, "zsh_config.sh")
 shell_env = _os.path.join(machine, "zsh_env.sh")
 """The path of the shell environment file."""
 zshrc = _os.path.join(machine, "zshrc")
-"""The path of zshrc file."""
+"""The path of zshrc file, macOS specific."""
 zshenv = _os.path.join(machine, "zshenv")
-"""The path of zshenv file."""
+"""The path of zshenv file, macOS specific."""
 micro_settings = _os.path.join(machine, "micro_settings.json")
 """The path of micro settings file."""
 ssh_config = _os.path.join(machine, "ssh.config")
