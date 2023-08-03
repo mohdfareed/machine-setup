@@ -84,7 +84,7 @@ def copy(source: str, target: str) -> None:
     remove(target)  # remove target if it exists
     create_dir(target, is_file=True)  # create parent
     _os.system(f"cp '{source}' '{target}'")  # create copy
-    printer.debug(f"Copied: {source} -> {target}")
+    printer.debug(f"Copied: {_os.path.dirname(source)} -> {target}")
 
 
 def symlink(source: str, target: str) -> None:
@@ -104,7 +104,7 @@ def symlink(source: str, target: str) -> None:
 
     create_dir(target, is_file=True)  # create parent
     _os.system(f"ln -sf '{source}' '{target}'")  # create symlink
-    printer.debug(f"Symlinked: {source} -> {target}")
+    printer.debug(f"Symlinked: {_os.path.dirname(source)} -> {target}")
 
 
 def chmod(file: str, mode: int):
@@ -117,7 +117,7 @@ def chmod(file: str, mode: int):
     printer = _caller_printer()
     file = abspath(file)
     _os.system(f"chmod {mode} '{file}'")
-    printer.debug(f"Changed permissions: {file} -> {mode}")
+    printer.debug(f"Changed permissions: {mode} => {file}")
 
 
 def _caller_printer() -> Printer:
