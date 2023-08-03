@@ -18,10 +18,6 @@ source $ZSH/oh-my-zsh.sh
 # Machine Configuration
 # =============================================================================
 
-export EDITOR="$(which micro)" # default to micro as the editor
-export LESS="-R --ignore-case" # use less with colors
-export SYSTEMD_LESS=$LESS      # less arguments of systemd pager
-export BAT_PAGER="less $LESS"  # use less as the pager for bat
 unsetopt auto_list             # don't echo choices on ambiguous completion
 setopt menu_complete           # auto-complete with menu selection
 

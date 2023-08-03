@@ -42,7 +42,9 @@ def setup_machine(config_path: str) -> None:
 
     printer.title("Setting up machine...")
     # symlink environment files
-    utils.symlink(utils.abspath(config_path, "machine.sh"), config.shell_env)
+    utils.symlink(
+        utils.abspath(config_path, "machine.sh"), config.shell_profile
+    )
     utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_env)
 
     # run setup scripts

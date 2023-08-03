@@ -1,4 +1,4 @@
-# Configuration
+# Configuration: macOS
 # =============================================================================
 
 eval "$(/opt/homebrew/bin/brew shellenv)"                # homebrew
@@ -12,7 +12,7 @@ plugins=(
 )
 
 # shell config, syntax highlighting, auto-suggestions, and auto-completion
-source $MACHINE/shell/config.sh
+source $MACHINE/zsh_config.sh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 autoload -Uz compinit
