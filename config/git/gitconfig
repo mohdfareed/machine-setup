@@ -1,6 +1,6 @@
 [include]
     ; global git user config
-    path = ~/.config/git/user.config
+    path = ~/.config/git/user.gitconfig
 [commit]
     ; sign commits
     gpgsign = true
@@ -9,7 +9,7 @@
     format = ssh
 [core]
     ; global gitignore file
-    excludesfile = ~/.config/git/ignore.config
+    excludesfile = ~/.config/git/gitignore
 [init]
     ; use main as default branch name
     defaultBranch = main
