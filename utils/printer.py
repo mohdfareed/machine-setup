@@ -7,13 +7,12 @@ from rich.logging import RichHandler
 
 import utils
 
-debug_mode = False
-"""Whether debug mode is enabled."""
-
 
 class Printer:
     """A class to print messages to the console and log them to a file."""
 
+    debug_mode = True
+    """Whether debug mode is enabled."""
     # messages format
     _format = r"[bright_black]\[{name}][/] {message}"
 
@@ -22,11 +21,6 @@ class Printer:
         """The name of the printer."""
         self.logger = logging.getLogger(self.name)
         """The logger of the printer."""
-
-    def title(self, message: str, *args, **kwargs):
-        print()
-        formatted_message = f"[bold]{message}[/]"
-        self.print(message, formatted_message, *args, **kwargs)
 
     def success(self, message: str, *args, **kwargs):
         formatted_message = f"[bold green]{message}[/]"
@@ -46,7 +40,7 @@ class Printer:
 
     def debug(self, message: str, *args, **kwargs):
         formatted_message = f"[magenta]{message}[/]"
-        if not debug_mode:
+        if not self.debug_mode:
             self.logger.info(message)
             return
         self.print(message, formatted_message, *args, **kwargs)
@@ -57,23 +51,10 @@ class Printer:
         print(formatted_msg, *args, **kwargs)
         self.logger.info(msg)
 
-    @staticmethod
-    def initialize(to_file=False, debug=False):
+    @classmethod
+    def initialize(cls, to_file=False, debug=False):
         """Initialize the global logger of the printer."""
-        global debug_mode
-        debug_mode = debug
-        utils.root_printer = Printer("root")
-        utils.root_printer.debug(f"Debug mode enabled") if debug else None
-
-        # setup root logger
-        logger = logging.getLogger()
-        logger.setLevel(logging.DEBUG)
-        logging.captureWarnings(True)
-
-        # create console handler
-        console_handler = _create_console_handler()
-        logger.addHandler(console_handler)
-
+        cls.debug_mode = debug
         if to_file:  # create file handler
             file_handler, file = _create_file_handler()
             utils.root_printer.info(f"Logging to file: {file}")
@@ -105,3 +86,13 @@ def _create_file_handler():
     file_handler.setFormatter(logging.Formatter(format, "%Y-%m-%d %H:%M:%S"))
     file_handler.setLevel(logging.DEBUG)
     return file_handler, file
+
+
+# setup root logger
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+logging.captureWarnings(True)
+
+# create console handler
+console_handler = _create_console_handler()
+logger.addHandler(console_handler)

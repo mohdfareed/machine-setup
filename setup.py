@@ -7,10 +7,10 @@ import core
 import utils
 
 printer = utils.Printer("setup")
-"""the main setup printer."""
+"""The main setup printer."""
 
 
-def main(config_path: str, log=False, debug=False) -> None:
+def main(config_path: str | None, log=False, debug=False) -> None:
     """Setup the machine.
 
     Args:
@@ -20,42 +20,49 @@ def main(config_path: str, log=False, debug=False) -> None:
     """
 
     # initial setup
-    config_path = utils.abspath(config_path)
     os.chdir(os.path.dirname(utils.abspath(__file__)))
     utils.Printer.initialize(to_file=log, debug=debug)
+    printer.debug("Debug mode enabled") if debug else None
+    initial_setup(config_path) if config_path else None
 
     try:  # setup the machine
-        setup_machine(config_path)
+        setup_machine()
     except Exception as exception:
         printer.logger.exception(exception)  # log exception
         printer.error("Failed to setup machine.")
+        exit(1)
+    printer.success("Machine setup complete")
 
 
-def setup_machine(config_path: str) -> None:
-    """Run the main function of the setup script. This function is called when
-    the script is run from the command line.
+def initial_setup(config_path: str) -> None:
+    """initial setup of the machine."""
+    printer.info("Performing initial setup...")
 
-    Args:
-        display (Display): The display for printing messages.
-        ssh_dir (str): The path to the SSH directory of keys.
-    """
-
-    printer.title("Setting up machine...")
     # symlink profile files
+    config_path = utils.abspath(config_path)
     utils.symlink(utils.abspath(config_path, "machine.sh"), config.zprofile)
     utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_zprofile)
 
+
+def setup_machine() -> None:
+    """Run the setup scripts."""
+    printer.info("Setting up machine...")
+
     # run setup scripts
     # homebrew.setup()
+    # print()
     # zsh.setup()
+    # print()
     # ssh.setup()
+    # print()
     # git.setup()
+    # print()
     # python.setup()
+    # print()
     # macos.setup()
-    # core.raspberrypi.setup()
-
+    # print()
+    core.raspberrypi.setup()
     printer.info("Restart for some changes to apply")
-    printer.success("Machine setup complete")
 
 
 if __name__ == "__main__":

@@ -1,15 +1,18 @@
 """Setup module containing a `setup` function for setting up the shell on a new
-machine.
-"""
+machine."""
 
 import config
 import utils
 
 HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
+MACHINE_PATH = "~/machine"
+"""The path to the machine directory on the Raspberry Pi."""
 
 printer = utils.Printer("raspberrypi")
-"""the main setup printer."""
+"""The Raspberry Pi setup printer."""
+shell = utils.Shell(printer.debug)
+"""The Raspberry Pi shell instance."""
 
 
 def setup(hostname=HOSTNAME) -> None:
@@ -20,50 +23,57 @@ def setup(hostname=HOSTNAME) -> None:
     Args:
         hostname (str, optional): The hostname of the Raspberry Pi.
     """
-    shell = utils.Shell(printer.debug)
-    printer.title("Setting up Raspberry Pi...")
+    printer.info("Setting up Raspberry Pi...")
+
+    connect(hostname)
+    copy_config(hostname)
+    setup_scripts(hostname)
+    printer.success("Raspberry Pi setup complete")
+
+
+def connect(hostname):
+    printer.info("Connecting to Raspberry Pi...")
 
     # check if raspberrypi exists
-    if shell(["ping", hostname, "-c", 1], safe=True) != 0:
+    if shell(["ping", hostname, "-c", "1"], safe=True, silent=True) != 0:
         raise RuntimeError("Raspberry Pi is not connected to the network")
-    printer.debug("Raspberry Pi is connected to the network")
+    printer.debug("Connection to Raspberry Pi established")
     # add ssh key to raspberrypi
-    shell(f"ssh-copy-id {hostname}")
+    shell(["ssh-copy-id", hostname], silent=True)
     printer.debug("Added SSH key to Raspberry Pi")
 
-    shell(["ssh", hostname, "mkdir", "-p", config.MACHINE_PATH])
 
-    cmd = (  # raspberry pi resources
-        f"rsync -avz {config.pi_config}/* {hostname}:{MACHINE_PATH} && "
-        f"rsync -avz {shell_config} {hostname}:{MACHINE_PATH} && "
-        f"rsync -avz {micro_settings} {hostname}:{MACHINE_PATH} && "
-        f"ssh {hostname} 'chmod +x {SCRIPTS_PATH}/*.sh'"
-    )
+def copy_config(hostname):
+    printer.info("Copying config files to Raspberry Pi...")
+    # create machine directory
+    shell(["ssh", hostname, "mkdir", "-p", MACHINE_PATH])
 
-    # copy resources to raspberrypi
-    if shell.run(cmd, display.debug, display.error):
-        display.error("Failed to copy resources to Raspberry Pi.")
-        return
-    display.verbose("Copied resources to Raspberry Pi.")
+    # copy config files to raspberrypi
+    machine = f"{hostname}:{MACHINE_PATH}"
+    shell(["rsync", "-avzL", config.pi_machine + "/", machine], silent=True)
+    printer.debug(f"Copied: {config.pi_machine}/* -> {machine}")
 
-    # add scripts to path
-    cmd = f"sudo ln -sf ~/machine/setup.sh /usr/local/bin/setup-machine"
-    cmd = (
-        f"ssh {hostname} 'sudo ln -sf {SCRIPTS_PATH}/setup.sh "
-        "/usr/local/bin/setup-machine'"
-    )
-    if shell.run(cmd, display.debug, display.error):
-        display.error("Failed to add scripts to path.")
-        return
-    display.verbose("Added scripts to path.")
-
-    display.success("Raspberry Pi setup complete.")
+    # copy shared config files
+    for config_file in config.pi_shared_config:
+        shell(["rsync", "-avzL", config_file, machine], silent=True)
+        printer.debug(f"Copied: {config_file} -> {machine}")
+    printer.debug("Copied config files to Raspberry Pi")
 
 
-def load_machine_path():
-    """Load the path to the machine directory on the Raspberry Pi."""
-    config_path = utils.abspath(config.pi_config, "z")
-    return f"pi@{HOSTNAME}:{config.MACHINE_PATH}"
+def setup_scripts(hostname):
+    printer.info("Setting up scripts on Raspberry Pi...")
+
+    # make scripts executable
+    scripts = f"{MACHINE_PATH}/scripts"
+    shell(["ssh", hostname, "chmod", "+x", f"{scripts}/*.sh"])
+    # shell(["ssh", hostname, f"chmod +x {scripts}/*.sh"])
+    printer.debug("Changed scripts to executable")
+
+    # add setup script to path
+    setup_path = f"{scripts}/setup.sh"
+    script_path = "/usr/local/bin/setup-machine"
+    shell(["ssh", hostname, "sudo", "ln", "-sf", setup_path, script_path])
+    printer.info("Setup Raspberry Pi by executing:[/] [green]setup-machine")
 
 
 if __name__ == "__main__":

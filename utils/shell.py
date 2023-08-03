@@ -4,6 +4,7 @@ printing their output. The provides an interactive mode of the shell.
 """
 
 import os
+import stat
 import subprocess
 import typing
 
@@ -46,27 +47,30 @@ class Shell:
         self, command, silent=False, safe=False, text=False, status=None
     ) -> typing.Union[int, str]:
         console = Console()
-        with console.status(f"[green]{status or LOADING_STR}[/]"):
+        with console.status(f"[green]{status or LOADING_STR}[/]") as status:
+            out = subprocess.PIPE if text or not silent else subprocess.DEVNULL
+            err = subprocess.STDOUT
+            is_shell = isinstance(command, str)
             process = subprocess.Popen(
-                command,
-                shell=isinstance(command, str),
-                stdout=subprocess.PIPE if text or not silent else None,
-                stderr=subprocess.STDOUT if text or not silent else None,
-                text=True,
+                command, shell=is_shell, stdout=out, stderr=err, text=True
             )
 
+            # print output
             if not silent and process.stdout:
+                status.stop()
                 for line in process.stdout:
                     self.output_handler(line, end="")
             returncode = process.wait()
-            output = process.stdout.read().strip()
-            error = process.stderr.read().strip()
+
+            output = None
+            if text:  # return output
+                output = process.stdout.read().strip()
 
         if not safe and returncode != 0:
             raise subprocess.CalledProcessError(
-                returncode, command, output, error
+                returncode, command, output if text else None
             )
-        return returncode if not text else output
+        return output or returncode
 
 
 def interactive() -> None:

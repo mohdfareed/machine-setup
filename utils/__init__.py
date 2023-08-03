@@ -68,11 +68,12 @@ def create_dir(directory: str, is_file=False):
 
 def copy(source: str, target: str) -> None:
     """Copy a file from the source to the target. Overwrite the target if it
-    already exists.
+    already exists. The target can be a directory, in which case the source
+    is copied into the directory.
 
     Args:
         source (str): The source file.
-        target (str): The target file.
+        target (str): The target file or directory.
     """
     printer = _caller_printer()
 
@@ -80,6 +81,9 @@ def copy(source: str, target: str) -> None:
     source, target = abspath(source), abspath(target)
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
+
+    if _os.path.isdir(target):  # copy into directory
+        target = _os.path.join(target, _os.path.basename(source))
 
     remove(target)  # remove target if it exists
     create_dir(target, is_file=True)  # create parent
@@ -89,11 +93,12 @@ def copy(source: str, target: str) -> None:
 
 def symlink(source: str, target: str) -> None:
     """Symlink a file from the source to the target. Overwrite the target if it
-    already exists.
+    already exists. The target can be a directory, in which case the source
+    is symlinked into the directory.
 
     Args:
         source (str): The source file.
-        target (str): The target file.
+        target (str): The target file or directory.
     """
     printer = _caller_printer()
 
@@ -101,6 +106,9 @@ def symlink(source: str, target: str) -> None:
     source, target = _os.path.abspath(source), _os.path.abspath(target)
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
+
+    if _os.path.isdir(target):  # copy into directory
+        target = _os.path.join(target, _os.path.basename(source))
 
     create_dir(target, is_file=True)  # create parent
     _os.system(f"ln -sf '{source}' '{target}'")  # create symlink

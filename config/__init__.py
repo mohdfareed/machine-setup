@@ -17,6 +17,8 @@ zprofile = _os.path.join(machine, "zprofile")
 """The path of the machine shell profile variables file."""
 micro_settings = _os.path.join(machine, "micro_settings.json")
 """The path of micro settings file."""
+
+# git and ssh
 ssh_config = _os.path.join(machine, "ssh.config")
 """The path of the global ssh config file."""
 gitconfig = _os.path.join(machine, "gitconfig")
@@ -39,7 +41,9 @@ terminal_dark = _os.path.join(macos, "terminal", "Dark.terminal")
 terminal_light = _os.path.join(macos, "terminal", "Light.terminal")
 
 # raspberry pi
-pi_config = _os.path.join(_os.path.dirname(machine), "raspberrypi")
+pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
 """The path of Raspberry Pi config directory."""
-pi_zprofile = _os.path.join(pi_config, "zprofile")
+pi_zprofile = _os.path.join(pi_machine, "zprofile")
 """The path of Raspberry Pi profile variables file."""
+pi_shared_config = (zsh_config, zsh_env, micro_settings)
+"""The shared config files between the machine and Raspberry Pi."""
