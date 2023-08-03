@@ -11,6 +11,8 @@ import typing
 from rich import print
 from rich.console import Console
 
+import utils
+
 LOADING_STR: str = "Loading..."
 """The default string to print while waiting for a command to complete. It is
 followed by a loading animation.
@@ -67,6 +69,9 @@ class Shell:
                 output = process.stdout.read().strip()
 
         if not safe and returncode != 0:
+            if output:
+                printer = utils._caller_printer()
+                printer.error(output)
             raise subprocess.CalledProcessError(
                 returncode, command, output if text else None
             )

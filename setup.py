@@ -26,9 +26,9 @@ def main(config_path: str | None, log=False, debug=False) -> None:
     initial_setup(config_path) if config_path else None
 
     try:  # setup the machine
-        setup_machine()
+        setup_machine(config_path)
     except Exception as exception:
-        printer.logger.exception(exception)  # log exception
+        printer.logger.exception(exception) if printer.debug_mode else None
         printer.error("Failed to setup machine.")
         exit(1)
     printer.success("Machine setup complete")
@@ -44,7 +44,7 @@ def initial_setup(config_path: str) -> None:
     utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_zprofile)
 
 
-def setup_machine() -> None:
+def setup_machine(config_path: str | None) -> None:
     """Run the setup scripts."""
     printer.info("Setting up machine...")
 
@@ -53,7 +53,7 @@ def setup_machine() -> None:
     # print()
     # zsh.setup()
     # print()
-    # ssh.setup()
+    core.ssh.setup(config_path)
     # print()
     # git.setup()
     # print()

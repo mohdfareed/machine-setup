@@ -13,13 +13,17 @@ root_printer = Printer("root")
 """The root printer."""
 
 
-def abspath(*paths: str) -> str:
+def abspath(*paths: str, resolve_links=True) -> str:
     """Get the absolute path of a file, eliminating symbolic links.
 
     Args:
         *paths (str): The path to resolve. If paths are given, they are joined.
     """
-    return _os.path.realpath(_os.path.join(*paths))
+    combined_path = _os.path.join(*paths)
+    expanded_path = _os.path.expanduser(combined_path)
+    if not resolve_links:
+        return _os.path.abspath(expanded_path)
+    return _os.path.realpath(expanded_path)
 
 
 def remove(path: str):
@@ -75,20 +79,46 @@ def copy(source: str, target: str) -> None:
         source (str): The source file.
         target (str): The target file or directory.
     """
-    printer = _caller_printer()
 
+    # copy directory if source is a directory
+    if source.endswith("/"):
+        copy_dir(source, target)
+    if target.endswith("/"):  # copy into directory
+        target = _os.path.join(target, _os.path.basename(source))
+
+    printer = _caller_printer()
     # get absolute paths and check if source exists
     source, target = abspath(source), abspath(target)
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
 
-    if _os.path.isdir(target):  # copy into directory
-        target = _os.path.join(target, _os.path.basename(source))
-
     remove(target)  # remove target if it exists
     create_dir(target, is_file=True)  # create parent
-    _os.system(f"cp '{source}' '{target}'")  # create copy
-    printer.debug(f"Copied: {_os.path.dirname(source)} -> {target}")
+    _os.system(f"cp '{source}' '{target}' > /dev/null 2>&1")
+    printer.debug(f"Copied: {_os.path.basename(source)} -> {target}")
+
+
+def copy_dir(source: str, target: str) -> None:
+    """Copy a directory from the source to the target. Overwrite the target if it
+    already exists. The target can be a directory, in which case the source
+    is copied into the directory.
+
+    Args:
+        source (str): The source directory.
+        target (str): The target directory.
+    """
+    printer = _caller_printer()
+
+    if target.endswith("/"):  # copy into directory
+        target = _os.path.join(target, _os.path.basename(source))
+    if source.endswith("/"):  # copy contents
+        source = _os.path.join(source, "*")
+    # preserve source wildcards
+    target = abspath(target)
+
+    create_dir(target, is_file=True)  # create parent
+    _os.system(f"cp -R '{source}' '{target}' > /dev/null 2>&1")
+    printer.debug(f"Copied: {_os.path.basename(source)} -> {target}")
 
 
 def symlink(source: str, target: str) -> None:
@@ -103,16 +133,17 @@ def symlink(source: str, target: str) -> None:
     printer = _caller_printer()
 
     # get absolute paths and check if source exists
-    source, target = _os.path.abspath(source), _os.path.abspath(target)
+    source = abspath(source, resolve_links=False)
+    target = abspath(target, resolve_links=False)
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
 
-    if _os.path.isdir(target):  # copy into directory
+    if target.endswith("/"):  # symlink into directory
         target = _os.path.join(target, _os.path.basename(source))
 
     create_dir(target, is_file=True)  # create parent
     _os.system(f"ln -sf '{source}' '{target}'")  # create symlink
-    printer.debug(f"Symlinked: {_os.path.dirname(source)} -> {target}")
+    printer.debug(f"Symlinked: {_os.path.basename(source)} -> {target}")
 
 
 def chmod(file: str, mode: int):

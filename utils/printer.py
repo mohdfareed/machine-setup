@@ -68,8 +68,7 @@ def _create_console_handler():
         rich_tracebacks=True,
         tracebacks_show_locals=True,
     )
-    format = r"%(message)s [bright_black]- [italic]%(name)s[/italic]"
-    console_handler.setFormatter(logging.Formatter(format))
+    console_handler.setFormatter(logging.Formatter(r"%(message)s"))
     console_handler.setLevel(logging.WARNING)
     return console_handler
 

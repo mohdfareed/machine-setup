@@ -1,98 +1,118 @@
 """SSH setup module."""
 
+import os
+from collections import defaultdict
+
+import config
 import utils
 
-# the path to the ssh config file
-_config: str = utils.abspath("~/.ssh/config")
+SSH_DIR: str = "~/.ssh/"
+"""The path to the SSH directory."""
+PRIVATE_KEY_EXTENSION: str = ".key"
+"""The extension of the private key files."""
+PUBLIC_KEY_EXTENSION: str = ".pub"
+"""The extension of the public key files."""
+
 printer = utils.Printer("ssh")
-"""SSH setup printer."""
+"""The SSH setup printer."""
+shell = utils.Shell(printer.debug)
+"""The SSH shell instance."""
 
 
-def setup(keys_path: str, display=DISPLAY, quiet=False) -> None:
+class SSHKey:
+    def __init__(self) -> None:
+        self.private_key: str | None = None
+        """The path to the private key file."""
+        self.public_key: str | None = None
+        """The path to the public key file."""
+
+
+def setup(config_path: str | None) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory.
 
-    A `Display` object is used to print messages and log them to a file. A
-    non-logging `Display` object is used by default.
-
     Args:
-        ssh_dir (str): The path to the directory containing the ssh files.
+        config_path (str): The path to the directory containing the ssh keys.
     """
-    if not quiet:
-        display.print("Setting up SSH...")
-    else:
-        display.debug("")
-        display.verbose("Setting up SSH...")
-    display.debug(f"SSH directory: {ssh_dir}")
+    printer.info("Setting up SSH...")
 
     # copy config file
-    config = abspath(f"{ssh_dir}/config")
-    copy(config, _config)
+    utils.symlink(config.ssh_config, SSH_DIR + "config")
+    # parse ssh keys path
+    if not config_path:
+        return
+    keys = os.path.join(config_path, "keys")
 
-    # set ssh paths
-    private_key = abspath(f"{ssh_dir}/id_ed25519")
-    public_key = abspath(f"{ssh_dir}/id_ed25519.pub")
+    # setup ssh keys
+    key_pairs = load_keys(keys)
+    for key_name, key in key_pairs.items():
+        setup_key(key_name, key)
+    printer.success("SSH setup complete")
 
-    # copy private key
-    copy(private_key, _private_key)
-    # copy public key
-    copy(public_key, _public_key)
 
-    try:  # set permissions of ssh keys
-        chmod(_private_key, 600)
-        chmod(_public_key, 644)
-    except:
-        raise RuntimeError("Failed to set permissions of ssh keys.")
+def load_keys(keys: str) -> dict[str, SSHKey]:
+    """Load ssh keys from the specified directory.
+
+    Returns:
+        dict[str, SSHKey]: A dict of key names to key pairs.
+    """
+    keys = utils.abspath(keys)
+
+    # load keys as dictionary of key names to key pairs
+    keys_dict: dict[str, SSHKey] = defaultdict(SSHKey)
+    for filename in os.listdir(keys):
+        key_name = os.path.splitext(filename)[0]
+
+        # add key to dictionary
+        filepath = os.path.realpath(os.path.join(keys, filename))
+        if filename.endswith(PRIVATE_KEY_EXTENSION):
+            keys_dict[key_name].private_key = filepath
+        elif filename.endswith(PUBLIC_KEY_EXTENSION):
+            keys_dict[key_name].public_key = filepath
+
+    loaded_keys = ", ".join(keys_dict.keys())
+    printer.debug(f"Loaded [bold]{len(keys_dict)}[/] ssh keys: " + loaded_keys)
+    return keys_dict
+
+
+def setup_key(name: str, key: SSHKey) -> None:
+    printer.print(f"Setting up ssh key: {name}")
+    if not key.private_key or not key.public_key:
+        printer.error(f"Invalid ssh key pair:")
+        printer.error(f"    Private key: {key.private_key}")
+        printer.error(f"    Public key: {key.public_key}")
+        raise RuntimeError(f"Invalid ssh key pair encountered: {name}")
+
+    # copy private key and set permissions
+    utils.copy(key.private_key, SSH_DIR)
+    private_key = os.path.join(SSH_DIR, os.path.basename(key.private_key))
+    utils.chmod(private_key, 600)
+
+    # copy public key and set permissions
+    utils.copy(key.public_key, SSH_DIR)
+    public_key = os.path.join(SSH_DIR, os.path.basename(key.public_key))
+    utils.chmod(public_key, 644)
 
     # get key fingerprint
-    fingerprint = shell.read(f"ssh-keygen -lf '{_public_key}'")
-    fingerprint = fingerprint.split(" ")[1]
-    display.debug(f"SSH key fingerprint: {fingerprint}")
+    fingerprint = shell(
+        ["ssh-keygen", "-lf", public_key], silent=True, text=True
+    ).split(" ")[1]
+    printer.debug(f"SSH key {name} fingerprint: {fingerprint}")
+
     # add key to ssh agent if it doesn't exist
-    cmd = f"ssh-add -l | grep -q {fingerprint}"
-    if shell.run_quiet(cmd, display.debug) != 0:
-        shell.run(f"ssh-add '{_private_key}'", display.print, display.error)
-        display.verbose("Added ssh key to ssh agent.")
-
-    display.success("SSH was setup successfully.")
-
-
-def _setup_key():
-    # copy private key
-    copy(private_key, _private_key)
-    # copy public key
-    copy(public_key, _public_key)
-    # copy config file
-    copy(config, _config)
-
-    try:  # set permissions of ssh keys
-        chmod(_private_key, 600)
-        chmod(_public_key, 644)
-    except:
-        raise RuntimeError("Failed to set permissions of ssh keys.")
-
-    # get key fingerprint
-    fingerprint = shell.read(f"ssh-keygen -lf '{_public_key}'")
-    fingerprint = fingerprint.split(" ")[1]
-    display.debug(f"SSH key fingerprint: {fingerprint}")
-    # add key to ssh agent if it doesn't exist
-    cmd = f"ssh-add -l | grep -q {fingerprint}"
-    if shell.run_quiet(cmd, display.debug) != 0:
-        shell.run(f"ssh-add '{_private_key}'", display.print, display.error)
-        display.verbose("Added ssh key to ssh agent.")
+    # cmd = f"ssh-add -l | grep -q {fingerprint}"
+    # if shell.run_quiet(cmd, display.debug) != 0:
+    #     shell.run(f"ssh-add '{_private_key}'", display.print, display.error)
+    #     display.verbose("Added ssh key to ssh agent.")
+    printer.success("SSH key setup complete")
 
 
 if __name__ == "__main__":
     import argparse
 
-    # parse command line arguments
     parser = argparse.ArgumentParser(description="SSH setup script.")
     parser.add_argument(
-        "--ssh-dir",
-        type=str,
-        required=True,
-        help="the path to the ssh directory of keys",
+        "--keys", type=str, help="the path to the ssh keys directory"
     )
     args = parser.parse_args()
-    # setup ssh using the specified directory
-    setup(args.ssh_dir)
+    setup(args.keys)
