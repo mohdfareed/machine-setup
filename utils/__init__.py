@@ -9,7 +9,7 @@ from . import printer, shell
 from .printer import Printer
 from .shell import Shell
 
-root_printer = Printer("root")
+root_printer = printer.Printer("root")
 """The root printer."""
 
 
@@ -79,6 +79,7 @@ def copy(source: str, target: str) -> None:
         source (str): The source file.
         target (str): The target file or directory.
     """
+    printer = _caller_printer()
 
     # copy directory if source is a directory
     if source.endswith("/"):
@@ -86,7 +87,6 @@ def copy(source: str, target: str) -> None:
     if target.endswith("/"):  # copy into directory
         target = _os.path.join(target, _os.path.basename(source))
 
-    printer = _caller_printer()
     # get absolute paths and check if source exists
     source, target = abspath(source), abspath(target)
     if not _os.path.exists(source):
@@ -132,14 +132,14 @@ def symlink(source: str, target: str) -> None:
     """
     printer = _caller_printer()
 
+    if target.endswith("/"):  # symlink into directory
+        target = _os.path.join(target, _os.path.basename(source))
+
     # get absolute paths and check if source exists
     source = abspath(source, resolve_links=False)
     target = abspath(target, resolve_links=False)
     if not _os.path.exists(source):
         raise FileNotFoundError(f"File not found: {source}")
-
-    if target.endswith("/"):  # symlink into directory
-        target = _os.path.join(target, _os.path.basename(source))
 
     create_dir(target, is_file=True)  # create parent
     _os.system(f"ln -sf '{source}' '{target}'")  # create symlink
@@ -159,7 +159,7 @@ def chmod(file: str, mode: int):
     printer.debug(f"Changed permissions: {mode} => {file}")
 
 
-def _caller_printer() -> Printer:
+def _caller_printer() -> printer.Printer:
     # get the name of the calling module
     frame = _inspect.stack()[2]
     module = _inspect.getmodule(frame[0])
