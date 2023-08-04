@@ -15,7 +15,7 @@ PUBLIC_KEY_EXTENSION: str = ".pub"
 
 printer = utils.Printer("ssh")
 """The SSH setup printer."""
-shell = utils.Shell(printer.debug)
+shell = utils.Shell(printer.debug, printer.error)
 """The SSH shell instance."""
 
 
@@ -27,24 +27,22 @@ class SSHKey:
         """The path to the public key file."""
 
 
-def setup(config_path: str | None) -> None:
+def setup(keys_dir: str | None) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory.
 
     Args:
-        config_path (str): The path to the directory containing the ssh keys.
+        keys_dir (str): The path to the directory containing the ssh keys.
     """
     printer.info("Setting up SSH...")
 
     # copy config file
     utils.symlink(config.ssh_config, SSH_DIR + "config")
-    # parse ssh keys path
-    if not config_path:
+    if not keys_dir:
         return
-    keys = os.path.join(config_path, "keys")
 
     # setup ssh keys
-    key_pairs = load_keys(keys)
+    key_pairs = load_keys(keys_dir)
     for key_name, key in key_pairs.items():
         setup_key(key_name, key)
     printer.success("SSH setup complete")
@@ -83,40 +81,35 @@ def setup_key(name: str, key: SSHKey) -> None:
         printer.error(f"    Public key: {key.public_key}")
         raise RuntimeError(f"Invalid ssh key pair encountered: {name}")
 
-    # copy private key and set permissions
-    utils.copy(key.private_key, SSH_DIR)
-    private_key = os.path.join(SSH_DIR, os.path.basename(key.private_key))
-    private_key = utils.abspath(private_key)
-    utils.chmod(private_key, 600)
-
-    # copy public key and set permissions
-    utils.copy(key.public_key, SSH_DIR)
-    public_key = os.path.join(SSH_DIR, os.path.basename(key.public_key))
-    public_key = utils.abspath(public_key)
-    utils.chmod(public_key, 644)
+    # symlink key and set permissions
+    utils.symlink(key.private_key, SSH_DIR)
+    utils.chmod(key.private_key, 600)
+    utils.symlink(key.public_key, SSH_DIR)
+    utils.chmod(key.public_key, 644)
 
     # get key fingerprint
-    fingerprint = shell(["ssh-keygen", "-lf", public_key], silent=True)[
-        0
-    ].split(" ")[1]
+    fingerprint = shell(["ssh-keygen", "-lf", key.public_key], silent=True)[0]
+    fingerprint = fingerprint.split(" ")[1]
     printer.print(f"Key fingerprint: [bold]{fingerprint}[/]")
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
-    if shell(cmd, silent=True, text=False) != 0:
-        shell(f"ssh-add '{private_key}'")
-        printer.print("Added key to SSH agent.")
+    if shell(cmd, silent=True)[1] != 0:
+        shell(f"ssh-add '{key.private_key}'")
+        printer.print("Added key to SSH agent")
     else:
-        printer.print("Key already added to ssh agent.")
+        printer.print("Key already exists in SSH agent")
     printer.success("Key setup complete")
 
 
 if __name__ == "__main__":
     import argparse
 
+    import core
+
     parser = argparse.ArgumentParser(description="SSH setup script.")
     parser.add_argument(
-        "--keys", type=str, help="the path to the ssh keys directory"
+        "keys", type=str, help="the path to the ssh keys directory"
     )
     args = parser.parse_args()
-    setup(args.keys)
+    core.run(setup, printer, "Failed to setup SSH", args.keys)

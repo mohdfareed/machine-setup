@@ -6,12 +6,12 @@ import utils
 
 HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
-MACHINE_PATH = "~/machine"
+MACHINE = "~/machine"
 """The path to the machine directory on the Raspberry Pi."""
 
 printer = utils.Printer("raspberrypi")
 """The Raspberry Pi setup printer."""
-shell = utils.Shell(printer.debug)
+shell = utils.Shell(printer.debug, printer.error)
 """The Raspberry Pi shell instance."""
 
 
@@ -35,9 +35,10 @@ def connect(hostname):
     printer.info("Connecting to Raspberry Pi...")
 
     # check if raspberrypi exists
-    if shell(["ping", hostname, "-c", "1"], silent=True, text=False) != 0:
+    if shell(["ping", hostname, "-c", "1"], silent=True)[1] != 0:
         raise RuntimeError("Raspberry Pi is not connected to the network")
     printer.debug("Connection to Raspberry Pi established")
+
     # add ssh key to raspberrypi
     shell(f"ssh-copy-id '{hostname}' > /dev/null 2>&1")
     printer.debug("Added SSH key to Raspberry Pi")
@@ -45,11 +46,10 @@ def connect(hostname):
 
 def copy_config(hostname):
     printer.info("Copying config files to Raspberry Pi...")
-    # create machine directory
-    shell(["ssh", hostname, "mkdir", "-p", MACHINE_PATH], safe=True)
+    shell(["ssh", hostname, "mkdir", "-p", MACHINE], silent=True, safe=True)
 
     # copy config files to raspberrypi
-    machine = f"{hostname}:{MACHINE_PATH}"
+    machine = f"{hostname}:{MACHINE}"
     shell(["rsync", "-avzL", config.pi_machine + "/", machine], silent=True)
     printer.debug(f"Copied: {config.pi_machine}/* -> {machine}")
 
@@ -64,17 +64,26 @@ def setup_scripts(hostname):
     printer.info("Setting up scripts on Raspberry Pi...")
 
     # make scripts executable
-    scripts = f"{MACHINE_PATH}/scripts"
-    shell(["ssh", hostname, "chmod", "+x", f"{scripts}/*.sh"])
-    # shell(["ssh", hostname, f"chmod +x {scripts}/*.sh"])
+    scripts = f"{MACHINE}/scripts"
+    shell(["ssh", hostname, "chmod", "+x", f"{scripts}/*.sh"], silent=True)
     printer.debug("Changed scripts to executable")
 
     # add setup script to path
-    setup_path = f"{scripts}/setup.sh"
-    script_path = "/usr/local/bin/setup-machine"
-    shell(["ssh", hostname, "sudo", "ln", "-sf", setup_path, script_path])
+    setup = f"{scripts}/setup.sh"
+    script = "/usr/local/bin/setup-machine"
+    shell(["ssh", hostname, "sudo", "ln", "-sf", setup, script], silent=True)
+    printer.debug("Added setup script to path")
     printer.info("Setup Raspberry Pi by executing:[/] [green]setup-machine")
 
 
 if __name__ == "__main__":
-    setup()
+    import argparse
+
+    import core
+
+    parser = argparse.ArgumentParser(description="Raspberry Pi setup script.")
+    parser.add_argument(
+        "hostname", type=str, help="the local hostname of the Raspberry Pi"
+    )
+    args = parser.parse_args()
+    core.run(setup, printer, "Failed to setup Raspberry Pi", args.hostname)

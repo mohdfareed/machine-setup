@@ -46,23 +46,25 @@ def initial_setup(config_path: str) -> None:
 
 def setup_machine(config_path: str | None) -> None:
     """Run the setup scripts."""
-    printer.info("Setting up machine...")
+    printer.info("Setting up machine...\n")
+    keys_dir = utils.abspath(config_path, "keys") if config_path else None
 
     # run setup scripts
     # homebrew.setup()
     # print()
-    # zsh.setup()
-    # print()
-    core.ssh.setup(config_path)
-    # print()
+    core.shell.setup()
+    print()
+    core.ssh.setup(keys_dir)
+    print()
     # git.setup()
     # print()
     # python.setup()
     # print()
     # macos.setup()
     # print()
+    # print()
     core.raspberrypi.setup()
-    printer.info("Restart for some changes to apply")
+    printer.info("\nRestart for some changes to apply")
 
 
 if __name__ == "__main__":
