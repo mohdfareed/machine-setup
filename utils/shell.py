@@ -11,8 +11,6 @@ import typing
 from rich import print
 from rich.console import Console
 
-import utils
-
 LOADING_STR: str = "Loading..."
 """The default string to print while waiting for a command to complete. It is
 followed by a loading animation.
@@ -30,113 +28,64 @@ class Shell:
         self.output_handler = output_handler
         self.error_handler = error_handler
 
-    @typing.overload
     def run(
-        self,
-        command,
-        silent=...,
-        text: typing.Literal[True] = ...,
-        status=...,
-        safe=...,
-    ) -> tuple[str, int]:
-        ...
-
-    @typing.overload
-    def run(
-        self,
-        command,
-        silent=...,
-        text: typing.Literal[False] = ...,
-        status=...,
-        safe=...,
-    ) -> int:
-        ...
-
-    @typing.overload
-    def run(
-        self,
-        command,
-        silent=...,
-        text: bool = ...,
-        status=...,
-        safe=...,
-    ) -> int:
-        ...
-
-    def run(
-        self, command, silent=False, text=True, status=None, safe=False
+        self, command, env=None, silent=False, safe=False, status=LOADING_STR
     ) -> typing.Union[tuple[str, int], int]:
         console = Console()
-        pipe = subprocess.PIPE if text or not silent else subprocess.DEVNULL
-        err = subprocess.STDOUT
 
-        # print loading status
-        with console.status(f"[green]{status or LOADING_STR}[/]") as status:
-            is_shell = isinstance(command, str)
+        # execute command while print loading status
+        with console.status(f"[green]{status}[/]") as status:
+            # use popen to print output in real time
             process = subprocess.Popen(
-                command, shell=is_shell, stdout=pipe, stderr=err, text=True
+                command,
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                shell=isinstance(command, str),
+                text=True,
             )
 
-            # print output
+            # print output and wait for process to complete
             if not silent and process.stdout:
                 status.stop()
                 for line in process.stdout:
                     self.output_handler(line, end="")
             returncode = process.wait()
 
-            output = None
-            if text:  # return output
-                output = process.stdout.read().strip()
-
-        # check return code
-        if output and not safe and returncode != 0:
-            self.error_handler(output)
-            raise subprocess.CalledProcessError(
-                returncode, command, output if text else None
-            )
-
-        if output:
-            return output, returncode
-        return returncode
+        # handle return code and/or output
+        output = process.stdout.read().strip() if process.stdout else None
+        if not safe and returncode != 0:
+            self.error_handler(output) if output else None
+            raise subprocess.CalledProcessError(returncode, command, output)
+        return (output or "", returncode) if silent else returncode
 
     @typing.overload
     def __call__(
         self,
         command,
-        silent=...,
-        text: typing.Literal[True] = ...,
-        status=...,
+        env=...,
+        silent: typing.Literal[False] = ...,
         safe=...,
+        status=...,
+    ) -> int:
+        ...
+
+    @typing.overload
+    def __call__(
+        self,
+        command,
+        env=...,
+        silent: typing.Literal[True] = ...,
+        safe=...,
+        status=...,
     ) -> tuple[str, int]:
         ...
 
-    @typing.overload
     def __call__(
-        self,
-        command,
-        silent=...,
-        text: typing.Literal[False] = ...,
-        status=...,
-        safe=...,
-    ) -> int:
-        ...
-
-    @typing.overload
-    def __call__(
-        self,
-        command,
-        silent=...,
-        text: bool = ...,
-        status=...,
-        safe=...,
-    ) -> int:
-        ...
-
-    def __call__(
-        self, command, silent=False, text=True, status=None, safe=False
+        self, command, env=None, silent=False, safe=False, status=LOADING_STR
     ) -> typing.Union[int, tuple[str, int]]:
         return self.run(
-            command, silent=silent, text=text, status=status, safe=safe
+            command, env=env, silent=silent, safe=safe, status=status
         )
 
 
@@ -164,7 +113,7 @@ def interactive() -> None:
             print("[bold magenta]Exiting shell...[/]")
             break
         # run the command and print output
-        exit_code: int = shell(cmd, text=False)
+        exit_code = shell(cmd)
 
 
 if __name__ == "__main__":
