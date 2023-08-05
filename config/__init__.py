@@ -21,9 +21,9 @@ micro_settings = _os.path.join(machine, "micro_settings.json")
 # git and ssh
 ssh_config = _os.path.join(machine, "ssh.config")
 """The path of the global ssh config file."""
-gitconfig = _os.path.join(machine, "gitconfig")
+gitconfig = _os.path.join(machine, "git.gitconfig")
 """The path of the global gitconfig file."""
-gitignore = _os.path.join(machine, "gitignore")
+gitignore = _os.path.join(machine, "git.gitignore")
 """The path of the global gitignore file."""
 
 # packages
