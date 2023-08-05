@@ -1,6 +1,8 @@
 """Setup module containing a `setup` function for setting up the shell on a new
 machine."""
 
+import os
+
 import config
 import utils
 
@@ -8,6 +10,8 @@ HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
 MACHINE = "~/machine"
 """The path to the machine directory on the Raspberry Pi."""
+SETUP_SCRIPT = "setup-machine"
+"""The name of the setup script on the Raspberry Pi."""
 
 printer = utils.Printer("raspberrypi")
 """The Raspberry Pi setup printer."""
@@ -35,7 +39,7 @@ def connect(hostname):
     printer.info("Connecting to Raspberry Pi...")
 
     # check if raspberrypi exists
-    if shell(["ping", hostname, "-c", "1"], silent=True)[1] != 0:
+    if shell(["ping", hostname, "-c", "1"]) != 0:
         raise RuntimeError("Raspberry Pi is not connected to the network")
     printer.debug("Connection to Raspberry Pi established")
 
@@ -70,10 +74,12 @@ def setup_scripts(hostname):
 
     # add setup script to path
     setup = f"{scripts}/setup.sh"
-    script = "/usr/local/bin/setup-machine"
+    script = f"/usr/local/bin/{SETUP_SCRIPT}"
     shell(["ssh", hostname, "sudo", "ln", "-sf", setup, script], silent=True)
+    printer.debug(f"Symlinked: {os.path.dirname(setup)} -> {script}")
+
     printer.debug("Added setup script to path")
-    printer.info("Setup Raspberry Pi by executing:[/] [green]setup-machine")
+    printer.info(f"Setup Raspberry Pi by executing:[/] [green]{SETUP_SCRIPT}")
 
 
 if __name__ == "__main__":

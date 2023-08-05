@@ -40,7 +40,7 @@ def install_omz():
     # install oh-my-zsh
     shell(["rm", "-rf", env["ZSH"]], silent=True)
     cmd = '"$(curl -fsSL https://git.io/JvzfK)" "" --unattended'
-    if shell(f"sh -c {cmd}", silent=True, env=env)[1] != 0:
+    if shell(f"sh -c {cmd}", env=env) != 0:
         raise RuntimeError("Failed to install oh-my-zsh")
     printer.debug("Installed oh-my-zsh")
 

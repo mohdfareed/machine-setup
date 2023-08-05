@@ -3,7 +3,7 @@ machine. These methods are imported and used by the main `setup.py` script. The
 modules in this library depend on modules in the `utils` library."""
 
 
-from . import raspberrypi, shell, ssh
+from . import brew, raspberrypi, shell, ssh
 
 # from . import brew, git, macos, python, raspberrypi, shell, ssh
 

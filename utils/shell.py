@@ -28,7 +28,7 @@ class Shell:
         self.output_handler = output_handler
         self.error_handler = error_handler
 
-    def run(
+    def _run(
         self, command, env=None, silent=False, safe=False, status=LOADING_STR
     ) -> typing.Union[tuple[str, int], int]:
         console = Console()
@@ -84,7 +84,7 @@ class Shell:
     def __call__(
         self, command, env=None, silent=False, safe=False, status=LOADING_STR
     ) -> typing.Union[int, tuple[str, int]]:
-        return self.run(
+        return self._run(
             command, env=env, silent=silent, safe=safe, status=status
         )
 

@@ -27,7 +27,7 @@ gitignore = _os.path.join(machine, "gitignore")
 """The path of the global gitignore file."""
 
 # packages
-homebrew_packages = _os.path.join(machine, "packages.homebrew")
+brewfile = _os.path.join(machine, "brewfile")
 """The path of Homebrew packages file."""
 python_packages = _os.path.join(machine, "packages.python")
 """The path of Python packages file."""
