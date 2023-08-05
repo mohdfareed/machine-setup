@@ -1,44 +1,39 @@
 """Setup module containing a `setup` function for setting up Git on a new
-machine.
-"""
+machine."""
 
-from config import macos_preferences, terminal_dark, terminal_light
-from utils import shell
-from utils.logger import Display
+import config
+import utils
 
-DISPLAY: Display = Display(verbose=True, no_logging=True)
-"""The default display for printing messages."""
+printer = utils.Printer("macos")
+"""The macOS setup printer."""
+shell = utils.Shell(printer.debug, printer.error)
+"""The macOS shell instance."""
 
 
-def setup(display=DISPLAY) -> None:
-    """Setup macOS on a new machine by installing applications and configuring
-    the system.
-
-    A `Display` object is used to print messages and log them to a file. A
-    non-logging `Display` object is used by default.
-
-    Args:
-        display (Display, optional): The display for printing messages.
-    """
-    display.header("macOS setup script.")
+def setup() -> None:
+    """Setup macOS on a new machine."""
+    printer.info("Setting up macOS...")
 
     # add terminal profiles
-    cmd = f"open -g '{terminal_dark}'"
-    shell.run(cmd, display.debug)
-    cmd = f"open -g '{terminal_light}'"
-    shell.run(cmd, display.debug)
+    shell(["open", "-g", config.terminal_dark], silent=True)
+    shell(["open", "-g", config.terminal_light], silent=True)
+    printer.debug("Added terminal profiles")
 
-    # run the macOS preferences script
-    if shell.run(f". {macos_preferences}", display.debug) != 0:
-        display.info("Check the log file for more information.")
-        raise RuntimeError("Setting macOS preferences failed.")
+    # run the preferences script
+    printer.print("Setting system preferences...")
+    shell(f". {config.macos_preferences}")
 
     # update the system
-    display.info("Updating the system...")
-    if shell.run("softwareupdate --install --all", display.debug) != 0:
-
-    display.success("macOS was setup successfully.")
+    printer.print("Updating the system...")
+    shell("softwareupdate --install --all")
+    printer.success("macOS setup complete")
 
 
 if __name__ == "__main__":
-    setup()
+    import argparse
+
+    import core
+
+    parser = argparse.ArgumentParser(description="macOS setup script.")
+    args = parser.parse_args()
+    core.run(setup, printer, "Failed to setup macOS")

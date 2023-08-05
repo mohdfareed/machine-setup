@@ -27,4 +27,10 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    setup()
+    import argparse
+
+    import core
+
+    parser = argparse.ArgumentParser(description="Git setup script.")
+    args = parser.parse_args()
+    core.run(setup, printer, "Failed to setup git")
