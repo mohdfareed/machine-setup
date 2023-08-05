@@ -27,6 +27,9 @@ def setup() -> None:
     utils.symlink(config.zshrc, ZSHRC)
     utils.symlink(config.zshenv, ZSHENV)
     utils.symlink(config.zprofile, ZPROFILE)
+
+    # disable login message
+    shell("touch ~/.hushlogin", silent=True)
     printer.success("Shell setup complete")
 
 
@@ -38,10 +41,13 @@ def install_omz():
     env = dict(ZSH=shell(cmd, silent=True)[0])
 
     # install oh-my-zsh
-    shell(["rm", "-rf", env["ZSH"]], silent=True)
+    shell(["sudo", "rm", "-rf", env["ZSH"]], silent=True)
     cmd = '"$(curl -fsSL https://git.io/JvzfK)" "" --unattended'
     if shell(f"sh -c {cmd}", env=env) != 0:
         raise RuntimeError("Failed to install oh-my-zsh")
+
+    # remove zshrc backup file
+    shell(["rm", "-rf", f"{ZSHRC}.pre-oh-my-zsh"], silent=True)
     printer.debug("Installed oh-my-zsh")
 
 

@@ -15,8 +15,7 @@ plugins=(
 source $MACHINE/zsh_config.sh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-autoload -Uz compinit
-compinit
+
 
 # Functions and Aliases
 # =============================================================================

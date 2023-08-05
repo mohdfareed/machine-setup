@@ -50,21 +50,23 @@ def setup_machine(config_path: str | None) -> None:
     keys_dir = utils.abspath(config_path, "keys") if config_path else None
 
     # run setup scripts
-    # homebrew.setup()
-    # print()
+    core.brew.setup()
+    print()
     core.shell.setup()
     print()
     core.ssh.setup(keys_dir)
     print()
-    # git.setup()
-    # print()
+    core.git.setup()
+    print()
     # python.setup()
     # print()
     # macos.setup()
     # print()
     # print()
     core.raspberrypi.setup()
-    printer.info("\nRestart for some changes to apply")
+    print()
+
+    printer.info("Restart for some changes to apply")
 
 
 if __name__ == "__main__":

@@ -45,13 +45,13 @@ def install_brew():
     """Run the Homebrew installation script."""
     # check if homebrew is already installed
     if shell(["command", "-v", "brew"], silent=True)[1] == 0:
-        printer.debug("Homebrew is already installed.")
+        printer.debug("Homebrew is already installed")
 
         # update homebrew if it is already installed
         printer.print("Updating Homebrew...")
         if shell(["brew", "update"], status="Updating Homebrew...") != 0:
-            raise RuntimeError("Failed to update Homebrew.")
-        return printer.success("Homebrew was updated.")
+            raise RuntimeError("Failed to update Homebrew")
+        return printer.success("Homebrew was updated")
 
     # install homebrew otherwise
     printer.print("Installing Homebrew...")
