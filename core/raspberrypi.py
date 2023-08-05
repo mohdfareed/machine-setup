@@ -36,7 +36,7 @@ def setup(hostname=HOSTNAME) -> None:
 
 
 def connect(hostname):
-    printer.info("Connecting to Raspberry Pi...")
+    printer.print("Connecting to Raspberry Pi...")
 
     # check if raspberrypi exists
     if shell(["ping", hostname, "-c", "1"]) != 0:
@@ -49,7 +49,7 @@ def connect(hostname):
 
 
 def copy_config(hostname):
-    printer.info("Copying config files to Raspberry Pi...")
+    printer.print("Copying config files to Raspberry Pi...")
     shell(["ssh", hostname, "mkdir", "-p", MACHINE], silent=True, safe=True)
 
     # copy config files to raspberrypi
@@ -65,7 +65,7 @@ def copy_config(hostname):
 
 
 def setup_scripts(hostname):
-    printer.info("Setting up scripts on Raspberry Pi...")
+    printer.print("Setting up scripts on Raspberry Pi...")
 
     # make scripts executable
     scripts = f"{MACHINE}/scripts"

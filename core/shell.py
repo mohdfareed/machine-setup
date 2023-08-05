@@ -31,7 +31,7 @@ def setup() -> None:
 
 
 def install_omz():
-    printer.info("Installing oh-my-zsh...")
+    printer.print("Installing oh-my-zsh...")
 
     # load installation environment
     cmd = f"source {config.zsh_env} > /dev/null && echo $ZSH"

@@ -18,23 +18,24 @@ def setup() -> None:
     configure_brew()
 
     # install packages from Brewfile
-    printer.info("Installing packages from Brewfile...")
+    printer.print("Installing packages from Brewfile...")
     cmd = f"--file={config.brewfile}"
     if shell(["brew", "bundle", cmd], status="Installing packages...") != 0:
         raise RuntimeError("Failed to install packages from Brewfile.")
     printer.debug("Installed packages from Brewfile")
 
     # upgrade packages
-    printer.info("Upgrading packages...")
+    printer.print("Upgrading packages...")
     if shell(["brew", "upgrade"], status="Upgrading packages...") != 0:
         raise RuntimeError("Failed to upgrade packages.")
-    printer.debug("Upgrading mac app store packages...")
+    printer.debug("Upgraded packages")
+    printer.print("Upgrading mac app store packages...")
     if shell(["mas", "upgrade"], status="Upgrading App Store apps...") != 0:
         raise RuntimeError("Failed to upgrade App Store apps.")
-    printer.debug("Upgraded packages")
+    printer.debug("Upgraded mac app store packages")
 
     # cleanup
-    printer.debug("Cleaning up...")
+    printer.print("Cleaning up...")
     if shell(["brew", "cleanup"], status="Cleaning up...") != 0:
         raise RuntimeError("Failed to cleanup.")
     printer.success("Homebrew setup complete")
@@ -47,13 +48,13 @@ def install_brew():
         printer.debug("Homebrew is already installed.")
 
         # update homebrew if it is already installed
-        printer.info("Updating Homebrew...")
+        printer.print("Updating Homebrew...")
         if shell(["brew", "update"], status="Updating Homebrew...") != 0:
             raise RuntimeError("Failed to update Homebrew.")
         return printer.success("Homebrew was updated.")
 
     # install homebrew otherwise
-    printer.info("Installing Homebrew...")
+    printer.print("Installing Homebrew...")
     cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
     if shell(cmd, status="Installing Homebrew...") != 0:
         raise RuntimeError("Failed to install Homebrew")

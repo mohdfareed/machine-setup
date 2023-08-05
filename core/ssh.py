@@ -74,7 +74,7 @@ def load_keys(keys: str) -> dict[str, SSHKey]:
 
 
 def setup_key(name: str, key: SSHKey) -> None:
-    printer.print(f"Setting up SSH key: [bold]{name}[/]")
+    printer.print(f"[bold]Setting up SSH key:[/] {name}")
     if not key.private_key or not key.public_key:
         printer.error(f"Invalid ssh key pair:")
         printer.error(f"    Private key: {key.private_key}")
@@ -90,7 +90,7 @@ def setup_key(name: str, key: SSHKey) -> None:
     # get key fingerprint
     fingerprint = shell(["ssh-keygen", "-lf", key.public_key], silent=True)[0]
     fingerprint = fingerprint.split(" ")[1]
-    printer.print(f"Key fingerprint: [bold]{fingerprint}[/]")
+    printer.print(f"[bold]Key fingerprint:[/] {fingerprint}")
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
