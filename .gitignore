@@ -3,3 +3,4 @@
 zprofile
 *.lock.json
 .venv/
+*.DS_Store
