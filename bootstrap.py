@@ -91,8 +91,8 @@ def setup_env(machine_path: str) -> str:
 
     # create virtual environment
     _print_info("Setting up virtual environment...")
-    env_options = dict(with_pip=True, upgrade_deps=True)
-    venv.create(machine_venv_path, prompt="setup", **env_options)
+    env_options = "--clear --upgrade-deps --prompt machine"
+    _exec(f"python3 -m venv {machine_venv_path} {env_options}", silent=True)
 
     # install dependencies
     cmd = [python, "-m", "pip", "install", "-r", req_path, "--upgrade"]
@@ -103,8 +103,13 @@ def setup_env(machine_path: str) -> str:
 def setup(python: str, machine_path: str, config_path, *args):
     """Execute machine setup script."""
     script = os.path.join(machine_path, SCRIPT)
-    config_path = os.path.realpath(config_path or os.getcwd())
-    _exec([python, script, config_path, *args], safe=False)
+
+    if config_path:
+        _print_info(f"Using config path: {config_path}")
+        config_path = os.path.realpath(config_path) if config_path else None
+        _exec([python, script, config_path, *args], safe=False)
+        return
+    _exec([python, script, *args], safe=False)
 
 
 def _print_error(error: str) -> None:
