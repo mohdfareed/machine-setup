@@ -29,8 +29,8 @@ gitignore = _os.path.join(machine, "gitignore")
 # packages
 brewfile = _os.path.join(machine, "brewfile")
 """The path of Homebrew packages file."""
-python_packages = _os.path.join(machine, "packages.python")
-"""The path of Python packages file."""
+requirements = _os.path.join(machine, "requirements.txt")
+"""The path of Python requirements file."""
 
 # macos
 macos = _os.path.join(machine, "macos")

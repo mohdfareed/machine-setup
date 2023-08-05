@@ -1,0 +1,15 @@
+# utility
+virtualenv     # virtual environment
+pip-autoremove # remove unused packages
+black          # code formatter
+pylint         # code linter
+rich           # console output beautifier
+
+
+# scientific
+numpy # numerical computing
+scipy # scientific computing
+sympy # symbolic computing
+
+# visualization
+matplotlib # plotting library

@@ -37,7 +37,7 @@ def connect(hostname):
     printer.print("Connecting to Raspberry Pi...")
 
     # check if raspberrypi exists
-    if shell(["ping", hostname, "-c", "1"]) != 0:
+    if shell(["ping", hostname, "-c", "1"], silent=True)[1] != 0:
         raise RuntimeError("Raspberry Pi is not connected to the network")
     printer.debug("Connection to Raspberry Pi established")
 

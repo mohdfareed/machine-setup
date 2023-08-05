@@ -6,10 +6,10 @@ import os
 import config
 import utils
 
-BREW = "/opt/homebrew/bin/brew"
-"""The path to the Homebrew executable."""
-MAS = "/opt/homebrew/bin/mas"
-"""The path to the Homebrew executable."""
+BIN = "/opt/homebrew/bin"
+"""The path to the Homebrew executables."""
+BREW = os.path.join(BIN, "brew")
+"""The path to the brew executable."""
 
 printer = utils.Printer("brew")
 """The Homebrew setup printer."""
@@ -35,7 +35,8 @@ def setup() -> None:
 
     # upgrade mac app store packages
     printer.print("Upgrading mac app store packages...")
-    shell([MAS, "upgrade"], silent=True, status="Upgrading...")
+    mas = os.path.join(BIN, "mas")
+    shell([mas, "upgrade"], silent=True, status="Upgrading...")
     printer.debug("Upgraded mac app store packages")
 
     # cleanup
