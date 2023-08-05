@@ -24,6 +24,7 @@ import os
 import shutil
 import subprocess
 import venv
+from typing import Optional
 
 REPOSITORY = "https://github.com/mohdfareed/machine.git"
 """Repository to clone."""
@@ -35,10 +36,10 @@ VENV_PATH = ".venv"
 """Path to the virtual environment."""
 
 
-def main(machine_path: str, config_path: str | None, overwrite=False, *args):
+def main(machine: str, config_path: Optional[str], overwrite=False, *args):
     """Clone and set up machine."""
 
-    machine_path = os.path.realpath(machine_path)  # load machine path
+    machine_path = os.path.realpath(machine)  # load machine path
     resolve_xcode()  # resolve xcode license
     clone_machine(machine_path, overwrite)  # clone repository
     python = setup_env(machine_path)  # setup virtual environment
@@ -114,7 +115,7 @@ def _print_info(info: str) -> None:
     print(f"\033[1m{info}\033[0m")
 
 
-def _exec(cmd: str | list, silent=False, safe=False, text=False):
+def _exec(cmd, silent=False, safe=False, text=False):
     # execute command and return output or exit code
     options: dict = dict(check=not safe, capture_output=silent, text=text)
     result = subprocess.run(cmd, shell=isinstance(cmd, str), **options)
