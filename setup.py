@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+from typing import Optional
 
 import config
 import core
@@ -10,7 +11,7 @@ printer = utils.Printer("setup")
 """The main setup printer."""
 
 
-def main(config_path: str | None, log=False, debug=False) -> None:
+def main(config_path: Optional[str], log=False, debug=False) -> None:
     """Setup the machine.
 
     Args:
@@ -44,7 +45,7 @@ def initial_setup(config_path: str) -> None:
     utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_zprofile)
 
 
-def setup_machine(config_path: str | None) -> None:
+def setup_machine(config_path: Optional[str]) -> None:
     """Run the setup scripts."""
     printer.info("Setting up machine...\n")
     keys_dir = utils.abspath(config_path, "keys") if config_path else None

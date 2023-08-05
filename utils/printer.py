@@ -1,6 +1,7 @@
 import logging
 import os
 from datetime import datetime
+from typing import Optional
 
 from rich import print
 from rich.logging import RichHandler
@@ -45,7 +46,7 @@ class Printer:
             return
         self.print(message, formatted_message, *args, **kwargs)
 
-    def print(self, msg: str, styled: str | None = None, *args, **kwargs):
+    def print(self, msg: str, styled: Optional[str] = None, *args, **kwargs):
         styled = styled or msg
         formatted_msg = self._format.format(name=self.name, message=styled)
         print(formatted_msg, *args, **kwargs)

@@ -2,6 +2,7 @@
 
 import os
 from collections import defaultdict
+from typing import Optional
 
 import config
 import utils
@@ -21,13 +22,13 @@ shell = utils.Shell(printer.debug, printer.error)
 
 class SSHKey:
     def __init__(self) -> None:
-        self.private_key: str | None = None
+        self.private_key: Optional[str] = None
         """The path to the private key file."""
-        self.public_key: str | None = None
+        self.public_key: Optional[str] = None
         """The path to the public key file."""
 
 
-def setup(keys_dir: str | None) -> None:
+def setup(keys_dir: Optional[str]) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory.
 

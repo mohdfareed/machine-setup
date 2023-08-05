@@ -24,7 +24,7 @@ class Shell:
         self,
         output_handler: typing.Callable = print,
         error_handler: typing.Callable = print,
-        silent_output_handler: typing.Callable | None = None,
+        silent_output_handler: typing.Optional[typing.Callable] = None,
     ) -> None:
         self.output_handler = output_handler
         self.error_handler = error_handler
