@@ -37,17 +37,17 @@ def install_omz():
     printer.print("Installing oh-my-zsh...")
 
     # load installation environment
-    cmd = f"source {config.zsh_env} > /dev/null && echo $ZSH"
+    cmd = f"source {config.zsh_env} && echo $ZSH"
     env = dict(ZSH=shell(cmd, silent=True)[0])
 
     # install oh-my-zsh
-    shell(["sudo", "rm", "-rf", env["ZSH"]], silent=True)
-    cmd = '"$(curl -fsSL https://git.io/JvzfK)" "" --unattended'
-    if shell(f"sh -c {cmd}", env=env) != 0:
+    shell(["sudo", "rm", "-rf", env["ZSH"]])
+    cmd = 'sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended'
+    if shell(cmd, env=env, silent=True, status="Installing...")[1] != 0:
         raise RuntimeError("Failed to install oh-my-zsh")
 
     # remove zshrc backup file
-    shell(["rm", "-rf", f"{ZSHRC}.pre-oh-my-zsh"], silent=True)
+    shell(["rm", "-rf", f"{ZSHRC}.pre-oh-my-zsh"])
     printer.debug("Installed oh-my-zsh")
 
 

@@ -15,6 +15,6 @@ def run(setup, printer, message, *args, **kwargs):
         utils.Printer.initialize(debug=True)
         setup(*args, **kwargs)
     except Exception as exception:
-        # printer.logger.exception(exception)
+        printer.logger.exception(exception)
         printer.error(message)
         exit(1)

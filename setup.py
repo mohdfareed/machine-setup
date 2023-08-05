@@ -28,7 +28,7 @@ def main(config_path: str | None, log=False, debug=False) -> None:
     try:  # setup the machine
         setup_machine(config_path)
     except Exception as exception:
-        # printer.logger.exception(exception) if printer.debug_mode else None
+        printer.logger.exception(exception) if printer.debug_mode else None
         printer.error("Failed to setup machine.")
         exit(1)
     printer.success("Machine setup complete")

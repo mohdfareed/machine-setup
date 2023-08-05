@@ -1,8 +1,6 @@
 """Setup module containing a `setup` function for setting up the shell on a new
 machine."""
 
-import os
-
 import config
 import utils
 
@@ -76,8 +74,7 @@ def setup_scripts(hostname):
     setup = f"{scripts}/setup.sh"
     script = f"/usr/local/bin/{SETUP_SCRIPT}"
     shell(["ssh", hostname, "sudo", "ln", "-sf", setup, script], silent=True)
-    printer.debug(f"Symlinked: {os.path.dirname(setup)} -> {script}")
-
+    printer.debug(f"Symlinked: {setup} -> {script}")
     printer.debug("Added setup script to path")
     printer.info(f"Setup Raspberry Pi by executing:[/] [green]{SETUP_SCRIPT}")
 

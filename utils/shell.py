@@ -24,18 +24,20 @@ class Shell:
         self,
         output_handler: typing.Callable = print,
         error_handler: typing.Callable = print,
+        silent_output_handler: typing.Callable | None = None,
     ) -> None:
         self.output_handler = output_handler
         self.error_handler = error_handler
+        self.silent_output_handler = silent_output_handler
 
     def _run(
         self, command, env=None, silent=False, safe=False, status=LOADING_STR
     ) -> typing.Union[tuple[str, int], int]:
+        # show loading animation while command is running in background
         console = Console()
-
-        # execute command while print loading status
         with console.status(f"[green]{status}[/]") as status:
-            # use popen to print output in real time
+            status.stop() if not silent else None
+            # use popen to retrieve outputs in real time
             process = subprocess.Popen(
                 command,
                 env=env,
@@ -44,20 +46,25 @@ class Shell:
                 shell=isinstance(command, str),
                 text=True,
             )
-
-            # print output and wait for process to complete
-            if not silent and process.stdout:
-                status.stop()
-                for line in process.stdout:
-                    self.output_handler(line, end="")
-            returncode = process.wait()
+            output, returncode = self.print_output(process, silent=silent)
+            status.stop()
 
         # handle return code and/or output
-        output = process.stdout.read().strip() if process.stdout else None
         if not safe and returncode != 0:
             self.error_handler(output) if output else None
             raise subprocess.CalledProcessError(returncode, command, output)
-        return (output or "", returncode) if silent else returncode
+        return (output, returncode) if silent else returncode
+
+    def print_output(self, process, silent):
+        # print output in real time
+        output = ""
+        for line in process.stdout:
+            output += line
+            if silent and self.silent_output_handler:
+                self.silent_output_handler(line.strip())
+            elif not silent:
+                self.output_handler(line, end="")
+        return output.strip(), process.wait()
 
     @typing.overload
     def __call__(
