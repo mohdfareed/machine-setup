@@ -23,7 +23,6 @@ import argparse
 import os
 import shutil
 import subprocess
-import venv
 from typing import Optional
 
 REPOSITORY = "https://github.com/mohdfareed/machine.git"
@@ -39,38 +38,21 @@ VENV_PATH = ".venv"
 def main(machine: str, config_path: Optional[str], overwrite=False, *args):
     """Clone and set up machine."""
 
-    machine_path = os.path.realpath(machine)  # load machine path
-    resolve_xcode()  # resolve xcode license
+    machine_path = os.path.realpath(machine)  # resolve machine path
+    resolve_xcode()  # accept xcode license
     clone_machine(machine_path, overwrite)  # clone repository
     python = setup_env(machine_path)  # setup virtual environment
     setup(python, machine_path, config_path, *args)  # setup machine
 
 
-def load_machine_path(config_path: str) -> str:
-    # resolve config/machine.sh
-    machine_env = os.path.realpath(os.path.join(config_path, "machine.sh"))
-    if not os.path.isfile(machine_env):
-        _print_error(f"Machine file not found at: {machine_env}")
-        exit(1)
-
-    # read MACHINE from config/machine.sh
-    command = f"source '{machine_env}' && echo $MACHINE"
-    machine_path = _exec(command, silent=True, text=True)
-    _print_info(f"Loaded machine path: {machine_path}")
-    return os.path.abspath(machine_path)  # don't follow symlinks
-
-
 def resolve_xcode():
-    try:  # check if xcode commandline tools are installed
-        _exec("xcode-select -p", silent=True)
+    try:  # accept xcode license
+        prompt = "Authenticate to accept Xcode license agreement: "
+        _exec(["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"])
     except subprocess.CalledProcessError:
+        _print_error("Failed to accept Xcode license")
         _exec("xcode-select --install", silent=True)  # prompt to install
-        _print_error("Xcode Commandline Tools are not installed")
         exit(1)
-
-    # accept xcode license
-    prompt = "Authenticate to accept Xcode license agreement: "
-    _exec(["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"])
 
 
 def clone_machine(path: str, overwrite=False):
@@ -85,17 +67,17 @@ def clone_machine(path: str, overwrite=False):
 
 
 def setup_env(machine_path: str) -> str:
-    req_path = os.path.join(machine_path, REQUIREMENTS)
+    req_file = os.path.join(machine_path, REQUIREMENTS)
     machine_venv_path = os.path.join(machine_path, VENV_PATH)
     python = os.path.join(machine_venv_path, "bin", "python")
 
     # create virtual environment
     _print_info("Setting up virtual environment...")
-    env_options = "--clear --upgrade-deps --prompt machine"
-    _exec(f"python3 -m venv {machine_venv_path} {env_options}", silent=True)
+    venv_options = "--clear --upgrade-deps --prompt machine"
+    _exec(f"python3 -m venv {machine_venv_path} {venv_options}", silent=True)
 
     # install dependencies
-    cmd = [python, "-m", "pip", "install", "-r", req_path, "--upgrade"]
+    cmd = [python, "-m", "pip", "install", "-r", req_file, "--upgrade"]
     _exec(cmd, silent=True)
     return python
 
@@ -104,12 +86,13 @@ def setup(python: str, machine_path: str, config_path, *args):
     """Execute machine setup script."""
     script = os.path.join(machine_path, SCRIPT)
 
-    if config_path:
-        _print_info(f"Using config path: {config_path}")
-        config_path = os.path.realpath(config_path) if config_path else None
-        _exec([python, script, config_path, *args], safe=False)
+    if not config_path:
+        _exec([python, script, *args], safe=False)
         return
-    _exec([python, script, *args], safe=False)
+
+    _print_info(f"Using config path: {config_path}")
+    config_path = os.path.realpath(config_path) if config_path else None
+    _exec([python, script, config_path, *args], safe=False)
 
 
 def _print_error(error: str) -> None:

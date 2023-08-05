@@ -44,8 +44,7 @@ def setup(keys_dir: Optional[str]) -> None:
 
     # setup ssh keys
     key_pairs = load_keys(keys_dir)
-    for key_name, key in key_pairs.items():
-        setup_key(key_name, key)
+    [setup_key(key_name, key) for key_name, key in key_pairs.items()]
     printer.success("SSH setup complete")
 
 

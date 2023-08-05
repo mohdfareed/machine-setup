@@ -1,6 +1,5 @@
 *__pycache__*
 *.log
-zprofile
 *.lock.json
+zprofile
 .venv/
-*.DS_Store

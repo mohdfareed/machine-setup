@@ -10,7 +10,7 @@ To set up the machine, run the following command:
 
 ```sh
 url=https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py
-curl -fsSL $url | python3 - [--overwrite] path/to/config_dir [setup_args...]
+curl -fsSL $url | python3 - [--force] path/to/config_dir [setup_args...]
 ```
 
 The `config_dir` argument is the path to the directory containing the local
