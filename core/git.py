@@ -1,55 +1,29 @@
 """Setup module containing a `setup` function for setting up Git on a new
-machine.
-"""
+machine."""
 
-from git import gitconfig, gitignore
+import config
+import utils
 
-from utils import abspath, create_file, shell, symlink
-from utils.logger import Display
-
-DISPLAY: Display = Display(no_logging=True)
-"""The default display for printing messages."""
-
-_gitconfig: str = abspath("~/.gitconfig")
+GITCONFIG: str = utils.abspath("~/.gitconfig", resolve_links=False)
 """The path to the git configuration file on the machine."""
-_gitignore: str = abspath("~/.gitignore")
+GITIGNORE: str = utils.abspath("~/.gitignore", resolve_links=False)
 """The path to the git ignore file on the machine."""
 
+printer = utils.Printer("git")
+"""The git setup printer."""
+shell = utils.Shell(printer.debug, printer.error)
+"""The git shell instance."""
 
-def setup(display=DISPLAY) -> None:
-    """Setup git on a new machine by installing it through Homebrew and
-    configuring it.
 
-    A `Display` object is used to print messages and log them to a file. A
-    non-logging `Display` object is used by default.
-
-    Args:
-        display (Display, optional): The display for printing messages.
-    """
-    display.header("Setting up Git...")
-
-    # check if homebrew is installed and install git
-    if shell.run("command -v brew", display.debug, display.error) != 0:
-        raise RuntimeError("Could not find Homebrew.")
-    display.verbose("Homebrew was found.")
+def setup() -> None:
+    """Setup git on a new machine."""
+    printer.info("Setting up git...")
 
     # symlink configuration file
-    symlink(gitconfig, _gitconfig)
-    display.verbose(f"Symlinked: {gitconfig}")
-    display.verbose(f"       to: {_gitconfig}")
-    symlink(gitignore, _gitignore)
-    display.verbose(f"Symlinked: {gitconfig}")
-    display.verbose(f"       to: {_gitignore}")
+    utils.symlink(config.gitconfig, GITCONFIG)
+    utils.symlink(config.gitignore, GITIGNORE)
 
-    # set github as a known host if it doesn't exist
-    if shell.run_quiet(f"ssh-keygen -F github.com", display.debug) != 0:
-        create_file("~/.ssh/known_hosts")
-        cmd = f"ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts"
-        if shell.run(cmd, display.debug, display.error) != 0:
-            raise RuntimeError("Failed to set github as a known host.")
-        display.verbose("Github was set as a known host.")
-
-    display.success("Git was setup successfully.")
+    printer.success("Git was setup successfully.")
 
 
 if __name__ == "__main__":

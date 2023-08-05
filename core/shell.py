@@ -22,10 +22,6 @@ def setup() -> None:
     """Setup the shell environment on a machine."""
     printer.info("Setting up shell...")
 
-    # check if homebrew is installed
-    if shell(["command", "-v", "brew"], silent=True)[1] != 0:
-        raise RuntimeError("Could not find Homebrew")
-
     # install omz and symlink config files
     install_omz()
     utils.symlink(config.zshrc, ZSHRC)
