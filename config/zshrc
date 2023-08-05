@@ -1,10 +1,10 @@
 # Configuration: macOS
 # =============================================================================
 
-eval "$(/opt/homebrew/bin/brew shellenv)"                # homebrew
-export PATH="$(brew --prefix python)/libexec/bin:$PATH"  # python
-fpath+=("$(brew --prefix)/share/zsh/site-functions")     # pure prompt
-fpath+=("$(brew --prefix)/share/zsh-completions:$fpath") # completions
+eval "$(/opt/homebrew/bin/brew shellenv)"               # homebrew
+export PATH="$(brew --prefix python)/libexec/bin:$PATH" # python
+fpath+=("$(brew --prefix)/share/zsh/site-functions")    # pure prompt
+fpath+=("$(brew --prefix)/share/zsh-completions")       # completions
 
 # zsh plugins
 plugins=(
