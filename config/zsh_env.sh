@@ -16,20 +16,21 @@ export BAT_PAGER="less $LESS"  # use less as the pager for bat
 
 # update an environment variable, creating it if it doesn't exist
 function update-env {
-    usage="usage: $0 variable value"
-    if (($# != 2)); then echo $usage && return 1; fi
-    if [ -z ${!1+x} ]; then
-        echo "$1=$2" >> $HOME/.zshenv
-    else
-        sed -i '' "s/^$1=.*/$1=$2/" $HOME/.zshenv
-    fi
-    export $1=$2
-}
+    usage="usage: $0 variable [value]"
+    if [ $# -ne 1 ] && [ $# -ne 2 ]; then echo $usage && return 1; fi
+    env=$(readlink -f $HOME/.zshenv)
+    new_var="export $1=$2"
+    pattern="^(export )?$1="
 
-# unset an environment variable
-function delete-env {
-    usage="usage: $0 variable"
-    if (($# != 1)); then echo $usage && return 1; fi
-    sed -i '' "/^$1=.*/d" $HOME/.zshenv
-    unset $1
+    # create it if it doesn't exist
+    if ! grep -Eq $pattern $env; then
+        echo $new_var >> $env
+    else # if the variable exists, update it
+        if [[ "$OSTYPE" == "darwin"* ]]; then # macOS
+            sed -i '' -E "s/$pattern.*/$new_var/" $env
+        else # GNU
+            sed -i -r "s/$pattern.*/$new_var/" $env
+        fi
+    fi
+    $new_var
 }
