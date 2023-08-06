@@ -63,23 +63,3 @@ function ztime {
     if (($# > 1)); then echo $usage && return 1; fi
     for i in $(seq 1 ${1-1}); do time $SHELL -i -c exit; done
 }
-
-# update an environment variable, creating it if it doesn't exist
-function update-env {
-    usage="usage: $0 variable value"
-    if (($# != 2)); then echo $usage && return 1; fi
-    if [ -z ${!1+x} ]; then
-        echo "$1=$2" >> $HOME/.zshenv
-    else
-        sed -i '' "s/^$1=.*/$1=$2/" $HOME/.zshenv
-    fi
-    export $1=$2
-}
-
-# unset an environment variable
-function delete-env {
-    usage="usage: $0 variable"
-    if (($# != 1)); then echo $usage && return 1; fi
-    sed -i '' "/^$1=.*/d" $HOME/.zshenv
-    unset $1
-}

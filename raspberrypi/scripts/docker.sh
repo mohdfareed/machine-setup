@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 # Install docker and run containers
 
 echo "Installing Docker..."

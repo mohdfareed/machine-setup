@@ -3,6 +3,8 @@
 
 export PURE="$HOME/.zsh/pure"
 export ZSHCOMP="$HOME/.zsh/zsh-completions"
+export TAILSCALE_DEVICEID=
+export TAILSCALE_IP=
 
 # global environment variables
 shell_config="$(dirname $(realpath ~/.zshenv))"
