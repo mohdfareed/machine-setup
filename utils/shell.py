@@ -36,7 +36,6 @@ class Shell:
         # show loading animation while command is running in background
         console = Console()
         with console.status(f"[green]{status}[/]") as status:
-            status.stop() if not silent else None
             # use popen to retrieve outputs in real time
             process = subprocess.Popen(
                 command,
@@ -46,8 +45,7 @@ class Shell:
                 shell=isinstance(command, str),
                 text=True,
             )
-            output, returncode = self.print_output(process, silent=silent)
-            status.stop()
+            output, returncode = self.print_output(process, silent, status)
 
         # handle return code and/or output
         if not safe and returncode != 0:
@@ -55,7 +53,7 @@ class Shell:
             raise subprocess.CalledProcessError(returncode, command, output)
         return (output, returncode) if silent else returncode
 
-    def print_output(self, process, silent):
+    def print_output(self, process, silent, status):
         # print output in real time
         output = ""
         for line in process.stdout:
@@ -64,6 +62,7 @@ class Shell:
                 self.silent_output_handler(line.strip())
             elif not silent:
                 self.output_handler(line, end="")
+            status.update(f"[green]{line.strip()}[/]")
         return output.strip(), process.wait()
 
     @typing.overload
