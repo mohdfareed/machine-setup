@@ -5,11 +5,13 @@ machine.
 import config
 import utils
 
-ZPROFILE: str = utils.abspath("~/.zprofile", resolve_links=False)
+ZPROFILE = "~/.zprofile"
 """The path to the zsh profile file symlink."""
-ZSHRC: str = utils.abspath("~/.zshrc", resolve_links=False)
+ZSHRC = "~/.zshrc"
 """The path to the zsh configuration file symlink."""
-ZSHENV: str = utils.abspath("~/.zshenv", resolve_links=False)
+ZSHENV = "~/.zshenv"
+"""The path to the zsh environment file symlink."""
+MICRO_SETTINGS = "~/.config/micro/settings.json"
 """The path to the zsh environment file symlink."""
 
 printer = utils.Printer("shell")
@@ -27,6 +29,7 @@ def setup() -> None:
     utils.symlink(config.zshrc, ZSHRC)
     utils.symlink(config.zshenv, ZSHENV)
     utils.symlink(config.zprofile, ZPROFILE)
+    utils.symlink(config.micro_settings, MICRO_SETTINGS)
 
     # disable login message
     shell("touch ~/.hushlogin", silent=True)
