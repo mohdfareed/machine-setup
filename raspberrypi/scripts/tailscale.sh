@@ -21,5 +21,5 @@ echo address=/pi/$ip | sudo tee $conf_file
 # update machine ip and device id
 echo "Enter the Tailscale device ID:"; read device_id
 source $HOME/.zshenv &> /dev/null
-update-env TAILSCALE_DEVICEID \"$device_id\"
-update-env TAILSCALE_IP \"$(tailscale ip -1)\"
+update_env TAILSCALE_DEVICEID \"$device_id\"
+update_env TAILSCALE_IP \"$(tailscale ip -1)\"

@@ -4,6 +4,7 @@ for running shell commands and `run_quiet` for running commands without
 printing their output. The provides an interactive mode of the shell.
 """
 
+import getpass
 import os
 import subprocess
 import typing
@@ -15,6 +16,9 @@ LOADING_STR: str = "Loading..."
 """The default string to print while waiting for a command to complete. It is
 followed by a loading animation.
 """
+
+shell: "Shell"
+"""The root shell instance."""
 
 
 class Shell:
@@ -28,11 +32,13 @@ class Shell:
     ) -> None:
         self.output_handler = output_handler
         self.error_handler = error_handler
-        self.silent_output_handler = silent_output_handler
+        self.silent_handler = silent_output_handler
 
     def _run(
         self, command, env=None, silent=False, safe=False, status=LOADING_STR
     ) -> typing.Union[tuple[str, int], int]:
+        self.status = status
+
         # show loading animation while command is running in background
         console = Console()
         with console.status(f"[green]{status}[/]") as status:
@@ -54,15 +60,17 @@ class Shell:
         return (output, returncode) if silent else returncode
 
     def print_output(self, process, silent, status):
-        # print output in real time
         output = ""
+        # print output in real time
         for line in process.stdout:
-            output += line
-            if silent and self.silent_output_handler:
-                self.silent_output_handler(line.strip())
-            elif not silent:
+            if not silent:
                 self.output_handler(line, end="")
-            status.update(f"[green]{line.strip()}[/]")
+            elif line.strip():  # update status and log if silent
+                status.update(f"[green]{line.strip()}[/]")
+                self.silent_handler(
+                    line.strip()
+                ) if self.silent_handler else ...
+            output += line
         return output.strip(), process.wait()
 
     @typing.overload
@@ -121,6 +129,14 @@ def interactive() -> None:
         # run the command and print output
         exit_code = shell(cmd)
 
+
+shell = Shell()
+try:  # check if the user has sudo privileges
+    shell("sudo -n true &> /dev/null", silent=True)
+except subprocess.CalledProcessError:
+    # the user doesn't have sudo privileges, prompt for the password
+    password = getpass.getpass("\033[32m Enter your password: \033[30m")
+    shell(f"echo {password} | sudo -Sv", silent=True)
 
 if __name__ == "__main__":
     print("[bold]Running shell in interactive mode.[/]\n")

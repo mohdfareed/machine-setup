@@ -50,7 +50,7 @@ class Printer:
         styled = styled or msg
         formatted_msg = self._format.format(name=self.name, message=styled)
         print(formatted_msg, *args, **kwargs)
-        self.logger.info(msg)
+        self.logger.info(msg) if msg else None
 
     @classmethod
     def initialize(cls, to_file=False, debug=False):

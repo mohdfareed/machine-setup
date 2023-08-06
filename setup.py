@@ -23,10 +23,13 @@ def main(config_path: Optional[str], log=False, debug=False) -> None:
     # initial setup
     os.chdir(os.path.dirname(utils.abspath(__file__)))
     utils.Printer.initialize(to_file=log, debug=debug)
-    initial_setup(config_path) if config_path else None
+    keys = initial_setup(config_path) if config_path else None
 
     try:  # setup the machine
-        setup_machine(config_path)
+        setup_machine(keys)
+    except KeyboardInterrupt:
+        printer.error("Setup interrupted")
+        exit(0)
     except Exception as exception:
         printer.logger.exception(exception) if printer.debug_mode else None
         printer.error("Failed to setup machine.")
@@ -34,7 +37,7 @@ def main(config_path: Optional[str], log=False, debug=False) -> None:
     printer.success("Machine setup complete")
 
 
-def initial_setup(config_path: str) -> None:
+def initial_setup(config_path: str):
     """initial setup of the machine."""
     printer.info("Performing initial setup...")
 
@@ -42,17 +45,19 @@ def initial_setup(config_path: str) -> None:
     config_path = utils.abspath(config_path)
     utils.symlink(utils.abspath(config_path, "machine.sh"), config.zprofile)
     utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_zprofile)
+    # return ssh keys path
+    return utils.abspath(config_path, "keys")
 
 
-def setup_machine(config_path: Optional[str]) -> None:
+def setup_machine(keys: Optional[str]) -> None:
     """Run the setup scripts."""
-    keys_dir = utils.abspath(config_path, "keys") if config_path else None
 
+    print()
     core.brew.setup()
     print()
     core.shell.setup()
     print()
-    core.ssh.setup(keys_dir)
+    core.ssh.setup(keys)
     print()
     core.git.setup()
     print()
