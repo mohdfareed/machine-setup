@@ -55,11 +55,12 @@ class Printer:
     @classmethod
     def initialize(cls, to_file=False, debug=False):
         """Initialize the global logger of the printer."""
-        cls.debug_mode = debug
         if to_file:  # create file handler
             file_handler, file = _create_file_handler()
             utils.root_printer.info(f"Logging to file: {file}")
             logger.addHandler(file_handler)
+        cls.debug_mode = debug
+        utils.root_printer.debug("Debug mode enabled") if debug else None
 
 
 def _create_console_handler():

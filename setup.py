@@ -23,7 +23,6 @@ def main(config_path: Optional[str], log=False, debug=False) -> None:
     # initial setup
     os.chdir(os.path.dirname(utils.abspath(__file__)))
     utils.Printer.initialize(to_file=log, debug=debug)
-    printer.debug("Debug mode enabled") if debug else None
     initial_setup(config_path) if config_path else None
 
     try:  # setup the machine
@@ -47,10 +46,8 @@ def initial_setup(config_path: str) -> None:
 
 def setup_machine(config_path: Optional[str]) -> None:
     """Run the setup scripts."""
-    printer.info("Setting up machine...\n")
     keys_dir = utils.abspath(config_path, "keys") if config_path else None
 
-    # run setup scripts
     core.brew.setup()
     print()
     core.shell.setup()
