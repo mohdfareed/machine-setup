@@ -64,8 +64,12 @@ class Shell:
         # print output in real time
         for line in process.stdout:
             if not silent:
+                status.stop()
                 self.output_handler(line, end="")
-            elif line.strip():  # update status and log if silent
+                status.start()
+
+            # update status and log if silent
+            elif line.strip():  # ignore empty lines
                 status.update(f"[green]{line.strip()}[/]")
                 self.silent_handler(
                     line.strip()
