@@ -8,8 +8,6 @@ import utils
 
 HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
-MACHINE = "~/machine"
-"""The path to the machine directory on the Raspberry Pi."""
 SETUP_SCRIPT = "setup-machine"
 """The name of the setup script on the Raspberry Pi."""
 
@@ -29,9 +27,10 @@ def setup(hostname=HOSTNAME) -> None:
     """
     printer.info("Setting up Raspberry Pi...")
 
+    machine_path = shell(["source", config.pi_zshenv], silent=True)[0]
     connect(hostname)
-    copy_config(hostname)
-    setup_scripts(hostname)
+    copy_config(hostname, machine_path)
+    setup_scripts(hostname, machine_path)
     printer.success("Raspberry Pi setup complete")
 
 
@@ -48,12 +47,12 @@ def connect(hostname):
     printer.debug("Added SSH key to Raspberry Pi")
 
 
-def copy_config(hostname):
+def copy_config(hostname, machine):
     printer.print("Copying config files to Raspberry Pi...")
-    shell(["ssh", hostname, "mkdir", "-p", MACHINE], silent=True, safe=True)
+    shell(["ssh", hostname, "mkdir", "-p", machine], silent=True, safe=True)
 
     # copy config files to raspberrypi
-    machine = f"{hostname}:{MACHINE}"
+    machine = f"{hostname}:{machine}"
     shell(["rsync", "-avzL", config.pi_machine + "/", machine], silent=True)
     printer.debug(
         f"Copied: {os.path.basename(config.pi_machine)}/* -> {machine}"
@@ -66,11 +65,11 @@ def copy_config(hostname):
     printer.debug("Copied config files to Raspberry Pi")
 
 
-def setup_scripts(hostname):
+def setup_scripts(hostname, machine):
     printer.print("Setting up scripts on Raspberry Pi...")
 
     # make scripts executable
-    scripts = f"{MACHINE}/scripts"
+    scripts = f"{machine}/scripts"
     shell(["ssh", hostname, "chmod", "+x", f"{scripts}/*.sh"], silent=True)
     printer.debug("Changed scripts to executable")
 

@@ -45,5 +45,7 @@ pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
 """The path of Raspberry Pi config directory."""
 pi_zprofile = _os.path.join(pi_machine, "zprofile")
 """The path of Raspberry Pi profile variables file."""
+pi_zshenv = _os.path.join(pi_machine, "zshenv")
+"""The path of Raspberry Pi environment variables file."""
 pi_shared_config = (zsh_config, zsh_env, micro_settings)
 """The shared config files between the machine and Raspberry Pi."""
