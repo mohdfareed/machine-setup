@@ -1,11 +1,9 @@
 # Environment: macOS
 # =============================================================================
 
-export MACHINE="$HOME/Developer/machine/config"
-# icloud directory
+export MACHINE="$HOME/Developer/machine"
 export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-# docker host
 export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
 
 # global environment variables
-source "$MACHINE/zsh_env.sh"
+source "$MACHINE/config/zsh_env.sh"

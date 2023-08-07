@@ -33,16 +33,25 @@ REQUIREMENTS = "requirements.txt"
 """Virtual environment requirements filename."""
 VENV_PATH = ".venv"
 """Path to the virtual environment."""
+ENV = "https://raw.githubusercontent.com/mohdfareed/machine/main/config/zshenv"
+"""Path to the environment file."""
 
 
-def main(machine: str, config_path: Optional[str], overwrite=False, *args):
+def main(config_path: Optional[str], overwrite=False, *args):
     """Clone and set up machine."""
 
-    machine_path = os.path.realpath(machine)  # resolve machine path
     resolve_xcode()  # accept xcode license
+    machine_path = load_env()  # resolve machine path
     clone_machine(machine_path, overwrite)  # clone repository
     python = setup_env(machine_path)  # setup virtual environment
     setup(python, machine_path, config_path, *args)  # setup machine
+
+
+def load_env() -> str:
+    _exec(["curl", "-fsSL", ENV, "-o", "temp.sh"], silent=True)
+    path = _exec("source temp.sh && echo $MACHINE", silent=True, text=True)
+    _exec("rm temp.sh", silent=True)
+    return os.path.realpath(path)
 
 
 def resolve_xcode():
@@ -113,8 +122,9 @@ def _exec(cmd, silent=False, safe=False, text=False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Bootstrap machine setup.")
     parser.add_argument("-f", "--force", action="store_true", help="overwrite")
-    parser.add_argument("-p", "--path", type=str, help="path to config files")
-    parser.add_argument("machine_path", type=str, help="local machine path")
+    parser.add_argument(
+        "config_path", nargs="?", type=str, help="config files path"
+    )
     parser.add_argument(
         "args",
         metavar="...",
@@ -124,7 +134,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     try:
-        main(args.machine_path, args.path, args.force, *args.args)
+        main(args.config_path, args.force, *args.args)
     except Exception as e:
         _print_error(f"Error: {e}")
         _print_error("Failed to bootstrap machine")
