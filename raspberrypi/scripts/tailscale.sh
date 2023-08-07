@@ -19,8 +19,8 @@ sudo mkdir -p "$(dirname "$conf_file")"
 echo address=/pi/$ip | sudo tee $conf_file
 
 # update machine ip and device id
+source $MACHINE/zshenv
 echo "Enter the Tailscale device ID:"; read device_id
-source $HOME/.zshenv &> /dev/null
 update_env TAILSCALE_DEVICEID \"$device_id\"
 update_env TAILSCALE_IP \"$(tailscale ip -1)\"
 

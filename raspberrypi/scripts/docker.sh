@@ -8,4 +8,4 @@ sudo snap enable docker
 
 echo "Loading containers..."
 sudo addgroup --system docker && sudo adduser $USER docker
-cd $HOME/machine && docker compose up -d
+cd $MACHINE && docker compose up -d
