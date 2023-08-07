@@ -2,6 +2,7 @@
 machine."""
 
 import os
+import re
 
 import config
 import utils
@@ -27,11 +28,29 @@ def setup(hostname=HOSTNAME) -> None:
     """
     printer.info("Setting up Raspberry Pi...")
 
-    machine_path = shell(["source", config.pi_zshenv], silent=True)[0]
+    machine_path = load_zshenv()
     connect(hostname)
     copy_config(hostname, machine_path)
     setup_scripts(hostname, machine_path)
     printer.success("Raspberry Pi setup complete")
+
+
+def load_zshenv():
+    # parse file and return MACHINE variable
+    env_value = None
+    with open(config.pi_zshenv, "r") as file:
+        for line in file:
+            if match := re.match(r"^(export )?MACHINE=(.*?)$", line):
+                env_value = match.group(2).strip()
+                break
+    if not env_value:  # MACHINE variable must be set
+        raise RuntimeError("Failed to load MACHINE variable from zshenv")
+
+    match = re.match(r'([\'"])(.*?)\1', env_value)
+    if match:  # the value is quoted
+        return match.group(2)
+    else:  # the value is not quoted, take everything until ` #`
+        return env_value.split(" #")[0].strip()
 
 
 def connect(hostname):

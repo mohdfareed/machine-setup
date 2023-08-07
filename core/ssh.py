@@ -39,12 +39,10 @@ def setup(keys_dir: Optional[str]) -> None:
 
     # copy config file
     utils.symlink(config.ssh_config, SSH_DIR + "config")
-    if not keys_dir:
-        return
 
-    # setup ssh keys
-    key_pairs = load_keys(keys_dir)
-    [setup_key(key_name, key) for key_name, key in key_pairs.items()]
+    if keys_dir:  # setup ssh keys
+        key_pairs = load_keys(keys_dir)
+        [setup_key(key_name, key) for key_name, key in key_pairs.items()]
     printer.success("SSH setup complete")
 
 
