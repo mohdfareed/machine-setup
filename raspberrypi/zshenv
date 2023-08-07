@@ -1,11 +1,11 @@
 # Environment: Raspberry Pi
 # =============================================================================
 
+export MACHINE="$HOME/machine"
 export PURE="$HOME/.zsh/pure"
 export ZSHCOMP="$HOME/.zsh/zsh-completions"
 export TAILSCALE_DEVICEID=
 export TAILSCALE_IP=
 
 # global environment variables
-shell_config="$(dirname $(realpath ~/.zshenv))"
-source "$shell_config/zsh_env.sh"
+source "$MACHINE/zsh_env.sh"

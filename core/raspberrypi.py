@@ -1,6 +1,8 @@
 """Setup module containing a `setup` function for setting up the shell on a new
 machine."""
 
+import os
+
 import config
 import utils
 
@@ -53,12 +55,14 @@ def copy_config(hostname):
     # copy config files to raspberrypi
     machine = f"{hostname}:{MACHINE}"
     shell(["rsync", "-avzL", config.pi_machine + "/", machine], silent=True)
-    printer.debug(f"Copied: {config.pi_machine}/* -> {machine}")
+    printer.debug(
+        f"Copied: {os.path.basename(config.pi_machine)}/* -> {machine}"
+    )
 
     # copy shared config files
     for config_file in config.pi_shared_config:
         shell(["rsync", "-avzL", config_file, machine], silent=True)
-        printer.debug(f"Copied: {config_file} -> {machine}")
+        printer.debug(f"Copied: {os.path.basename(config_file)} -> {machine}")
     printer.debug("Copied config files to Raspberry Pi")
 
 
@@ -86,7 +90,12 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Raspberry Pi setup script.")
     parser.add_argument(
-        "hostname", type=str, help="the local hostname of the Raspberry Pi"
+        "hostname", type=str, help="local hostname of Raspberry Pi", nargs="?"
     )
     args = parser.parse_args()
-    core.run(setup, printer, "Failed to setup Raspberry Pi", args.hostname)
+    core.run(
+        setup,
+        printer,
+        "Failed to setup Raspberry Pi",
+        args.hostname or HOSTNAME,
+    )

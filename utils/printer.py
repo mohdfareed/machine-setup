@@ -70,7 +70,7 @@ def _create_console_handler():
         rich_tracebacks=True,
         tracebacks_show_locals=True,
     )
-    console_handler.setFormatter(logging.Formatter(r"%(message)s"))
+    console_handler.setFormatter(logging.Formatter(r"%(message)s - %(name)s"))
     console_handler.setLevel(logging.WARNING)
     return console_handler
 
@@ -93,6 +93,7 @@ def _create_file_handler():
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 logging.captureWarnings(True)
+logging.getLogger("py.warnings").setLevel(logging.ERROR)
 
 # create console handler
 console_handler = _create_console_handler()

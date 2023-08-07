@@ -23,3 +23,7 @@ echo "Enter the Tailscale device ID:"; read device_id
 source $HOME/.zshenv &> /dev/null
 update_env TAILSCALE_DEVICEID \"$device_id\"
 update_env TAILSCALE_IP \"$(tailscale ip -1)\"
+
+echo "Add the following DNS nameserver to Tailscale DNS settings:"
+echo "    Nameserver: $ip"
+echo "    Restrict to Domain: pi"
