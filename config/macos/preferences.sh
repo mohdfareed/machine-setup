@@ -20,6 +20,12 @@ echo "Setting up trackpad, mouse, and keyboard preferences..."
 defaults write .GlobalPreferences KeyRepeat -int 2
 # delay until key repeat
 defaults write .GlobalPreferences InitialKeyRepeat -int 25
+# trackpad dragging
+defaults write com.apple.AppleMultitouchTrackpad Dragging -int 1
+defaults write com.apple.AppleMultitouchTrackpad DragLock -int 1
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -int 1
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad DragLock -int 1
+
 
 # Finder
 # ======
