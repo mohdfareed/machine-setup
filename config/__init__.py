@@ -12,7 +12,7 @@ vim = _os.path.join(machine, "vim")
 macos = _os.path.join(machine, "macos")
 """The path of macOS configuration directory."""
 git = _os.path.join(machine, "git")
-"""The path of the git configuration directory."""
+"""The path of git configuration directory."""
 pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
 """The path of Raspberry Pi configuration directory."""
 

@@ -32,15 +32,13 @@ cask "mactex-no-gui" # latex
 cask "iina"          # video player
 cask "telegram"      # messaging
 
-# development
-cask "visual-studio-code" # code editor
-cask "openinterminal"     # open terminal in current directory
-cask "sf-symbols"         # system font symbols
-
 # utilities
+cask "openinterminal" # open terminal in current directory
+cask "sf-symbols"     # system font symbols
 cask "the-unarchiver" # unzip files
 cask "mouse-fix"      # mouse utility
 cask "monitorcontrol" # exteral monitor utility
+
 
 # MAC APP STORE
 # =============================================================================
