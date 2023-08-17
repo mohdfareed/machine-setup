@@ -11,6 +11,8 @@ vim = _os.path.join(machine, "vim")
 """The path of vim configuration files."""
 macos = _os.path.join(machine, "macos")
 """The path of macOS configuration directory."""
+git = _os.path.join(machine, "git")
+"""The path of the git configuration directory."""
 pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
 """The path of Raspberry Pi configuration directory."""
 
@@ -29,9 +31,9 @@ zprofile = _os.path.join(zsh, "zprofile")
 # git and ssh
 ssh_config = _os.path.join(machine, "ssh.config")
 """The path of the global ssh config file."""
-gitconfig = _os.path.join(machine, "git.gitconfig")
+gitconfig = _os.path.join(git, "config")
 """The path of the global gitconfig file."""
-gitignore = _os.path.join(machine, "git.gitignore")
+gitignore = _os.path.join(git, "ignore")
 """The path of the global gitignore file."""
 
 # packages
