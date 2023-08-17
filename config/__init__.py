@@ -7,6 +7,8 @@ machine = _os.path.dirname(_os.path.realpath(__file__))
 """The path to the machine configuration directory."""
 zsh = _os.path.join(machine, "zsh")
 """The path of zsh configuration file."""
+vim = _os.path.join(machine, "vim")
+"""The path of vim configuration files."""
 macos = _os.path.join(machine, "macos")
 """The path of macOS configuration directory."""
 pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
@@ -23,8 +25,6 @@ zshenv = _os.path.join(zsh, "zshenv")
 """The path of zshenv file, macOS specific."""
 zprofile = _os.path.join(zsh, "zprofile")
 """The path of the machine shell profile variables file."""
-micro_settings = _os.path.join(machine, "micro_settings.json")
-"""The path of micro settings file."""
 
 # git and ssh
 ssh_config = _os.path.join(machine, "ssh.config")
@@ -49,5 +49,5 @@ pi_zprofile = _os.path.join(pi_machine, "zprofile")
 """The path of Raspberry Pi profile variables file."""
 pi_zshenv = _os.path.join(pi_machine, "zshenv")
 """The path of Raspberry Pi environment variables file."""
-pi_shared_config = (zsh_config, zsh_env, micro_settings)
+pi_shared_config = (zsh_config, zsh_env, vim)
 """The shared config files between the machine and Raspberry Pi."""

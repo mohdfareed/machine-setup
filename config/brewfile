@@ -11,9 +11,9 @@ brew "pure"                    # pure shell prompt
 # general
 brew "git"    # global git
 brew "python" # global python
-brew "bat"    # cat replacement
 brew "exa"    # ls replacement
-brew "micro"  # text editor
+brew "bat"    # cat replacement
+brew "neovim" # editor
 brew "mas"    # mac app store cli
 brew "btop"   # resource monitor
 

@@ -11,8 +11,8 @@ ZSHRC = "~/.zshrc"
 """The path to the zsh configuration file symlink."""
 ZSHENV = "~/.zshenv"
 """The path to the zsh environment file symlink."""
-MICRO_SETTINGS = "~/.config/micro/settings.json"
-"""The path to the zsh environment file symlink."""
+VIM = "~/.config/nvim"
+"""The path of the vim configuration directory symlink."""
 
 printer = utils.Printer("shell")
 """The ZSH setup printer."""
@@ -29,7 +29,7 @@ def setup() -> None:
     utils.symlink(config.zshrc, ZSHRC)
     utils.symlink(config.zshenv, ZSHENV)
     utils.symlink(config.zprofile, ZPROFILE)
-    utils.symlink(config.micro_settings, MICRO_SETTINGS)
+    utils.symlink(config.vim, VIM)
 
     # disable login message
     shell("touch ~/.hushlogin", silent=True)
