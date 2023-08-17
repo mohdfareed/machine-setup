@@ -49,6 +49,10 @@ def install_omz():
     if shell(cmd, env=env, silent=True, status="Installing...")[1] != 0:
         raise RuntimeError("Failed to install oh-my-zsh")
 
+    # terminal theme
+    # TODO: backup iTerm2 theme/settings
+    # curl -s -N 'https://warp-themes.com/d/sE6RPpSXOCX6nJunRoUt' | bash
+
     # remove zshrc backup file
     shell(["rm", "-rf", f"{ZSHRC}.pre-oh-my-zsh"])
     printer.debug("Installed oh-my-zsh")

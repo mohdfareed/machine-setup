@@ -2,18 +2,26 @@
 
 import os as _os
 
-# machine configuration files
+# machine configuration directories
 machine = _os.path.dirname(_os.path.realpath(__file__))
 """The path to the machine configuration directory."""
-zsh_config = _os.path.join(machine, "zsh_config.sh")
+zsh = _os.path.join(machine, "zsh")
+"""The path of zsh configuration file."""
+macos = _os.path.join(machine, "macos")
+"""The path of macOS configuration directory."""
+pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
+"""The path of Raspberry Pi configuration directory."""
+
+# shell
+zsh_config = _os.path.join(zsh, "config.sh")
 """The path of the shared shell configuration file."""
-zsh_env = _os.path.join(machine, "zsh_env.sh")
+zsh_env = _os.path.join(zsh, "env.sh")
 """The path of the shared shell environment file."""
-zshrc = _os.path.join(machine, "zshrc")
+zshrc = _os.path.join(zsh, "zshrc")
 """The path of zshrc file, macOS specific."""
-zshenv = _os.path.join(machine, "zshenv")
+zshenv = _os.path.join(zsh, "zshenv")
 """The path of zshenv file, macOS specific."""
-zprofile = _os.path.join(machine, "zprofile")
+zprofile = _os.path.join(zsh, "zprofile")
 """The path of the machine shell profile variables file."""
 micro_settings = _os.path.join(machine, "micro_settings.json")
 """The path of micro settings file."""
@@ -33,16 +41,10 @@ requirements = _os.path.join(machine, "requirements.txt")
 """The path of Python requirements file."""
 
 # macos
-macos = _os.path.join(machine, "macos")
-"""The path of macOS config directory."""
 macos_preferences = _os.path.join(macos, "preferences.sh")
 """The path of macOS preferences file of shell commands."""
-terminal_dark = _os.path.join(macos, "terminal", "Dark.terminal")
-terminal_light = _os.path.join(macos, "terminal", "Light.terminal")
 
 # raspberry pi
-pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
-"""The path of Raspberry Pi config directory."""
 pi_zprofile = _os.path.join(pi_machine, "zprofile")
 """The path of Raspberry Pi profile variables file."""
 pi_zshenv = _os.path.join(pi_machine, "zshenv")

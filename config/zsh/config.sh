@@ -58,8 +58,9 @@ alias lls='ls -lhmU --git --no-user'
 alias llst='lls -T'
 
 # time the startup of shell
-function ztime {
+ztime() {
     usage="usage: $0 [iterations]"
     if (($# > 1)); then echo $usage && return 1; fi
     for i in $(seq 1 ${1-1}); do time $SHELL -i -c exit; done
 }
+

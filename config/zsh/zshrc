@@ -12,7 +12,7 @@ plugins=(
 )
 
 # shell config, syntax highlighting, auto-suggestions, and auto-completion
-source $MACHINE/config/zsh_config.sh
+source $MACHINE/config/zsh/config.sh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
