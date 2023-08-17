@@ -13,9 +13,14 @@ brew "git"    # global git
 brew "python" # global python
 brew "exa"    # ls replacement
 brew "bat"    # cat replacement
-brew "neovim" # editor
 brew "mas"    # mac app store cli
 brew "btop"   # resource monitor
+
+# editor
+brew "neovim"  # vim editor
+brew "lazygit" # git ui
+brew "ripgrep" # grep replacement
+brew "fd"      # find replacement
 
 # docker
 brew "colima"         # container runtimes
