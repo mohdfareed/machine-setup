@@ -13,6 +13,8 @@ ZSHENV = "~/.zshenv"
 """The path to the zsh environment file symlink."""
 VIM = "~/.config/nvim"
 """The path of the vim configuration directory symlink."""
+TMUX = "~/.tmux.conf"
+"""The path of the tmux configuration file symlink."""
 
 printer = utils.Printer("shell")
 """The ZSH setup printer."""
@@ -30,6 +32,7 @@ def setup() -> None:
     utils.symlink(config.zshenv, ZSHENV)
     utils.symlink(config.zprofile, ZPROFILE)
     utils.symlink(config.vim, VIM)
+    utils.symlink(config.tmux, TMUX)
 
     # disable login message
     shell("touch ~/.hushlogin", silent=True)

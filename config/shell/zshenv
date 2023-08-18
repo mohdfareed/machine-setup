@@ -6,4 +6,4 @@ export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
 
 # global environment variables
-source "$MACHINE/config/zsh/env.sh"
+source "$MACHINE/config/shell/env.sh"

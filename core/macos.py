@@ -15,9 +15,9 @@ def setup() -> None:
     printer.info("Setting up macOS...")
 
     # add terminal profiles
-    shell(["open", "-g", config.terminal_dark], silent=True)
-    shell(["open", "-g", config.terminal_light], silent=True)
-    printer.debug("Added terminal profiles")
+    # shell(["open", "-g", config.terminal_dark], silent=True)
+    # shell(["open", "-g", config.terminal_light], silent=True)
+    # printer.debug("Added terminal profiles")
 
     # run the preferences script
     printer.print("Setting system preferences...")

@@ -99,8 +99,8 @@ def copy(source: str, target: str) -> None:
 
 
 def copy_dir(source: str, target: str) -> None:
-    """Copy a directory from the source to the target. Overwrite the target if it
-    already exists. The target can be a directory, in which case the source
+    """Copy a directory from the source to the target. Overwrite the target if
+    it already exists. The target can be a directory, in which case the source
     is copied into the directory.
 
     Args:
@@ -163,6 +163,9 @@ def _caller_printer() -> printer.Printer:
     # get the name of the calling module
     frame = _inspect.stack()[2]
     module = _inspect.getmodule(frame[0])
+    if module is None:
+        return root_printer
+
     # return root printer if called from root
     if module.__name__ == __name__:
         return root_printer
