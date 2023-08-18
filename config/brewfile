@@ -32,7 +32,6 @@ brew "docker-compose" # container orchestration
 # =============================================================================
 
 # general
-cask "tailscale"     # vpn
 cask "raycast"       # spotlight replacement
 cask "mactex-no-gui" # latex
 cask "iina"          # video player
@@ -61,12 +60,13 @@ mas "Craft", id: 1487937127      # note-taking app
 mas "TechniCalc", id: 1504965415 # scientifc calculator
 
 # utilities
-mas "Magnet", id: 441258766    # window manager
-mas "Noir", id: 1592917505     # safari dark mode
-mas "Wipr", id: 1320666476     # safari ad-blocker
-mas "iPreview", id: 1519213509 # zip quicklook plugin
-mas "Peek", id: 1554235898     # quicklook plugin
-mas "Dashlane", id: 517914548  # password manager
+mas "Tailscale", id: 1475387142 # vpn
+mas "Magnet", id: 441258766     # window manager
+mas "Noir", id: 1592917505      # safari dark mode
+mas "Wipr", id: 1320666476      # safari ad-blocker
+mas "iPreview", id: 1519213509  # zip quicklook plugin
+mas "Peek", id: 1554235898      # quicklook plugin
+mas "Dashlane", id: 517914548   # password manager
 
 # FONTS
 # =============================================================================
