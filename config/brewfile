@@ -15,6 +15,7 @@ brew "exa"    # ls replacement
 brew "bat"    # cat replacement
 brew "mas"    # mac app store cli
 brew "btop"   # resource monitor
+brew "tmux"   # terminal multiplexer
 
 # editor
 brew "neovim"  # vim editor
