@@ -22,4 +22,5 @@ sudo mkdir -p $HOME/.config/micro        # create micro config directory
 sudo ln -sf $machine/zprofile            $HOME/.zprofile
 sudo ln -sf $machine/zshenv              $HOME/.zshenv
 sudo ln -sf $machine/zshrc               $HOME/.zshrc
-sudo ln -sf $machine/micro_settings.json $HOME/.config/micro/settings.json
+sudo ln -sf $machine/vim                 $HOME/.config/nvim
+sudo ln -sf $machine/tmux.conf           $HOME/.tmux.conf

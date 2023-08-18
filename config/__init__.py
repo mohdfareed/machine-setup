@@ -28,13 +28,15 @@ zshenv = _os.path.join(zsh, "zshenv")
 zprofile = _os.path.join(zsh, "zprofile")
 """The path of the machine shell profile variables file."""
 
-# git and ssh
+# git, ssh, and tmux
 ssh_config = _os.path.join(machine, "ssh.config")
 """The path of the global ssh config file."""
 gitconfig = _os.path.join(git, "config")
 """The path of the global gitconfig file."""
 gitignore = _os.path.join(git, "ignore")
 """The path of the global gitignore file."""
+tmux = _os.path.join(machine, "tmux.conf")
+"""The path of the tmux configuration file."""
 
 # packages
 brewfile = _os.path.join(machine, "brewfile")
@@ -51,5 +53,5 @@ pi_zprofile = _os.path.join(pi_machine, "zprofile")
 """The path of Raspberry Pi profile variables file."""
 pi_zshenv = _os.path.join(pi_machine, "zshenv")
 """The path of Raspberry Pi environment variables file."""
-pi_shared_config = (zsh_config, zsh_env, vim)
+pi_shared_config = (zsh_config, zsh_env, vim, tmux)
 """The shared config files between the machine and Raspberry Pi."""

@@ -7,7 +7,7 @@ sudo apt update
 # machine packages
 echo "Installing machine packages..."
 sudo apt install -y git zsh zsh-syntax-highlighting zsh-autosuggestions
-sudo apt install -y exa bat micro neovim snapd
+sudo apt install -y exa bat tmux neovim snapd
 sudo apt upgrade -y
 
 # snap store packages
