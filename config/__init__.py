@@ -5,8 +5,8 @@ import os as _os
 # machine configuration directories
 machine = _os.path.dirname(_os.path.realpath(__file__))
 """The path to the machine configuration directory."""
-zsh = _os.path.join(machine, "zsh")
-"""The path of zsh configuration file."""
+shell = _os.path.join(machine, "shell")
+"""The path of shell configuration file."""
 vim = _os.path.join(machine, "vim")
 """The path of vim configuration files."""
 macos = _os.path.join(machine, "macos")
@@ -17,26 +17,26 @@ pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
 """The path of Raspberry Pi configuration directory."""
 
 # shell
-zsh_config = _os.path.join(zsh, "config.sh")
+zsh_config = _os.path.join(shell, "config.sh")
 """The path of the shared shell configuration file."""
-zsh_env = _os.path.join(zsh, "env.sh")
+zsh_env = _os.path.join(shell, "env.sh")
 """The path of the shared shell environment file."""
-zshrc = _os.path.join(zsh, "zshrc")
+zshrc = _os.path.join(shell, "zshrc")
 """The path of zshrc file, macOS specific."""
-zshenv = _os.path.join(zsh, "zshenv")
+zshenv = _os.path.join(shell, "zshenv")
 """The path of zshenv file, macOS specific."""
-zprofile = _os.path.join(zsh, "zprofile")
+zprofile = _os.path.join(shell, "zprofile")
 """The path of the machine shell profile variables file."""
-
-# git, ssh, and tmux
-ssh_config = _os.path.join(machine, "ssh.config")
+ssh_config = _os.path.join(shell, "ssh.config")
 """The path of the global ssh config file."""
+tmux = _os.path.join(shell, "tmux.conf")
+"""The path of the tmux configuration file."""
+
+# git
 gitconfig = _os.path.join(git, "config")
 """The path of the global gitconfig file."""
 gitignore = _os.path.join(git, "ignore")
 """The path of the global gitignore file."""
-tmux = _os.path.join(machine, "tmux.conf")
-"""The path of the tmux configuration file."""
 
 # packages
 brewfile = _os.path.join(machine, "brewfile")
