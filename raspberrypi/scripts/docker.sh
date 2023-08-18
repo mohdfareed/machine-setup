@@ -5,7 +5,5 @@ echo "Installing Docker..."
 sudo snap install docker
 sudo snap refresh docker
 sudo snap enable docker
-
-echo "Loading containers..."
 sudo addgroup --system docker && sudo adduser $USER docker
-cd $MACHINE && docker compose up -d
+echo "Run 'compose-machine' to load containers"
