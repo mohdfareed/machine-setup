@@ -29,12 +29,4 @@ require("lazy").setup({
 		-- version = "*", -- try installing the latest stable version for plugins
 	},
 	checker = { enabled = true }, -- automatically check for plugin updates
-	performance = {
-		rtp = {
-			-- disable some rtp plugins
-			disabled_plugins = {
-				-- "tutor",
-			},
-		},
-	},
 })
