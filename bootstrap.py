@@ -67,7 +67,7 @@ def resolve_xcode():
 def clone_machine(path: str, overwrite=False):
     # overwrite machine if prompted
     if overwrite and os.path.exists(path):
-        _print_info(f"Overwriting machine...")
+        _print_info("Overwriting machine...")
         shutil.rmtree(path, ignore_errors=True)
 
     if not os.path.exists(path):  # clone machine

@@ -8,4 +8,4 @@ export TAILSCALE_DEVICEID=
 export TAILSCALE_IP=
 
 # global environment variables
-source "$MACHINE/zsh_env.sh"
+source "$MACHINE/env.sh"

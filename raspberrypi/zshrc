@@ -12,7 +12,7 @@ plugins=(
 )
 
 # shell config, syntax highlighting, auto-suggestions, and auto-completion
-source $MACHINE/zsh_config.sh
+source $MACHINE/config.sh
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -25,6 +25,7 @@ alias reboot='sudo reboot'
 alias update='sudo apt update && \
               sudo apt full-upgrade -y && \
               sudo apt autoremove -y'
+alias compose-machine='cd $MACHINE && docker compose up -d'
 
 # display the cpu and gpt temperature of raspberry pi
 function temp {

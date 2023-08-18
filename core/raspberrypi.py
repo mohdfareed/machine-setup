@@ -62,6 +62,7 @@ def connect(hostname):
     printer.debug("Connection to Raspberry Pi established")
 
     # add ssh key to raspberrypi
+    # FIXME: broken prompts (not visible while loading)
     shell(f"ssh-copy-id '{hostname}' > /dev/null 2>&1")
     printer.debug("Added SSH key to Raspberry Pi")
 
