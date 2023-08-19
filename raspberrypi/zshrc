@@ -2,7 +2,7 @@
 # =============================================================================
 
 # machine paths and environment variables
-export PATH="$PATH:/snap/bin"           # add snap to path
+export PATH="/snap/bin:$PATH"           # add snap to path
 export PATH="$PATH:$HOME/.local/bin"    # add pip packages to path
 fpath+=($PURE)                          # add pure prompt to fpath
 fpath+=($ZSHCOMP/src)                   # add zsh-completions to fpath
@@ -21,7 +21,6 @@ source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # =============================================================================
 
 alias bat='batcat'
-alias nvim='/snap/bin/nvim'
 alias reboot='sudo reboot'
 alias update='sudo apt update && \
               sudo apt full-upgrade -y && \
