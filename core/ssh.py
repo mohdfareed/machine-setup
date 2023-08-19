@@ -74,7 +74,7 @@ def load_keys(keys: str) -> dict[str, SSHKey]:
 def setup_key(name: str, key: SSHKey) -> None:
     printer.print(f"[bold]Setting up SSH key:[/] {name}")
     if not key.private_key or not key.public_key:
-        printer.error(f"Invalid ssh key pair:")
+        printer.error("Invalid ssh key pair:")
         printer.error(f"    Private key: {key.private_key}")
         printer.error(f"    Public key: {key.public_key}")
         raise RuntimeError(f"Invalid ssh key pair encountered: {name}")
@@ -92,7 +92,7 @@ def setup_key(name: str, key: SSHKey) -> None:
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
-    if shell(cmd, silent=True)[1] != 0:
+    if shell(cmd, silent=True, safe=True)[1] != 0:
         shell(f"ssh-add '{key.private_key}'")
         printer.print("Added key to SSH agent")
     else:

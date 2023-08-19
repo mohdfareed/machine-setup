@@ -22,6 +22,7 @@ brew "neovim"  # vim editor
 brew "lazygit" # git ui
 brew "ripgrep" # grep replacement
 brew "fd"      # find replacement
+brew "npm"     # node package manager
 
 # docker
 brew "colima"         # container runtimes
@@ -66,7 +67,6 @@ mas "Noir", id: 1592917505      # safari dark mode
 mas "Wipr", id: 1320666476      # safari ad-blocker
 mas "iPreview", id: 1519213509  # zip quicklook plugin
 mas "Peek", id: 1554235898      # quicklook plugin
-mas "Dashlane", id: 517914548   # password manager
 
 # FONTS
 # =============================================================================
