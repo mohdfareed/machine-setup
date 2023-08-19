@@ -4,7 +4,6 @@
 COMPLETION_WAITING_DOTS="true" # show dots while loading completions
 ENABLE_CORRECTION="true"       # enable command auto-correction
 HYPHEN_INSENSITIVE="true"      # ignore hyphens in commands
-ZSH_TMUX_AUTOSTART="true"      # start tmux automatically
 ZSH_THEME=""                   # use external theme
 zstyle ':omz:update' mode auto # update automatically without asking
 

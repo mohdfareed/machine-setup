@@ -9,3 +9,6 @@ opt.foldmethod = "syntax" -- enable code folding
 -- default to 4 spaces for tabs
 opt.shiftwidth = 4
 opt.tabstop = 4
+
+-- set cursor shape
+opt.guicursor = "n-v-c:hor25,i-ci:ver25,r-cr:block,n:blinkon250"
