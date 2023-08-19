@@ -4,6 +4,7 @@
 local opt = vim.opt
 opt.wrap = true -- enable line wrap
 opt.colorcolumn = "80" -- line length marker at 80 columns
+opt.foldmethod = "syntax" -- enable code folding
 
 -- default to 4 spaces for tab
 opt.shiftwidth = 4

@@ -1,33 +1,11 @@
 return {
+	-- disabled plugins
+	{ "akinsho/bufferline.nvim", enabled = false },
+
 	{ -- configure LazyVim
 		"LazyVim/LazyVim",
 		opts = {
 			colorscheme = "onedark",
-		},
-	},
-
-	{ -- configure bufferline (tabline)
-		"akinsho/bufferline.nvim",
-		opts = {
-			options = {
-				numbers = "buffer_id",
-				show_duplicate_prefix = true,
-				indicator = { icon = "" },
-				offsets = {
-					{
-						filetype = "neo-tree",
-						text = "File Explorer",
-						highlight = "Directory",
-						text_align = "center",
-						separator = true,
-					},
-				},
-				groups = {
-					items = {
-						require("bufferline.groups").builtin.pinned:with({ icon = "" }),
-					},
-				},
-			},
 		},
 	},
 
@@ -47,4 +25,29 @@ return {
 			stages = "fade",
 		},
 	},
+
+	-- { -- configure bufferline (tabline)
+	-- 	"akinsho/bufferline.nvim",
+	-- 	opts = {
+	-- 		options = {
+	-- 			numbers = "buffer_id",
+	-- 			show_duplicate_prefix = true,
+	-- 			indicator = { icon = "" },
+	-- 			offsets = {
+	-- 				{
+	-- 					filetype = "neo-tree",
+	-- 					text = "File Explorer",
+	-- 					highlight = "Directory",
+	-- 					text_align = "center",
+	-- 					separator = true,
+	-- 				},
+	-- 			},
+	-- 			groups = {
+	-- 				items = {
+	-- 					require("bufferline.groups").builtin.pinned:with({ icon = "" }),
+	-- 				},
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
 }
