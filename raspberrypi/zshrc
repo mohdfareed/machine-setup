@@ -21,6 +21,7 @@ source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # =============================================================================
 
 alias bat='batcat'
+alias nvim='/snap/bin/nvim'
 alias reboot='sudo reboot'
 alias update='sudo apt update && \
               sudo apt full-upgrade -y && \

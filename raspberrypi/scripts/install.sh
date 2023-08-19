@@ -6,14 +6,16 @@ sudo apt update
 
 # machine packages
 echo "Installing machine packages..."
-sudo apt install -y git zsh zsh-syntax-highlighting zsh-autosuggestions
-sudo apt install -y exa bat tmux neovim snapd
+sudo apt install -y zsh zsh-syntax-highlighting zsh-autosuggestions git exa bat
+sudo apt install -y tmux xsel neovim lazygit ripgrep fd python3-venv npm
 sudo apt upgrade -y
 
 # snap store packages
 echo "Installing snap store packages..."
+sudo apt install -y snapd
 sudo snap install core
 sudo snap install btop
+sudo snap install nvim --classic
 sudo snap refresh
 
 # clean packages
