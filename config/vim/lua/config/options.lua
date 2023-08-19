@@ -6,7 +6,6 @@ opt.wrap = true -- enable line wrap
 opt.colorcolumn = "80" -- line length marker at 80 columns
 opt.foldmethod = "syntax" -- enable code folding
 
--- default to 4 spaces for tab
+-- default to 4 spaces for tabs
 opt.shiftwidth = 4
 opt.tabstop = 4
-opt.expandtab = true

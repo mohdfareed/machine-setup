@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-"""Bootstrap a new machine. This will install Xcode Commandline Tools, accept
-the Xcode license, clone machine, and execute the setup script.
+"""Bootstrap a new machine. This will clone machine configuration and execute
+the setup script.
 
-Requirements: Xcode Commandline Tools and `machine.sh` in config directory.
-The file must have the environment variable `MACHINE`, which is the path to the
-machine repo.
+Requirements: Xcode Commandline Tools.
 
-Usage: ./bootstrap.py config_path [-c] [-l] [-d]
- - config_path: path to local config files, which contains:
-   - `machine.sh`: machine-specific environment, includes `MACHINE` variable
- - -c | --clean: clean setup environment, overwriting repo and virtual env
+Usage: ./bootstrap.py config_path [-f] config_path [*]
+ - -f | --force: overwrite machine if it exists
+ - config_path: path to local config files that contain sensitive information:
+   - `keys/`: ssh key pairs
+   - `machine.sh`: machine environment variables
+   - `pi.sh`: raspberry pi environment variables
  - *: extra arguments are passed to `setup.py`
 
 External effects:
   - Accepts Xcode license
-  - Clones machine into `MACHINE`
-  - Creates a virtual environment at `MACHINE`
-  - Executes `setup.sh` in machine
+  - Clones machine into `$MACHINE`
+  - Creates a virtual environment at `$MACHINE`
+  - Executes `setup.sh`
 """
 
 import argparse
