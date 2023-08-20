@@ -3,7 +3,8 @@
 
 # machine paths and environment variables
 export PATH="/snap/bin:$PATH"           # add snap to path
-export PATH="$PATH:$HOME/.local/bin"    # add pip packages to path
+export PATH="$PATH:$HOME/go/bin"        # add go packages to path
+export PATH="$PATH:$HOME/.local/bin"    # add local packages to path
 fpath+=($PURE)                          # add pure prompt to fpath
 fpath+=($ZSHCOMP/src)                   # add zsh-completions to fpath
 
