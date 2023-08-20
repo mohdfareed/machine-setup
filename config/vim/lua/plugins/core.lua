@@ -1,6 +1,7 @@
 return {
 	-- disabled plugins
 	{ "akinsho/bufferline.nvim", enabled = false },
+	{ "goolord/alpha-nvim", enabled = false },
 
 	{ -- configure LazyVim
 		"LazyVim/LazyVim",

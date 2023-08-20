@@ -50,8 +50,9 @@ prompt pure
 # Functions and Aliases
 # =============================================================================
 
-alias zreset='exec "$SHELL"'
+alias zsh::reload='exec $SHELL'
 alias cat='bat --paging=never'
+alias vim='nvim'
 alias ls='exa --group-directories-first --sort=Name --icons'
 alias lst='ls -T'
 alias lls='ls -lhmU --git --no-user'
