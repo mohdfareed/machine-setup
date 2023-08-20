@@ -23,10 +23,10 @@ require("lazy").setup({
 		-- import/override with custom plugins
 		{ import = "plugins" },
 	},
-	defaults = {
-		lazy = false, -- lazy-load custom plugins
-		version = false, -- always use the latest git commit
-		-- version = "*", -- try installing the latest stable version for plugins
-	},
+	-- defaults = {
+	-- 	lazy = false, -- lazy-load custom plugins
+	-- 	version = false, -- always use the latest git commit
+	-- 	-- version = "*", -- try installing the latest stable version for plugins
+	-- },
 	checker = { enabled = true }, -- automatically check for plugin updates
 })
