@@ -22,8 +22,8 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./proxy_manager:/data
-      - ./proxy_manager/encryption:/etc/letsencrypt
+      - ./proxy-manager:/data
+      - ./proxy-manager/encryption:/etc/letsencrypt
     healthcheck:
       test: ["CMD", "/bin/check-health"]
       interval: 10s

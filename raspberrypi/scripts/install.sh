@@ -7,7 +7,7 @@ sudo apt update
 # machine packages
 echo "Installing machine packages..."
 sudo apt install -y zsh zsh-syntax-highlighting zsh-autosuggestions git exa bat
-sudo apt install -y tmux neovim ripgrep fd-find python3-venv npm
+sudo apt install -y tmux neovim ripgrep fd-find python3-venv npm code
 sudo apt upgrade -y
 
 # snap store packages
