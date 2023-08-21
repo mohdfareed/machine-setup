@@ -20,10 +20,11 @@ sudo mkdir -p "$(dirname "$conf_file")"
 echo address=/pi/$ip | sudo tee $conf_file
 
 # update machine ip and device id
-echo "Enter the Tailscale device ID:"
-read device_id
-update_env TAILSCALE_DEVICEID $device_id
-update_env TAILSCALE_IP $ip
+if [[ -z $TAILSCALE_DEVICEID || -z $TAILSCALE_IP ]]; then
+	echo "Enter the Tailscale device ID:" && read device_id
+	update_env TAILSCALE_DEVICEID $device_id
+	update_env TAILSCALE_IP $ip
+fi
 
 echo "Add the following DNS nameserver to Tailscale DNS settings:"
 echo "    Nameserver: $ip"

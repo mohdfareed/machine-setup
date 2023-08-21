@@ -26,7 +26,7 @@ alias reboot='sudo reboot'
 alias update='sudo apt update && \
               sudo apt full-upgrade -y && \
               sudo apt autoremove -y'
-alias compose-machine='cd $MACHINE && docker compose up -d'
+alias compose-machine='cd $MACHINE && docker compose'
 
 # display the cpu and gpt temperature of raspberry pi
 function temp {

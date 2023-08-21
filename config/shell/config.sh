@@ -22,7 +22,7 @@ unsetopt auto_list   # don't echo choices on ambiguous completion
 setopt menu_complete # auto-complete with menu selection
 
 # auto-completion
-zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' completer _complete _correct _approximate
 zstyle ':completion:*' format '%BCompleting %d:%b'
 zstyle ':completion:*' group-name ''
 

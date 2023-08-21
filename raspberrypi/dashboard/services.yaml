@@ -56,3 +56,10 @@
         widget:
           type: speedtest
           url: http://speed-tracker:80
+
+    - ChatGPT Bot:
+        icon: "si-telegram"
+        description: ChatGPT Telegram Bot
+        server: docker-socket
+        container: chatgpt-bot
+        showStats: true
