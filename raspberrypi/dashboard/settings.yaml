@@ -18,4 +18,4 @@ quicklaunch:
 layout:
   " ":
     style: row
-    columns: 2
+    columns: 3

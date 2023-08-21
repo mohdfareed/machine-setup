@@ -18,8 +18,15 @@
         description: Tailscale Virtual Private Network
         widget:
           type: tailscale
-          deviceid: { { HOMEPAGE_VAR_TS_DEVICE_ID } }
-          key: { { HOMEPAGE_VAR_TS_API_TOKEN } }
+          deviceid: "{{HOMEPAGE_VAR_TS_DEVICE_ID}}"
+          key: "{{HOMEPAGE_VAR_TS_API_TOKEN}}"
+
+    - ChatGPT Bot:
+        icon: "si-telegram"
+        description: ChatGPT Telegram Bot
+        server: docker-socket
+        container: chatgpt-bot
+        showStats: true
 
     - Proxy:
         icon: "si-nginx"
@@ -31,8 +38,8 @@
         widget:
           type: npm
           url: http://proxy-manager:81
-          username: { { HOMEPAGE_VAR_USERNAME } }
-          password: { { HOMEPAGE_VAR_PASSWORD } }
+          username: "{{HOMEPAGE_VAR_USERNAME}}"
+          password: "{{HOMEPAGE_VAR_PASSWORD}}"
 
     - PiHole:
         icon: "si-pihole"
@@ -44,7 +51,7 @@
         widget:
           type: pihole
           url: http://pihole:80
-          key: { { HOMEPAGE_VAR_PIHOLE_API_TOKEN } }
+          key: "{{HOMEPAGE_VAR_PIHOLE_API_TOKEN}}"
 
     - Internet Speed:
         icon: "si-speedtest"
@@ -56,10 +63,3 @@
         widget:
           type: speedtest
           url: http://speed-tracker:80
-
-    - ChatGPT Bot:
-        icon: "si-telegram"
-        description: ChatGPT Telegram Bot
-        server: docker-socket
-        container: chatgpt-bot
-        showStats: true

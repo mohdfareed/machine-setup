@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 # Install the required packages for the Raspberry Pi
 
 # update packages
