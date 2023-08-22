@@ -21,7 +21,7 @@
           deviceid: "{{HOMEPAGE_VAR_TS_DEVICE_ID}}"
           key: "{{HOMEPAGE_VAR_TS_API_TOKEN}}"
 
-    - ChatGPT Bot:
+    - ChatGPT:
         icon: "si-telegram"
         description: ChatGPT Telegram Bot
         server: docker-socket

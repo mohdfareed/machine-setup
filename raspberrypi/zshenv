@@ -4,6 +4,7 @@
 export MACHINE="$HOME/machine"
 export PURE="$HOME/.zsh/pure"
 export ZSHCOMP="$HOME/.zsh/zsh-completions"
+export TAILSCALE_DOMAIN="raspberrypi.tail2a477.ts.net"
 export TAILSCALE_DEVICEID=
 export TAILSCALE_IP=
 

@@ -14,9 +14,10 @@ sudo apt upgrade -y
 echo "Installing snap store packages..."
 sudo apt install -y snapd
 sudo snap install core
-sudo snap install btop
+sudo snap install docker
 sudo snap install nvim --classic
 sudo snap install go --classic
+sudo snap install btop
 sudo snap refresh
 
 # go packages

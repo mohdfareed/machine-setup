@@ -20,7 +20,6 @@ services:
     restart: unless-stopped
     ports:
       - 80:80
-      - 443:443
     volumes:
       - ./proxy-manager:/data
       - ./proxy-manager/encryption:/etc/letsencrypt
@@ -48,9 +47,22 @@ services:
     container_name: speed-tracker
     restart: unless-stopped
     volumes:
-      - ./speed_tracker:/config
-      - ./speed_tracker/web:/etc/ssl/web
+      - ./speed-tracker:/config
+      - ./speed-tracker/web:/etc/ssl/web
       - /etc/localtime:/etc/localtime:ro
+
+  chatgpt-bot: # webhook at 80
+    build: ./chatgpt-bot
+    container_name: chatgpt-bot
+    restart: unless-stopped
+    environment:
+      - OPENAI_API_KEY
+      - TELEGRAM_BOT_TOKEN
+      - WEBHOOK=https://$TAILSCALE_DOMAIN/chatgpt
+      - WEBHOOK_ADDR=chatgpt-bot
+    volumes:
+      - ./chatgpt-bot/database:/chatgpt_bot/database
+      - ./chatgpt-bot/logs:/chatgpt_bot/logs
 
 networks:
   default:
