@@ -1,5 +1,9 @@
--- disable leader button
-MapKey({ 'n', 'v' }, '<Space>', '<Nop>', "+Leader", { silent = true })
+-- load plugins keymaps
+LoadPluginsKeyMaps()
+
+-- convert leader to group
+RegisterGroup('<Space>', "Leader")
+MapKey({ 'n', 'v' }, '<Space>', '<Nop>', "Leader", { silent = true })
 
 -- center screen after jumping screen
 MapKey('n', '<C-d>', '<C-d>zz', "Page down and center")
@@ -13,6 +17,7 @@ MapKey('n', 'j', "v:count == 0 ? 'gj' : 'j'", nil, {
   expr = true, silent = true
 })
 
-for _, mapper in ipairs(PluginsMappers) do
-  mapper()
-end
+-- groups
+RegisterGroup('g', "Goto")
+RegisterGroup('[', "Previous")
+RegisterGroup(']', "Next")

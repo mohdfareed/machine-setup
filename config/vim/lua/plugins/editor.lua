@@ -6,7 +6,9 @@ return {
       vim.o.timeout = true
       vim.o.timeoutlen = 300
     end,
-    opts = {}
+    opts = {
+      window = { border = 'rounded' },
+    }
   },
 
   { -- one dark theme
@@ -15,11 +17,9 @@ return {
     priority = 1000,
     config = function()
       require('onedark').setup({
-        ending_tildes = true,
         transparent = true,
-        lualine = {
-          transparent = true,
-        },
+        lualine = { transparent = true },
+        colors = { bg1 = "none", },
       }) 
       require('onedark').load()
     end,
@@ -41,11 +41,12 @@ return {
         theme = 'onedark',
         component_separators = '|',
         section_separators = { left = '', right = ''},
+        globalstatus = true,
       },
       sections = {
-        lualine_c = {},
-        lualine_x = { 'filetype', },
-        lualine_y = { 'buffers', 'tabs', },
+        lualine_c = { 'filetype', },
+        lualine_x = { 'buffers', },
+        lualine_y = { 'tabs', },
         lualine_z = { 'location', 'searchcount', 'selectioncount', },
       },
     },

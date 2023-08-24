@@ -19,7 +19,7 @@ local function map_gitsigns(buffer)
     return '<Ignore>'
   end, "Previous git hunk", {expr=true})
 
-  RegisterGroup('<leader>g', "git")
+  RegisterGroup('<leader>g', "Git")
   MapKey('n', '<leader>gs', gs.stage_hunk, "Stage hunk")
   MapKey('n', '<leader>gr', gs.reset_hunk, "Reset hunk")
   MapKey('v', '<leader>gs', stage_selection, "Stage selection")
@@ -39,6 +39,9 @@ end
 return {
   {
     'lewis6991/gitsigns.nvim',
-    opts = { on_attach = map_gitsigns },
+    opts = {
+      on_attach = map_gitsigns,
+      preview_config = { border = 'rounded' },
+    },
   },
 }

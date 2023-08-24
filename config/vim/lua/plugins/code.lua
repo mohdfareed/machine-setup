@@ -16,6 +16,7 @@ table.insert(PluginsMappers, mapper)
 
 return {
   'tpope/vim-sleuth', -- auto-detect indents
+  -- { "folke/neodev.nvim", opts = {} }, -- vim documentation
   { 'numToStr/Comment.nvim', opts = {} }, -- comment code
 
   { -- todo comments manager

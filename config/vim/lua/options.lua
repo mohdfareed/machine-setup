@@ -1,3 +1,6 @@
+local create_group = vim.api.nvim_create_augroup
+local create_autocmd = vim.api.nvim_create_autocmd
+
 -- indents
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -33,3 +36,11 @@ vim.opt.clipboard = 'unnamedplus' -- use os clipboard
 vim.opt.undofile = true -- store undo tree between sessions
 vim.opt.updatetime = 250 -- decrease update time
 vim.opt.termguicolors = true -- true terminal colors
+
+-- highlight on yank
+local highlight_group = create_group('YankHighlight', { clear = true })
+create_autocmd('TextYankPost', {
+  callback = function() vim.highlight.on_yank() end,
+  group = highlight_group,
+  pattern = '*',
+})

@@ -1,3 +1,4 @@
+-- install plugin manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
@@ -10,4 +11,20 @@ if not vim.loop.fs_stat(lazypath) then
   }
 end
 vim.opt.rtp:prepend(lazypath)
-require('core')
+
+-- set leader to <space>
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+-- load utilities
+require('utils')
+
+-- load plugins
+require('lazy').setup('plugins', {
+  checker = { enabled = true },  -- check for plugin updates automatically
+  install = { colorscheme = { 'onedark' } },  -- startup installation theme
+  ui = { border = 'rounded' },
+})
+
+-- load personal configuration
+require('keymaps')
+require('options')
