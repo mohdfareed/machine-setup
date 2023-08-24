@@ -1,5 +1,5 @@
 -- load plugins keymaps
-LoadPluginsKeyMaps()
+LoadPluginConfigs()
 
 -- convert leader to group
 RegisterGroup('<Space>', "Leader")

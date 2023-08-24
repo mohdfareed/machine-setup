@@ -11,7 +11,7 @@ function MapKey(mode, l, r, desc, opts)
 end
 
 -- plugins load keymaps by loading mapping functions
-PluginsMappers = {} -- plugins mapping functions table
-function LoadPluginsKeyMaps() -- load plugins keymaps
-  for _, mapper in ipairs(PluginsMappers) do mapper() end
+PluginConfigs= {} -- plugins mapping functions table
+function LoadPluginConfigs() -- load plugins keymaps
+  for _, config in ipairs(PluginConfigs) do config() end
 end

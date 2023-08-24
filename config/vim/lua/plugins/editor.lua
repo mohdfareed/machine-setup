@@ -1,3 +1,9 @@
+local whichkey = function()
+  local show_keymap = function() vim.cmd('WhichKey') end
+  MapKey('n', '<leader>?', show_keymap, "Show base keybinds")
+end
+table.insert(PluginConfigs, whichkey)
+
 return {
   { -- keybinds window
     'folke/which-key.nvim',
@@ -28,7 +34,6 @@ return {
   { -- indentation guides
     'lukas-reineke/indent-blankline.nvim',
     opts = {
-      show_end_of_line = true,
       show_current_context = true,
       space_char_blankline = ' ',
     },

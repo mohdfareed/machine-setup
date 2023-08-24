@@ -1,4 +1,4 @@
-local function map_gitsigns(buffer)
+local function gitsigns_mapper(buffer)
   local function visual_selection()
     return { { vim.fn.line('.'), vim.fn.line('v') } }
   end
@@ -40,7 +40,7 @@ return {
   {
     'lewis6991/gitsigns.nvim',
     opts = {
-      on_attach = map_gitsigns,
+      on_attach = gitsigns_mapper,
       preview_config = { border = 'rounded' },
     },
   },

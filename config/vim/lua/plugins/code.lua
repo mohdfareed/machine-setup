@@ -1,10 +1,10 @@
-local mapper = function ()
-  -- todo comments
+local todo = function ()
   local todo = require('todo-comments')
   MapKey('n', ']t', function() todo.jump_next() end, "Next todo list")
   MapKey('n', '[t', function() todo.jump_prev() end, "Previous todo list")
+end
 
-  -- flash search utility
+local flash = function ()
   local flash = require('flash')
   MapKey({ 'n', 'x', 'o' }, 's', flash.jump, "Flash")
   MapKey({ 'n', 'o', 'x' }, 'S', flash.treesitter, "Flash Treesitter")
@@ -12,7 +12,9 @@ local mapper = function ()
   MapKey({ 'o', 'x' }, 'R', flash.treesitter_search, "Treesitter Search")
   MapKey({ 'c' }, '<c-s>', flash.toggle, "Toggle Flash Search")
 end
-table.insert(PluginsMappers, mapper)
+
+table.insert(PluginConfigs, todo)
+table.insert(PluginConfigs, flash)
 
 return {
   'tpope/vim-sleuth', -- auto-detect indents
