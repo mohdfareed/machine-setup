@@ -21,8 +21,8 @@ brew "tmux"   # terminal multiplexer
 brew "neovim"  # vim editor
 brew "lazygit" # git ui
 brew "ripgrep" # grep replacement
+# FIXME: check if this is still needed
 brew "fd"      # find replacement
-brew "npm"     # node package manager
 
 # docker
 brew "colima"         # container runtimes
