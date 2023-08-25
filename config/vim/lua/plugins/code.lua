@@ -14,7 +14,7 @@ local flash = function ()
 end
 
 table.insert(PluginConfigs, todo)
-table.insert(PluginConfigs, flash)
+-- table.insert(PluginConfigs, flash)
 
 return {
   'tpope/vim-sleuth', -- auto-detect indents
@@ -27,8 +27,8 @@ return {
     opts = { highlight = { keyword = 'fg' }, }
   },
 
-  { -- search utilities
-    'folke/flash.nvim',
-    event = 'VeryLazy',
-  },
+  -- { -- search utilities
+  --   'folke/flash.nvim',
+  --   event = 'VeryLazy',
+  -- },
 }

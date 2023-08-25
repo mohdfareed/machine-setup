@@ -1,7 +1,17 @@
 local whichkey = function()
   local show_keymap = function() vim.cmd('WhichKey') end
-  MapKey('n', '<leader>?', show_keymap, "Show base keybinds")
+  MapKey({ 'n', 'v' }, '<leader>?', show_keymap, "Show base keybinds")
 end
+
+local session_memory = function()
+  local persistence = require('persistence')
+  local load_last = function() persistence.load({ last = true }) end
+  MapKey('n', '<leader>qs', persistence.load, "Load session")
+  MapKey('n', '<leader>ql', load_last, "Load last session")
+  MapKey('n', '<leader>qd', persistence.stop, "Delete session")
+end
+
+table.insert(PluginConfigs, session_memory)
 table.insert(PluginConfigs, whichkey)
 
 return {
@@ -55,5 +65,11 @@ return {
         lualine_z = { 'location', 'searchcount', 'selectioncount', },
       },
     },
+  },
+
+  { -- session memory
+    'folke/persistence.nvim',
+    event = 'BufReadPre',
+    opts = {}
   },
 }

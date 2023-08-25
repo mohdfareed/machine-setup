@@ -1,9 +1,6 @@
 local neotree = function()
-  local open = function() vim.cmd('Neotree') end
-  local open_here = function() vim.cmd('Neotree position=current') end
-
+  local open = function() vim.cmd('Neotree toggle float') end
   MapKey('n', '<leader>e', open, "File explorer")
-  MapKey('n', '<leader>E', open_here, "File explorer (current window)")
 end
 table.insert(PluginConfigs, neotree)
 
@@ -15,15 +12,6 @@ return {
       'nvim-lua/plenary.nvim',
       'nvim-tree/nvim-web-devicons',
       'MunifTanjim/nui.nvim',
-      {
-        's1n7ax/nvim-window-picker',
-        name = 'window-picker',
-        event = 'VeryLazy',
-        version = '2.*',
-        config = function()
-          require('window-picker').setup()
-        end,
-      }
     },
     opts = {
       close_if_last_window = true,

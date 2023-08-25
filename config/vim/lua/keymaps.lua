@@ -17,6 +17,9 @@ MapKey('n', 'j', "v:count == 0 ? 'gj' : 'j'", nil, {
   expr = true, silent = true
 })
 
+-- session management
+RegisterGroup('<leader>q', "Session")
+
 -- groups
 RegisterGroup('g', "Goto")
 RegisterGroup('[', "Previous")
