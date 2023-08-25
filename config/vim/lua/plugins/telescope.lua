@@ -4,7 +4,6 @@ local telescope = function()
   pcall(telescope.load_extension, 'fzf')
 
   RegisterGroup('<leader><space>', "Search")
-  MapKey('n', '<leader><space>', builtin.buffers, 'Existing buffers')
   MapKey('n', '<leader><space>f', builtin.find_files, "Files")
   MapKey('n', '<leader><space>g', builtin.live_grep, "Grep")
   MapKey('n', '<leader>/', builtin.current_buffer_fuzzy_find,
@@ -15,11 +14,11 @@ local telescope = function()
   MapKey('n', '<leader><space>c', builtin.commands, "Commands")
   MapKey('n', '<leader><space>C', builtin.commands, "Commands history")
   MapKey('n', '<leader><space><space>', builtin.search_history, "History")
+  MapKey('n', '<leader><space>x', builtin.diagnostics, "Diagnostics")
 
+  MapKey('n', '<leader>gf', builtin.git_files, "Search git files")
   MapKey('n', '<leader>gc', builtin.git_commits, "Search commits")
   MapKey('n', '<leader>gC', builtin.git_bcommits, "Search buffer commits")
-  MapKey('n', '<leader>gf', builtin.git_files, "Search git files")
-  MapKey('n', '<leader>xs', builtin.diagnostics, "Search diagnostics")
 
   MapKey('n', '<leader>lr', builtin.lsp_references, "List references")
   MapKey('n', '<leader>lo', builtin.lsp_outgoing_calls, "List outgoing calls")
