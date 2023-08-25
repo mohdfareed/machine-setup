@@ -2,7 +2,7 @@ local neotree = function()
   local open = function() vim.cmd('Neotree toggle float') end
   MapKey('n', '<leader>e', open, "File explorer")
 end
-table.insert(PluginConfigs, neotree)
+ConfigurePlugin(neotree)
 
 return {
   {

@@ -17,6 +17,19 @@ MapKey('n', 'j', "v:count == 0 ? 'gj' : 'j'", nil, {
   expr = true, silent = true
 })
 
+-- diagnostics
+RegisterGroup('<leader>x', "Diagnostics")
+MapKey('n', '[d', vim.diagnostic.goto_prev, "Previous diagnostic message")
+MapKey('n', ']d', vim.diagnostic.goto_next, "Next diagnostic message")
+MapKey('n', '<leader>xd', vim.diagnostic.open_float, "Open floating diagnostic message")
+MapKey('n', '<leader>xl', vim.diagnostic.setloclist, "Open diagnostics list")
+
+-- window management
+MapKey('n', '<c-w>H', '<c-w>L', "Move window to the left")
+MapKey('n', '<c-w>L', '<c-w>H', "Move window to the right")
+MapKey('n', '<c-w>J', '<c-w>J', "Move window Down")
+MapKey('n', '<c-w>K', '<c-w>K', "Move window Up")
+
 -- session management
 RegisterGroup('<leader>q', "Session")
 

@@ -3,6 +3,7 @@ local todo = function ()
   MapKey('n', ']t', function() todo.jump_next() end, "Next todo list")
   MapKey('n', '[t', function() todo.jump_prev() end, "Previous todo list")
 end
+ConfigurePlugin(todo)
 
 local flash = function ()
   local flash = require('flash')
@@ -12,13 +13,10 @@ local flash = function ()
   MapKey({ 'o', 'x' }, 'R', flash.treesitter_search, "Treesitter Search")
   MapKey({ 'c' }, '<c-s>', flash.toggle, "Toggle Flash Search")
 end
-
-table.insert(PluginConfigs, todo)
--- table.insert(PluginConfigs, flash)
+-- ConfigurePlugin(flash)
 
 return {
   'tpope/vim-sleuth', -- auto-detect indents
-  -- { "folke/neodev.nvim", opts = {} }, -- vim documentation
   { 'numToStr/Comment.nvim', opts = {} }, -- comment code
 
   { -- todo comments manager

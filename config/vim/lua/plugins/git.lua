@@ -1,5 +1,11 @@
 RegisterGroup('<leader>g', "Git")
 
+local lazygit = function()
+  local lazygit = function () vim.cmd('LazyGit') end
+  MapKey('n', '<leader>gg', lazygit, "LazyGit")
+end
+ConfigurePlugin(lazygit)
+
 local function gitsigns_mapper(buffer)
   local function visual_selection()
     return { { vim.fn.line('.'), vim.fn.line('v') } }
@@ -36,12 +42,6 @@ local function gitsigns_mapper(buffer)
   MapKey('n', '<leader>gt', gs.toggle_deleted, "Toggle deleted lines")
   MapKey({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', "Select git hunk")
 end
-
-local lazygit = function()
-  local lazygit = function () vim.cmd('LazyGit') end
-  MapKey('n', '<leader>gg', lazygit, "LazyGit")
-end
-table.insert(PluginConfigs, lazygit)
 
 return {
   {

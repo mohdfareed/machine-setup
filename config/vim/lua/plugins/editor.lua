@@ -2,6 +2,7 @@ local whichkey = function()
   local show_keymap = function() vim.cmd('WhichKey') end
   MapKey({ 'n', 'v' }, '<leader>?', show_keymap, "Show base keybinds")
 end
+ConfigurePlugin(whichkey)
 
 local session_memory = function()
   local persistence = require('persistence')
@@ -10,9 +11,7 @@ local session_memory = function()
   MapKey('n', '<leader>ql', load_last, "Load last session")
   MapKey('n', '<leader>qd', persistence.stop, "Delete session")
 end
-
-table.insert(PluginConfigs, session_memory)
-table.insert(PluginConfigs, whichkey)
+ConfigurePlugin(session_memory)
 
 return {
   { -- keybinds window
