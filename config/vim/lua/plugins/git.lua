@@ -1,3 +1,5 @@
+RegisterGroup('<leader>g', "Git")
+
 local function gitsigns_mapper(buffer)
   local function visual_selection()
     return { { vim.fn.line('.'), vim.fn.line('v') } }
@@ -19,7 +21,6 @@ local function gitsigns_mapper(buffer)
     return '<Ignore>'
   end, "Previous git hunk", {expr=true})
 
-  RegisterGroup('<leader>g', "Git")
   MapKey('n', '<leader>gs', gs.stage_hunk, "Stage hunk")
   MapKey('n', '<leader>gr', gs.reset_hunk, "Reset hunk")
   MapKey('v', '<leader>gs', stage_selection, "Stage selection")
@@ -36,6 +37,12 @@ local function gitsigns_mapper(buffer)
   MapKey({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>', "Select git hunk")
 end
 
+local lazygit = function()
+  local lazygit = function () vim.cmd('LazyGit') end
+  MapKey('n', '<leader>gg', lazygit, "LazyGit")
+end
+table.insert(PluginConfigs, lazygit)
+
 return {
   {
     'lewis6991/gitsigns.nvim',
@@ -44,4 +51,11 @@ return {
       preview_config = { border = 'rounded' },
     },
   },
+
+  {
+    'kdheepak/lazygit.nvim',
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+  }
 }
