@@ -1,5 +1,9 @@
--- plugins confguration functions table
-local plugin_configs= {}
+-- set leader to <space>
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
+-- plugins configuration functions table
+local plugin_configs = {}
 
 -- configure a plugin by loading its config function
 function ConfigurePlugin(config)

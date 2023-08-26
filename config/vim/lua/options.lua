@@ -1,16 +1,34 @@
 local create_group = vim.api.nvim_create_augroup
 local create_autocmd = vim.api.nvim_create_autocmd
 
+-- highlight on copy
+local highlight_group = create_group('YankHighlight', { clear = true })
+create_autocmd('TextYankPost', {
+  group = highlight_group,
+  callback = function() vim.highlight.on_yank() end,
+  pattern = '*',
+})
+
+-- change cwd when launching a directory
+local auto_cd = create_group('AutoCDOnEnter', { clear = true })
+create_autocmd('VimEnter', {
+  group = auto_cd,
+  callback = function()
+    local arg = vim.fn.expand('<amatch>')
+    if vim.fn.isdirectory(arg) == 1 then
+      vim.cmd('cd ' .. arg)
+    end
+  end,
+})
+
 -- indents
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.breakindent = true
-vim.opt.smartindent = true
 
 -- editor
-vim.opt.completeopt = 'menuone,preview'
 vim.opt.colorcolumn = '80'
 vim.opt.cursorline = true
 vim.opt.signcolumn = 'yes'
@@ -35,28 +53,8 @@ vim.opt.spelllang = { 'en_us' }
 
 -- miscellaneous options
 vim.opt.guicursor = 'n-v-c:hor25,i-ci:ver25,r-cr:block,n:blinkon250'
-vim.opt.mouse = 'a' -- enable mouse support
+vim.opt.mouse = 'a'               -- enable mouse support
 vim.opt.clipboard = 'unnamedplus' -- use os clipboard
-vim.opt.undofile = true -- store undo tree between sessions
-vim.opt.updatetime = 250 -- decrease update time
-vim.opt.termguicolors = true -- true terminal colors
-
--- highlight on yank
-local highlight_group = create_group('YankHighlight', { clear = true })
-create_autocmd('TextYankPost', {
-  group = highlight_group,
-  callback = function() vim.highlight.on_yank() end,
-  pattern = '*',
-})
-
--- auto cd when launched at a directory
-local auto_cd = create_group('AutoCDOnEnter', { clear = true })
-create_autocmd('VimEnter', {
-  group = auto_cd,
-  callback = function()
-    local arg = vim.fn.expand('<amatch>')
-    if vim.fn.isdirectory(arg) == 1 then
-      vim.cmd('cd ' .. arg)
-    end
-  end,
-})
+vim.opt.undofile = true           -- store undo tree between sessions
+vim.opt.updatetime = 250          -- decrease update time
+vim.opt.termguicolors = true      -- true terminal colors

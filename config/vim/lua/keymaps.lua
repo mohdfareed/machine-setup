@@ -1,6 +1,3 @@
--- load plugins keymaps
-LoadPluginConfigs()
-
 -- convert leader to group
 RegisterGroup('<Space>', "Leader")
 MapKey({ 'n', 'v' }, '<Space>', '<Nop>', "Leader", { silent = true })
@@ -19,10 +16,10 @@ MapKey('n', 'j', "v:count == 0 ? 'gj' : 'j'", nil, {
 
 -- diagnostics
 RegisterGroup('<leader>x', "Diagnostics")
-MapKey('n', '[d', vim.diagnostic.goto_prev, "Previous diagnostic message")
-MapKey('n', ']d', vim.diagnostic.goto_next, "Next diagnostic message")
-MapKey('n', '<leader>xd', vim.diagnostic.open_float, "Open floating diagnostic message")
-MapKey('n', '<leader>xl', vim.diagnostic.setloclist, "Open diagnostics list")
+-- MapKey('n', '[d', vim.diagnostic.goto_prev, "Previous diagnostic message")
+-- MapKey('n', ']d', vim.diagnostic.goto_next, "Next diagnostic message")
+-- MapKey('n', '<leader>xd', vim.diagnostic.open_float, "Open floating diagnostic message")
+-- MapKey('n', '<leader>xl', vim.diagnostic.setloclist, "Open diagnostics list")
 
 -- window management
 MapKey('n', '<c-w>H', '<c-w>L', "Move window to the left")

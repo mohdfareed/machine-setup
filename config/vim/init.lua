@@ -12,19 +12,14 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- set leader to <space>
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
--- load utilities
-require('utils')
+local lazy_config = {                        -- plugin manager config
+  checker = { enabled = true },              -- check for updates automatically
+  install = { colorscheme = { 'onedark' } }, -- startup installation theme
+  ui = { border = 'rounded' },               -- use rounded borders
+}
 
--- load plugins
-require('lazy').setup('plugins', {
-  checker = { enabled = true },  -- check for plugin updates automatically
-  install = { colorscheme = { 'onedark' } },  -- startup installation theme
-  ui = { border = 'rounded' },
-})
-
--- load personal configuration
-require('keymaps')
-require('options')
+require('utils')                              -- load utilities
+require('lazy').setup('plugins', lazy_config) -- load plugins
+LoadPluginConfigs()                           -- load plugins configurations
+require('keymaps')                            -- load personal keymaps
+require('options')                            -- load personal config options
