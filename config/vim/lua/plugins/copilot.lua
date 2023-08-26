@@ -26,13 +26,8 @@ return {
     },
   },
 
-  { -- statusline integration
-    "jonahgoldwastaken/copilot-status.nvim",
-    event = "BufReadPost",
-  },
-
-  { -- completion integration
-    'zbirenbaum/copilot-cmp',
-    opts = {}
-  },
+  -- statusline integration
+  { "jonahgoldwastaken/copilot-status.nvim", event = "BufReadPost", },
+  -- completion integration
+  { 'zbirenbaum/copilot-cmp',                opts = {} },
 }

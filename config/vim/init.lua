@@ -12,12 +12,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local lazy_config = {                        -- plugin manager config
-  checker = { enabled = true },              -- check for updates automatically
-  install = { colorscheme = { 'onedark' } }, -- startup installation theme
-  ui = { border = 'rounded' },               -- use rounded borders
-}
+-- set leader to <space>
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
+local lazy_config = {                         -- plugin manager config
+  checker = { enabled = true },               -- check for updates on startup
+  install = { colorscheme = { 'onedark' } },  -- startup installation theme
+  ui = { border = 'rounded' },                -- use rounded borders
+}
 require('utils')                              -- load utilities
 require('lazy').setup('plugins', lazy_config) -- load plugins
 LoadPluginConfigs()                           -- load plugins configurations

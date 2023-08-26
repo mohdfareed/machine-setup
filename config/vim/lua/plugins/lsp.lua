@@ -1,61 +1,69 @@
-local function lsp()
-  local lsp = require('lsp-zero').preset({})
+ConfigurePlugin(function()
+  LSP = require('lsp-zero').preset({})
 
-  lsp.ensure_installed({
+  LSP.ensure_installed({
     'pyright',
     'lua_ls',
   })
 
-  lsp.on_attach(function(_, bufnr)
-    lsp.default_keymaps({ buffer = bufnr })
-    lsp.buffer_autoformat() -- autoformat
+  LSP.on_attach(function(_, bufnr)
+    LSP.default_keymaps({ buffer = bufnr })
+    LSP.buffer_autoformat() -- auto-format
   end)
 
-  lsp.set_sign_icons({
+  -- code folding
+  LSP.set_server_config({
+    capabilities = {
+      textDocument = {
+        foldingRange = {
+          dynamicRegistration = false,
+          lineFoldingOnly = true
+        }
+      }
+    }
+  })
+
+  -- editor diagnostics signs
+  LSP.set_sign_icons({
     error = '',
     warn = '',
     hint = '',
     info = ''
   })
+
   -- fix undefined global 'vim'
-  lsp.configure('lua_ls', {
+  LSP.configure('lua_ls', {
     settings = {
       Lua = { diagnostics = { globals = { 'vim' } } }
     }
   })
 
+  -- inline hints
+
+
   require('lspconfig.ui.windows').default_options.border = 'rounded'
-  lsp.setup()
-end
+  LSP.setup()
+end)
 
-local function cmp()
-  local cmp = require('cmp')
-  local config = cmp.get_config()
-  local cmp_action = require('lsp-zero').cmp_action()
+ConfigurePlugin(function()
+  CMP = require('cmp')
+  function ToggleCompletion()
+    if CMP.visible() then CMP.abort() else CMP.complete() end
+  end
 
+  local config = CMP.get_config()
   config.window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
+    completion = CMP.config.window.bordered(),
+    documentation = CMP.config.window.bordered(),
   }
 
-  config.mapping = {
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
-    ['<C-f>'] = cmp_action.luasnip_jump_forward(),
-    ['<C-b>'] = cmp_action.luasnip_jump_backward(),
-  }
-
-  table.insert(config.sources, { name = 'spell' })
+  table.insert(config.sources, { name = 'nvim_lua' })
   table.insert(config.sources, { name = 'luasnip' })
+  table.insert(config.sources, { name = 'spell' })
 
   require('luasnip.loaders.from_vscode').lazy_load()
-  cmp.setup(config)
-end
-
-local config = function()
-  lsp()
-  cmp()
-end
-ConfigurePlugin(config)
+  CMP.setup(config)
+end)
 
 return {
   {
@@ -74,6 +82,7 @@ return {
       -- auto-completion
       { 'hrsh7th/nvim-cmp' },
       { 'hrsh7th/cmp-nvim-lsp' },
+      { 'hrsh7th/cmp-nvim-lua' },
       { 'f3fora/cmp-spell' },
 
       -- snippets

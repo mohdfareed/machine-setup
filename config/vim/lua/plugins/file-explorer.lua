@@ -1,8 +1,7 @@
-local neotree = function()
-  local open = function() vim.cmd('Neotree toggle float') end
-  MapKey('n', '<leader>e', open, "File explorer")
-end
-ConfigurePlugin(neotree)
+ConfigurePlugin(function()
+  NeoTree = require('neo-tree')
+  NeoTree.toggle = function() vim.cmd('Neotree toggle float') end
+end)
 
 return {
   {
@@ -22,6 +21,7 @@ return {
       filesystem = {
         follow_current_file = { enabled = true },
       },
+      sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
     }
   }
 }

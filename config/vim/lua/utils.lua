@@ -1,7 +1,3 @@
--- set leader to <space>
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
 -- plugins configuration functions table
 local plugin_configs = {}
 

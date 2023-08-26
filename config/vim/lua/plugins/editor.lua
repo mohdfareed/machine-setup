@@ -1,18 +1,3 @@
-local whichkey = function()
-  local show_keymap = function() vim.cmd('WhichKey') end
-  MapKey({ 'n', 'v' }, '<leader>?', show_keymap, "Show base keybinds")
-end
-ConfigurePlugin(whichkey)
-
-local session_memory = function()
-  local persistence = require('persistence')
-  local load_last = function() persistence.load({ last = true }) end
-  MapKey('n', '<leader>qs', persistence.load, "Load session")
-  MapKey('n', '<leader>ql', load_last, "Load last session")
-  MapKey('n', '<leader>qd', persistence.stop, "Delete session")
-end
-ConfigurePlugin(session_memory)
-
 return {
   { -- keybinds window
     'folke/which-key.nvim',
@@ -25,18 +10,7 @@ return {
       window = { border = 'rounded' },
     }
   },
-  { -- session memory
-    'folke/persistence.nvim',
-    event = 'BufReadPre',
-    opts = {}
-  },
-  { -- indentation guides
-    'lukas-reineke/indent-blankline.nvim',
-    opts = {
-      show_current_context = true,
-      space_char_blankline = ' ',
-    },
-  },
+
   { -- one dark theme
     'navarasu/onedark.nvim',
     lazy = false,
@@ -60,7 +34,7 @@ return {
       options = {
         theme = 'onedark',
         component_separators = '|',
-        section_separators = { left = '', right = ''},
+        section_separators = { left = '', right = '' },
         globalstatus = true,
       },
       sections = {
@@ -80,7 +54,6 @@ return {
       },
     },
   },
-
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
@@ -94,8 +67,8 @@ return {
         },
       },
       presets = {
-        bottom_search = true, -- use a classic bottom cmdline for search
-        command_palette = true, -- position the cmdline and popupmenu together
+        bottom_search = true,
+        command_palette = true,
         long_message_to_split = true,
         lsp_doc_border = true
       },

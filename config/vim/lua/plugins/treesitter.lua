@@ -1,5 +1,5 @@
 local treesitter = function()
-  require('nvim-treesitter.configs').setup({
+  local config = {
     auto_install = false,
     highlight = { enable = true },
     indent = { enable = true },
@@ -12,7 +12,8 @@ local treesitter = function()
       'lua',
       'python'
     },
-  })
+  }
+  require('nvim-treesitter.configs').setup(config)
 
   -- enable syntax based code folding
   vim.opt.foldmethod = 'expr'

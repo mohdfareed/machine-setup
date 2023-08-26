@@ -51,6 +51,13 @@ vim.opt.relativenumber = true
 vim.opt.spell = true
 vim.opt.spelllang = { 'en_us' }
 
+-- code folding
+-- vim.o.foldcolumn = '1'
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+-- vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+
 -- miscellaneous options
 vim.opt.guicursor = 'n-v-c:hor25,i-ci:ver25,r-cr:block,n:blinkon250'
 vim.opt.mouse = 'a'               -- enable mouse support
