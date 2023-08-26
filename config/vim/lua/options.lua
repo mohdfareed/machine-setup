@@ -12,9 +12,9 @@ vim.opt.smartindent = true
 -- editor
 vim.opt.completeopt = 'menuone,preview'
 vim.opt.colorcolumn = '80'
+vim.opt.cursorline = true
 vim.opt.signcolumn = 'yes'
 vim.opt.scrolloff = 8
-vim.opt.foldmethod = 'syntax'
 
 -- search
 vim.opt.hlsearch = false
@@ -29,6 +29,10 @@ vim.opt.listchars:append 'space:⋅'
 vim.opt.number = true
 vim.opt.relativenumber = true
 
+-- spelling
+vim.opt.spell = true
+vim.opt.spelllang = { 'en_us' }
+
 -- miscellaneous options
 vim.opt.guicursor = 'n-v-c:hor25,i-ci:ver25,r-cr:block,n:blinkon250'
 vim.opt.mouse = 'a' -- enable mouse support
@@ -40,7 +44,19 @@ vim.opt.termguicolors = true -- true terminal colors
 -- highlight on yank
 local highlight_group = create_group('YankHighlight', { clear = true })
 create_autocmd('TextYankPost', {
-  callback = function() vim.highlight.on_yank() end,
   group = highlight_group,
+  callback = function() vim.highlight.on_yank() end,
   pattern = '*',
+})
+
+-- auto cd when launched at a directory
+local auto_cd = create_group('AutoCDOnEnter', { clear = true })
+create_autocmd('VimEnter', {
+  group = auto_cd,
+  callback = function()
+    local arg = vim.fn.expand('<amatch>')
+    if vim.fn.isdirectory(arg) == 1 then
+      vim.cmd('cd ' .. arg)
+    end
+  end,
 })

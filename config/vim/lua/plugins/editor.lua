@@ -25,7 +25,18 @@ return {
       window = { border = 'rounded' },
     }
   },
-
+  { -- session memory
+    'folke/persistence.nvim',
+    event = 'BufReadPre',
+    opts = {}
+  },
+  { -- indentation guides
+    'lukas-reineke/indent-blankline.nvim',
+    opts = {
+      show_current_context = true,
+      space_char_blankline = ' ',
+    },
+  },
   { -- one dark theme
     'navarasu/onedark.nvim',
     lazy = false,
@@ -34,18 +45,13 @@ return {
       require('onedark').setup({
         transparent = true,
         lualine = { transparent = true },
-        colors = { bg1 = "none", },
-      }) 
+        highlights = {
+          NormalFloat = { bg = 'none' },
+          FloatBorder = { bg = 'none' },
+        }
+      })
       require('onedark').load()
     end,
-  },
-
-  { -- indentation guides
-    'lukas-reineke/indent-blankline.nvim',
-    opts = {
-      show_current_context = true,
-      space_char_blankline = ' ',
-    },
   },
 
   { -- statusline
@@ -58,17 +64,41 @@ return {
         globalstatus = true,
       },
       sections = {
-        lualine_c = { 'filetype', },
+        lualine_c = { 'filetype' },
         lualine_x = { 'buffers', },
         lualine_y = { 'tabs', },
         lualine_z = { 'location', 'searchcount', 'selectioncount', },
       },
+      extensions = {
+        'quickfix',
+        'lazy',
+        'neo-tree',
+        'nvim-dap-ui',
+        'trouble',
+        'toggleterm',
+        'symbols-outline',
+      },
     },
   },
 
-  { -- session memory
-    'folke/persistence.nvim',
-    event = 'BufReadPre',
-    opts = {}
-  },
+  {
+    'folke/noice.nvim',
+    event = 'VeryLazy',
+    dependencies = { 'MunifTanjim/nui.nvim' },
+    opts = {
+      lsp = {
+        override = {
+          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+          ['vim.lsp.util.stylize_markdown'] = true,
+          ['cmp.entry.get_documentation'] = true,
+        },
+      },
+      presets = {
+        bottom_search = true, -- use a classic bottom cmdline for search
+        command_palette = true, -- position the cmdline and popupmenu together
+        long_message_to_split = true,
+        lsp_doc_border = true
+      },
+    },
+  }
 }

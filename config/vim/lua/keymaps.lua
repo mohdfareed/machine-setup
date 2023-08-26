@@ -32,6 +32,7 @@ MapKey('n', '<c-w>K', '<c-w>K', "Move window Up")
 
 -- session management
 RegisterGroup('<leader>q', "Session")
+MapKey('n', '<leader>qq', '<cmd>qa<cr>', "Quit all")
 
 -- groups
 RegisterGroup('g', "Goto")

@@ -21,7 +21,6 @@ return {
       },
       filesystem = {
         follow_current_file = { enabled = true },
-        bind_to_cwd = true,
       },
     }
   }

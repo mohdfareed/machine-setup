@@ -1,10 +1,8 @@
 local telescope = function()
-  local telescope = require('telescope')
   local builtin = require('telescope.builtin')
-  pcall(telescope.load_extension, 'fzf')
 
   RegisterGroup('<leader><space>', "Search")
-  MapKey('n', '<leader><space>f', builtin.find_files, "Files")
+  MapKey('n', '<leader><space>', builtin.find_files, "Files")
   MapKey('n', '<leader><space>g', builtin.live_grep, "Grep")
   MapKey('n', '<leader>/', builtin.current_buffer_fuzzy_find,
     "Fuzzily search current buffer")
@@ -32,13 +30,6 @@ return {
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
-        cond = function() return vim.fn.executable 'make' == 1 end,
-      },
-    },
+    dependencies = { 'nvim-lua/plenary.nvim' },
   },
 }

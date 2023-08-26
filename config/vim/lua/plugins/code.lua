@@ -13,20 +13,30 @@ local flash = function ()
   MapKey({ 'o', 'x' }, 'R', flash.treesitter_search, "Treesitter Search")
   MapKey({ 'c' }, '<c-s>', flash.toggle, "Toggle Flash Search")
 end
--- ConfigurePlugin(flash)
+ConfigurePlugin(flash)
 
 return {
-  'tpope/vim-sleuth', -- auto-detect indents
+  { 'tpope/vim-sleuth' }, -- auto-detect indents
   { 'numToStr/Comment.nvim', opts = {} }, -- comment code
 
+  { -- auto-complete pairs
+    'windwp/nvim-autopairs',
+    event = "InsertEnter",
+    opts = {}
+  },
+  { -- add/delete/replace pairs
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    opts = {}
+},
   { -- todo comments manager
     'folke/todo-comments.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = { highlight = { keyword = 'fg' }, }
   },
-
-  -- { -- search utilities
-  --   'folke/flash.nvim',
-  --   event = 'VeryLazy',
-  -- },
+  { -- search utilities
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+  },
 }
