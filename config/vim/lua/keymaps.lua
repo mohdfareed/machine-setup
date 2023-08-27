@@ -13,14 +13,20 @@ end
 
 -- diagnostics
 RegisterGroup('<leader>x', "Diagnostics")
--- MapKey('n', '<leader>xd', vim.diagnostic.open_float, "Open floating diagnostic message")
--- MapKey('n', '<leader>xl', vim.diagnostic.setloclist, "Open diagnostics list")
+MapKey('n', '<leaer>xf', vim.diagnostic.open_float, "Open message")
+MapKey('n', '<leader>c', CodeActionMenu, "Code actions")
 
+-- code folding
+MapKey('n', 'zR', UFO.openAllFolds, "Open all folds")
+MapKey('n', 'zM', UFO.closeAllFolds, "Close all folds")
+MapKey('n', 'zr', UFO.openFoldsExceptKinds, "Open all folds except kinds")
+MapKey('n', 'zm', UFO.closeFoldsWith, "Close all folds with kinds")
 
--- completions
-MapKey('i', '<c-space>', ToggleCompletion, "Complete")
-MapKey('i', '<cr>', CMP.mapping.confirm({ select = true }), "Confirm")
-
+-- harpoon
+RegisterGroup('<leader>h', "Harpoon")
+MapKey('n', '<leader>h', Harpoon.ui.toggle_quick_menu, "Menu")
+MapKey('n', '<leader>ha', Harpoon.mark.add_file, "Add file")
+MapKey('n', '<leader>hc', Harpoon.cmd_ui.toggle_quick_menu, "Commands")
 
 -- window management
 MapKey('n', '<c-w>H', '<c-w>H', "Move window to the right")

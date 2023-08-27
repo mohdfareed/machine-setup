@@ -13,7 +13,8 @@ end
 
 -- create a keymap group
 function RegisterGroup(bind, name)
-  require('which-key').register({ [bind] = { name = "+" .. name } })
+  local ok, whichkey = pcall(require, 'which-key')
+  if ok then whichkey.register({ [bind] = { name = "+" .. name } }) end
 end
 
 -- map a keybind

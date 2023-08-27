@@ -1,9 +1,19 @@
 ConfigurePlugin(function()
   NeoTree = require('neo-tree')
   NeoTree.toggle = function() vim.cmd('Neotree toggle float') end
+
+  Harpoon = require('harpoon')
+  Harpoon.ui = require('harpoon.ui')
+  Harpoon.mark = require('harpoon.mark')
+  Harpoon.term = require('harpoon.term')
+  Harpoon.tmux = require('harpoon.tmux')
+  Harpoon.cmd_ui = require('harpoon.cmd-ui')
+  require('telescope').load_extension('harpoon')
 end)
 
 return {
+  { 'ThePrimeagen/harpoon' },
+
   {
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v3.x',

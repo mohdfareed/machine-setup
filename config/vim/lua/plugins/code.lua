@@ -3,15 +3,7 @@ ConfigurePlugin(function()
   Telescope = require('telescope')
   Telescope.builtin = require('telescope.builtin')
   Trouble = require('trouble')
-
-  Telescope.setup {
-    defaults = {
-      mappings = {
-        i = { ['<c-t>'] = Trouble.open_with_trouble },
-        n = { ['<c-t>'] = Trouble.open_with_trouble },
-      },
-    },
-  }
+  UFO = require('ufo')
 end)
 
 return {
@@ -67,25 +59,9 @@ return {
     'kevinhwang91/nvim-ufo',
     dependencies = { 'kevinhwang91/promise-async' },
     config = function()
-      vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-      vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
-      vim.keymap.set('n', 'zr', require('ufo').openFoldsExceptKinds)
-      vim.keymap.set('n', 'zm', require('ufo').closeFoldsWith)
-      vim.keymap.set('n', 'K', function()
-        local winid = require('ufo').peekFoldedLinesUnderCursor()
-        if not winid then vim.lsp.buf.hover() end
-      end)
       require('ufo').setup({ -- default to syntax based
         provider_selector = function() return { 'treesitter', 'indent' } end
       })
     end
   }
 }
-
---[[
-  -- some really long comment
-  V-- I want to fold ot
-      print(10)         -- no action (comment)
-  test``
-  that spands multiple lines
---]]

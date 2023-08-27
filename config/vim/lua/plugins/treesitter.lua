@@ -1,4 +1,4 @@
-local treesitter = function()
+ConfigurePlugin(function()
   local config = {
     auto_install = false,
     highlight = { enable = true },
@@ -13,14 +13,13 @@ local treesitter = function()
       'python'
     },
   }
-  require('nvim-treesitter.configs').setup(config)
 
   -- enable syntax based code folding
-  vim.opt.foldmethod = 'expr'
-  vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-  vim.opt.foldlevelstart = 99
-end
-ConfigurePlugin(treesitter)
+  -- vim.opt.foldmethod = 'expr'
+  -- vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
+  -- vim.opt.foldlevelstart = 99
+  require('nvim-treesitter.configs').setup(config)
+end)
 
 return {
   {

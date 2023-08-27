@@ -1,4 +1,6 @@
 local copilot = function()
+  vim.api.nvim_set_hl(0, 'CmpItemKindCopilot', { fg = '#9C73EF' })
+
   -- setup auto-completion
   local cmp = require('cmp')
   local cmp_config = cmp.get_config()
@@ -26,8 +28,20 @@ return {
     },
   },
 
-  -- statusline integration
-  { "jonahgoldwastaken/copilot-status.nvim", event = "BufReadPost", },
+  { -- statusline integration
+    "jonahgoldwastaken/copilot-status.nvim",
+    event = "BufReadPost",
+    opts = {
+      icons = {
+        idle = " ",
+        error = " ",
+        offline = " ",
+        warning = " ",
+        loading = "󰧑 ",
+      },
+    }
+  },
+
   -- completion integration
-  { 'zbirenbaum/copilot-cmp',                opts = {} },
+  { 'zbirenbaum/copilot-cmp', opts = {} },
 }
