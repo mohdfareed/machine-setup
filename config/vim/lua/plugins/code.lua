@@ -2,8 +2,12 @@ ConfigurePlugin(function()
   Flash = require('flash')
   Telescope = require('telescope')
   Telescope.builtin = require('telescope.builtin')
+  Telescope.builtin.fuzzy_buffer = Telescope.builtin.current_buffer_fuzzy_find
   Trouble = require('trouble')
   UFO = require('ufo')
+
+  WorkspaceDiagnostics = function() Trouble.open("workspace_diagnostics") end
+  DocumentDiagnostics = function() Trouble.open("document_diagnostics") end
 end)
 
 return {

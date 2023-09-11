@@ -9,6 +9,11 @@ ConfigurePlugin(function()
   Harpoon.tmux = require('harpoon.tmux')
   Harpoon.cmd_ui = require('harpoon.cmd-ui')
   require('telescope').load_extension('harpoon')
+
+  Harpoon.open = function() vim.cmd('Telescope harpoon marks') end
+  Harpoon.goto = function(index)
+    return function() Harpoon.ui.nav_file(index) end
+  end
 end)
 
 return {
