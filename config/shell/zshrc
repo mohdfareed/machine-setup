@@ -77,3 +77,17 @@ function zip-encrypt {
     mv "$dir_name.zip" ..
     cd - >/dev/null
 }
+
+# RIT
+# =============================================================================
+
+function ssh-rit {
+    usage="usage: $0 machine"
+    if (($# > 1)); then
+        echo $usage
+        return 1
+    fi
+
+    machine=${1:-"12"}
+    ssh "mff9108@gle-3159-ws$machine.nx.rit.edu"
+}
