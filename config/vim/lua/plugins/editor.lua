@@ -8,7 +8,8 @@ return {
     end,
     opts = {
       window = { border = 'rounded' },
-    }
+    },
+    cond = function() return not vim.g.vscode end,
   },
 
   { -- one dark theme
@@ -26,6 +27,7 @@ return {
       })
       require('onedark').load()
     end,
+    cond = function() return not vim.g.vscode end,
   },
 
   { -- statusline
@@ -53,7 +55,9 @@ return {
         'symbols-outline',
       },
     },
+    cond = function() return not vim.g.vscode end,
   },
+
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
@@ -73,5 +77,6 @@ return {
         lsp_doc_border = true
       },
     },
+    cond = function() return not vim.g.vscode end,
   }
 }

@@ -48,8 +48,10 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- spelling
-vim.opt.spell = true
-vim.opt.spelllang = { 'en_us' }
+if not vim.g.vscode then
+  vim.opt.spell = true
+  vim.opt.spelllang = { 'en_us' }
+end
 
 -- code folding
 vim.o.foldlevel = 99

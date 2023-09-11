@@ -26,6 +26,7 @@ return {
       panel = { enabled = false },
       filetypes = { ['*'] = true },
     },
+    cond = function() return not vim.g.vscode end,
   },
 
   { -- statusline integration
@@ -39,9 +40,12 @@ return {
         warning = " ",
         loading = "󰧑 ",
       },
-    }
+    },
+    cond = function() return not vim.g.vscode end,
   },
 
-  -- completion integration
-  { 'zbirenbaum/copilot-cmp', opts = {} },
+  { -- completion integration
+    'zbirenbaum/copilot-cmp', opts = {},
+  cond = function() return not vim.g.vscode end,
+  },
 }

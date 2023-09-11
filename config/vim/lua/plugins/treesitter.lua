@@ -30,5 +30,6 @@ return {
       'nvim-treesitter/nvim-treesitter-context',
     },
     build = ':TSUpdate',
+    cond = function() return not vim.g.vscode end,
   },
 }

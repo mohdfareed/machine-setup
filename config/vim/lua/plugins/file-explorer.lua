@@ -17,7 +17,10 @@ ConfigurePlugin(function()
 end)
 
 return {
-  { 'ThePrimeagen/harpoon' },
+  {
+    'ThePrimeagen/harpoon',
+    cond = function() return not vim.g.vscode end,
+  },
 
   {
     'nvim-neo-tree/neo-tree.nvim',
@@ -37,6 +40,7 @@ return {
         follow_current_file = { enabled = true },
       },
       sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
-    }
+    },
+    cond = function() return not vim.g.vscode end,
   }
 }

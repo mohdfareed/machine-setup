@@ -21,6 +21,7 @@ local lazy_config = {                         -- plugin manager config
   install = { colorscheme = { 'onedark' } },  -- startup installation theme
   ui = { border = 'rounded' },                -- use rounded borders
 }
+
 require('utils')                              -- load utilities
 require('lazy').setup('plugins', lazy_config) -- load plugins
 LoadPluginConfigs()                           -- load plugins configurations

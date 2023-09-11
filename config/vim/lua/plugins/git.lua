@@ -9,6 +9,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
+    cond = function() return not vim.g.vscode end,
   },
 
   { -- git editor utilities
@@ -16,5 +17,6 @@ return {
     opts = {
       preview_config = { border = 'rounded' },
     },
+    cond = function() return not vim.g.vscode end,
   },
 }

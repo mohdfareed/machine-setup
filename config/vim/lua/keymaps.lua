@@ -1,6 +1,7 @@
 -- convert leader to group
 RegisterGroup('<space>', "Leader")
 MapKey({ 'n', 'v' }, '<space>', '<nop>', "Leader", { silent = true })
+if not vim.g.vscode then
 
 -- leader group
 MapKey('n', '<leader>e', NeoTree.toggle, "File explorer")
@@ -49,7 +50,8 @@ MapKey('n', '<leader>gp', Git.preview_hunk, "Preview hunk")
 MapKey('n', '<leader>gt', Git.toggle_deleted, "Toggle deleted lines")
 MapKey('n', '<leader>gb', Git.blame_line, "Blame line")
 
--- remaps --------------------------------------------------------------------
+end
+-- remaps (applied in vscode)---------------------------------------------------
 
 -- move through wrapped lines as separate lines
 MapKey('n', 'k', "v:count == 0 ? 'gk' : 'k'", nil, {
@@ -67,10 +69,12 @@ MapKey({ 'o', 'x' }, 'R', Flash.treesitter_search, "Treesitter Search")
 MapKey({ 'c' }, '<c-s>', Flash.toggle, "Toggle Flash Search")
 
 -- code folding
-MapKey('n', 'zR', UFO.openAllFolds, "Open all folds")
-MapKey('n', 'zM', UFO.closeAllFolds, "Close all folds")
-MapKey('n', 'zr', UFO.openFoldsExceptKinds, "Open all folds except kinds")
-MapKey('n', 'zm', UFO.closeFoldsWith, "Close all folds with kinds")
+if not vim.g.vscode then
+  MapKey('n', 'zR', UFO.openAllFolds, "Open all folds")
+  MapKey('n', 'zM', UFO.closeAllFolds, "Close all folds")
+  MapKey('n', 'zr', UFO.openFoldsExceptKinds, "Open all folds except kinds")
+  MapKey('n', 'zm', UFO.closeFoldsWith, "Close all folds with kinds")
+end
 
 -- window management
 MapKey('n', '<c-w>H', '<c-w>H', "Move window to the right")
