@@ -1,0 +1,134 @@
+{
+  // window settings
+  "window.autoDetectColorScheme": true,
+  "window.closeWhenEmpty": true,
+  "window.openWithoutArgumentsInNewWindow": "on",
+  "window.openFilesInNewWindow": "default",
+  "window.commandCenter": true,
+  "window.restoreWindows": "none",
+  // workbench settings
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.editor.closeOnFileDelete": true,
+  "workbench.editor.untitled.hint": "hidden",
+  "workbench.editor.wrapTabs": true,
+  "workbench.preferredDarkColorTheme": "One Dark Pro",
+  // editor settings
+  "editor.smoothScrolling": true,
+  "editor.hover.above": false,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.wordWrap": "on",
+  "editor.suggest.preview": true,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.matchBrackets": "near",
+  "editor.guides.bracketPairs": true,
+  "editor.wrappingIndent": "indent",
+  "editor.minimap.renderCharacters": false,
+  "editor.fontSize": 14,
+  "editor.fontFamily": "JetBrainsMono Nerd Font",
+  "editor.fontLigatures": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.rulers": [80],
+  "editor.renderWhitespace": "all",
+  "editor.stickyScroll.enabled": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  // integrated terminal settings
+  "terminal.integrated.macOptionIsMeta": true,
+  "terminal.integrated.gpuAcceleration": "auto",
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.enableBell": true,
+  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
+  "terminal.integrated.fontSize": 14,
+  "oneDarkPro.bold": true,
+  "oneDarkPro.vivid": true,
+  "oneDarkPro.markdownStyle": false,
+  // git settings
+  "git.allowForcePush": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "git.autofetch": true,
+  "diffEditor.renderSideBySide": false,
+  // comment anchors
+  "commentAnchors.scrollPosition": "center",
+  "commentAnchors.tags.displayLineNumber": false,
+  "commentAnchors.tags.sortMethod": "type",
+  // markdown
+  "markdown.preview.typographer": true,
+  "markdown.preview.scrollPreviewWithEditor": false,
+  "markdown.preview.scrollEditorWithPreview": false,
+  "markdownlint.config": {
+    "no-inline-html": {
+      "allowed_elements": ["div"]
+    }
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "vscode.markdown-language-features",
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "strings": "on",
+      "other": "on"
+    },
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": true
+    }
+  },
+  // python
+  "python.formatting.provider": "black",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.useLibraryCodeForTypes": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportOptionalMemberAccess": "none"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnType": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "notebook.lineNumbers": "on",
+  "black-formatter.args": [
+    "--line-length",
+    "79"
+  ],
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": true,
+    "markdown": true,
+    "scminput": false,
+    "yaml": true
+  },
+  "explorer.confirmDelete": false,
+  "cSpell.userWords": [
+    "autofetch",
+    "autopep",
+    "Fareed",
+    "mohdfareed",
+    "mohds-macbook",
+    "openai"
+  ],
+  "remote.tunnels.access.hostNameOverride": "mohds-macbook",
+  "settingsSync.ignoredExtensions": [
+    "vscjava.vscode-java-pack",
+    "vscjava.vscode-java-debug",
+    "visualstudioexptteam.vscodeintellicode",
+    "visualstudioexptteam.intellicode-api-usage-examples",
+    "redhat.java",
+    "vscjava.vscode-java-test",
+    "vscjava.vscode-java-dependency",
+    "vscjava.vscode-maven"
+  ],
+  "[c]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "editor.lineNumbers": "relative",
+  "workbench.colorTheme": "One Dark Pro",
+  "oneDarkPro.editorTheme": "One Dark Pro Mix"
+}

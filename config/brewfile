@@ -17,6 +17,7 @@ brew "bat"    # cat replacement
 brew "mas"    # mac app store cli
 brew "btop"   # resource monitor
 brew "tmux"   # terminal multiplexer
+brew "pandoc" # document converter
 
 # editor
 brew "neovim"  # vim editor

@@ -4,6 +4,9 @@ machine."""
 import config
 import utils
 
+VSCODE = "$HOME/Library/Application Support/Code/User"
+"""The path to the VSCode user settings directory."""
+
 printer = utils.Printer("macos")
 """The macOS setup printer."""
 shell = utils.Shell(printer.debug, printer.error)
@@ -15,9 +18,13 @@ def setup() -> None:
     printer.info("Setting up macOS...")
 
     # add terminal profiles
-    # shell(["open", "-g", config.terminal_dark], silent=True)
-    # shell(["open", "-g", config.terminal_light], silent=True)
     # printer.debug("Added terminal profiles")
+
+    # setup vscode settings
+    printer.print("Setting up VSCode...")
+    utils.symlink(config.vscode_settings, VSCODE)
+    utils.symlink(config.vscode_keybindings, VSCODE)
+    print.debug("Linked VSCode settings")
 
     # run the preferences script
     printer.print("Setting system preferences...")

@@ -13,6 +13,8 @@ macos = _os.path.join(machine, "macos")
 """The path of macOS configuration directory."""
 git = _os.path.join(machine, "git")
 """The path of git configuration directory."""
+vscode = _os.path.join(machine, "vscode")
+"""The path of VSCode configuration directory."""
 pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
 """The path of Raspberry Pi configuration directory."""
 
@@ -47,6 +49,12 @@ requirements = _os.path.join(machine, "requirements.txt")
 # macos
 macos_preferences = _os.path.join(macos, "preferences.sh")
 """The path of macOS preferences file of shell commands."""
+
+# vscode
+vscode_settings = _os.path.join(vscode, "settings.json")
+"""The path of VSCode settings file."""
+vscode_keybindings = _os.path.join(vscode, "keybindings.json")
+"""The path of VSCode keybindings file."""
 
 # raspberry pi
 pi_zprofile = _os.path.join(pi_machine, "zprofile")
