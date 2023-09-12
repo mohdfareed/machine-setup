@@ -1,82 +1,51 @@
 return {
-  { -- keybinds window
-    'folke/which-key.nvim',
-    event = 'VeryLazy',
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
-    opts = {
-      window = { border = 'rounded' },
-    },
-    cond = function() return not vim.g.vscode end,
+  { -- auto-detect indents
+    'tpope/vim-sleuth',
   },
 
-  { -- one dark theme
-    'navarasu/onedark.nvim',
-    lazy = false,
-    priority = 1000,
+  { -- todo comments manager
+    'folke/todo-comments.nvim',
+    opts = { highlight = { keyword = 'fg' }, },
+  },
+
+  { -- code folding
+    'kevinhwang91/nvim-ufo',
+    dependencies = { 'kevinhwang91/promise-async' },
     config = function()
-      require('onedark').setup({
-        transparent = true,
-        lualine = { transparent = true },
-        highlights = {
-          NormalFloat = { bg = 'none' },
-          FloatBorder = { bg = 'none' },
-        }
+      require('ufo').setup({ -- default to syntax based
+        provider_selector = function() return { 'treesitter', 'indent' } end
       })
-      require('onedark').load()
     end,
-    cond = function() return not vim.g.vscode end,
+    init = function()
+      UFO = require('ufo')
+    end,
   },
 
-  { -- statusline
-    'nvim-lualine/lualine.nvim',
+  { -- file explorer
+    'nvim-neo-tree/neo-tree.nvim',
     opts = {
-      options = {
-        theme = 'onedark',
-        component_separators = '|',
-        section_separators = { left = '', right = '' },
-        globalstatus = true,
+      popup_border_style = 'rounded',
+      buffers = {
+        follow_current_file = { enabled = true },
       },
-      sections = {
-        lualine_c = { 'filetype' },
-        lualine_x = { 'buffers', },
-        lualine_y = { 'tabs', },
-        lualine_z = { 'location', 'searchcount', 'selectioncount', },
-      },
-      extensions = {
-        'quickfix',
-        'lazy',
-        'neo-tree',
-        'nvim-dap-ui',
-        'trouble',
-        'toggleterm',
-        'symbols-outline',
+      filesystem = {
+        follow_current_file = { enabled = true },
       },
     },
-    cond = function() return not vim.g.vscode end,
-  },
+    init = function()
+      NeoTree = require('neo-tree')
 
-  {
-    'folke/noice.nvim',
-    event = 'VeryLazy',
-    dependencies = { 'MunifTanjim/nui.nvim' },
-    opts = {
-      lsp = {
-        override = {
-          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-          ['vim.lsp.util.stylize_markdown'] = true,
-          ['cmp.entry.get_documentation'] = true,
-        },
-      },
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-        lsp_doc_border = true
-      },
-    },
-    cond = function() return not vim.g.vscode end,
-  }
+      NeoTree.toggle = function()
+        require("neo-tree.command").execute({
+          toggle = true, position = 'float', dir = require("lazyvim.util").get_root()
+        })
+      end
+
+      NeoTree.toggle_cwd = function()
+        require("neo-tree.command").execute({
+          toggle = true, position = 'float', dir = vim.loop.cwd()
+        })
+      end
+    end
+  },
 }

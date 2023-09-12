@@ -1,5 +1,5 @@
--- install plugin manager
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+-- bootstrap lazy.nvim plugin manager
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
     'git',
@@ -10,20 +10,27 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   }
 end
-vim.opt.rtp:prepend(lazypath)
+vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
--- set leader to <space>
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
-local lazy_config = {                         -- plugins manager config
-  checker = { enabled = true },               -- check for updates on startup
-  install = { colorscheme = { 'onedark' } },  -- startup installation theme
-  ui = { border = 'rounded' },                -- use rounded borders
+local lazy_config = {                        -- plugins manager config
+  checker = { enabled = true },              -- check for updates on startup
+  install = { colorscheme = { 'onedark' } }, -- startup installation theme
+  ui = { border = 'rounded' },               -- use rounded borders
 }
 
-require('utils')                              -- load utilities
-require('lazy').setup('plugins', lazy_config) -- load plugins
-LoadPluginConfigs()                           -- load plugins configurations
-require('keymaps')                            -- load personal keymaps
-require('options')                            -- load personal config options
+require('lazy').setup({ -- load plugins
+  -- add LazyVim and import its plugins
+  { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+
+  -- import extras modules
+  { import = "lazyvim.plugins.extras.vscode" },
+  { import = "lazyvim.plugins.extras.coding.copilot" },
+  { import = "lazyvim.plugins.extras.linting.eslint" },
+  { import = "lazyvim.plugins.extras.formatting.prettier" },
+
+  -- disabled plugins
+  { "goolord/alpha-nvim", enabled = false },
+
+  -- import custom plugins
+  { import = "plugins" },
+}, lazy_config)

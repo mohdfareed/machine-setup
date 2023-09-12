@@ -4,6 +4,9 @@
   "editor.wordWrap": "on",
   "editor.wrappingIndent": "indent",
   "editor.guides.bracketPairs": true,
+
+  // formatting
+  "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
 
   // whitespace
@@ -108,5 +111,11 @@
     "editor.codeActionsOnSave": {
       "source.organizeImports": true
     }
+  },
+
+  // lua
+  "[lua]": {
+    "editor.defaultFormatter": "sumneko.lua",
+    "editor.tabSize": 2
   }
 }
