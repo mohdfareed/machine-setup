@@ -1,7 +1,6 @@
 -- convert leader to group
 RegisterGroup('<space>', "Leader")
 MapKey({ 'n', 'v' }, '<space>', '<nop>', "Leader", { silent = true })
-if not vim.g.vscode then
 
 -- leader group
 MapKey('n', '<leader>e', NeoTree.toggle, "File explorer")
@@ -50,7 +49,6 @@ MapKey('n', '<leader>gp', Git.preview_hunk, "Preview hunk")
 MapKey('n', '<leader>gt', Git.toggle_deleted, "Toggle deleted lines")
 MapKey('n', '<leader>gb', Git.blame_line, "Blame line")
 
-end
 -- remaps (applied in vscode)---------------------------------------------------
 
 -- move through wrapped lines as separate lines

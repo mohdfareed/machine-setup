@@ -16,7 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-local lazy_config = {                         -- plugin manager config
+local lazy_config = {                         -- plugins manager config
   checker = { enabled = true },               -- check for updates on startup
   install = { colorscheme = { 'onedark' } },  -- startup installation theme
   ui = { border = 'rounded' },                -- use rounded borders

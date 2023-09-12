@@ -1,3 +1,8 @@
 {
-  "cSpell.words": ["vscode"]
+  "cSpell.words": [
+    "vscode"
+  ],
+  "Lua.diagnostics.globals": [
+    "vim"
+  ]
 }

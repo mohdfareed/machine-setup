@@ -91,3 +91,7 @@ function ssh-rit {
     machine=${1:-"12"}
     ssh "mff9108@gle-3159-ws$machine.nx.rit.edu"
 }
+
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+

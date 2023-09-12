@@ -1,10 +1,9 @@
 -- plugins configuration functions table
 local plugin_configs = {}
 
--- configure a plugin by loading its config function
--- set vscode to true to load the config in vscode
+--- configure a plugin by loading its config function
 function ConfigurePlugin(config, vscode)
-  vscode = vscode or false
+  vscode = vscode or false -- whether to load the function in vscode
   if not vim.g.vscode or vscode then
     table.insert(plugin_configs, config)
   end
