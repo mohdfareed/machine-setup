@@ -37,7 +37,9 @@ return {
 
       NeoTree.toggle = function()
         require("neo-tree.command").execute({
-          toggle = true, position = 'float', dir = require("lazyvim.util").get_root()
+          toggle = true,
+          position = 'float',
+          dir = require("lazyvim.util").get_root()
         })
       end
 
