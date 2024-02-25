@@ -1,29 +1,36 @@
 """Setup module containing a `setup` function for setting up Git on a new
 machine."""
 
-import config
-import utils
+import logging
+import os
 
-GITCONFIG: str = utils.abspath("~/.gitconfig", resolve_links=False)
+import config
+from utils.shell import Shell
+
+GITCONFIG: str = os.path.abspath("~/.gitconfig")
 """The path to the git configuration file on the machine."""
-GITIGNORE: str = utils.abspath("~/.gitignore", resolve_links=False)
+GITIGNORE: str = os.path.abspath("~/.gitignore")
 """The path to the git ignore file on the machine."""
 
-printer = utils.Printer("git")
-"""The git setup printer."""
-shell = utils.Shell(printer.debug, printer.error)
+LOGGER = logging.getLogger(__name__)
+"""The git setup logger."""
+shell = Shell(LOGGER.debug, LOGGER.error)
 """The git shell instance."""
 
 
 def setup() -> None:
     """Setup git on a new machine."""
-    printer.info("Setting up git...")
+    LOGGER.info("Setting up git...")
 
     # symlink configuration file
-    utils.symlink(config.gitconfig, GITCONFIG)
-    utils.symlink(config.gitignore, GITIGNORE)
+    os.makedirs(os.path.dirname(GITCONFIG), exist_ok=True)
+    os.remove(GITCONFIG)
+    os.symlink(config.gitconfig, GITCONFIG)
+    os.makedirs(os.path.dirname(GITIGNORE), exist_ok=True)
+    os.remove(GITIGNORE)
+    os.symlink(config.gitignore, GITIGNORE)
 
-    printer.success("Git was setup successfully.")
+    LOGGER.info("Git was setup successfully.")
 
 
 if __name__ == "__main__":
@@ -33,4 +40,4 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Git setup script.")
     args = parser.parse_args()
-    core.run(setup, printer, "Failed to setup git")
+    core.run(setup, LOGGER, "Failed to setup git")

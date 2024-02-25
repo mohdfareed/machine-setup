@@ -1,20 +1,21 @@
 """Setup module containing a `setup` function for setting up the shell on a new
 machine."""
 
+import logging
 import os
 import re
 
 import config
-import utils
+from utils.shell import Shell
 
 HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
 SETUP_SCRIPT = "setup-machine"
 """The name of the setup script on the Raspberry Pi."""
 
-printer = utils.Printer("raspberrypi")
-"""The Raspberry Pi setup printer."""
-shell = utils.Shell(printer.debug, printer.error)
+LOGGER = logging.getLogger(__name__)
+"""The Raspberry Pi setup logger."""
+shell = Shell(LOGGER.debug, LOGGER.error)
 """The Raspberry Pi shell instance."""
 
 
@@ -26,13 +27,13 @@ def setup(hostname=HOSTNAME) -> None:
     Args:
         hostname (str, optional): The hostname of the Raspberry Pi.
     """
-    printer.info("Setting up Raspberry Pi...")
+    LOGGER.info("Setting up Raspberry Pi...")
 
     machine_path = load_zshenv()
     connect(hostname)
     copy_config(hostname, machine_path)
     setup_scripts(hostname, machine_path)
-    printer.success("Raspberry Pi setup complete")
+    LOGGER.info("Raspberry Pi setup complete")
 
 
 def load_zshenv():
@@ -54,52 +55,56 @@ def load_zshenv():
 
 
 def connect(hostname):
-    printer.print("Connecting to Raspberry Pi...")
+    LOGGER.info("Connecting to Raspberry Pi...")
 
     # check if raspberrypi exists
     if shell(["ping", hostname, "-c", "1"], silent=True)[1] != 0:
         raise RuntimeError("Raspberry Pi is not connected to the network")
-    printer.debug("Connection to Raspberry Pi established")
+    LOGGER.debug("Connection to Raspberry Pi established")
 
     # add ssh key to raspberrypi
     # FIXME: broken prompts (not visible while loading)
     shell(f"ssh-copy-id '{hostname}' > /dev/null 2>&1")
-    printer.debug("Added SSH key to Raspberry Pi")
+    LOGGER.debug("Added SSH key to Raspberry Pi")
 
 
 def copy_config(hostname, machine):
-    printer.print("Copying config files to Raspberry Pi...")
+    LOGGER.info("Copying config files to Raspberry Pi...")
     shell(["ssh", hostname, "mkdir", "-p", machine], silent=True, safe=True)
 
     # copy config files to raspberrypi
     machine = f"{hostname}:{machine}"
-    shell(["rsync", "-avzL", config.pi_machine + "/", machine], silent=True, safe=True)
-    printer.debug(
+    shell(
+        ["rsync", "-avzL", config.pi_machine + "/", machine],
+        silent=True,
+        safe=True,
+    )
+    LOGGER.debug(
         f"Copied: {os.path.basename(config.pi_machine)}/* -> {machine}"
     )
 
     # copy shared config files
     for config_file in config.pi_shared_config:
         shell(["rsync", "-avzL", config_file, machine], silent=True, safe=True)
-        printer.debug(f"Copied: {os.path.basename(config_file)} -> {machine}")
-    printer.debug("Copied config files to Raspberry Pi")
+        LOGGER.debug(f"Copied: {os.path.basename(config_file)} -> {machine}")
+    LOGGER.debug("Copied config files to Raspberry Pi")
 
 
 def setup_scripts(hostname, machine):
-    printer.print("Setting up scripts on Raspberry Pi...")
+    LOGGER.info("Setting up scripts on Raspberry Pi...")
 
     # make scripts executable
     scripts = f"{machine}/scripts"
     shell(["ssh", hostname, "chmod", "+x", f"{scripts}/*.sh"], silent=True)
-    printer.debug("Changed scripts to executable")
+    LOGGER.debug("Changed scripts to executable")
 
     # add setup script to path
     setup = f"{scripts}/setup.sh"
     script = f"/usr/local/bin/{SETUP_SCRIPT}"
     shell(["ssh", hostname, "sudo", "ln", "-sf", setup, script], silent=True)
-    printer.debug(f"Symlinked: {setup} -> {script}")
-    printer.debug("Added setup script to path")
-    printer.info(f"Setup Raspberry Pi by executing:[/] [green]{SETUP_SCRIPT}")
+    LOGGER.debug(f"Symlinked: {setup} -> {script}")
+    LOGGER.debug("Added setup script to path")
+    LOGGER.info(f"Setup Raspberry Pi by executing:[/] [green]{SETUP_SCRIPT}")
 
 
 if __name__ == "__main__":
@@ -114,7 +119,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     core.run(
         setup,
-        printer,
+        LOGGER,
         "Failed to setup Raspberry Pi",
         args.hostname or HOSTNAME,
     )

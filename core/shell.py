@@ -2,8 +2,11 @@
 machine.
 """
 
+import logging
+import os
+
 import config
-import utils
+from utils.shell import Shell
 
 ZPROFILE = "~/.zprofile"
 """The path to the zsh profile file symlink."""
@@ -16,31 +19,38 @@ VIM = "~/.config/nvim"
 TMUX = "~/.tmux.conf"
 """The path of the tmux configuration file symlink."""
 
-printer = utils.Printer("shell")
-"""The ZSH setup printer."""
-shell = utils.Shell(printer.debug, printer.error)
+LOGGER = logging.getLogger(__name__)
+"""The ZSH setup logger."""
+shell = Shell(LOGGER.debug, LOGGER.error)
 """The ZSH shell instance."""
 
 
 def setup() -> None:
     """Setup the shell environment on a machine."""
-    printer.info("Setting up shell...")
+    LOGGER.info("Setting up shell...")
 
     # install omz and symlink config files
     install_omz()
-    utils.symlink(config.zshrc, ZSHRC)
-    utils.symlink(config.zshenv, ZSHENV)
-    utils.symlink(config.zprofile, ZPROFILE)
-    utils.symlink(config.vim, VIM)
-    utils.symlink(config.tmux, TMUX)
+    os.makedirs(os.path.dirname(ZSHRC), exist_ok=True)
+    os.makedirs(os.path.dirname(VIM), exist_ok=True)
+    os.remove(ZSHRC)
+    os.symlink(config.zshrc, ZSHRC)
+    os.remove(ZSHENV)
+    os.symlink(config.zshenv, ZSHENV)
+    os.remove(ZPROFILE)
+    os.symlink(config.zprofile, ZPROFILE)
+    os.remove(TMUX)
+    os.symlink(config.tmux, TMUX)
+    os.remove(VIM)
+    os.symlink(config.vim, VIM)
 
     # disable login message
     shell("touch ~/.hushlogin", silent=True)
-    printer.success("Shell setup complete")
+    LOGGER.info("Shell setup complete")
 
 
 def install_omz():
-    printer.print("Installing oh-my-zsh...")
+    LOGGER.info("Installing oh-my-zsh...")
 
     # load installation environment
     cmd = f"source {config.zsh_env} && echo $ZSH"
@@ -58,7 +68,7 @@ def install_omz():
 
     # remove zshrc backup file
     shell(["rm", "-rf", f"{ZSHRC}.pre-oh-my-zsh"])
-    printer.debug("Installed oh-my-zsh")
+    LOGGER.debug("Installed oh-my-zsh")
 
 
 if __name__ == "__main__":
@@ -68,4 +78,4 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Shell setup script.")
     args = parser.parse_args()
-    core.run(setup, printer, "Failed to setup shell")
+    core.run(setup, LOGGER, "Failed to setup shell")

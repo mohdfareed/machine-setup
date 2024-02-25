@@ -8,7 +8,6 @@ If user input is required, the user must be prompted outside the shell command.
 """
 
 import getpass
-import os
 import subprocess
 import typing
 
@@ -74,9 +73,11 @@ class Shell:
             # update status and log if silent
             elif line.strip():  # ignore empty lines
                 status.update(f"[green]{line.strip()}[/]")
-                self.silent_handler(
-                    line.strip()
-                ) if self.silent_handler else ...
+                (
+                    self.silent_handler(line.strip())
+                    if self.silent_handler
+                    else ...
+                )
             output += line
         return output.strip(), process.wait()
 
@@ -88,8 +89,7 @@ class Shell:
         silent: typing.Literal[False] = ...,
         safe=...,
         status=...,
-    ) -> int:
-        ...
+    ) -> int: ...
 
     @typing.overload
     def __call__(
@@ -99,8 +99,7 @@ class Shell:
         silent: typing.Literal[True] = ...,
         safe=...,
         status=...,
-    ) -> tuple[str, int]:
-        ...
+    ) -> tuple[str, int]: ...
 
     def __call__(
         self, command, env=None, silent=False, safe=False, status=LOADING_STR
@@ -110,33 +109,6 @@ class Shell:
         )
 
 
-def interactive() -> None:
-    """Runs the shell in interactive mode. No output is logged when running in
-    this mode. The shell used is the default shell of the module."""
-
-    def print_prompt(exitcode: int):
-        home = os.path.expanduser("~")
-        path = "~/" + os.path.relpath(os.getcwd(), home)
-        color = "green" if exitcode == 0 else "red"
-        print(f"[bright_black]{path} [/][{color}]➜ [/]", end="")
-
-    shell = Shell()
-    active_shell: str = shell("echo $0", silent=True)[0]
-    print(f"Shell interface written in Python. Active shell: {active_shell}")
-    print("[bold blue]Type 'exit' to stop.[/]\n")
-
-    exit_code = 0
-    while True:
-        # print prompt based on the exit code of the previous command
-        print_prompt(exit_code)
-        # read a command and break if it is "exit"
-        if (cmd := input()) == "exit":
-            print("[bold magenta]Exiting shell...[/]")
-            break
-        # run the command and print output
-        exit_code = shell(cmd)
-
-
 shell = Shell()
 try:  # check if the user has sudo privileges
     shell("sudo -n true &> /dev/null", silent=True)
@@ -144,7 +116,3 @@ except subprocess.CalledProcessError:
     # the user doesn't have sudo privileges, prompt for the password
     password = getpass.getpass("\033[32m Enter your password: \033[30m")
     shell(f"echo {password} | sudo -Sv", silent=True)
-
-if __name__ == "__main__":
-    print("[bold]Running shell in interactive mode.[/]\n")
-    interactive()

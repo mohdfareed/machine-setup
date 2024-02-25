@@ -1,11 +1,12 @@
 """SSH setup module."""
 
+import logging
 import os
 from collections import defaultdict
 from typing import Optional
 
 import config
-import utils
+from utils.shell import Shell
 
 SSH_DIR: str = "~/.ssh/"
 """The path to the SSH directory."""
@@ -14,9 +15,9 @@ PRIVATE_KEY_EXTENSION: str = ".key"
 PUBLIC_KEY_EXTENSION: str = ".pub"
 """The extension of the public key files."""
 
-printer = utils.Printer("ssh")
-"""The SSH setup printer."""
-shell = utils.Shell(printer.debug, printer.error)
+LOGGER = logging.getLogger(__name__)
+"""The SSH setup logger."""
+shell = Shell(LOGGER.debug, LOGGER.error)
 """The SSH shell instance."""
 
 
@@ -35,15 +36,17 @@ def setup(keys_dir: Optional[str]) -> None:
     Args:
         keys_dir (str): The path to the directory containing the ssh keys.
     """
-    printer.info("Setting up SSH...")
+    LOGGER.info("Setting up SSH...")
 
     # copy config file
-    utils.symlink(config.ssh_config, SSH_DIR + "config")
+    os.makedirs(SSH_DIR, exist_ok=True)
+    os.remove(config.ssh_config)
+    os.symlink(config.ssh_config, os.path.join(SSH_DIR, "config"))
 
     if keys_dir:  # setup ssh keys
         key_pairs = load_keys(keys_dir)
         [setup_key(key_name, key) for key_name, key in key_pairs.items()]
-    printer.success("SSH setup complete")
+    LOGGER.info("SSH setup complete")
 
 
 def load_keys(keys: str) -> dict[str, SSHKey]:
@@ -52,7 +55,7 @@ def load_keys(keys: str) -> dict[str, SSHKey]:
     Returns:
         dict[str, SSHKey]: A dict of key names to key pairs.
     """
-    keys = utils.abspath(keys)
+    keys = os.path.abspath(keys)
 
     # load keys as dictionary of key names to key pairs
     keys_dict: dict[str, SSHKey] = defaultdict(SSHKey)
@@ -67,37 +70,44 @@ def load_keys(keys: str) -> dict[str, SSHKey]:
             keys_dict[key_name].public_key = filepath
 
     loaded_keys = ", ".join(keys_dict.keys())
-    printer.debug(f"Loaded [bold]{len(keys_dict)}[/] ssh keys: " + loaded_keys)
+    LOGGER.debug(f"Loaded [bold]{len(keys_dict)}[/] ssh keys: " + loaded_keys)
     return keys_dict
 
 
 def setup_key(name: str, key: SSHKey) -> None:
-    printer.print(f"[bold]Setting up SSH key:[/] {name}")
+    LOGGER.info(f"[bold]Setting up SSH key:[/] {name}")
     if not key.private_key or not key.public_key:
-        printer.error("Invalid ssh key pair:")
-        printer.error(f"    Private key: {key.private_key}")
-        printer.error(f"    Public key: {key.public_key}")
+        LOGGER.error("Invalid ssh key pair:")
+        LOGGER.error(f"    Private key: {key.private_key}")
+        LOGGER.error(f"    Public key: {key.public_key}")
         raise RuntimeError(f"Invalid ssh key pair encountered: {name}")
 
-    # symlink key and set permissions
-    utils.symlink(key.private_key, SSH_DIR)
-    utils.chmod(key.private_key, 600)
-    utils.symlink(key.public_key, SSH_DIR)
-    utils.chmod(key.public_key, 644)
+    # symlink keys and fix permissions
+    os.makedirs(SSH_DIR, exist_ok=True)
+    os.remove(key.private_key)
+    os.symlink(
+        key.private_key, os.path.join(SSH_DIR, name + PRIVATE_KEY_EXTENSION)
+    )
+    os.chmod(key.private_key, 0o600)
+    os.remove(key.public_key)
+    os.symlink(
+        key.public_key, os.path.join(SSH_DIR, name + PUBLIC_KEY_EXTENSION)
+    )
+    os.chmod(key.public_key, 0o644)
 
     # get key fingerprint
     fingerprint = shell(["ssh-keygen", "-lf", key.public_key], silent=True)[0]
     fingerprint = fingerprint.split(" ")[1]
-    printer.print(f"[bold]Key fingerprint:[/] {fingerprint}")
+    LOGGER.info(f"[bold]Key fingerprint:[/] {fingerprint}")
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
     if shell(cmd, silent=True, safe=True)[1] != 0:
         shell(f"ssh-add '{key.private_key}'")
-        printer.print("Added key to SSH agent")
+        LOGGER.info("Added key to SSH agent")
     else:
-        printer.print("Key already exists in SSH agent")
-    printer.success("Key setup complete")
+        LOGGER.info("Key already exists in SSH agent")
+    LOGGER.info("Key setup complete")
 
 
 if __name__ == "__main__":
@@ -110,4 +120,4 @@ if __name__ == "__main__":
         "keys", type=str, help="the path to the ssh keys directory"
     )
     args = parser.parse_args()
-    core.run(setup, printer, "Failed to setup SSH", args.keys)
+    core.run(setup, LOGGER, "Failed to setup SSH", args.keys)

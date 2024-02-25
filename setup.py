@@ -1,52 +1,62 @@
 #!/usr/bin/env python3
 
+import logging
 import os
 from typing import Optional
 
 import config
-import core
+import core.brew
+import core.git
+import core.macos
+import core.python
+import core.raspberrypi
+import core.shell
+import core.ssh
 import utils
 
-printer = utils.Printer("setup")
-"""The main setup printer."""
+LOGGER = logging.getLogger(__name__)
+"""Main setup logger."""
 
 
-def main(log=True, debug=False) -> None:
+def main(debug=False) -> None:
     """Setup the machine.
 
     Args:
-        log (bool): Whether to log output to a file.
         debug (bool): Whether to log debug messages.
     """
+    config_path = os.getcwd()  # path to the machine configuration
+    machine_path = os.path.dirname(os.path.realpath(__file__))
 
     # initial setup
-    config_path = os.getcwd()
-    os.chdir(os.path.dirname(utils.abspath(__file__)))
-    utils.Printer.initialize(to_file=log, debug=debug)
-    keys = initial_setup(config_path)
+    os.chdir(machine_path)
+    utils.setup_logging(debug)
+    keys_path = initial_setup(config_path)
 
     try:  # setup the machine
-        setup_machine(keys)
+        setup_machine(keys_path)
     except KeyboardInterrupt:
-        printer.error("Setup interrupted")
+        LOGGER.warning("Setup interrupted.")
         exit(0)
     except Exception as exception:
-        printer.logger.exception(exception) if printer.debug_mode else None
-        printer.error("Failed to setup machine.")
+        LOGGER.exception(exception)
+        LOGGER.error("Failed to setup machine.")
         exit(1)
-    printer.success("Machine setup complete")
+    LOGGER.info("Machine setup complete.")
 
 
 def initial_setup(config_path: str):
     """initial setup of the machine."""
-    printer.info("Performing initial setup...")
+    LOGGER.info("Performing initial setup...")
 
     # symlink profile files
-    config_path = utils.abspath(config_path)
-    utils.symlink(utils.abspath(config_path, "machine.sh"), config.zprofile)
-    utils.symlink(utils.abspath(config_path, "pi.sh"), config.pi_zprofile)
+    config_path = os.path.abspath(config_path)
+    os.remove(config.zprofile)
+    os.symlink(os.path.join(config_path, "machine.sh"), config.zprofile)
+    os.remove(config.pi_zprofile)
+    os.symlink(os.path.join(config_path, "pi.sh"), config.pi_zprofile)
+
     # return ssh keys path
-    return utils.abspath(config_path, "keys")
+    return os.path.join(config_path, "keys")
 
 
 def setup_machine(keys: Optional[str]) -> None:
@@ -67,8 +77,7 @@ def setup_machine(keys: Optional[str]) -> None:
     print()
     core.raspberrypi.setup()
     print()
-
-    printer.info("Restart for some changes to apply")
+    LOGGER.info("Restart for some changes to apply")
 
 
 if __name__ == "__main__":
@@ -76,11 +85,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Setup machine.")
     parser.add_argument(
-        "-l", "--log", action="store_false", help="log output to a file"
-    )
-    parser.add_argument(
         "-d", "--debug", action="store_true", help="log debug messages"
     )
 
     args = parser.parse_args()
-    main(args.log, args.debug)
+    main(args.debug)
