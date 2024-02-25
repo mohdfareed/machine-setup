@@ -1,6 +1,17 @@
+# python
 *__pycache__*
-*lock.json
 
+# vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# virtualenv
 .venv/
+# sensitive files
 zprofile
+# log files
 *.log
