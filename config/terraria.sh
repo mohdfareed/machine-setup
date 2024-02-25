@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # usage: startup.sh [--update]
+#        --update: update the server to the latest version
 # the script will create a tmux session named 'terraria'
-# each world will be a separate window in the session
-# updating the server will kill the session
+# connection details are displayed in the 'ngrok' window
+# the server will be running in the 'world' window
 
-# dependencies: tmux, wget, unzip, curl, tar
+# dependencies: tmux, wget, unzip, curl, tar, ngrok
 # requirements: .net at $DOTNET_ROOT
 # .net installation intructions are displayed when running the server
 
@@ -31,6 +32,7 @@
 
 tshock=https://api.github.com/repos/Pryaxis/TShock/releases/latest
 arch=arm64
+port=7777
 
 # Function to update the server
 update_server() {
@@ -52,13 +54,11 @@ update_server() {
     wget -q -O tshock_latest.zip "$download_url"
     unzip -q tshock_latest.zip
 
-    # Setting up server files
+    # Set up server files
     echo "Updating server..."
     tar_file=$(ls | grep '\.tar$')
     rm -rf server && mkdir server
     tar -xf "$tar_file" -C server/
-
-    # Clean up
     rm tshock_latest.zip "$tar_file"
     echo "Update complete."
 }
@@ -70,43 +70,56 @@ export PATH=$PATH:$DOTNET_ROOT
 # Check if the update flag is provided
 if [ "$1" == "--update" ]; then
     update_server
-    # remove terraria tmux session
-    echo "Killing all running worlds..."
-    tmux kill-session -t terraria
 fi
 
 # List all .wld files
 echo "Available Worlds:"
+echo "0) Create new world"
 cd worlds
 declare -a worlds
 i=1
 for world in *.wld; do
-    echo "$i) $world"
+    echo "$i) $(basename "$world" .wld | tr '_' ' ')"
     worlds[i]="$world"
     ((i++))
 done
 cd ..
 
 # Prompt the user to select a world
-read -p "Enter the number of the world to select: " world_number
+read -p "Enter the number of the world to start: " world_number
 selected_world=${worlds[world_number]}
+# Check if the user wants to create a new world
+if [ "$world_number" == "0" ]; then
+    read -p "Enter the name of the new world: " world_name
+    world_name=${world_name | tr ' ' '_'}
+    selected_world="$world_name.wld"
+    read -p "Enter the size of the new world (1-3): " world_size
+    # Check if the user made a valid selection
+    if [ "$world_size" -lt 1 ] || [ "$world_size" -gt 3 ]; then
+        echo "Invalid world size selection."
+        exit 1
+    fi
+fi
+
 # Check if the user made a valid selection
 if [ -z "$selected_world" ]; then
-    echo "Invalid selection."
+    echo "Invalid world selection."
     exit 1
 fi
-# Extract the base name of the world for the tmux window name
-world_name=$(basename "$selected_world" .wld)
-
-# Create a new session named 'terraria' if it doesn't exist
-tmux has-session -t terraria 2>/dev/null || tmux new-session -d -s terraria
-# Check if a window with the world name already exists and kill it
-if tmux list-windows -t terraria | grep -q "$world_name"; then
-    echo "Killing existing world..."
-    tmux kill-window -t "terraria:$world_name"
+cmd="./server/TShock.Server -world worlds/$selected_world -port $port"
+# Check if world size is specified
+if [ "$world_size" ]; then
+    cmd="$cmd -autocreate $world_size"
 fi
 
+# Check if the server is already running and kill it
+if tmux has-session -t terraria 2>/dev/null; then
+    echo "Server is already running. Killing session..."
+    tmux kill-session -t terraria
+fi
+tmux new-session -d -s terraria # Create a new session named 'terraria'
+
 # Create a new window with the world's name
-cmd="./server/TShock.Server -world worlds/$selected_world"
-cd .. && tmux new-window -t terraria -n "$world_name" "$cmd"
-echo "World '$world_name' has been started."
+tmux new-window -t terraria -n "world" "$cmd"
+tmux new-window -t terraria -n "ngrok" "ngrok tcp $port"
+echo "World server has been started."

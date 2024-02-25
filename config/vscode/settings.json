@@ -66,6 +66,7 @@
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
+  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   // comment anchors
   "commentAnchors.scrollPosition": "center",
   "commentAnchors.tags.displayLineNumber": false,
@@ -115,5 +116,7 @@
   // latex
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  }
+  },
+  "git.ignoreLegacyWarning": true,
+  "git.confirmSync": false
 }

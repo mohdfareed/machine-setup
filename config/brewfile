@@ -12,12 +12,12 @@ brew "pure"                    # pure shell prompt
 brew "git"    # global git
 brew "python" # global python
 brew "go"     # global go
+brew "gh"     # github cli
 brew "exa"    # ls replacement
 brew "bat"    # cat replacement
 brew "mas"    # mac app store cli
 brew "btop"   # resource monitor
 brew "tmux"   # terminal multiplexer
-brew "pandoc" # document converter
 
 # editor
 brew "neovim"  # vim editor
@@ -60,6 +60,7 @@ mas "Xcode", id: 497799835        # xcode
 
 # productivity
 mas "Craft", id: 1487937127      # note-taking app
+mas "Copilot", id: 1447330651    # finances app
 mas "TechniCalc", id: 1504965415 # scientifc calculator
 
 # utilities

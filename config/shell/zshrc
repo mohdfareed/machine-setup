@@ -16,9 +16,10 @@ source $MACHINE/config/shell/config.sh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-
 # Functions and Aliases
 # =============================================================================
+
+alias restart_docker='colima stop && colima start'
 
 # ssh into raspberry pi
 function ssh-pi {
@@ -91,7 +92,3 @@ function ssh-rit {
     machine=${1:-"12"}
     ssh "mff9108@gle-3159-ws$machine.nx.rit.edu"
 }
-
-export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
-export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
-

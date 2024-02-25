@@ -17,9 +17,6 @@ def setup() -> None:
     """Setup macOS on a new machine."""
     printer.info("Setting up macOS...")
 
-    # add terminal profiles
-    # printer.debug("Added terminal profiles")
-
     # setup vscode settings
     printer.print("Setting up VSCode...")
     utils.symlink(config.vscode_settings, VSCODE)
@@ -29,11 +26,6 @@ def setup() -> None:
     # run the preferences script
     printer.print("Setting system preferences...")
     shell(f". {config.macos_preferences}")
-
-    # update the system
-    printer.print("Updating the system...")
-    shell("softwareupdate --install --all")
-    printer.success("macOS setup complete")
 
 
 if __name__ == "__main__":

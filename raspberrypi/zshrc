@@ -22,11 +22,12 @@ source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # =============================================================================
 
 alias bat='batcat'
+alias compose-machine='cd $MACHINE && docker compose'
 alias reboot='sudo reboot'
 alias update='sudo apt update && \
               sudo apt full-upgrade -y && \
-              sudo apt autoremove -y'
-alias compose-machine='cd $MACHINE && docker compose'
+              sudo apt autoremove -y && \
+              sudo snap refresh'
 
 # display the cpu and gpt temperature of raspberry pi
 function temp {
