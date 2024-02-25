@@ -11,19 +11,19 @@ printer = utils.Printer("setup")
 """The main setup printer."""
 
 
-def main(config_path: Optional[str], log=False, debug=False) -> None:
+def main(log=True, debug=False) -> None:
     """Setup the machine.
 
     Args:
-        config_path (str): Path to the local config directory.
         log (bool): Whether to log output to a file.
         debug (bool): Whether to log debug messages.
     """
 
     # initial setup
+    config_path = os.getcwd()
     os.chdir(os.path.dirname(utils.abspath(__file__)))
     utils.Printer.initialize(to_file=log, debug=debug)
-    keys = initial_setup(config_path) if config_path else None
+    keys = initial_setup(config_path)
 
     try:  # setup the machine
         setup_machine(keys)
@@ -76,14 +76,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Setup machine.")
     parser.add_argument(
-        "-d", "--debug", action="store_true", help="start in debug mode"
+        "-l", "--log", action="store_false", help="log output to a file"
     )
     parser.add_argument(
-        "-l", "--log", action="store_true", help="log to a file"
-    )
-    parser.add_argument(
-        "config_path", nargs="?", type=str, help="local machine config path"
+        "-d", "--debug", action="store_true", help="log debug messages"
     )
 
     args = parser.parse_args()
-    main(args.config_path, args.log, args.debug)
+    main(args.log, args.debug)
