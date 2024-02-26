@@ -10,20 +10,24 @@ To set up the machine, run the following command:
 
 ```sh
 url=https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py
-curl -fsSL $url | python3 - [--force]
+curl -fsSL $url | python3 - [-f|--force] [-h|--help]
 ```
 
 Where the arguments are as follows:
 
-- `--force`: forces cloning the repo even if it already exists.
-- `setup_args`: additional arguments to pass to the setup script.
+- `-f|--force`: forces cloning the repo even if it already exists.
+- `-h|--help`: prints the help message.
 
-The `config_dir` argument is the path to the directory containing the local
-configuration files. This includes the following:
+The repo expects the following files and directories to be present on the
+machine:
 
-- `machine.sh`: private machine-specific data, such as API keys and passwords.
-- `pi.sh`: private Raspberry Pi-specific data, equivalent to `machine.sh`.
+- `$PRIVATE_MACHINE/env.sh`: private machine-specific environment variables,
+  such as API keys and passwords.
+- `$PRIVATE_MACHINE/pi.sh`: private Raspberry Pi-specific environment
+  variables, equivalent to `env.sh`.
 - `keys/`: a directory containing SSH keys used by the machine.
+  - The current setup expects the following keys to be present:
+    - `personal[.pub]`: key pair for personal GitHub account.
 
 ### Individual Setup
 
@@ -32,7 +36,7 @@ module, provided that the bootstrapping script has already been run. Run the
 following command to set up a component:
 
 ```sh
-python -m core.component [-h]
+python -m scripts.component [-h]
 ```
 
 ## Project Structure
@@ -44,15 +48,6 @@ The project has the following **hard-coded** structure:
   updated whenever a new configuration file is added or its path modified.
 - `raspberrypi`: a directory containing configuration files used by a Raspberry
   Pi.
-
-The setup scripts are in the following structure:
-
-- `bootstrap.py`: a script that bootstraps a machine by setting up the repo and
-  running the setup script.
-- `setup.py`: the entrypoint script that is run to set up the machine.
-- `core/`: a collection of modules used to set up various aspects of the
-  machine, such as setting up Git, configuring shell and installing packages.
-- `utils/`: a module of utilities used in by the setup scripts.
 
 ## Raspberry Pi
 
