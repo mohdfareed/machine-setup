@@ -55,6 +55,14 @@ private_pi_env = _os.path.join(private_machine, "pi.sh")
 ssh_keys = _os.path.join(private_machine, "keys")
 """The path of the machine ssh keys directory."""
 
+# xdg directories
+cmd = f"source {zshenv} && echo $XDG_CONFIG_HOME"
+xdg_config = _utils.run_cmd(cmd)[1]
+"""The path of the XDG configuration directory."""
+cmd = f"source {zshenv} && echo $ZDOTDIR"
+zdotdir = _utils.run_cmd(cmd)[1]
+"""The path of the ZDOTDIR directory."""
+
 # raspberry pi
 pi = _os.path.join(_os.path.dirname(config), "pi")
 pi_zshenv = _os.path.join(pi, "zshenv")

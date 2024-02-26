@@ -2,11 +2,12 @@
 machine."""
 
 import logging
+import os
 
 import config
 import utils
 
-VSCODE = "~/Library/Application Support/Code/User"
+VSCODE = os.path.join(config.xdg_config, "Code", "User")
 """The path to the VSCode user settings directory."""
 
 LOGGER = logging.getLogger(__name__)

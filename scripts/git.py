@@ -7,9 +7,9 @@ import os
 import config
 import utils
 
-GITCONFIG: str = os.path.expanduser("~/.gitconfig")
+GITCONFIG: str = os.path.join(config.xdg_config, "git", "config")
 """The path to the git configuration file on the machine."""
-GITIGNORE: str = os.path.expanduser("~/.gitignore")
+GITIGNORE: str = os.path.join(config.xdg_config, "git", "ignore")
 """The path to the git ignore file on the machine."""
 
 LOGGER = logging.getLogger(__name__)

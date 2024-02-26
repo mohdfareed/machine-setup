@@ -40,6 +40,12 @@ zstyle ':completion:*:*:*:*:processes' command \
 zstyle ':completion:*:*:kill:*:processes' list-colors \
 	'=(#b) #([0-9]#) #*[0-9]#:[0-9]#[:.][0-9]# #(*)=34=1;31=32'
 
+# zsh history
+HISTFILE="$XDG_STATE_HOME"/zsh/history
+[ -d "$XDG_CACHE_HOME"/zsh ] || mkdir -p "$XDG_CACHE_HOME"/zsh
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
+
 # pure prompt
 PURE_PROMPT_SYMBOL='➜'
 autoload -U promptinit

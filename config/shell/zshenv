@@ -1,8 +1,22 @@
 # Environment (shared across machines)
 # =============================================================================
 
-export ZSH="$HOME/.zsh/omz"    # oh-my-zsh path
 export EDITOR="$(which nvim)"  # default to neovim as the editor
 export LESS="-R --ignore-case" # use less with colors and case-insensitivity
 export SYSTEMD_LESS=$LESS      # less arguments of systemd pager
 export BAT_PAGER="less $LESS"  # use less as the pager for bat
+
+# shell environment
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
+export SHELL_SESSIONS_DISABLE=1
+export HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
+
+# python environment
+export PYTHON_HISTORY=$XDG_STATE_HOME/python/history
+export PYTHONPYCACHEPREFIX=$XDG_CACHE_HOME/python
+export PYTHONUSERBASE=$XDG_DATA_HOME/python
+
+# go
+export GOPATH="$XDG_DATA_HOME/go"

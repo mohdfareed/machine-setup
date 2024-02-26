@@ -9,9 +9,6 @@
 [gpg]
     ; use ssh key for signing
     format = ssh
-[core]
-    ; global gitignore file
-    excludesfile = ~/.gitignore
 [init]
     ; use main as default branch name
     defaultBranch = main

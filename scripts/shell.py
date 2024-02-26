@@ -9,15 +9,13 @@ import os
 import config
 import utils
 
-ZPROFILE = "~/.zprofile"
-"""The path to the zsh profile file symlink."""
-ZSHRC = "~/.zshrc"
-"""The path to the zsh configuration file symlink."""
 ZSHENV = "~/.zshenv"
 """The path to the zsh environment file symlink."""
-VIM = "~/.config/nvim"
+ZSHRC = os.path.join(config.zdotdir, ".zshrc")
+"""The path to the zsh configuration file symlink."""
+VIM = os.path.join(config.xdg_config, "nvim")
 """The path of the vim configuration directory symlink."""
-TMUX = "~/.tmux.conf"
+TMUX = os.path.join(config.xdg_config, "tmux", "tmux.conf")
 """The path of the tmux configuration file symlink."""
 
 LOGGER = logging.getLogger(__name__)
@@ -38,6 +36,12 @@ def setup() -> None:
     # disable login message
     utils.run_cmd("touch ~/.hushlogin")
     LOGGER.info("Shell setup complete")
+
+    # clean up
+    utils.run_cmd("sudo rm -rf ~/.zcompdump*")
+    utils.run_cmd("sudo rm -rf ~/.zshrc")
+    utils.run_cmd("sudo rm -rf ~/.zsh_sessions")
+    utils.run_cmd("sudo rm -rf ~/.zsh_history")
 
 
 def install_omz():
