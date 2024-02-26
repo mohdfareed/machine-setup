@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Shell module executing shell commands. The module provides a shell class
 that can be used to run shell commands and retrieve their outputs and return
 codes. Upon import, the module creates a global shell instance and asks the
@@ -8,111 +7,83 @@ If user input is required, the user must be prompted outside the shell command.
 """
 
 import getpass
+import logging
+import select
 import subprocess
-import typing
 
-from rich import print
 from rich.console import Console
 
-LOADING_STR: str = "Loading..."
+LOADING_STR: str = "Computing..."
 """The default string to print while waiting for a command to complete. It is
-followed by a loading animation.
-"""
-
-shell: "Shell"
-"""The root shell instance."""
+followed by a loading animation."""
+LOGGER = logging.getLogger(__name__)
+"""The shell logger."""
 
 
-class Shell:
-    """A shell instance."""
+def run(command, env=None, throws=True, msg=LOADING_STR) -> tuple[int, str]:
+    """Run a shell command and return its output and return code.
 
-    def __init__(
-        self,
-        output_handler: typing.Callable = print,
-        error_handler: typing.Callable = print,
-        silent_output_handler: typing.Optional[typing.Callable] = None,
-    ) -> None:
-        self.output_handler = output_handler
-        self.error_handler = error_handler
-        self.silent_handler = silent_output_handler
+    Args:
+        command (str | list[str]): The command to run.
+        env (dict[str, str], optional): The environment variables to set for the
+            command. Defaults to None.
+        throws (bool, optional): Whether to throw an error if the command has a
+            non-zero return code. Defaults to True.
+        msg (str, optional): The status message to display while the command
+            is running. Defaults to LOADING_STR.
 
-    def _run(
-        self, command, env=None, silent=False, safe=False, status=LOADING_STR
-    ) -> typing.Union[tuple[str, int], int]:
-        self.status = status
+    Returns:
+        tuple[int, str]: The return code and output of the command.
 
-        # show loading animation while command is running in background
-        console = Console()
-        with console.status(f"[green]{status}[/]") as status:
-            # use popen to retrieve outputs in real time
-            process = subprocess.Popen(
-                command,
-                env=env,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                shell=isinstance(command, str),
-                text=True,
-            )
-            output, returncode = self.print_output(process, silent, status)
+    Raises:
+        subprocess.CalledProcessError: If the command has a non-zero return code
+            and `throws` is True.
+    """
 
-        # handle return code and/or output
-        if not safe and returncode != 0:
-            self.error_handler(output) if output else None
-            raise subprocess.CalledProcessError(returncode, command, output)
-        return (output, returncode) if silent else returncode
-
-    def print_output(self, process, silent, status):
-        output = ""
-        # print output in real time
-        for line in process.stdout:
-            if not silent:
-                status.stop()
-                self.output_handler(line, end="")
-                status.start()
-
-            # update status and log if silent
-            elif line.strip():  # ignore empty lines
-                status.update(f"[green]{line.strip()}[/]")
-                (
-                    self.silent_handler(line.strip())
-                    if self.silent_handler
-                    else ...
-                )
-            output += line
-        return output.strip(), process.wait()
-
-    @typing.overload
-    def __call__(
-        self,
-        command,
-        env=...,
-        silent: typing.Literal[False] = ...,
-        safe=...,
-        status=...,
-    ) -> int: ...
-
-    @typing.overload
-    def __call__(
-        self,
-        command,
-        env=...,
-        silent: typing.Literal[True] = ...,
-        safe=...,
-        status=...,
-    ) -> tuple[str, int]: ...
-
-    def __call__(
-        self, command, env=None, silent=False, safe=False, status=LOADING_STR
-    ) -> typing.Union[int, tuple[str, int]]:
-        return self._run(
-            command, env=env, silent=silent, safe=safe, status=status
+    # show loading animation while command is running in background
+    console = Console()
+    with console.status(f"[green]{msg}[/]") as status:
+        # use popen to retrieve outputs in real time
+        process = subprocess.Popen(
+            command,
+            env=env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            shell=isinstance(command, str),
+            text=True,
         )
+        output, returncode = print_output(process, status, msg)
+    # handle return code and/or output
+    if throws and returncode != 0:
+        raise subprocess.CalledProcessError(returncode, command, output)
+    return returncode, output
 
 
-shell = Shell()
+def print_output(process, status, msg):
+    output = ""
+    while True:
+        reads = [process.stdout.fileno(), process.stderr.fileno()]
+        ret = select.select(reads, [], [])
+        for fd in ret[0]:
+            status.stop()
+            if fd == process.stdout.fileno():
+                line = process.stdout.readline()
+                LOGGER.debug(line.strip()) if line.strip() else None
+            if fd == process.stderr.fileno():
+                line = process.stderr.readline()
+                LOGGER.error(line.strip()) if line.strip() else None
+            status.start()
+            if line.strip():  # ignore empty lines
+                status.update(f"[green]{msg} | {line.strip()}[/]")
+            output += line
+        if process.poll() is not None:
+            break
+    return output.strip(), process.wait()
+
+
 try:  # check if the user has sudo privileges
-    shell("sudo -n true &> /dev/null", silent=True)
+    run("sudo -n true &> /dev/null")
 except subprocess.CalledProcessError:
     # the user doesn't have sudo privileges, prompt for the password
     password = getpass.getpass("\033[32m Enter your password: \033[30m")
-    shell(f"echo {password} | sudo -Sv", silent=True)
+    run(f"echo {password} | sudo -Sv")

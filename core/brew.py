@@ -5,45 +5,46 @@ import logging
 import os
 
 import config
-from utils.shell import Shell
+import utils
 
 BIN = "/opt/homebrew/bin"
 """The path to the Homebrew executables."""
 BREW = os.path.join(BIN, "brew")
 """The path to the brew executable."""
-
 LOGGER = logging.getLogger(__name__)
 """The Homebrew setup logger."""
-shell = Shell(LOGGER.debug, LOGGER.error, LOGGER.debug)
-"""The Homebrew shell instance."""
 
 
 def setup() -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
+
+    utils.run_shell("$MACHINE/test.sh")
+    return
+
     LOGGER.info("Setting up Homebrew...")
     install_brew()
 
     # install packages from Brewfile
     LOGGER.info("Installing packages from Brewfile...")
     cmd = [BREW, "bundle", f"--file={config.brewfile}"]
-    shell(cmd, silent=True, status="Installing...")
+    utils.run_shell(cmd, msg="Installing...")
     LOGGER.debug("Installed packages from Brewfile")
 
     # upgrade packages
     LOGGER.info("Upgrading packages...")
-    shell([BREW, "upgrade"], silent=True, status="Upgrading...")
+    utils.run_shell([BREW, "upgrade"], msg="Upgrading...")
     LOGGER.debug("Upgraded packages")
 
     # upgrade mac app store packages
     LOGGER.info("Upgrading mac app store packages...")
     mas = os.path.join(BIN, "mas")
-    shell([mas, "upgrade"], silent=True, status="Upgrading...")
+    utils.run_shell([mas, "upgrade"], msg="Upgrading...")
     LOGGER.debug("Upgraded mac app store packages")
 
     # cleanup
     LOGGER.info("Cleaning up...")
     cmd = [BREW, "cleanup", "--prune=all"]
-    shell(cmd, silent=True, status="Cleaning up...")
+    utils.run_shell(cmd, msg="Cleaning up...")
     LOGGER.info("Homebrew setup complete")
 
 
@@ -51,27 +52,28 @@ def install_brew():
     # update homebrew if it is already installed
     if os.path.exists(BREW):
         LOGGER.info("Updating Homebrew...")
-        shell([BREW, "update"], silent=True, status="Updating...")
+        utils.run_shell([BREW, "update"], msg="Updating...")
         LOGGER.info("Homebrew was updated")
     else:  # install homebrew otherwise
         LOGGER.info("Installing Homebrew...")
         cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
-        shell(cmd, silent=True, status="Installing...")
+        utils.run_shell(cmd, msg="Installing...")
         LOGGER.info("Homebrew installed successfully")
 
     # fix “zsh compinit: insecure directories” error
-    shell(f'chmod -R go-w "$({BREW} --prefix)/share"', silent=True)
+    utils.run_shell(f'chmod -R go-w "$({BREW} --prefix)/share"')
     LOGGER.debug("Fixed zsh `compinit` security error")  # TODO: fixed?
     # add fonts tap
-    shell(f"{BREW} tap homebrew/cask-fonts", silent=True)
+    utils.run_shell(f"{BREW} tap homebrew/cask-fonts")
     LOGGER.debug("Added Homebrew fonts tap")
 
 
 if __name__ == "__main__":
     import argparse
 
-    import core
-
     parser = argparse.ArgumentParser(description="Homebrew setup script.")
     args = parser.parse_args()
-    core.run(setup, LOGGER, "Failed to setup Homebrew")
+
+    import core
+
+    core.run_setup(setup)
