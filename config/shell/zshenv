@@ -1,11 +1,10 @@
 # Environment: macOS
 # =============================================================================
 
-# TODO: use xdg directories https://wiki.archlinux.org/title/XDG_Base_Directory
-
 export DEV="$HOME/Developer"
 export MACHINE="$DEV/machine"
 export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+export PRIVATE_MACHINE="$ICLOUD/.machine"
 export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
 export GOPATH="$HOME/.go"
 

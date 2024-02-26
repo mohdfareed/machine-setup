@@ -39,8 +39,8 @@ def setup() -> None:
 if __name__ == "__main__":
     import argparse
 
-    import core
+    import scripts
 
     parser = argparse.ArgumentParser(description="macOS setup script.")
     args = parser.parse_args()
-    core.run(setup, LOGGER, "Failed to setup macOS")
+    scripts.run(setup, LOGGER, "Failed to setup macOS")

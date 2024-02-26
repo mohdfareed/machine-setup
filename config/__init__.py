@@ -3,20 +3,22 @@
 import os as _os
 
 # machine configuration directories
-machine = _os.path.dirname(_os.path.realpath(__file__))
+config = _os.path.dirname(_os.path.realpath(__file__))
 """The path to the machine configuration directory."""
-shell = _os.path.join(machine, "shell")
+shell = _os.path.join(config, "shell")
 """The path of shell configuration file."""
-vim = _os.path.join(machine, "vim")
+vim = _os.path.join(config, "vim")
 """The path of vim configuration files."""
-macos = _os.path.join(machine, "macos")
+macos = _os.path.join(config, "macos")
 """The path of macOS configuration directory."""
-git = _os.path.join(machine, "git")
+git = _os.path.join(config, "git")
 """The path of git configuration directory."""
-vscode = _os.path.join(machine, "vscode")
+vscode = _os.path.join(config, "vscode")
 """The path of VSCode configuration directory."""
-pi_machine = _os.path.join(_os.path.dirname(machine), "raspberrypi")
+pi_machine = _os.path.join(_os.path.dirname(config), "raspberrypi")
 """The path of Raspberry Pi configuration directory."""
+private_machine = "$PRIVATE_MACHINE"
+"""The path of the private machine configuration directory."""
 
 # shell
 zsh_config = _os.path.join(shell, "config.sh")
@@ -33,6 +35,8 @@ ssh_config = _os.path.join(shell, "ssh.config")
 """The path of the global ssh config file."""
 tmux = _os.path.join(shell, "tmux.conf")
 """The path of the tmux configuration file."""
+private_env = _os.path.join(private_machine, "env.sh")
+"""The path of the private machine environment file."""
 
 # git
 gitconfig = _os.path.join(git, "config")
@@ -41,9 +45,9 @@ gitignore = _os.path.join(git, "ignore")
 """The path of the global gitignore file."""
 
 # packages
-brewfile = _os.path.join(machine, "brewfile")
+brewfile = _os.path.join(config, "brewfile")
 """The path of Homebrew packages file."""
-requirements = _os.path.join(machine, "requirements.txt")
+requirements = _os.path.join(config, "requirements.txt")
 """The path of Python requirements file."""
 
 # macos

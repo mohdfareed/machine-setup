@@ -11,6 +11,7 @@ brew "pure"                    # pure shell prompt
 # general
 brew "git"    # global git
 brew "python" # global python
+brew "pyenv"  # python version manager
 brew "go"     # global go
 brew "gh"     # github cli
 brew "exa"    # ls replacement

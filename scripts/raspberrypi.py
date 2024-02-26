@@ -110,14 +110,14 @@ def setup_scripts(hostname, machine):
 if __name__ == "__main__":
     import argparse
 
-    import core
+    import scripts
 
     parser = argparse.ArgumentParser(description="Raspberry Pi setup script.")
     parser.add_argument(
         "hostname", type=str, help="local hostname of Raspberry Pi", nargs="?"
     )
     args = parser.parse_args()
-    core.run(
+    scripts.run(
         setup,
         LOGGER,
         "Failed to setup Raspberry Pi",

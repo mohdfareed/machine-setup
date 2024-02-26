@@ -13,7 +13,7 @@ import subprocess
 
 from rich.console import Console
 
-LOADING_STR: str = "Computing..."
+LOADING_STR: str = "Loading"
 """The default string to print while waiting for a command to complete. It is
 followed by a loading animation."""
 LOGGER = logging.getLogger(__name__)
@@ -64,6 +64,7 @@ def print_output(process, status, msg):
     while True:
         reads = [process.stdout.fileno(), process.stderr.fileno()]
         ret = select.select(reads, [], [])
+
         for fd in ret[0]:
             status.stop()
             if fd == process.stdout.fileno():
@@ -73,9 +74,11 @@ def print_output(process, status, msg):
                 line = process.stderr.readline()
                 LOGGER.error(line.strip()) if line.strip() else None
             status.start()
+
             if line.strip():  # ignore empty lines
                 status.update(f"[green]{msg} | {line.strip()}[/]")
             output += line
+
         if process.poll() is not None:
             break
     return output.strip(), process.wait()

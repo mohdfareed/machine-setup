@@ -3,10 +3,9 @@ machine.
 """
 
 import logging
-import os
 
 import config
-from utils.shell import Shell
+import utils
 
 ZPROFILE = "~/.zprofile"
 """The path to the zsh profile file symlink."""
@@ -21,8 +20,6 @@ TMUX = "~/.tmux.conf"
 
 LOGGER = logging.getLogger(__name__)
 """The ZSH setup logger."""
-shell = Shell(LOGGER.debug, LOGGER.error)
-"""The ZSH shell instance."""
 
 
 def setup() -> None:
@@ -31,21 +28,14 @@ def setup() -> None:
 
     # install omz and symlink config files
     install_omz()
-    os.makedirs(os.path.dirname(ZSHRC), exist_ok=True)
-    os.makedirs(os.path.dirname(VIM), exist_ok=True)
-    os.remove(ZSHRC)
-    os.symlink(config.zshrc, ZSHRC)
-    os.remove(ZSHENV)
-    os.symlink(config.zshenv, ZSHENV)
-    os.remove(ZPROFILE)
-    os.symlink(config.zprofile, ZPROFILE)
-    os.remove(TMUX)
-    os.symlink(config.tmux, TMUX)
-    os.remove(VIM)
-    os.symlink(config.vim, VIM)
+    utils.symlink(config.zshrc, ZSHRC)
+    utils.symlink(config.zshenv, ZSHENV)
+    utils.symlink(config.zprofile, ZPROFILE)
+    utils.symlink(config.tmux, TMUX)
+    utils.symlink(config.vim, VIM, is_dir=True)
 
     # disable login message
-    shell("touch ~/.hushlogin", silent=True)
+    utils.run_shell("touch ~/.hushlogin")
     LOGGER.info("Shell setup complete")
 
 
@@ -54,28 +44,28 @@ def install_omz():
 
     # load installation environment
     cmd = f"source {config.zsh_env} && echo $ZSH"
-    env = dict(ZSH=shell(cmd, silent=True)[0])
+    env = dict(ZSH=utils.run_shell(cmd)[0])
 
     # install oh-my-zsh
-    shell(["sudo", "rm", "-rf", env["ZSH"]])
+    utils.run_shell(["sudo", "rm", "-rf", env["ZSH"]])  # remove existing files
     cmd = 'sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended'
-    if shell(cmd, env=env, silent=True, status="Installing...")[1] != 0:
-        raise RuntimeError("Failed to install oh-my-zsh")
+    utils.run_shell(cmd, env=env, msg="Installing")
 
-    # terminal theme
-    # TODO: backup iTerm2 theme/settings
-    # curl -s -N 'https://warp-themes.com/d/sE6RPpSXOCX6nJunRoUt' | bash
+    # setup private shell environment
+    cmd = f"echo {config.private_env}"
+    private_ = dict(ZSH=utils.run_shell(cmd)[0])
+    utils.symlink(config.zsh_env, f"{env['ZSH']}/.zshenv")
 
     # remove zshrc backup file
-    shell(["rm", "-rf", f"{ZSHRC}.pre-oh-my-zsh"])
-    LOGGER.debug("Installed oh-my-zsh")
+    utils.run_shell(["rm", "-rf", f"{ZSHRC}.pre-oh-my-zsh"])
+    LOGGER.debug("Installed oh-my-zsh.")
 
 
 if __name__ == "__main__":
     import argparse
 
-    import core
+    import scripts
 
     parser = argparse.ArgumentParser(description="Shell setup script.")
     args = parser.parse_args()
-    core.run(setup, LOGGER, "Failed to setup shell")
+    scripts.run_setup(setup)

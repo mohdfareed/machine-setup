@@ -2,12 +2,12 @@
 
 import logging
 
-import core.brew
-import core.git
-import core.macos
-import core.python
-import core.shell
-import core.ssh
+import scripts.brew
+import scripts.git
+import scripts.macos
+import scripts.python
+import scripts.shell
+import scripts.ssh
 import utils
 
 LOGGER = logging.getLogger(__name__)
@@ -24,13 +24,13 @@ def main(debug=False) -> None:
     utils.logging.setup_logging(debug)
     try:  # setup the machine
         LOGGER.info("Setting up machine...")
-        core.brew.setup()
-        core.shell.setup()
-        core.ssh.setup()
-        core.git.setup()
-        core.python.setup()
-        core.macos.setup()
-        LOGGER.warning("Restart for some changes to apply")
+        scripts.brew.setup()
+        scripts.shell.setup()
+        scripts.ssh.setup()
+        scripts.git.setup()
+        scripts.python.setup()
+        scripts.macos.setup()
+        LOGGER.warning("Restart for some changes to apply.")
     except KeyboardInterrupt:
         LOGGER.warning("Setup interrupted.")
         exit(0)

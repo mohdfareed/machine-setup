@@ -6,7 +6,6 @@ from collections import defaultdict
 from typing import Optional
 
 import config
-from utils.shell import Shell
 
 SSH_DIR: str = "~/.ssh/"
 """The path to the SSH directory."""
@@ -17,8 +16,6 @@ PUBLIC_KEY_EXTENSION: str = ".pub"
 
 LOGGER = logging.getLogger(__name__)
 """The SSH setup logger."""
-shell = Shell(LOGGER.debug, LOGGER.error)
-"""The SSH shell instance."""
 
 
 class SSHKey:
@@ -29,7 +26,7 @@ class SSHKey:
         """The path to the public key file."""
 
 
-def setup(keys_dir: Optional[str]) -> None:
+def setup() -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory.
 
@@ -113,11 +110,11 @@ def setup_key(name: str, key: SSHKey) -> None:
 if __name__ == "__main__":
     import argparse
 
-    import core
+    import scripts
 
     parser = argparse.ArgumentParser(description="SSH setup script.")
     parser.add_argument(
         "keys", type=str, help="the path to the ssh keys directory"
     )
     args = parser.parse_args()
-    core.run(setup, LOGGER, "Failed to setup SSH", args.keys)
+    scripts.run(setup, LOGGER, "Failed to setup SSH", args.keys)

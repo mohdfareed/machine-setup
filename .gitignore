@@ -11,6 +11,8 @@
 
 # virtualenv
 .venv/
+# lock files
+*.lock.json
 # sensitive files
 zprofile
 # log files
