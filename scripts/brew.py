@@ -78,4 +78,4 @@ if __name__ == "__main__":
 
     import scripts
 
-    scripts.run_setup(setup)
+    scripts.run_setup_isolated(setup)

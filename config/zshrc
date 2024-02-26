@@ -1,0 +1,94 @@
+# Configuration: macOS
+# =============================================================================
+
+eval "$(/opt/homebrew/bin/brew shellenv)"               # homebrew
+export PATH="$(brew --prefix python)/libexec/bin:$PATH" # python
+fpath+=("$(brew --prefix)/share/zsh/site-functions")    # pure prompt
+fpath+=("$(brew --prefix)/share/zsh-completions")       # completions
+
+# zsh plugins
+plugins=(
+    macos # macos-specific utilities
+)
+
+# shell config, syntax highlighting, auto-suggestions, and auto-completion
+source $MACHINE/config/shell/zshrc
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Functions and Aliases
+# =============================================================================
+
+alias restart_docker='colima stop && colima start'
+
+# ssh into raspberry pi
+function ssh-pi {
+    if [ "$1" = "" ]; then
+        ssh raspberrypi
+    elif [ "$1" = "local" ]; then
+        ssh raspberrypi.local
+    else
+        echo "usage: $0 [local]"
+        return 1
+    fi
+}
+
+# list homebrew packages and casks installed with descriptions
+function list-brew {
+    usage="usage: $0"
+    if (($# > 0)); then
+        echo $usage
+        return 1
+    fi
+
+    echo "\033[0;32mPackages:\033[0m"
+    brew leaves | xargs brew desc --eval-all
+    echo "\033[0;32mCasks:\033[0m"
+    brew ls --casks | xargs brew desc --eval-all
+}
+
+# uninstall homebrew package with its dependencies
+function uninstall {
+    usage="usage: $0 package..."
+    if (($# < 1)); then
+        echo $usage
+        return 1
+    fi
+
+    brew uninstall $@
+    brew autoremove
+    brew cleanup
+}
+
+# zip a folder with password without compression
+function zip-encrypt {
+    usage="usage: $0 dir"
+    if (($# != 1)); then
+        echo $usage
+        return 1
+    fi
+    if [[ ! -d "$1" ]]; then
+        echo "\033[0;31mERROR:\033[0m '$1' is not a valid directory"
+        return 1
+    fi
+
+    cd "$1"
+    dir_name=${PWD##*/}
+    zip -er0 "$dir_name.zip" . -x ".DS_Store" -x "._*"
+    mv "$dir_name.zip" ..
+    cd - >/dev/null
+}
+
+# RIT
+# =============================================================================
+
+function ssh-rit {
+    usage="usage: $0 machine"
+    if (($# > 1)); then
+        echo $usage
+        return 1
+    fi
+
+    machine=${1:-"12"}
+    ssh "mff9108@gle-3159-ws$machine.nx.rit.edu"
+}

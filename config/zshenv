@@ -1,0 +1,14 @@
+# Environment: macOS
+# =============================================================================
+
+export DEV="$HOME/Developer"
+export MACHINE="$DEV/machine"
+export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
+export PRIVATE_MACHINE="$ICLOUD/.machine"
+export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
+export GOPATH="$HOME/.go"
+
+# global environment variables
+source "$MACHINE/config/shell/zshenv"
+# private environment variables
+source "$PRIVATE_MACHINE/env.sh"

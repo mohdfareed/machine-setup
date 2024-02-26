@@ -44,7 +44,7 @@ def install_omz():
     LOGGER.info("Installing oh-my-zsh...")
 
     # load installation environment
-    cmd = f"source {config.zsh_env} && echo $ZSH"
+    cmd = f"source {config.zshenv} && echo $ZSH"
     env = dict(ZSH=utils.run_cmd(cmd)[1])
 
     # install oh-my-zsh
@@ -67,4 +67,4 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Shell setup script.")
     args = parser.parse_args()
-    scripts.run_setup(setup)
+    scripts.run_setup_isolated(setup)

@@ -73,12 +73,10 @@ def copy_config(hostname, machine):
     # copy config files to raspberrypi
     machine = f"{hostname}:{machine}"
     utils.run_cmd(
-        ["rsync", "-avzL", config.pi_machine + "/", machine],
+        ["rsync", "-avzL", config.pi + "/", machine],
         throws=False,
     )
-    LOGGER.debug(
-        f"Copied: {os.path.basename(config.pi_machine)}/* -> {machine}"
-    )
+    LOGGER.debug(f"Copied: {os.path.basename(config.pi)}/* -> {machine}")
 
     # copy shared config files
     for config_file in config.pi_shared_config:

@@ -1,14 +1,8 @@
-# Environment: macOS
+# Environment (shared across machines)
 # =============================================================================
 
-export DEV="$HOME/Developer"
-export MACHINE="$DEV/machine"
-export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-export PRIVATE_MACHINE="$ICLOUD/.machine"
-export DOCKER_HOST="unix://$HOME/.colima/default/docker.sock"
-export GOPATH="$HOME/.go"
-
-# global environment variables
-source "$MACHINE/config/shell/env.sh"
-# private environment variables
-source "$PRIVATE_MACHINE/env.sh"
+export ZSH="$HOME/.zsh/omz"    # oh-my-zsh path
+export EDITOR="$(which nvim)"  # default to neovim as the editor
+export LESS="-R --ignore-case" # use less with colors and case-insensitivity
+export SYSTEMD_LESS=$LESS      # less arguments of systemd pager
+export BAT_PAGER="less $LESS"  # use less as the pager for bat

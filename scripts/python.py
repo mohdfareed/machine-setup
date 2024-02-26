@@ -42,4 +42,4 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Python setup script.")
     args = parser.parse_args()
-    scripts.run_setup(setup)
+    scripts.run_setup_isolated(setup)

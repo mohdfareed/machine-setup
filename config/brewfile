@@ -69,8 +69,8 @@ mas "Tailscale", id: 1475387142 # vpn
 mas "Magnet", id: 441258766     # window manager
 mas "Noir", id: 1592917505      # safari dark mode
 mas "Wipr", id: 1320666476      # safari ad-blocker
-mas "iPreview", id: 1519213509  # zip quicklook plugin
 mas "Peek", id: 1554235898      # quicklook plugin
+# mas "iPreview", id: 1519213509  # zip quicklook plugin
 
 # FONTS
 # =============================================================================
