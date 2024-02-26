@@ -2,36 +2,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Python: Setup Script",
-      "type": "python",
+      "name": "Python: Main Setup Script",
+      "type": "debugpy",
       "request": "launch",
       "program": "./setup.py",
       "args": [
-        "--debug",
-        "/Users/mohdfareed/Library/Mobile Documents/com~apple~CloudDocs/.setup/keys"
+        "--debug"
       ],
       "console": "integratedTerminal",
       "justMyCode": true
     },
     {
-      "name": "Python: Shell Module",
-      "type": "python",
-      "request": "launch",
-      "module": "utils.shell",
-      "console": "integratedTerminal",
-      "justMyCode": true
-    },
-    {
-      "name": "Python: Current Script",
-      "type": "python",
-      "request": "launch",
-      "program": "${file}",
-      "console": "integratedTerminal",
-      "justMyCode": true
-    },
-    {
       "name": "Python: Current Module",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "${fileDirnameBasename}.${fileBasenameNoExtension}",
       "console": "integratedTerminal",
