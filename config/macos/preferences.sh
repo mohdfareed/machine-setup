@@ -41,28 +41,3 @@ chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library > /dev/nul
 # enable snap-to-grid for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
-
-# TextEdit
-# ========
-
-echo "Setting up TextEdit preferences..."
-# use plain text mode for new TextEdit documents
-defaults write com.apple.TextEdit RichText -int 0
-# set windows dimensions
-defaults write com.apple.TextEdit WidthInChars -int 80
-defaults write com.apple.TextEdit HeightInChars -int 24
-# plain text font
-defaults write com.apple.TextEdit NSFixedPitchFont -string \
-"JetBrainsMonoNerdFontComplete-Regular"
-defaults write com.apple.TextEdit NSFixedPitchFontSize -int 14
-
-# Terminal
-# ========
-
-# default Terminal profile
-defaults write com.apple.Terminal "Default Window Settings" "Dark"
-defaults write com.apple.Terminal "Startup Window Settings" "Dark"
-# line marks
-defaults write com.apple.Terminal ShowLineMarks -bool false
-# secure keyboard entry
-defaults write com.apple.terminal SecureKeyboardEntry -bool true

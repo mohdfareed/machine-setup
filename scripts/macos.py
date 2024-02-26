@@ -2,7 +2,6 @@
 machine."""
 
 import logging
-import os
 
 import config
 import utils
@@ -22,11 +21,14 @@ def setup() -> None:
     LOGGER.info("Setting up VSCode...")
     utils.symlink(config.vscode_settings, VSCODE)
     utils.symlink(config.vscode_keybindings, VSCODE)
-    LOGGER.debug("Linked VSCode settings")
+    LOGGER.debug("Linked VSCode settings.")
 
     # run the preferences script
     LOGGER.info("Setting system preferences...")
     # utils.run_cmd(f". {config.macos_preferences}")
+    LOGGER.debug("System preferences set.")
+
+    LOGGER.info("macOS setup complete.")
 
 
 if __name__ == "__main__":
