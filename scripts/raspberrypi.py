@@ -6,7 +6,7 @@ import os
 import re
 
 import config
-from utils.shell import Shell
+import utils
 
 HOSTNAME = "raspberrypi.local"
 """The local hostname of the Raspberry Pi."""
@@ -15,8 +15,6 @@ SETUP_SCRIPT = "setup-machine"
 
 LOGGER = logging.getLogger(__name__)
 """The Raspberry Pi setup logger."""
-shell = Shell(LOGGER.debug, LOGGER.error)
-"""The Raspberry Pi shell instance."""
 
 
 def setup(hostname=HOSTNAME) -> None:
@@ -58,26 +56,25 @@ def connect(hostname):
     LOGGER.info("Connecting to Raspberry Pi...")
 
     # check if raspberrypi exists
-    if shell(["ping", hostname, "-c", "1"], silent=True)[1] != 0:
+    if utils.run_cmd(["ping", hostname, "-c", "1"])[1] != 0:
         raise RuntimeError("Raspberry Pi is not connected to the network")
     LOGGER.debug("Connection to Raspberry Pi established")
 
     # add ssh key to raspberrypi
     # FIXME: broken prompts (not visible while loading)
-    shell(f"ssh-copy-id '{hostname}' > /dev/null 2>&1")
+    utils.run_cmd(f"ssh-copy-id '{hostname}' > /dev/null 2>&1")
     LOGGER.debug("Added SSH key to Raspberry Pi")
 
 
 def copy_config(hostname, machine):
     LOGGER.info("Copying config files to Raspberry Pi...")
-    shell(["ssh", hostname, "mkdir", "-p", machine], silent=True, safe=True)
+    utils.run_cmd(["ssh", hostname, "mkdir", "-p", machine], throws=False)
 
     # copy config files to raspberrypi
     machine = f"{hostname}:{machine}"
-    shell(
+    utils.run_cmd(
         ["rsync", "-avzL", config.pi_machine + "/", machine],
-        silent=True,
-        safe=True,
+        throws=False,
     )
     LOGGER.debug(
         f"Copied: {os.path.basename(config.pi_machine)}/* -> {machine}"
@@ -85,7 +82,7 @@ def copy_config(hostname, machine):
 
     # copy shared config files
     for config_file in config.pi_shared_config:
-        shell(["rsync", "-avzL", config_file, machine], silent=True, safe=True)
+        utils.run_cmd(["rsync", "-avzL", config_file, machine], throws=False)
         LOGGER.debug(f"Copied: {os.path.basename(config_file)} -> {machine}")
     LOGGER.debug("Copied config files to Raspberry Pi")
 
@@ -95,13 +92,13 @@ def setup_scripts(hostname, machine):
 
     # make scripts executable
     scripts = f"{machine}/scripts"
-    shell(["ssh", hostname, "chmod", "+x", f"{scripts}/*.sh"], silent=True)
+    utils.run_cmd(["ssh", hostname, "chmod", "+x", f"{scripts}/*.sh"])
     LOGGER.debug("Changed scripts to executable")
 
     # add setup script to path
     setup = f"{scripts}/setup.sh"
     script = f"/usr/local/bin/{SETUP_SCRIPT}"
-    shell(["ssh", hostname, "sudo", "ln", "-sf", setup, script], silent=True)
+    utils.run_cmd(["ssh", hostname, "sudo", "ln", "-sf", setup, script])
     LOGGER.debug(f"Symlinked: {setup} -> {script}")
     LOGGER.debug("Added setup script to path")
     LOGGER.info(f"Setup Raspberry Pi by executing:[/] [green]{SETUP_SCRIPT}")
@@ -117,9 +114,4 @@ if __name__ == "__main__":
         "hostname", type=str, help="local hostname of Raspberry Pi", nargs="?"
     )
     args = parser.parse_args()
-    scripts.run(
-        setup,
-        LOGGER,
-        "Failed to setup Raspberry Pi",
-        args.hostname or HOSTNAME,
-    )
+    scripts.run_setup(setup, args.hostname or HOSTNAME)

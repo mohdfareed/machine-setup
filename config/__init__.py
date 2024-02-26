@@ -2,6 +2,8 @@
 
 import os as _os
 
+import utils as _utils
+
 # machine configuration directories
 config = _os.path.dirname(_os.path.realpath(__file__))
 """The path to the machine configuration directory."""
@@ -17,8 +19,6 @@ vscode = _os.path.join(config, "vscode")
 """The path of VSCode configuration directory."""
 pi_machine = _os.path.join(_os.path.dirname(config), "raspberrypi")
 """The path of Raspberry Pi configuration directory."""
-private_machine = "$PRIVATE_MACHINE"
-"""The path of the private machine configuration directory."""
 
 # shell
 zsh_config = _os.path.join(shell, "config.sh")
@@ -35,8 +35,6 @@ ssh_config = _os.path.join(shell, "ssh.config")
 """The path of the global ssh config file."""
 tmux = _os.path.join(shell, "tmux.conf")
 """The path of the tmux configuration file."""
-private_env = _os.path.join(private_machine, "env.sh")
-"""The path of the private machine environment file."""
 
 # git
 gitconfig = _os.path.join(git, "config")
@@ -67,3 +65,14 @@ pi_zshenv = _os.path.join(pi_machine, "zshenv")
 """The path of Raspberry Pi environment variables file."""
 pi_shared_config = (zsh_config, zsh_env, vim, tmux)
 """The shared config files between the machine and Raspberry Pi."""
+
+# private files
+cmd = f"source {zsh_env} && echo $PRIVATE_MACHINE"
+private_machine = _utils.run_cmd(cmd)[1]
+"""The path of the machine private files directory."""
+private_env = _os.path.join(private_machine, "env.sh")
+"""The path of the machine private environment file."""
+private_pi_env = _os.path.join(private_machine, "pi.sh")
+"""The path of the Raspberry Pi private environment file."""
+ssh_keys = _os.path.join(private_machine, "keys")
+"""The path of the machine ssh keys directory."""

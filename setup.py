@@ -21,23 +21,17 @@ def main(debug=False) -> None:
         debug (bool): Whether to log debug messages.
     """
 
-    utils.logging.setup_logging(debug)
-    try:  # setup the machine
-        LOGGER.info("Setting up machine...")
-        scripts.brew.setup()
-        scripts.shell.setup()
-        scripts.ssh.setup()
-        scripts.git.setup()
-        scripts.python.setup()
-        scripts.macos.setup()
-        LOGGER.warning("Restart for some changes to apply.")
-    except KeyboardInterrupt:
-        LOGGER.warning("Setup interrupted.")
-        exit(0)
-    except Exception as exception:
-        LOGGER.exception(exception)
-        LOGGER.error("Failed to setup machine.")
-        exit(1)
+    utils.setup_logging(debug)
+    utils.setup_sudo
+
+    LOGGER.info("Setting up machine...")
+    scripts.run_setup(scripts.brew.setup)
+    scripts.run_setup(scripts.shell.setup)
+    scripts.run_setup(scripts.ssh.setup)
+    scripts.run_setup(scripts.git.setup)
+    scripts.run_setup(scripts.python.setup)
+    scripts.run_setup(scripts.macos.setup)
+    LOGGER.warning("Restart for some changes to apply.")
     LOGGER.info("Machine setup complete.")
 
 

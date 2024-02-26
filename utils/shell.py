@@ -75,8 +75,10 @@ def print_output(process, status, msg):
                 LOGGER.error(line.strip()) if line.strip() else None
             status.start()
 
-            if line.strip():  # ignore empty lines
-                status.update(f"[green]{msg} | {line.strip()}[/]")
+            if line.strip():  # sanitize output and update status
+                # limit line length due to status moving up if multiple lines
+                last_line = line.strip()[:50]
+                status.update(f"[green]{msg} | {last_line}...[/]")
             output += line
 
         if process.poll() is not None:
@@ -84,9 +86,17 @@ def print_output(process, status, msg):
     return output.strip(), process.wait()
 
 
-try:  # check if the user has sudo privileges
-    run("sudo -n true &> /dev/null")
-except subprocess.CalledProcessError:
-    # the user doesn't have sudo privileges, prompt for the password
-    password = getpass.getpass("\033[32m Enter your password: \033[30m")
-    run(f"echo {password} | sudo -Sv")
+def setup_sudo() -> None:
+    """Setup sudo access for the current user."""
+    try:  # check if the user has sudo privileges
+        run("sudo -n true &> /dev/null")
+    except subprocess.CalledProcessError:
+        # the user doesn't have sudo privileges, prompt for the password
+        while True:
+            password = getpass.getpass(
+                "\033[32m Enter your password: \033[30m"
+            )
+            cmd = f"echo {password} | sudo -Sv &> /dev/null"
+            if run(cmd, throws=False)[0] == 0:
+                break
+            print("\033[31m Invalid password\033[30m")

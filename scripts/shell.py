@@ -2,7 +2,9 @@
 machine.
 """
 
+import glob
 import logging
+import os
 
 import config
 import utils
@@ -30,12 +32,11 @@ def setup() -> None:
     install_omz()
     utils.symlink(config.zshrc, ZSHRC)
     utils.symlink(config.zshenv, ZSHENV)
-    utils.symlink(config.zprofile, ZPROFILE)
     utils.symlink(config.tmux, TMUX)
     utils.symlink(config.vim, VIM, is_dir=True)
 
     # disable login message
-    utils.run_shell("touch ~/.hushlogin")
+    utils.run_cmd("touch ~/.hushlogin")
     LOGGER.info("Shell setup complete")
 
 
@@ -44,20 +45,18 @@ def install_omz():
 
     # load installation environment
     cmd = f"source {config.zsh_env} && echo $ZSH"
-    env = dict(ZSH=utils.run_shell(cmd)[0])
+    env = dict(ZSH=utils.run_cmd(cmd)[1])
 
     # install oh-my-zsh
-    utils.run_shell(["sudo", "rm", "-rf", env["ZSH"]])  # remove existing files
+    utils.run_cmd(["sudo", "rm", "-rf", env["ZSH"]])  # remove existing files
     cmd = 'sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended'
-    utils.run_shell(cmd, env=env, msg="Installing")
+    utils.run_cmd(cmd, env=env, msg="Installing")
 
-    # setup private shell environment
-    cmd = f"echo {config.private_env}"
-    private_ = dict(ZSH=utils.run_shell(cmd)[0])
-    utils.symlink(config.zsh_env, f"{env['ZSH']}/.zshenv")
+    # remove zshrc backup files
+    backups = os.path.expanduser(f"{ZSHRC}.pre-oh-my-zsh*")
+    for filename in glob.glob(backups, include_hidden=True):
+        os.remove(filename)
 
-    # remove zshrc backup file
-    utils.run_shell(["rm", "-rf", f"{ZSHRC}.pre-oh-my-zsh"])
     LOGGER.debug("Installed oh-my-zsh.")
 
 

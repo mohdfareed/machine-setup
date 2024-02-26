@@ -11,8 +11,13 @@ def run_setup(setup, *args, **kwargs):
     import utils
 
     try:
-        utils.logging.setup_logging(debug=False)
+        utils.setup_logging(debug=True)
+        utils.setup_sudo()
         setup(*args, **kwargs)
+    except KeyboardInterrupt:
+        print()
+        logging.getLogger(__name__).warning("Setup interrupted.")
+        exit(0)
     except Exception as exception:
         logging.getLogger(__name__).exception(exception)
         logging.getLogger(__name__).error(f"Setup failed.")

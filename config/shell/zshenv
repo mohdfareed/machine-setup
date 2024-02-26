@@ -10,3 +10,5 @@ export GOPATH="$HOME/.go"
 
 # global environment variables
 source "$MACHINE/config/shell/env.sh"
+# private environment variables
+source "$PRIVATE_MACHINE/env.sh"

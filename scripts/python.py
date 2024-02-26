@@ -18,15 +18,20 @@ def setup() -> None:
     """Setup Python on a new machine. Homebrew's Python is used."""
     LOGGER.info("Setting up Python...")
 
+    # check if python is installed
+    if not os.path.exists(PIP):
+        LOGGER.info("Python is not installed")
+        return
+
     # install global python packages
     LOGGER.info("Installing Python requirements...")
     cmd = [PIP, "install", "--upgrade", "pip"]
-    utils.run_shell(cmd, msg="Upgrading pip")
+    utils.run_cmd(cmd, msg="Upgrading pip")
     cmd = [PIP, "install", "-r", config.requirements, "--upgrade"]
-    utils.run_shell(cmd, msg="Installing")
+    utils.run_cmd(cmd, msg="Installing")
 
     # cleanup
-    utils.run_shell([PIP, "cache", "purge"], msg="Cleaning up")
+    utils.run_cmd([PIP, "cache", "purge"], msg="Cleaning up")
     LOGGER.info("Python setup complete")
 
 
