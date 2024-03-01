@@ -54,7 +54,6 @@
   "terminal.integrated.macOptionIsMeta": true,
   "terminal.integrated.gpuAcceleration": "auto",
   "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.enableBell": true,
   "terminal.integrated.enableMultiLinePasteWarning": false,
   "terminal.integrated.stickyScroll.enabled": true,
   // #endregion ===============================================================
@@ -165,5 +164,9 @@
   // REVIEW - manually modified settings ======================================
   "gitlens.ai.experimental.provider": "openai",
   "gitlens.ai.experimental.openai.model": "gpt-4-turbo-preview",
-  "gitlens.graph.minimap.enabled": false
+  "gitlens.graph.minimap.enabled": false,
+  "accessibility.signals.terminalBell": {
+    "sound": "on"
+  },
+  "terminal.integrated.enableVisualBell": true
 }

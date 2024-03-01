@@ -78,7 +78,9 @@ def print_output(process, status, msg):
             if line.strip():  # sanitize output and update status
                 # limit line length due to status moving up if multiple lines
                 last_line = line.strip()[:50]
-                status.update(f"[green]{msg} | {last_line}...[/]")
+                status.update(f"[green]{msg} |[/] {last_line}...")
+            else:  # update status with loading animation
+                status.update(f"[green]{msg}[/]")
             output += line
 
         if process.poll() is not None:

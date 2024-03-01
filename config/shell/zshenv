@@ -6,6 +6,15 @@ export LESS="-R --ignore-case" # use less with colors and case-insensitivity
 export SYSTEMD_LESS=$LESS      # less arguments of systemd pager
 export BAT_PAGER="less $LESS"  # use less as the pager for bat
 
+# XDG Base Directory Specification
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_RUNTIME_DIR="/run/user/$UID"
+export XDG_DATA_DIRS="/usr/local/share:/usr/share:$XDG_DATA_DIRS"
+export XDG_CONFIG_DIRS="/etc/xdg:$XDG_CONFIG_DIRS"
+
 # shell environment
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH="$XDG_DATA_HOME/oh-my-zsh"
@@ -18,5 +27,18 @@ export PYTHON_HISTORY=$XDG_STATE_HOME/python/history
 export PYTHONPYCACHEPREFIX=$XDG_CACHE_HOME/python
 export PYTHONUSERBASE=$XDG_DATA_HOME/python
 
+# dotnet
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
+export DOTNET_ROOT="$XDG_DATA_HOME/dotnet"
+export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+export NUGET_PACKAGES="$XDG_DATA_HOME/nuget/packages"
+
 # go
 export GOPATH="$XDG_DATA_HOME/go"
+# npm
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
+# docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+# lima
+export LIMA_HOME="$XDG_DATA_HOME/lima"
