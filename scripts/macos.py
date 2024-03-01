@@ -2,13 +2,12 @@
 machine."""
 
 import logging
-import os
 
 import config
 import utils
 
-VSCODE = os.path.join(config.xdg_config, "Code", "User")
-"""The path to the VSCode user settings directory."""
+VSCODE = "~/Library/Application Support/Code/User"
+"""The path to the VSCode user settings directory on macOS."""
 
 LOGGER = logging.getLogger(__name__)
 """The macOS setup logger."""
@@ -24,6 +23,8 @@ def setup() -> None:
     utils.symlink(config.vscode_keybindings, VSCODE)
     LOGGER.debug("Linked VSCode settings.")
 
+    # setup npm config
+    utils.symlink(config.npm_config_userconfig, config.npmrc)
     # run the preferences script
     LOGGER.info("Setting system preferences...")
     # utils.run_cmd(f". {config.macos_preferences}")

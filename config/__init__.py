@@ -23,6 +23,8 @@ ssh_config = _os.path.join(config, "ssh.config")
 """The path of the global ssh config file."""
 tmux = _os.path.join(config, "tmux.conf")
 """The path of the tmux configuration file."""
+npmrc = _os.path.join(config, "npmrc")
+"""The path of the npm configuration file."""
 
 # git
 gitconfig = _os.path.join(git, "gitconfig")
@@ -62,6 +64,9 @@ xdg_config = _utils.run_cmd(cmd)[1]
 cmd = f"source {zshenv} && echo $ZDOTDIR"
 zdotdir = _utils.run_cmd(cmd)[1]
 """The path of the ZDOTDIR directory."""
+cmd = f"source {zshenv} && echo $NPM_CONFIG_USERCONFIG"
+npm_config_userconfig = _utils.run_cmd(cmd)[1]
+"""The path of the npm configuration file."""
 
 # raspberry pi
 pi = _os.path.join(_os.path.dirname(config), "pi")
