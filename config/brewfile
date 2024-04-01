@@ -1,7 +1,7 @@
 # BREW PACKAGES
 # =============================================================================
 
-# zsh
+# shell
 brew "zsh"                     # brew managed zsh
 brew "zsh-completions"         # extra completions
 brew "zsh-autosuggestions"     # auto suggestions
@@ -19,6 +19,7 @@ brew "bat"    # cat replacement
 brew "mas"    # mac app store cli
 brew "btop"   # resource monitor
 brew "tmux"   # terminal multiplexer
+brew "tpm"    # tmux plugin manager
 
 # editor
 brew "neovim"  # vim editor
@@ -36,18 +37,22 @@ brew "docker-compose" # container orchestration
 # =============================================================================
 
 # general
-cask "raycast"       # spotlight replacement
-cask "mactex-no-gui" # latex
-cask "iina"          # video player
-cask "telegram"      # messaging
+cask "powershell"         # powershell
+cask "iterm2"             # terminal
+cask "raycast"            # spotlight replacement
+cask "visual-studio-code" # code editor
+cask "zed"                # text editor
+cask "mactex-no-gui"      # latex
+cask "telegram"           # messaging
+# cask "anytype"            # note-taking app
 
 # utilities
+cask "iina"           # video player
 cask "openinterminal" # open terminal in current directory
 cask "sf-symbols"     # system font symbols
 cask "the-unarchiver" # unzip files
 cask "mouse-fix"      # mouse utility
 cask "monitorcontrol" # exteral monitor utility
-
 
 # MAC APP STORE
 # =============================================================================
@@ -75,6 +80,26 @@ mas "Peek", id: 1554235898      # quicklook plugin
 # FONTS
 # =============================================================================
 
-# fonts
-cask "font-computer-modern"          # latex font
-cask "font-jetbrains-mono-nerd-font" # code font
+cask "font-computer-modern"          # latex
+cask "font-jetbrains-mono-nerd-font" # code
+
+# PYTHON PACKAGES
+# =============================================================================
+
+# utility
+brew "jupyter"    # jupyter notebook
+brew "virtualenv" # virtual environments
+brew "rich"       # console output formatter
+
+# code quality
+brew "black"  # code formatter
+brew "isort"  # import sorter
+brew "pylint" # code linter
+brew "flake8" # code linter
+
+# data science
+brew "numpy"      # numerical computing
+brew "scipy"      # scientific computing
+brew "sympy"      # symbolic mathematics
+brew "pandas"     # data analysis
+brew "matplotlib" # data visualization
