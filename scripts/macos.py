@@ -23,8 +23,6 @@ def setup() -> None:
     utils.symlink(config.vscode_keybindings, VSCODE)
     LOGGER.debug("Linked VSCode settings.")
 
-    # setup npm config
-    utils.symlink(config.npm_config_userconfig, config.npmrc)
     # run the preferences script
     LOGGER.info("Setting system preferences...")
     # utils.run_cmd(f". {config.macos_preferences}")

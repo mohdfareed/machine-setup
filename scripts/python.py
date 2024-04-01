@@ -4,7 +4,6 @@ machine."""
 import logging
 import os
 
-import config
 import utils
 from scripts.brew import BIN
 
@@ -23,12 +22,10 @@ def setup() -> None:
         LOGGER.info("Python is not installed")
         return
 
-    # install global python packages
-    LOGGER.info("Installing Python requirements...")
+    # upgrade python package manager
+    LOGGER.info("Upgrading Python Package manager...")
     cmd = [PIP, "install", "--upgrade", "pip"]
     utils.run_cmd(cmd, msg="Upgrading pip")
-    cmd = [PIP, "install", "-r", config.requirements, "--upgrade"]
-    utils.run_cmd(cmd, msg="Installing")
 
     # cleanup
     utils.run_cmd([PIP, "cache", "purge"], msg="Cleaning up")
