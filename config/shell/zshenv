@@ -7,6 +7,7 @@ export SYSTEMD_LESS=$LESS      # less arguments of systemd pager
 export BAT_PAGER="less $LESS"  # use less as the pager for bat
 
 # XDG Base Directory Specification
+# Source: https://wiki.archlinux.org/title/XDG_Base_Directory
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"

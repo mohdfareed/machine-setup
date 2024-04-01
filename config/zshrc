@@ -20,6 +20,7 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # =============================================================================
 
 alias restart_docker='colima stop && colima start'
+alias update='brew update && brew upgrade && brew cleanup'
 
 # ssh into raspberry pi
 function ssh-pi {
@@ -83,7 +84,7 @@ function zip-encrypt {
 # =============================================================================
 
 function ssh-rit {
-    usage="usage: $0 machine"
+    usage="usage: $0 [machine_number]"
     if (($# > 1)); then
         echo $usage
         return 1
