@@ -1,10 +1,15 @@
 # Configuration: macOS
 # =============================================================================
 
-eval "$(/opt/homebrew/bin/brew shellenv)"               # homebrew
+# diable login message
+[ -f "$HOME/.hushlogin" ] || touch "$HOME/.hushlogin"
+
+# load homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)" && brew_prefix="$(brew --prefix)"
 export PATH="$(brew --prefix python)/libexec/bin:$PATH" # python
-fpath+=("$(brew --prefix)/share/zsh/site-functions")    # pure prompt
-fpath+=("$(brew --prefix)/share/zsh-completions")       # completions
+fpath+=("$brew_prefix/share/zsh/site-functions")        # pure prompt
+fpath+=("$brew_prefix/share/zsh-completions")           # completions
+eval "$(pyenv init -)"                                  # pyenv
 
 # zsh plugins
 plugins=(
@@ -13,8 +18,9 @@ plugins=(
 
 # shell config, syntax highlighting, auto-suggestions, and auto-completion
 source $MACHINE/config/shell/zshrc
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source "$brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+source "$brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+unset brew_prefix
 
 # Functions and Aliases
 # =============================================================================
@@ -78,18 +84,4 @@ function zip-encrypt {
     zip -er0 "$dir_name.zip" . -x ".DS_Store" -x "._*"
     mv "$dir_name.zip" ..
     cd - >/dev/null
-}
-
-# RIT
-# =============================================================================
-
-function ssh-rit {
-    usage="usage: $0 [machine_number]"
-    if (($# > 1)); then
-        echo $usage
-        return 1
-    fi
-
-    machine=${1:-"12"}
-    ssh "mff9108@gle-3159-ws$machine.nx.rit.edu"
 }

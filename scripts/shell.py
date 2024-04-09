@@ -34,16 +34,6 @@ def setup() -> None:
     utils.symlink(config.vim, VIM, is_dir=True)
     utils.symlink(config.npm_config_userconfig, config.npmrc)
 
-    # create zsh history file
-    cmd = f"source {config.zshenv} && echo $HISTFILE"
-    history_file = utils.run_cmd(cmd)[1]
-    utils.run_cmd(f"mkdir -p {os.path.dirname(history_file)}")
-    utils.run_cmd(f"touch {history_file}")
-
-    # disable login message
-    utils.run_cmd("touch ~/.hushlogin")
-    LOGGER.info("Shell setup complete")
-
     # clean up
     utils.run_cmd("sudo rm -rf ~/.zcompdump*")
     utils.run_cmd("sudo rm -rf ~/.zshrc")

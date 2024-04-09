@@ -1,18 +1,12 @@
 # python
 *__pycache__*
 
-# vscode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-
 # virtualenv
 .venv/
+
 # log files
 *.log
+
 # lock files
 *.lock.json
 *-lock.json

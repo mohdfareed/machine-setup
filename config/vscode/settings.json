@@ -1,21 +1,16 @@
 {
-  // #region editor ===========================================================
+  // editor ===========================================================
   "editor.lineNumbers": "relative",
   "editor.wordWrap": "on",
   "editor.wrappingIndent": "indent",
   "editor.guides.bracketPairs": true,
   "editor.formatOnSave": true,
-  // #endregion ===============================================================
-  // #region whitespace =======================================================
+  // whitespace =======================================================
   "editor.renderWhitespace": "all",
   "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
-  // #endregion ===============================================================
-  // #region visual ===========================================================
-  "editor.rulers": [
-    80
-  ],
+  // visual ===========================================================
   "editor.stickyScroll.enabled": true,
   "editor.minimap.renderCharacters": false,
   "editor.minimap.enabled": false,
@@ -31,8 +26,10 @@
   "oneDarkPro.bold": true,
   "oneDarkPro.vivid": true,
   "oneDarkPro.markdownStyle": false,
-  // #endregion ===============================================================
-  // #region font =============================================================
+  "editor.rulers": [
+    80
+  ],
+  // font =============================================================
   "editor.fontFamily": "JetBrainsMono Nerd Font",
   "editor.fontSize": 13,
   "editor.fontLigatures": true,
@@ -40,44 +37,45 @@
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.smoothScrolling": true,
   // TODO - check if terminal ligature is supported
-  // #endregion ===============================================================
-  // #region vscode ===========================================================
+  // vscode ===========================================================
   "window.openWithoutArgumentsInNewWindow": "on",
   "workbench.startupEditor": "newUntitledFile",
   "explorer.confirmDelete": false,
-  // #endregion ===============================================================
-  // #region suggestions ======================================================
+  // suggestions ======================================================
   "editor.suggest.preview": true,
   "editor.inlineSuggest.enabled": true,
-  // #endregion ===============================================================
-  // #region terminal =========================================================
+  // terminal =========================================================
   "terminal.integrated.macOptionIsMeta": true,
   "terminal.integrated.gpuAcceleration": "auto",
   "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "terminal.integrated.enableMultiLinePasteWarning": "auto",
   "terminal.integrated.stickyScroll.enabled": true,
-  // #endregion ===============================================================
-  // #region git ==============================================================
+  "terminal.integrated.enableVisualBell": true,
+  "accessibility.signals.terminalBell": {
+    "sound": "on"
+  },
+  // git ==============================================================
   "git.allowForcePush": true,
   "git.autofetch": "all",
+  "git.ignoreLegacyWarning": true,
+  "git.confirmSync": false,
   "diffEditor.renderSideBySide": false,
   "gitlens.codeLens.enabled": false,
   "gitlens.statusBar.enabled": false,
   "gitlens.currentLine.enabled": false,
   "gitlens.hovers.currentLine.over": "line",
-  "git.ignoreLegacyWarning": true,
-  "git.confirmSync": false,
+  "gitlens.graph.minimap.enabled": false,
+  "gitlens.ai.experimental.provider": "openai",
+  "gitlens.ai.experimental.openai.model": "gpt-4-turbo-preview",
   "multiDiffEditor.experimental.enabled": true,
-  // #endregion ===============================================================
-  // #region copilot ==========================================================
+  // copilot ==========================================================
   "github.copilot.enable": {
     "*": true,
     "plaintext": true,
     "markdown": true,
     "scminput": false
   },
-  // #endregion ===============================================================
-  // #region comment anchors ==================================================
+  // comment anchors ==================================================
   "commentAnchors.scrollPosition": "center",
   "commentAnchors.tags.displayLineNumber": false,
   "commentAnchors.tags.sortMethod": "type",
@@ -92,14 +90,12 @@
       "scope": "workspace",
     },
   },
-  // #endregion ===============================================================
-  // #region vim ==============================================================
+  // vim ==============================================================
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
-  // #endregion ===============================================================
-  // #region markdown =========================================================
+  // markdown =========================================================
   "markdown.preview.typographer": true,
   "markdown.preview.scrollPreviewWithEditor": false,
   "markdown.preview.scrollEditorWithPreview": false,
@@ -114,8 +110,23 @@
       "other": "on",
     }
   },
-  // #endregion ===============================================================
-  // #region python ===========================================================
+  // python ===========================================================
+  "python.analysis.typeCheckingMode": "standard",
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.useLibraryCodeForTypes": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.enablePytestSupport": true,
+  "python.analysis.inlayHints.callArgumentNames": "all",
+  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.inlayHints.pytestParameters": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.REPL.enableREPLSmartSend": true,
+  "pythonIndent.trimLinesWithOnlyWhitespace": true,
+  "pylint.lintOnChange": true,
+  "notebook.lineNumbers": "on",
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnType": true,
@@ -123,50 +134,36 @@
       "source.organizeImports": "always",
     }
   },
-  "python.analysis.typeCheckingMode": "basic",
-  "python.analysis.autoSearchPaths": true,
-  "python.analysis.diagnosticMode": "workspace",
-  "python.analysis.useLibraryCodeForTypes": true,
-  "python.analysis.completeFunctionParens": true,
-  "python.analysis.autoImportCompletions": true,
   "python.testing.pytestArgs": [
     "--color=yes"
   ],
-  "python.experiments.optInto": [
-    "pythonREPLSmartSend"
+  "pylint.args": [
+    "--enable-all-extensions",
   ],
   "black-formatter.args": [
     "--line-length",
     "79",
   ],
-  // #endregion ===============================================================
-  // #region lua ==============================================================
+  "isort.args": [
+    "--profile",
+    "black"
+  ],
+  // lua ==============================================================
   "[lua]": {
     "editor.defaultFormatter": "sumneko.lua",
     "editor.tabSize": 2,
   },
-  // #endregion ===============================================================
-  // #region go ===============================================================
+  // go ===============================================================
   "[go]": {
     "editor.defaultFormatter": "golang.go",
   },
-  // #endregion ===============================================================
-  // #region latex ============================================================
+  // latex ============================================================
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop",
   },
-  // #endregion ===============================================================
-  // #region misc =============================================================
+  // misc =============================================================
   "cSpell.userWords": [
     "endregion"
   ],
-  // #endregion ===============================================================
   // REVIEW - manually modified settings ======================================
-  "gitlens.ai.experimental.provider": "openai",
-  "gitlens.ai.experimental.openai.model": "gpt-4-turbo-preview",
-  "gitlens.graph.minimap.enabled": false,
-  "accessibility.signals.terminalBell": {
-    "sound": "on"
-  },
-  "terminal.integrated.enableVisualBell": true
 }

@@ -1,27 +1,23 @@
 [user]
     name = Mohammed Fareed
     email = mohdf.fareed@icloud.com
-    ; ssh key used for signing commits
-    signingkey = ~/.ssh/personal.pub
+    signingkey = ~/.ssh/personal.pub ; ssh key used for signing commits
 [commit]
-    ; sign commits
-    gpgsign = true
+    gpgsign = true ; sign commits
 [gpg]
-    ; use ssh key for signing
-    format = ssh
+    format = ssh ; use ssh key for signing
 [init]
-    ; use main as default branch name
-    defaultBranch = main
+    defaultBranch = main ; use main as default branch name
 [fetch]
-    prune = true  ; remove remote-tracking branches for deleted remote branches
+    prune = true ; remove remote-tracking branches for deleted remote branches
 [pull]
     rebase = true ; rebase local commits on top of the updated upstream branch
 
 ; terminal settings
 [status]
-    short = true         ; git status uses --short by default
+    short = true ; git status uses --short by default
 [color]
-    ui = auto            ; colorize git output
+    ui = auto ; colorize git output
 [help]
     autoCorrect = prompt ; prompt to correct typos in git commands
 

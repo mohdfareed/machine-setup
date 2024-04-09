@@ -11,6 +11,7 @@ brew "pure"                    # pure shell prompt
 # general
 brew "git"    # global git
 brew "python" # global python
+brew "pipx"   # python applications manager
 brew "pyenv"  # python version manager
 brew "go"     # global go
 brew "gh"     # github cli
@@ -21,12 +22,11 @@ brew "btop"   # resource monitor
 brew "tmux"   # terminal multiplexer
 brew "tpm"    # tmux plugin manager
 
-# editor
+# vim
 brew "neovim"  # vim editor
 brew "lazygit" # git ui
 brew "ripgrep" # grep replacement
 brew "fd"      # find replacement
-brew "wget"    # internet file retriever
 
 # docker
 brew "colima"         # container runtimes
@@ -37,13 +37,11 @@ brew "docker-compose" # container orchestration
 # =============================================================================
 
 # general
-cask "powershell"         # powershell
 cask "iterm2"             # terminal
 cask "raycast"            # spotlight replacement
 cask "visual-studio-code" # code editor
-cask "zed"                # text editor
 cask "mactex-no-gui"      # latex
-cask "telegram"           # messaging
+# cask "zed"                # text editor
 # cask "anytype"            # note-taking app
 
 # utilities
@@ -58,22 +56,22 @@ cask "monitorcontrol" # exteral monitor utility
 # =============================================================================
 
 # apple
-mas "Keynote", id: 409183694      # presentation software
-mas "Numbers", id: 409203825      # spreadsheet software
-mas "Pages", id: 409201541        # word processor software
-mas "Playgrounds", id: 1496833156 # swift playgrounds
-mas "Xcode", id: 497799835        # xcode
+mas "Keynote", id: 409183694 # presentation software
+mas "Numbers", id: 409203825 # spreadsheet software
+mas "Pages", id: 409201541   # word processor software
+mas "Xcode", id: 497799835   # xcode
 
 # productivity
 mas "Craft", id: 1487937127      # note-taking app
 mas "Copilot", id: 1447330651    # finances app
-mas "TechniCalc", id: 1504965415 # scientifc calculator
+mas "Fantastical", id: 975937182 # calendar app
+# mas "TechniCalc", id: 1504965415 # scientifc calculator
 
 # utilities
 mas "Tailscale", id: 1475387142 # vpn
 mas "Magnet", id: 441258766     # window manager
 mas "Noir", id: 1592917505      # safari dark mode
-mas "Wipr", id: 1320666476      # safari ad-blocker
+mas "AdGuard", id: 1440147259   # safari ad-blocker
 mas "Peek", id: 1554235898      # quicklook plugin
 # mas "iPreview", id: 1519213509  # zip quicklook plugin
 
@@ -82,24 +80,3 @@ mas "Peek", id: 1554235898      # quicklook plugin
 
 cask "font-computer-modern"          # latex
 cask "font-jetbrains-mono-nerd-font" # code
-
-# PYTHON PACKAGES
-# =============================================================================
-
-# utility
-brew "jupyter"    # jupyter notebook
-brew "virtualenv" # virtual environments
-brew "rich"       # console output formatter
-
-# code quality
-brew "black"  # code formatter
-brew "isort"  # import sorter
-brew "pylint" # code linter
-brew "flake8" # code linter
-
-# data science
-brew "numpy"      # numerical computing
-brew "scipy"      # scientific computing
-brew "sympy"      # symbolic mathematics
-brew "pandas"     # data analysis
-brew "matplotlib" # data visualization

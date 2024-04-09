@@ -1,18 +1,21 @@
 # Configuration (shared across machines)
 # =============================================================================
 
-COMPLETION_WAITING_DOTS="true" # show dots while loading completions
-HYPHEN_INSENSITIVE="true"      # ignore hyphens in commands
+COMPLETION_WAITING_DOTS=true   # show dots while loading completions
+HYPHEN_INSENSITIVE=true        # ignore hyphens in commands
 ZSH_THEME=""                   # use external theme
 zstyle ':omz:update' mode auto # update automatically without asking
 
+# create directories
+[ -d "$XDG_CACHE_HOME/zsh" ] || mkdir -p "$XDG_CACHE_HOME/zsh"
+[ -f "$HISTFILE" ] || touch "$HISTFILE"
+[ -d "$IPYTHONDIR" ] || mkdir -p "$IPYTHONDIR"
+
 plugins+=(
-	git               # git aliases
-	colored-man-pages # colorize man pages
-	tmux              # tmux integration
+	colored-man-pages    # colorize man pages
+	tmux                 # tmux integration
 )
-# load oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh # load oh-my-zsh
 
 # Shell Configuration
 # =============================================================================
@@ -40,11 +43,9 @@ zstyle ':completion:*:*:*:*:processes' command \
 zstyle ':completion:*:*:kill:*:processes' list-colors \
 	'=(#b) #([0-9]#) #*[0-9]#:[0-9]#[:.][0-9]# #(*)=34=1;31=32'
 
-# zsh history
-HISTFILE="$XDG_STATE_HOME"/zsh/history
-[ -d "$XDG_CACHE_HOME"/zsh ] || mkdir -p "$XDG_CACHE_HOME"/zsh
-zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
+# zsh history and sessions
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
 # pure prompt
 PURE_PROMPT_SYMBOL='➜'
@@ -73,11 +74,26 @@ time_shell() {
 # activate virtual environment
 activate_venv() {
 	if [ -d "venv" ]; then
-		source venv/bin/activate
+		venv=venv
 	elif [ -d ".venv" ]; then
-		source .venv/bin/activate
+		venv=.venv
+	elif [ -d "env" ]; then
+		venv=env
+	elif [ -d ".env" ]; then
+		venv=.env
+	elif [ -d "virtualenv" ]; then
+		venv=virtualenv
+	elif [ -d ".virtualenv" ]; then
+		venv=.virtualenv
 	else
-		echo "No virtual environment found"
+		echo "No virtual environment directory found"
+		exit 1
+	fi
+
+	if [ -f "$venv/bin/activate" ]; then
+		source $venv/bin/activate
+	else
+		echo "No valid virtual environment found"
 		exit 1
 	fi
 }
