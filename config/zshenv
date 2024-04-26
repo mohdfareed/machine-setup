@@ -5,6 +5,7 @@ export DEV="$HOME/Developer"
 export MACHINE="$DEV/machine"
 export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 export PRIVATE_MACHINE="$ICLOUD/.machine"
+export GODOT_PATH="/Applications/Godot_mono.app/Contents/MacOS/Godot"
 
 # global environment variables
 source "$MACHINE/config/shell/zshenv"

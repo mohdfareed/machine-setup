@@ -37,9 +37,11 @@ brew "docker-compose" # container orchestration
 # =============================================================================
 
 # general
+cask "dotnet-sdk"         # .net sdk
 cask "iterm2"             # terminal
 cask "raycast"            # spotlight replacement
 cask "visual-studio-code" # code editor
+cask "godot-mono"         # game engine
 cask "mactex-no-gui"      # latex
 # cask "zed"                # text editor
 # cask "anytype"            # note-taking app

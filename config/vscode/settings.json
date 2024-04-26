@@ -82,13 +82,13 @@
   "commentAnchors.tags.anchors": {
     "ANCHOR": {
       "enabled": false,
-      "scope": "hidden",
+      "scope": "hidden"
     },
     "REVIEW": {
       "highlightColor": "#00ff84",
       "iconColor": "#00ff84",
-      "scope": "workspace",
-    },
+      "scope": "workspace"
+    }
   },
   // vim ==============================================================
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
@@ -102,12 +102,12 @@
   "[markdown]": {
     "editor.defaultFormatter": "yzhang.markdown-all-in-one",
     "editor.codeActionsOnSave": {
-      "source.fixAll.markdownlint": "always",
+      "source.fixAll.markdownlint": "always"
     },
     "editor.quickSuggestions": {
       "comments": "on",
       "strings": "on",
-      "other": "on",
+      "other": "on"
     }
   },
   // python ===========================================================
@@ -119,19 +119,18 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.autoFormatStrings": true,
   "python.analysis.enablePytestSupport": true,
-  "python.analysis.inlayHints.callArgumentNames": "all",
-  "python.analysis.inlayHints.variableTypes": true,
   "python.analysis.inlayHints.pytestParameters": true,
   "python.analysis.inlayHints.functionReturnTypes": true,
   "python.REPL.enableREPLSmartSend": true,
   "pythonIndent.trimLinesWithOnlyWhitespace": true,
-  "pylint.lintOnChange": true,
   "notebook.lineNumbers": "on",
+  "notebook.formatOnCellExecution": true,
+  "notebook.formatOnSave.enabled": true,
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnType": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "always",
+      "source.organizeImports": "always"
     }
   },
   "python.testing.pytestArgs": [
@@ -139,31 +138,44 @@
   ],
   "pylint.args": [
     "--enable-all-extensions",
+    "--disable=while_used",
+    "--disable=too-few-public-methods"
+  ],
+  "mypy-type-checker.args": [
+    "--check-untyped-defs"
   ],
   "black-formatter.args": [
     "--line-length",
-    "79",
+    "79"
   ],
   "isort.args": [
     "--profile",
     "black"
   ],
+  // c# ===============================================================
+  "[csharp]": {
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "explicit"
+    },
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": false
+  },
+  "omnisharp.organizeImportsOnFormat": true,
+  // go ===============================================================
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
   // lua ==============================================================
   "[lua]": {
     "editor.defaultFormatter": "sumneko.lua",
-    "editor.tabSize": 2,
-  },
-  // go ===============================================================
-  "[go]": {
-    "editor.defaultFormatter": "golang.go",
+    "editor.tabSize": 2
   },
   // latex ============================================================
   "[latex]": {
-    "editor.defaultFormatter": "James-Yu.latex-workshop",
+    "editor.defaultFormatter": "James-Yu.latex-workshop"
   },
   // misc =============================================================
-  "cSpell.userWords": [
-    "endregion"
-  ],
+  "godotTools.editorPath.godot4": "godot-mono"
   // REVIEW - manually modified settings ======================================
 }

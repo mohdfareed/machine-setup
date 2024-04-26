@@ -45,6 +45,8 @@ vscode_settings = _os.path.join(vscode, "settings.json")
 """The path of VSCode settings file."""
 vscode_keybindings = _os.path.join(vscode, "keybindings.json")
 """The path of VSCode keybindings file."""
+vscode_snippets = _os.path.join(vscode, "snippets")
+"""The path of VSCode snippets directory."""
 
 # private files
 cmd = f"source {zshenv} && echo $PRIVATE_MACHINE"

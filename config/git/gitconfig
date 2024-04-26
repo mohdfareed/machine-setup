@@ -39,3 +39,10 @@
 
     graphc = log --graph --decorate --format=format:'%C(magenta)%h%C(reset) - \
 %s %C(dim white)- %cr%Creset%C(auto)%d%C(reset)' --abbrev-commit --all
+
+; lfs settings
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
