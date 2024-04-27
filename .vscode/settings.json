@@ -1,8 +1,20 @@
 {
   "cSpell.words": [
     "Commandline",
+    "keychain",
+    "keygen",
+    "mypy",
+    "nvim",
+    "pycache",
     "raspberrypi",
-    "vscode"
+    "userconfig",
+    "venv",
+    "vscode",
+    "zcompdump",
+    "zdotdir"
+  ],
+  "cSpell.ignorePaths": [
+    "*/vscode/settings.json"
   ],
   "Lua.diagnostics.globals": [
     "vim"

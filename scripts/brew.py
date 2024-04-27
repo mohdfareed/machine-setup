@@ -20,10 +20,6 @@ LOGGER = logging.getLogger(__name__)
 
 def setup() -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
-
-    if not utils.is_macos():
-        LOGGER.debug("Homebrew is only available on macOS.")
-        return
     LOGGER.info("Setting up Homebrew...")
     install_brew()
 
@@ -51,6 +47,7 @@ def setup() -> None:
 
 
 def install_brew():
+    """Install Homebrew on a new machine."""
     # update homebrew if it is already installed
     if os.path.exists(BREW):
         LOGGER.info("Updating Homebrew...")
@@ -64,7 +61,7 @@ def install_brew():
 
     # fix “zsh compinit: insecure directories” error
     utils.run_cmd(f'chmod -R go-w "$({BREW} --prefix)/share"')
-    LOGGER.info("Fixed zsh `compinit` security error.")  # TODO: fixed?
+    LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
     # add fonts tap
     utils.run_cmd(f"{BREW} tap homebrew/cask-fonts")
     LOGGER.info("Added Homebrew fonts tap.")

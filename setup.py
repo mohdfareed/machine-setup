@@ -5,7 +5,6 @@ import logging
 import scripts.brew
 import scripts.git
 import scripts.macos
-import scripts.python
 import scripts.shell
 import scripts.ssh
 import utils
@@ -29,7 +28,6 @@ def main(debug=False) -> None:
     scripts.run_setup(scripts.shell.setup)
     scripts.run_setup(scripts.ssh.setup)
     scripts.run_setup(scripts.git.setup)
-    scripts.run_setup(scripts.python.setup)
     scripts.run_setup(scripts.macos.setup)
     LOGGER.warning("Restart for some changes to apply.")
     LOGGER.info("Machine setup complete.")

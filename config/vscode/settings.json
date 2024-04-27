@@ -176,6 +176,6 @@
     "editor.defaultFormatter": "James-Yu.latex-workshop"
   },
   // misc =============================================================
-  "godotTools.editorPath.godot4": "godot-mono"
+  "godotTools.editorPath.godot4": "${GODOT_PATH}"
   // REVIEW - manually modified settings ======================================
 }

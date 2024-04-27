@@ -26,7 +26,7 @@ def setup() -> None:
 
     # run the preferences script
     LOGGER.info("Setting system preferences...")
-    # utils.run_cmd(f". {config.macos_preferences}")
+    utils.run_cmd(f". {config.macos_preferences}")
     LOGGER.debug("System preferences set.")
 
     LOGGER.info("macOS setup complete.")

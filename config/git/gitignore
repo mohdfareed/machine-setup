@@ -16,4 +16,3 @@
 *.mypy_cache/
 *.venv/
 *.python-version
-*poetry.lock

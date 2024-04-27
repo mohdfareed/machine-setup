@@ -3,7 +3,6 @@
 import logging
 import os
 from dataclasses import dataclass
-from typing import Optional
 
 import config
 import utils
@@ -20,13 +19,16 @@ LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class SSHKeyPair:
+    """An SSH key pair of a private and optional public keys."""
+
     private_key: str
     """The path to the private key file."""
-    public_key: Optional[str] = None
+    public_key: str | None = None
     """The path to the public key file."""
 
     @property
     def name(self) -> str:
+        """The name of the key pair based on the private key filename."""
         base = os.path.basename(self.private_key)
         return os.path.splitext(base)[0]
 
@@ -34,14 +36,12 @@ class SSHKeyPair:
 def setup() -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory.
-
-    Args:
-        keys_dir (str): The path to the directory containing the ssh keys.
     """
 
     LOGGER.info("Setting up SSH...")
     utils.symlink(config.ssh_config, os.path.join(SSH_DIR, "config"))
-    [setup_key(key) for key in load_keys(config.ssh_keys)]
+    for key in load_keys(config.ssh_keys):
+        setup_key(key)
     LOGGER.info("SSH setup complete")
 
 
@@ -56,7 +56,7 @@ def load_keys(keys_dir: str) -> list[SSHKeyPair]:
     # load keys as dictionary of key names to key pairs
     keys = []
     files = os.listdir(keys_dir)
-    for filename in os.listdir(keys_dir):
+    for filename in files:
         if filename.endswith(PK_EXT):  # look for private keys
             continue  # skip public keys
 
@@ -65,31 +65,33 @@ def load_keys(keys_dir: str) -> list[SSHKeyPair]:
             key.public_key = os.path.join(keys_dir, key.name + PK_EXT)
             keys += [key]  # add key pair to list
 
-    LOGGER.debug(f"Loaded [bold]{len(keys)}[/] ssh keys.")
+    LOGGER.debug("Loaded [bold]%d[/] ssh keys.", len(keys))
     return keys
 
 
 def setup_key(key: SSHKeyPair) -> None:
-    if not key.private_key or not key.public_key:
-        return  # skip if key pair is incomplete
-    LOGGER.info(f"[bold]Setting up SSH key:[/] {key.name}")
+    """Setup an ssh key on a machine."""
+    LOGGER.info("[bold]Setting up SSH key:[/] %s", key.name)
 
-    # symlink keys and fix permissions
+    # symlink private key and set permissions
     utils.symlink(
         key.private_key,
         os.path.join(SSH_DIR, os.path.basename(key.private_key)),
     )
     os.chmod(key.private_key, 0o600)
-    utils.symlink(
-        key.public_key,
-        os.path.join(SSH_DIR, os.path.basename(key.public_key)),
-    )
-    os.chmod(key.public_key, 0o644)
+
+    # symlink public key and set permissions
+    if key.public_key:
+        utils.symlink(
+            key.public_key,
+            os.path.join(SSH_DIR, os.path.basename(key.public_key)),
+        )
+        os.chmod(key.public_key, 0o644)
 
     # get key fingerprint
     fingerprint = utils.run_cmd(["ssh-keygen", "-lf", key.public_key])[1]
     fingerprint = fingerprint.split(" ")[1]
-    LOGGER.info(f"[bold]Key fingerprint:[/] {fingerprint}")
+    LOGGER.info("[bold]Key fingerprint:[/] %s", fingerprint)
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint

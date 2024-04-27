@@ -69,13 +69,3 @@ zdotdir = _utils.run_cmd(cmd)[1]
 cmd = f"source {zshenv} && echo $NPM_CONFIG_USERCONFIG"
 npm_config_userconfig = _utils.run_cmd(cmd)[1]
 """The path of the npm configuration file."""
-
-# raspberry pi
-pi = _os.path.join(_os.path.dirname(config), "pi")
-pi_zshenv = _os.path.join(pi, "zshenv")
-pi_shared_config = [
-    _os.path.join(config, "shell", "zshrc"),
-    _os.path.join(config, "shell", "zshenv"),
-    tmux,
-    vim,
-]

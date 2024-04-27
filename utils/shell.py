@@ -52,14 +52,14 @@ def run(command, env=None, throws=True, msg=LOADING_STR) -> tuple[int, str]:
             shell=isinstance(command, str),
             text=True,
         )
-        output, returncode = print_output(process, status, msg)
+        output, returncode = _print_output(process, status, msg)
     # handle return code and/or output
     if throws and returncode != 0:
         raise subprocess.CalledProcessError(returncode, command, output)
     return returncode, output
 
 
-def print_output(process, status, msg):
+def _print_output(process, status, msg):
     output = ""
     while True:
         reads = [process.stdout.fileno(), process.stderr.fileno()]
@@ -67,17 +67,18 @@ def print_output(process, status, msg):
 
         for fd in ret[0]:
             status.stop()
+            line = ""
             if fd == process.stdout.fileno():
-                line = process.stdout.readline()
-                LOGGER.debug(line.strip()) if line.strip() else None
+                if line := process.stdout.readline().strip():
+                    LOGGER.debug(line)
             if fd == process.stderr.fileno():
-                line = process.stderr.readline()
-                LOGGER.error(line.strip()) if line.strip() else None
+                if line := process.stderr.readline().strip():
+                    LOGGER.error(line)
             status.start()
 
-            if line.strip():  # sanitize output and update status
+            if line:  # sanitize output and update status
                 # limit line length due to status moving up if multiple lines
-                last_line = line.strip()[:50]
+                last_line = line[:50]
                 status.update(f"[green]{msg} |[/] {last_line}...")
             else:  # update status with loading animation
                 status.update(f"[green]{msg}[/]")

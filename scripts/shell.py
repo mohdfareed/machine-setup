@@ -42,6 +42,7 @@ def setup() -> None:
 
 
 def install_omz():
+    """Install oh-my-zsh."""
     LOGGER.info("Installing oh-my-zsh...")
 
     # load installation environment
