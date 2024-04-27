@@ -1,4 +1,4 @@
-# BREW PACKAGES
+# PACKAGES
 # =============================================================================
 
 # shell
@@ -8,60 +8,70 @@ brew "zsh-autosuggestions"     # auto suggestions
 brew "zsh-syntax-highlighting" # syntax highlighting
 brew "pure"                    # pure shell prompt
 
-# general
-brew "git"    # global git
-brew "python" # global python
-brew "pipx"   # python applications manager
-brew "pyenv"  # python version manager
-brew "go"     # global go
-brew "gh"     # github cli
-brew "exa"    # ls replacement
-brew "bat"    # cat replacement
-brew "mas"    # mac app store cli
-brew "btop"   # resource monitor
-brew "tmux"   # terminal multiplexer
-brew "tpm"    # tmux plugin manager
+# git
+brew "git"     # global git
+brew "git-lfs" # git large file storage
+brew "gh"      # github cli
+
+# python
+brew "python"           # global python
+brew "pipx"             # python applications manager
+brew "pyenv"            # python version manager
+brew "pyenv-virtualenv" # python virtual environments
 
 # vim
 brew "neovim"  # vim editor
 brew "lazygit" # git ui
-brew "ripgrep" # grep replacement
-brew "fd"      # find replacement
+brew "ripgrep" # grep replacement (telescope)
+brew "fd"      # find replacement (telescope)
 
 # docker
 brew "colima"         # container runtimes
 brew "docker"         # containerization
 brew "docker-compose" # container orchestration
+brew "whalebrew"      # images manager
 
-# BREW CASKS
+# utilities
+brew "exa"    # ls replacement
+brew "bat"    # cat replacement
+brew "tmux"   # terminal multiplexer
+brew "tpm"    # tmux plugin manager
+brew "btop"   # resource monitor
+brew "mas"    # mac app store cli
+
+# CASKS
 # =============================================================================
 
 # general
-cask "dotnet-sdk"         # .net sdk
 cask "iterm2"             # terminal
 cask "raycast"            # spotlight replacement
 cask "visual-studio-code" # code editor
-cask "godot-mono"         # game engine
+cask "dotnet-sdk"         # .net sdk
+cast "powershell"         # powershell
 cask "mactex-no-gui"      # latex
+cask "godot-mono"         # game engine
 # cask "zed"                # text editor
-# cask "anytype"            # note-taking app
 
 # utilities
 cask "iina"           # video player
 cask "openinterminal" # open terminal in current directory
 cask "sf-symbols"     # system font symbols
 cask "the-unarchiver" # unzip files
-cask "mouse-fix"      # mouse utility
+cask "mos"            # mouse scroll smoothing (65, 1, 2.5)
+cask "swish"          # trackpad gestures
 cask "monitorcontrol" # exteral monitor utility
 
 # MAC APP STORE
 # =============================================================================
 
 # apple
-mas "Keynote", id: 409183694 # presentation software
-mas "Numbers", id: 409203825 # spreadsheet software
-mas "Pages", id: 409201541   # word processor software
-mas "Xcode", id: 497799835   # xcode
+mas "Keynote", id: 409183694      # presentation software
+mas "Numbers", id: 409203825      # spreadsheet software
+mas "Pages", id: 409201541        # word processor software
+mas "Xcode", id: 497799835        # xcode
+mas "GarageBand", id: 682658836   # audio production software
+mas "iMovie", id: 408981434       # video editing software
+mas "Playgrounds", id: 1496833156 # swift playgrounds
 
 # productivity
 mas "Craft", id: 1487937127      # note-taking app
@@ -82,3 +92,48 @@ mas "Peek", id: 1554235898      # quicklook plugin
 
 cask "font-computer-modern"          # latex
 cask "font-jetbrains-mono-nerd-font" # code
+
+# VSCODE EXTENSIONS
+# =============================================================================
+
+vscode "zhuangtongfa.material-theme"           # one dark theme
+vscode "asvetliakov.vscode-neovim"             # neovim integration
+vscode "VSpaceCode.whichkey"                   # vim whichkey integration
+vscode "eamodio.gitlens"                       # git integration
+vscode "yzhang.markdown-all-in-one"            # markdown support
+vscode "bierner.markdown-mermaid"              # mermaid support
+vscode "exodiusstudios.comment-anchors"        # comment TODOs
+vscode "streetsidesoftware.code-spell-checker" # spell checker
+vscode "ms-azuretools.vscode-docker"           # docker integration
+
+# remote explorer
+vscode "ms-vscode-remote.remote-containers" # dev containers
+vscode "ms-vscode-remote.remote-ssh"        # ssh
+vscode "ms-vscode.remote-server"            # tunnels
+vscode "GitHub.remotehub"                   # github repos
+
+# github
+vscode "github.vscode-github-actions"      # actions
+vscode "GitHub.codespaces"                 # codespaces
+vscode "GitHub.copilot"                    # copilot
+vscode "GitHub.copilot-chat"               # copilot chat
+vscode "GitHub.vscode-pull-request-github" # pull requests
+
+# python
+vscode "donjayamanne.python-extension-pack" # extention pack
+vscode "ms-python.black-formatter"          # formatter
+vscode "ms-python.isort"                    # imports formatter
+vscode "ms-python.pylint"                   # linter
+vscode "ms-python.mypy-type-checker"        # type checker
+vscode "ms-toolsai.jupyter"                 # jupyter notebooks
+
+# c#
+vscode "ms-dotnettools.csdevkit"    # c# pack
+vscode "ms-vscode.powershell"       # powershell
+vscode "geequlim.godot-tools"       # godot support
+vscode "neikeq.godot-csharp-vscode" # godot c# support
+
+# others
+vscode "James-Yu.latex-workshop"
+vscode "sumneko.lua"
+vscode "golang.go"

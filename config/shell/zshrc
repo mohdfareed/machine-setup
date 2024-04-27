@@ -73,27 +73,14 @@ time_shell() {
 
 # activate virtual environment
 activate_venv() {
-	if [ -d "venv" ]; then
-		venv=venv
-	elif [ -d ".venv" ]; then
-		venv=.venv
-	elif [ -d "env" ]; then
-		venv=env
-	elif [ -d ".env" ]; then
-		venv=.env
-	elif [ -d "virtualenv" ]; then
-		venv=virtualenv
-	elif [ -d ".virtualenv" ]; then
-		venv=.virtualenv
-	else
+	usage="usage: $0 [venv_dir]"
+	if (($# > 1)); then echo $usage && return 1; fi
+
+	venv=${1-.venv}
+	if [[ ! -d "$venv" ]]; then
 		echo "No virtual environment directory found"
-		exit 1
+		return 1
 	fi
 
-	if [ -f "$venv/bin/activate" ]; then
-		source $venv/bin/activate
-	else
-		echo "No valid virtual environment found"
-		exit 1
-	fi
+	source "$venv/bin/activate"
 }

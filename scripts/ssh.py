@@ -94,7 +94,7 @@ def setup_key(key: SSHKeyPair) -> None:
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
     if utils.run_cmd(cmd, throws=False)[0] != 0:
-        utils.run_cmd(f"ssh-add '{key.private_key}'")
+        utils.run_cmd(f"ssh-add --apple-use-keychain '{key.private_key}'")
         LOGGER.info("Added key to SSH agent")
     else:
         LOGGER.info("Key already exists in SSH agent")

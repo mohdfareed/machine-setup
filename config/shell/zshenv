@@ -1,20 +1,23 @@
 # Environment (shared across machines)
 # =============================================================================
 
-export EDITOR="$(which nvim)"  # default to neovim as the editor
-export LESS="-R --ignore-case" # use less with colors and case-insensitivity
-export SYSTEMD_LESS=$LESS      # less arguments of systemd pager
-export BAT_PAGER="less $LESS"  # use less as the pager for bat
+export EDITOR="$(which nvim)"        # default to neovim as the editor
+export LESS="-R --ignore-case"       # use less with colors, ignoring case
+export SYSTEMD_LESS=$LESS            # less arguments of systemd pager
+export BAT_PAGER="less $LESS"        # use less as the pager for bat
+export PIP_REQUIRE_VIRTUALENV=true   # require virtualenv for pip
 
 # XDG Base Directory Specification
 # Source: https://wiki.archlinux.org/title/XDG_Base_Directory
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_LOCAL_HOME="$HOME/.local"
+export XDG_DATA_HOME="$XDG_LOCAL_HOME/share"
+export XDG_STATE_HOME="$XDG_LOCAL_HOME/state"
 export XDG_RUNTIME_DIR="/run/user/$UID"
 export XDG_DATA_DIRS="/usr/local/share:/usr/share:$XDG_DATA_DIRS"
 export XDG_CONFIG_DIRS="/etc/xdg:$XDG_CONFIG_DIRS"
+export PATH="$PATH:$XDG_LOCAL_HOME/bin" # add local packages to path
 
 # shell environment
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
@@ -30,11 +33,11 @@ export PYTHONUSERBASE="$XDG_DATA_HOME/python"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
-# export JUPYTER_PLATFORM_DIRS=1       # use platform-specific dirs
-export PIP_REQUIRE_VIRTUALENV=true   # require virtualenv for pip
-export PATH="$PATH:$HOME/.local/bin" # add local packages to path
+# export JUPYTER_PLATFORM_DIRS=1
 
 # go
 export GOPATH="$XDG_DATA_HOME/go"
 # docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+# whalebrew
+export WHALEBREW_CONFIG_DIR="$XDG_CONFIG_HOME/whalebrew"

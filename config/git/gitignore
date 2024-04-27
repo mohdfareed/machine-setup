@@ -10,3 +10,10 @@
 !.vscode/extensions.json
 !.vscode/*.code-snippets
 *.code-workspace
+
+# python
+*__pycache__/
+*.mypy_cache/
+*.venv/
+*.python-version
+*poetry.lock
