@@ -6,7 +6,6 @@ the password is cached and reused for all commands that require sudo access.
 If user input is required, the user must be prompted outside the shell command.
 """
 
-import getpass
 import logging
 import select
 import subprocess
@@ -87,19 +86,3 @@ def _print_output(process, status, msg):
         if process.poll() is not None:
             break
     return output.strip(), process.wait()
-
-
-def setup_sudo() -> None:
-    """Setup sudo access for the current user."""
-    try:  # check if the user has sudo privileges
-        run("sudo -n true &> /dev/null")
-    except subprocess.CalledProcessError:
-        # the user doesn't have sudo privileges, prompt for the password
-        while True:
-            password = getpass.getpass(
-                "\033[32m Enter your password: \033[30m"
-            )
-            cmd = f"echo {password} | sudo -Sv &> /dev/null"
-            if run(cmd, throws=False)[0] == 0:
-                break
-            print("\033[31m Invalid password\033[30m")

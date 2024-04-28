@@ -58,6 +58,7 @@ cask "openinterminal" # open terminal in current directory
 cask "sf-symbols"     # system font symbols
 cask "the-unarchiver" # unzip files
 cask "mos"            # mouse scroll smoothing (65, 1, 2.5)
+cask "mac-mouse-fix"  # mouse gestures
 cask "swish"          # trackpad gestures
 cask "monitorcontrol" # exteral monitor utility
 

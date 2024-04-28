@@ -19,11 +19,8 @@ LOGGER = logging.getLogger(__name__)
 def setup() -> None:
     """Setup git on a new machine."""
     LOGGER.info("Setting up git...")
-
-    # symlink configuration file
     utils.symlink(config.gitconfig, GITCONFIG)
     utils.symlink(config.gitignore, GITIGNORE)
-
     LOGGER.info("Git was setup successfully.")
 
 

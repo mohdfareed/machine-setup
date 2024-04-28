@@ -19,9 +19,9 @@ def setup() -> None:
 
     # setup vscode settings
     LOGGER.info("Setting up VSCode...")
-    utils.symlink(config.vscode_settings, VSCODE)
-    utils.symlink(config.vscode_keybindings, VSCODE)
-    utils.symlink(config.vscode_snippets, VSCODE, is_dir=True)
+    utils.symlink_at(config.vscode_settings, VSCODE)
+    utils.symlink_at(config.vscode_keybindings, VSCODE)
+    utils.symlink_at(config.vscode_snippets, VSCODE)
     LOGGER.debug("Linked VSCode settings.")
 
     # run the preferences script

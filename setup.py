@@ -19,9 +19,7 @@ def main(debug=False) -> None:
     Args:
         debug (bool): Whether to log debug messages.
     """
-
     utils.setup_logging(debug)
-    scripts.run_setup(utils.setup_sudo)
 
     LOGGER.info("Setting up machine...")
     scripts.run_setup(scripts.brew.setup)

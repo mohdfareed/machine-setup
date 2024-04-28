@@ -30,15 +30,15 @@ def setup() -> None:
     install_omz()
     utils.symlink(config.zshrc, ZSHRC)
     utils.symlink(config.zshenv, ZSHENV)
+    utils.symlink(config.vim, VIM)
     utils.symlink(config.tmux, TMUX)
-    utils.symlink(config.vim, VIM, is_dir=True)
-    utils.symlink(config.npm_config_userconfig, config.npmrc)
 
     # clean up
     utils.run_cmd("sudo rm -rf ~/.zcompdump*")
     utils.run_cmd("sudo rm -rf ~/.zshrc")
     utils.run_cmd("sudo rm -rf ~/.zsh_sessions")
     utils.run_cmd("sudo rm -rf ~/.zsh_history")
+    LOGGER.info("Shell setup complete.")
 
 
 def install_omz():

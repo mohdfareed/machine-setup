@@ -10,3 +10,6 @@
 # lock files
 *.lock.json
 *-lock.json
+
+# lazyvim
+*lazyvim.json

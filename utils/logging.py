@@ -1,12 +1,19 @@
+"""Logging configuration for the project."""
+
 import logging
 import os
 from logging.handlers import RotatingFileHandler
 
 from rich.logging import RichHandler
 
+LOGGER = logging.getLogger(__name__)
+"""The utils logger."""
+
 machine_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 logging_file = os.path.join(machine_root, "logs", "setup.log")
-reduced_logging_modules = []  # modules with reduced (WARNING) logging level
+reduced_logging_modules: list[str] = (
+    []
+)  # modules with reduced (WARNING) logging level
 
 
 def setup_logging(debug: bool = False) -> None:

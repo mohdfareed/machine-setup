@@ -25,8 +25,6 @@ require("lazy").setup({ -- load plugins
 	-- import extras modules
 	{ import = "lazyvim.plugins.extras.vscode" },
 	{ import = "lazyvim.plugins.extras.coding.copilot" },
-	{ import = "lazyvim.plugins.extras.linting.eslint" },
-	{ import = "lazyvim.plugins.extras.formatting.prettier" },
 
 	-- disabled plugins
 	{ "goolord/alpha-nvim", enabled = false },
