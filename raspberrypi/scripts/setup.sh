@@ -15,14 +15,20 @@ git clone https://github.com/mohdfareed/chatgpt-bot $MACHINE/chatgpt-bot
 $MACHINE/chatgpt-bot/scripts/update.py
 
 # load system services
-echo "Loading system services..."
-for service in $MACHINE/*.service; do
-	sudo ln -sf $service /etc/systemd/system/$(basename $service)
-	sudo systemctl daemon-reload
-	sudo systemctl enable $(basename $service)
-	sudo systemctl start $(basename $service)
-	echo "Loaded $service"
-done
+echo "Setting up VSCode service..."
+vscode_script="/usr/bin/code tunnel --accept-server-license-terms"
+cron_job="@reboot $vscode_script" # the CRON job to start the VSCode server
+current_cron=$(mktemp) # temporary file to store current cron jobs
+# set up CRON job to start the app on boot
+crontab -l > "$current_cron" 2>/dev/null || true
+if [ -z "$(grep "$cron_job" $current_cron)" ]; then
+  echo "$cron_job" >> "$current_cron"
+  crontab "$current_cron"
+  echo "VSCode service setup complete."
+else
+  echo "VSCode service already exists."
+fi
+rm "$current_cron" # remove temporary file
 
 # instructions
 source $MACHINE/zprofile

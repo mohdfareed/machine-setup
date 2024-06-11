@@ -1,16 +1,16 @@
 {
-  // editor ===========================================================
+  // editor ===================================================================
   "editor.lineNumbers": "relative",
   "editor.wordWrap": "on",
   "editor.wrappingIndent": "indent",
   "editor.guides.bracketPairs": true,
   "editor.formatOnSave": true,
-  // whitespace =======================================================
+  // whitespace ===============================================================
   "editor.renderWhitespace": "all",
   "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
-  // visual ===========================================================
+  // visual ===================================================================
   "editor.stickyScroll.enabled": true,
   "editor.minimap.renderCharacters": false,
   "editor.minimap.enabled": false,
@@ -27,9 +27,10 @@
   "oneDarkPro.vivid": true,
   "oneDarkPro.markdownStyle": false,
   "editor.rulers": [
-    80
+    80,
+    120
   ],
-  // font =============================================================
+  // font =====================================================================
   "editor.fontFamily": "JetBrainsMono Nerd Font",
   "editor.fontSize": 13,
   "editor.fontLigatures": true,
@@ -37,14 +38,14 @@
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.smoothScrolling": true,
   // TODO - check if terminal ligature is supported
-  // vscode ===========================================================
+  // vscode ===================================================================
   "window.openWithoutArgumentsInNewWindow": "on",
   "workbench.startupEditor": "newUntitledFile",
   "explorer.confirmDelete": false,
-  // suggestions ======================================================
+  // suggestions ==============================================================
   "editor.suggest.preview": true,
   "editor.inlineSuggest.enabled": true,
-  // terminal =========================================================
+  // terminal =================================================================
   "terminal.integrated.macOptionIsMeta": true,
   "terminal.integrated.gpuAcceleration": "auto",
   "terminal.integrated.cursorStyle": "line",
@@ -54,11 +55,12 @@
   "accessibility.signals.terminalBell": {
     "sound": "on"
   },
-  // git ==============================================================
+  // git ======================================================================
   "git.allowForcePush": true,
   "git.autofetch": "all",
   "git.ignoreLegacyWarning": true,
   "git.confirmSync": false,
+  "git.enableSmartCommit": true,
   "diffEditor.renderSideBySide": false,
   "gitlens.codeLens.enabled": false,
   "gitlens.statusBar.enabled": false,
@@ -68,14 +70,14 @@
   "gitlens.ai.experimental.provider": "openai",
   "gitlens.ai.experimental.openai.model": "gpt-4-turbo-preview",
   "multiDiffEditor.experimental.enabled": true,
-  // copilot ==========================================================
+  // copilot ==================================================================
   "github.copilot.enable": {
     "*": true,
     "plaintext": true,
     "markdown": true,
     "scminput": false
   },
-  // comment anchors ==================================================
+  // comment anchors ==========================================================
   "commentAnchors.scrollPosition": "center",
   "commentAnchors.tags.displayLineNumber": false,
   "commentAnchors.tags.sortMethod": "type",
@@ -90,12 +92,12 @@
       "scope": "workspace"
     }
   },
-  // vim ==============================================================
+  // vim ======================================================================
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
-  // markdown =========================================================
+  // markdown =================================================================
   "markdown.preview.typographer": true,
   "markdown.preview.scrollPreviewWithEditor": false,
   "markdown.preview.scrollEditorWithPreview": false,
@@ -110,7 +112,7 @@
       "other": "on"
     }
   },
-  // python ===========================================================
+  // python ===================================================================
   "python.analysis.typeCheckingMode": "standard",
   "python.analysis.autoSearchPaths": true,
   "python.analysis.diagnosticMode": "workspace",
@@ -152,7 +154,7 @@
     "--profile",
     "black"
   ],
-  // c# ===============================================================
+  // c# =======================================================================
   "[csharp]": {
     "editor.codeActionsOnSave": {
       "source.addMissingImports": "explicit"
@@ -162,20 +164,21 @@
     "editor.formatOnType": false
   },
   "omnisharp.organizeImportsOnFormat": true,
-  // go ===============================================================
+  "dotnet.codeLens.enableReferencesCodeLens": false,
+  "godotTools.editorPath.godot4": "${GODOT_PATH}",
+  // go =======================================================================
   "[go]": {
     "editor.defaultFormatter": "golang.go"
   },
-  // lua ==============================================================
+  // lua ======================================================================
   "[lua]": {
     "editor.defaultFormatter": "sumneko.lua",
     "editor.tabSize": 2
   },
-  // latex ============================================================
+  // latex ====================================================================
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  },
-  // misc =============================================================
-  "godotTools.editorPath.godot4": "${GODOT_PATH}"
-  // REVIEW - manually modified settings ======================================
+  }
+  // misc =====================================================================
+  // REVIEW - manually modified settings above ================================
 }

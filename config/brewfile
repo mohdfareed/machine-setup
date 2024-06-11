@@ -82,7 +82,6 @@ mas "Fantastical", id: 975937182 # calendar app
 
 # utilities
 mas "Tailscale", id: 1475387142 # vpn
-mas "Magnet", id: 441258766     # window manager
 mas "Noir", id: 1592917505      # safari dark mode
 mas "AdGuard", id: 1440147259   # safari ad-blocker
 mas "Peek", id: 1554235898      # quicklook plugin

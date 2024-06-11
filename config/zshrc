@@ -26,7 +26,7 @@ unset brew_prefix
 # Functions and Aliases
 # =============================================================================
 
-alias restart_docker='colima stop && colima start'
+alias docker_restart='colima stop && colima start'
 alias update='brew update && brew upgrade && brew cleanup'
 
 # ssh into raspberry pi
