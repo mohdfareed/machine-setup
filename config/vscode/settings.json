@@ -45,6 +45,10 @@
   // suggestions ==============================================================
   "editor.suggest.preview": true,
   "editor.inlineSuggest.enabled": true,
+  "cSpell.showAutocompleteSuggestions": true,
+  "cSpell.enableFiletypes": [
+    "*"
+  ],
   // terminal =================================================================
   "terminal.integrated.macOptionIsMeta": true,
   "terminal.integrated.gpuAcceleration": "auto",
@@ -67,8 +71,6 @@
   "gitlens.currentLine.enabled": false,
   "gitlens.hovers.currentLine.over": "line",
   "gitlens.graph.minimap.enabled": false,
-  "gitlens.ai.experimental.provider": "openai",
-  "gitlens.ai.experimental.openai.model": "gpt-4-turbo-preview",
   "multiDiffEditor.experimental.enabled": true,
   // copilot ==================================================================
   "github.copilot.enable": {
@@ -167,6 +169,7 @@
   "dotnet.codeLens.enableReferencesCodeLens": false,
   "godotTools.editorPath.godot4": "${GODOT_PATH}",
   // go =======================================================================
+  "go.toolsManagement.autoUpdate": true,
   "[go]": {
     "editor.defaultFormatter": "golang.go"
   },

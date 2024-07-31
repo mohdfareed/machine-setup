@@ -1,0 +1,12 @@
+services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    network_mode: "host" # use the host's network stack
+    environment:
+      - TS_AUTH_ONCE=true # authenticate only once
+      - TS_AUTHKEY=tskey-auth-k6H71oReLe11CNTRL-okwwiqJL12A9Lt7UXk2x1ABF4bdmkoWg
+      - TS_STATE_DIR=/var/lib/tailscale # directory for Tailscale state
+    volumes:
+      - /var/lib/tailscale:/var/lib/tailscale # persist Tailscale state
+      - /dev/net/tun:/dev/net/tun # provide TUN device for network tunneling
+    restart: unless-stopped # ensure Tailscale restarts automatically
