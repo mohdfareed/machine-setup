@@ -1,15 +1,16 @@
 """Utilities library containing modules and functions used within the project.
 """
 
-import os
-import platform
-from enum import Enum
+import os as _os
+import platform as _platform
+from enum import Enum as _Enum
 
-from .logging import LOGGER, setup_logging
+from .logging import LOGGER
+from .logging import setup_logging as _setup_logging
 from .shell import run
 
 
-class PLATFORM(Enum):
+class PLATFORM(_Enum):
     """Enumeration of supported platforms."""
 
     LINUX = "Linux"
@@ -27,41 +28,50 @@ def symlink(src: str, dst: str) -> None:
     """Create a symbolic link from `src` to `dst`. If the destination exists,
     it will be overwritten. If the destination's directory structure does not
     exist, it will be created."""
-    dst = os.path.expanduser(dst)
-    src = os.path.expanduser(src)
-    is_dir = os.path.isdir(src)
+    dst = _os.path.expanduser(dst)
+    src = _os.path.expanduser(src)
+    is_dir = _os.path.isdir(src)
 
     try:  # remove existing file
-        os.remove(dst)
+        _os.remove(dst)
     except FileNotFoundError:
         pass
 
-    os.makedirs(os.path.dirname(dst), exist_ok=True)
-    os.symlink(src, dst, target_is_directory=is_dir)
-    LOGGER.debug("Linked {%s} -> {%s}", src, dst)
+    _os.makedirs(_os.path.dirname(dst), exist_ok=True)
+    _os.symlink(src, dst, target_is_directory=is_dir)
+    LOGGER.debug("Linked [%s] -> [%s]", src, dst)
 
 
 def symlink_at(src: str, dst_dir: str) -> None:
     """Create a symbolic link from 'src' to 'dst_dir/src'. If the destination
     exists, it will be overwritten. If the destination's directory structure
     does not exist, it will be created."""
-    dst = os.path.join(os.path.expanduser(dst_dir), os.path.basename(src))
+    dst = _os.path.join(_os.path.expanduser(dst_dir), _os.path.basename(src))
     symlink(src, dst)
 
 
 def is_macos() -> bool:
     """Check if the current operating system is macOS."""
 
-    return platform.system() == PLATFORM.MACOS
+    return _platform.system() == PLATFORM.MACOS.value
 
 
 def is_linux() -> bool:
     """Check if the current operating system is Linux."""
 
-    return platform.system() == PLATFORM.LINUX
+    return _platform.system() == PLATFORM.LINUX.value
 
 
 def is_windows() -> bool:
     """Check if the current operating system is Windows."""
 
-    return platform.system() == PLATFORM.WINDOWS
+    return _platform.system() == PLATFORM.WINDOWS.value
+
+
+def setup_logging(debug: bool = False) -> None:
+    """Setup the logging configuration.
+
+    Args:
+        debug (bool): Whether to enable debug mode.
+    """
+    _setup_logging(debug)

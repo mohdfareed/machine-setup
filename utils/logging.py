@@ -2,6 +2,7 @@
 
 import logging
 import os
+from datetime import datetime
 from logging.handlers import RotatingFileHandler
 
 from rich.logging import RichHandler
@@ -10,7 +11,7 @@ LOGGER = logging.getLogger(__name__)
 """The utils logger."""
 
 machine_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-logging_file = os.path.join(machine_root, "logs", "setup.log")
+logging_dir = os.path.join(machine_root, "logs")
 reduced_logging_modules: list[str] = (
     []
 )  # modules with reduced (WARNING) logging level
@@ -44,6 +45,12 @@ def setup_logging(debug: bool = False) -> None:
     )
     console_handler.setFormatter(console_formatter)
     console_handler.setLevel(logging.DEBUG if debug else logging.INFO)
+
+    # create a new log file with a descriptive name
+    os.makedirs(logging_dir, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    logging_filename = f"{timestamp}.log"
+    logging_file = os.path.join(logging_dir, logging_filename)
 
     # setup file logger
     os.makedirs(os.path.dirname(logging_file), exist_ok=True)
