@@ -26,9 +26,16 @@ unset brew_prefix
 # Functions and Aliases
 # =============================================================================
 
-alias docker_restart='colima stop && colima start'
-alias update='brew update && brew upgrade && brew cleanup && mas upgrade'
-alias fix-ssh="ssh-add --apple-use-keychain $SSH_KEY_PRI"
+alias docker-restart='colima stop && colima start'
+alias system-update='brew update && brew upgrade && mas upgrade && brew cleanup'
+alias ssh-create-key="ssh-keygen -t ed25519 -C"
+
+# add all ssh keys to keychain
+function ssh-fix-keychain {
+    for private_key in ~/.ssh/*.key; do
+        ssh-add --apple-use-keychain "$private_key"
+    done
+}
 
 # ssh into raspberry pi
 function ssh-pi {
