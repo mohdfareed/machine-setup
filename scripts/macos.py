@@ -5,7 +5,14 @@ import logging
 
 import config
 import utils
+from scripts.brew import setup as brew_setup
+from scripts.git import setup as git_setup
+from scripts.shell import ZSHENV, ZSHRC
+from scripts.shell import setup as shell_setup
+from scripts.ssh import setup as ssh_setup
 
+PS_PROFILE = "~/.config/powershell/profile.ps1"
+"""The path to the PowerShell profile file."""
 VSCODE = "~/Library/Application Support/Code/User"
 """The path to the VSCode user settings directory on macOS."""
 PAM_SUDO = "/etc/pam.d/sudo_local"
@@ -24,6 +31,18 @@ LOGGER = logging.getLogger(__name__)
 def setup() -> None:
     """Setup macOS on a new machine."""
     LOGGER.info("Setting up macOS...")
+
+    # setup core machine
+    git_setup()
+    brew_setup()
+    shell_setup()
+    ssh_setup()
+
+    # macos-specific configuration
+    brew_setup(config.macos_brewfile, mas=True)
+    utils.symlink(config.macos_zshrc, ZSHRC)
+    utils.symlink(config.macos_zshenv, ZSHENV)
+    utils.symlink(config.macos_ps_profile, PS_PROFILE)
 
     # setup vscode settings
     LOGGER.info("Setting up VSCode...")

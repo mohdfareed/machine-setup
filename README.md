@@ -18,16 +18,7 @@ Where the arguments are as follows:
 - `-f|--force`: forces cloning the repo even if it already exists.
 - `-h|--help`: prints the help message.
 
-The repo expects the following files and directories to be present on the
-machine:
 
-- `$PRIVATE_MACHINE/env.sh`: private machine-specific environment variables,
-  such as API keys and passwords.
-- `$PRIVATE_MACHINE/pi.sh`: private Raspberry Pi-specific environment
-  variables, equivalent to `env.sh`.
-- `keys/`: a directory containing SSH keys used by the machine.
-  - The current setup expects the following keys to be present:
-    - `personal[.pub]`: key pair for personal GitHub account.
 
 ### Individual Setup
 
@@ -39,33 +30,28 @@ following command to set up a component:
 python -m scripts.component [-h]
 ```
 
-## Project Structure
+## Core Shell Configuration
 
-The project has the following **hard-coded** structure:
+The common shell configuration that is shared across all machines.
 
-- `config`: a module containing configuration files used by the machine. It
-  defines references to all the configuration files in the repo. It must be
-  updated whenever a new configuration file is added or its path modified.
-- `raspberrypi`: a directory containing configuration files used by a Raspberry
-  Pi.
+### Files
 
-## Raspberry Pi
+- `$PRIVATE_MACHINE/env.sh`: private machine-specific environment variables,
+  such as API keys.
+- `keys/`: a directory containing the SSH keys used by the machine.
 
-A locally-configured Raspberry Pi is configured by setting up the machine
-directory on the Pi. The `raspberrypi` directory contains the configuration
-files used by the Pi, which are copied to the machine directory on the Pi. The
-script acts similarly to the `bootstrap.py` script, except that is adds the
-setup entrypoint to the path without running it. To setup the Pi after running
-this script, run:
+### Packages
 
-```sh
-setup-machine
-```
+- `nvim`
+- `oh-my-zsh`
+- `pure` shell theme
+- `bat`
+- `eza`
 
-The initial setup of the Raspberry Pi (done before running this script) is
-done by installing **Raspberry Pi OS Lite (x64)** on an SD card and configuring
-it as following:
+### Git
 
-- Enable SSH using password authentication.
-- Set the username and password.
-- Configure the wireless network, including setting the country to `US`.
+- `~/.ssh/github.pub`: public key for GitHub.
+
+## macOS Backup
+
+- Raycast configuration

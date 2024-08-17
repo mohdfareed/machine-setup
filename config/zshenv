@@ -1,16 +1,42 @@
-# Environment: macOS
+# Environment (shared across machines)
 # =============================================================================
 
-export DEV="$HOME/Developer"
-export MACHINE="$DEV/machine"
-export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-export PRIVATE_MACHINE="$ICLOUD/.machine"
-export SSH_KEY_PUB="$HOME/.ssh/personal.pub"
-export SSH_KEY_PRI="$HOME/.ssh/personal.key"
+export EDITOR="$(which nvim)"        # default to neovim as the editor
+export LESS="-R --ignore-case"       # use less with colors, ignoring case
+export SYSTEMD_LESS=$LESS            # less arguments of systemd pager
+export BAT_PAGER="less $LESS"        # use less as the pager for bat
+export PIP_REQUIRE_VIRTUALENV=true   # require virtualenv for pip
 
-# global environment variables
-source "$MACHINE/config/shell/zshenv"
-# private environment variables
-source "$PRIVATE_MACHINE/env.sh"
+# XDG Base Directory Specification
+# Source: https://wiki.archlinux.org/title/XDG_Base_Directory
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_LOCAL_HOME="$HOME/.local"
+export XDG_DATA_HOME="$XDG_LOCAL_HOME/share"
+export XDG_STATE_HOME="$XDG_LOCAL_HOME/state"
+export XDG_RUNTIME_DIR="/run/user/$UID"
+export XDG_DATA_DIRS="/usr/local/share:/usr/share:$XDG_DATA_DIRS"
+export XDG_CONFIG_DIRS="/etc/xdg:$XDG_CONFIG_DIRS"
+export PATH="$PATH:$XDG_LOCAL_HOME/bin" # add local packages to path
 
-export GODOT_PATH="/Applications/Godot_mono.app/Contents/MacOS/Godot"
+# shell environment
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
+export SHELL_SESSIONS_DISABLE=1
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
+
+# python environment
+export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME/python"
+export PYTHONUSERBASE="$XDG_DATA_HOME/python"
+export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+
+# go
+export GOPATH="$XDG_DATA_HOME/go"
+# docker
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+# whalebrew
+export WHALEBREW_CONFIG_DIR="$XDG_CONFIG_HOME/whalebrew"

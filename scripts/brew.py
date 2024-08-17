@@ -18,15 +18,15 @@ LOGGER = logging.getLogger(__name__)
 """The Homebrew setup logger."""
 
 
-def setup() -> None:
+def setup(brewfile=config.brewfile, mas=False) -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
     LOGGER.info("Setting up Homebrew...")
     install_brew()
 
     # install packages from Brewfile
     LOGGER.info("Installing packages from Brewfile...")
-    cmd = [BREW, "bundle", f"--file={config.brewfile}"]
-    utils.run_cmd(cmd, msg="Installing")
+    cmd = [BREW, "bundle", f"--file={brewfile}"]
+    utils.run_cmd(cmd, msg="Installing", throws=False)
     LOGGER.debug("Installed packages from Brewfile.")
 
     # upgrade packages
@@ -34,23 +34,24 @@ def setup() -> None:
     utils.run_cmd([BREW, "upgrade"], msg="Upgrading")
     LOGGER.debug("Upgraded packages.")
 
-    # upgrade mac app store packages
-    LOGGER.info("Upgrading mac app store packages...")
-    utils.run_cmd([MAS, "upgrade"], msg="Upgrading")
-    LOGGER.debug("Upgraded mac app store packages.")
-
     # cleanup
     LOGGER.info("Cleaning up...")
     cmd = [BREW, "cleanup", "--prune=all"]
     utils.run_cmd(cmd, msg="Cleaning up")
     LOGGER.info("Homebrew setup complete.")
+    if not mas:
+        return
+
+    # update app store packages
+    LOGGER.info("Upgrading mac app store packages...")
+    utils.run_cmd([MAS, "upgrade"], msg="Upgrading")
+    LOGGER.debug("Upgraded mac app store packages.")
 
 
-def install_brew():
+def install_brew() -> None:
     """Install Homebrew on a new machine."""
     # update homebrew if it is already installed
     if os.path.exists(BREW):
-        LOGGER.info("Updating Homebrew...")
         utils.run_cmd([BREW, "update"], msg="Updating")
         LOGGER.info("Homebrew was updated.")
     else:  # install homebrew otherwise
@@ -62,9 +63,6 @@ def install_brew():
     # fix “zsh compinit: insecure directories” error
     utils.run_cmd(f'chmod -R go-w "$({BREW} --prefix)/share"')
     LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
-    # add fonts tap
-    utils.run_cmd(f"{BREW} tap homebrew/cask-fonts")
-    LOGGER.info("Added Homebrew fonts tap.")
 
 
 if __name__ == "__main__":

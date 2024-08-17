@@ -7,7 +7,7 @@ sudo apt upgrade -y
 
 # shell packages
 sudo apt install -y zsh zsh-syntax-highlighting zsh-autosuggestions
-sudo apt install -y git exa bat tmux python3-venv code
+sudo apt install -y git eza bat tmux python3-venv code
 
 # vim
 sudo apt install -y neovim ripgrep fd-find npm

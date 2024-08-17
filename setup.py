@@ -2,11 +2,7 @@
 
 import logging
 
-import scripts.brew
-import scripts.git
 import scripts.macos
-import scripts.shell
-import scripts.ssh
 import utils
 
 LOGGER = logging.getLogger(__name__)
@@ -22,10 +18,6 @@ def main(debug=False) -> None:
     utils.setup_logging(debug)
 
     LOGGER.info("Setting up machine...")
-    scripts.run_setup(scripts.brew.setup)
-    scripts.run_setup(scripts.shell.setup)
-    scripts.run_setup(scripts.ssh.setup)
-    scripts.run_setup(scripts.git.setup)
     scripts.run_setup(scripts.macos.setup)
     LOGGER.warning("Restart for some changes to apply.")
     LOGGER.info("Machine setup complete.")

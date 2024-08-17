@@ -1,27 +1,37 @@
 [user]
     name = Mohammed Fareed
     email = mohdf.fareed@icloud.com
-    signingkey = ~/.ssh/personal.pub ; ssh key used for signing commits
+    signingkey = ~/.ssh/github.pub
+
+; git settings
 [commit]
-    gpgsign = true ; sign commits
+    ; sign commits
+    gpgsign = true
 [gpg]
-    format = ssh ; use ssh key for signing
+    ; use ssh key for signing
+    format = ssh
 [init]
-    defaultBranch = main ; use main as default branch name
+    ; use main as default branch name
+    defaultBranch = main
 [fetch]
-    prune = true ; remove remote-tracking branches for deleted remote branches
+    ; remove remote-tracking branches for deleted remote branches
+    prune = true
 [pull]
-    rebase = true ; rebase local commits on top of the updated upstream branch
+    ; rebase local commits on top of the updated upstream branch
+    rebase = true
 
 ; terminal settings
 [status]
-    short = true ; git status uses --short by default
+    ; git status uses --short by default
+    short = true
 [color]
-    ui = auto ; colorize git output
+    ; colorize git output
+    ui = auto
 [help]
-    autoCorrect = prompt ; prompt to correct typos in git commands
+    ; prompt to correct typos in git commands
+    autoCorrect = prompt
 
-; vscode settings
+; vscode
 [core]
     editor = code --wait
 [diff]
@@ -33,14 +43,13 @@
 [mergetool "vscode"]
     cmd = code --wait $MERGED
 
-; git aliases
+; aliases
 [alias]
     graph = log --graph --abbrev-commit --decorate --all
-
     graphc = log --graph --decorate --format=format:'%C(magenta)%h%C(reset) - \
 %s %C(dim white)- %cr%Creset%C(auto)%d%C(reset)' --abbrev-commit --all
 
-; lfs settings
+; lfs (large file system)
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

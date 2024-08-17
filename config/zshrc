@@ -1,80 +1,82 @@
-# Configuration: macOS
+# Configuration (shared across machines)
 # =============================================================================
 
-# diable login message
-[ -f "$HOME/.hushlogin" ] || touch "$HOME/.hushlogin"
+COMPLETION_WAITING_DOTS=true   # show dots while loading completions
+HYPHEN_INSENSITIVE=true        # ignore hyphens in commands
+ZSH_THEME=""                   # use external theme
+zstyle ':omz:update' mode auto # update automatically without asking
 
-# load homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)" && brew_prefix="$(brew --prefix)"
-fpath+=("$brew_prefix/share/zsh/site-functions")         # pure prompt
-fpath+=("$brew_prefix/share/zsh-completions")            # completions
-export PATH="$(brew --prefix python)/libexec/bin:$PATH"  # python
-eval "$(pyenv init -)"                                   # pyenv
-eval "$(pyenv virtualenv-init -)"                        # pyenv-virtualenv
+# create directories
+[ -d "$XDG_CACHE_HOME/zsh" ] || mkdir -p "$XDG_CACHE_HOME/zsh"
+[ -f "$HISTFILE" ] || touch "$HISTFILE"
+[ -d "$IPYTHONDIR" ] || mkdir -p "$IPYTHONDIR"
 
-# zsh plugins
-plugins=(
-    macos # macos-specific utilities
-)
+source $ZSH/oh-my-zsh.sh # load oh-my-zsh
 
-# shell config, syntax highlighting, auto-suggestions, and auto-completion
-source $MACHINE/config/shell/zshrc
-source "$brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-source "$brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-unset brew_prefix
+# Shell Configuration
+# =============================================================================
+
+unsetopt auto_list   # don't echo choices on ambiguous completion
+setopt menu_complete # auto-complete with menu selection
+
+# auto-completion
+zstyle ':completion:*' completer _complete _correct _approximate
+zstyle ':completion:*' format '%BCompleting %d:%b'
+zstyle ':completion:*' group-name ''
+
+# completions colors
+zstyle ':completion:*:options' list-colors '=(#b)(*)-- *==34' '=^(-- *)=34'
+zstyle ':completion:*:parameters' list-colors '=*=34'
+zstyle ':completion:*:commands' list-colors '=*=1;32'
+zstyle ':completion:*:builtins' list-colors '=*=1;32'
+zstyle ':completion:*:functions' list-colors '=*=1;35'
+zstyle ':completion:*:aliases' list-colors '=*=1;35'
+zstyle ':completion:*:systemctl:*' list-colors '=(#b)*(-- *)==34' '=-- *=34'
+
+# completion format of processes
+zstyle ':completion:*:*:*:*:processes' command \
+	"ps -u $USERNAME -o pid,%cpu,%mem,cputime,command"
+zstyle ':completion:*:*:kill:*:processes' list-colors \
+	'=(#b) #([0-9]#) #*[0-9]#:[0-9]#[:.][0-9]# #(*)=34=1;31=32'
+
+# zsh history and sessions
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
+compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
+
+# pure prompt
+PURE_PROMPT_SYMBOL='➜'
+autoload -U promptinit
+promptinit
+prompt pure
 
 # Functions and Aliases
 # =============================================================================
 
-alias docker-restart='colima stop && colima start'
-alias system-update='brew update && brew upgrade && mas upgrade && brew cleanup'
-alias ssh-create-key="ssh-keygen -t ed25519 -C"
+alias zsh::reload='exec $SHELL'
+alias cat='bat --paging=never'
+alias vim='nvim'
+alias ls='eza --group-directories-first --sort=Name --icons'
+alias lst='ls -T'
+alias lls='ls -lhmU --git --no-user'
+alias llst='lls -T'
 
-# add all ssh keys to keychain
-function ssh-fix-keychain {
-    for private_key in ~/.ssh/*.key; do
-        ssh-add --apple-use-keychain "$private_key"
-    done
+# time the startup of shell
+time-startup() {
+	usage="usage: $0 [iterations]"
+	if (($# > 1)); then echo $usage && return 1; fi
+	for i in $(seq 1 ${1-1}); do time $SHELL -i -c exit; done
 }
 
-# ssh into raspberry pi
-function ssh-pi {
-    usage="usage: $0 [local]"
-    if (($# > 1)); then echo $usage && return 1; fi
+# activate virtual environment
+venv-activate() {
+	usage="usage: $0 [venv_dir]"
+	if (($# > 1)); then echo $usage && return 1; fi
 
-    if [ "$1" = "" ]; then
-        ssh raspberrypi
-    elif [ "$1" = "local" ]; then
-        ssh raspberrypi.local
-    else
-        echo $usage
-        return 1
-    fi
-}
+	venv=${1-.venv}
+	if [[ ! -d "$venv" ]]; then
+		echo "No virtual environment directory found"
+		return 1
+	fi
 
-# uninstall homebrew package with its dependencies
-function uninstall {
-    usage="usage: $0 package..."
-	if (($# < 1)); then echo $usage && return 1; fi
-
-    brew uninstall $@
-    brew autoremove
-    brew cleanup
-}
-
-# zip a folder with password without compression
-function zip-encrypt {
-    usage="usage: $0 dir"
-	if (($# != 1)); then echo $usage && return 1; fi
-
-    if [[ ! -d "$1" ]]; then
-        echo "'$1' is not a directory"
-        return 1
-    fi
-
-    cd "$1"
-    dir_name=${PWD##*/}
-    zip -er0 "$dir_name.zip" . -x ".DS_Store" -x "._*"
-    mv "$dir_name.zip" ..
-    cd - >/dev/null
+	source "$venv/bin/activate"
 }
