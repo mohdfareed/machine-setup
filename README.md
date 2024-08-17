@@ -18,8 +18,6 @@ Where the arguments are as follows:
 - `-f|--force`: forces cloning the repo even if it already exists.
 - `-h|--help`: prints the help message.
 
-
-
 ### Individual Setup
 
 Individual machine components can be set up by running the respective setup
@@ -27,12 +25,21 @@ module, provided that the bootstrapping script has already been run. Run the
 following command to set up a component:
 
 ```sh
-python -m scripts.component [-h]
+python -m scripts.[component] [-h]
 ```
 
-## Core Shell Configuration
+### Updating and Cleaning
 
-The common shell configuration that is shared across all machines.
+To update the machine, reapplying setup config, run the following command:
+
+```sh
+python -m scripts.[machine] [-h]
+```
+
+## Configuration
+
+The common configuration that is shared across all machines. All machines must
+have the configuration below.
 
 ### Files
 
