@@ -17,6 +17,12 @@ class PLATFORM(Enum):
     WINDOWS = "Windows"
 
 
+def load_env_var(zshenv_path: str, var_name: str) -> str:
+    """Load the environment variable value."""
+    command = f"source {zshenv_path} && echo ${var_name}"
+    return run(command)[1]
+
+
 def symlink(src: str, dst: str) -> None:
     """Create a symbolic link from `src` to `dst`. If the destination exists,
     it will be overwritten. If the destination's directory structure does not

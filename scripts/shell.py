@@ -7,15 +7,16 @@ import logging
 import os
 
 import config
+import macos
 import utils
 
 ZSHENV = "~/.zshenv"
 """The path to the zsh environment file symlink."""
-ZSHRC = os.path.join(config.zdotdir, ".zshrc")
+ZSHRC = os.path.join(macos.zdotdir, ".zshrc")
 """The path to the zsh configuration file symlink."""
-VIM = os.path.join(config.xdg_config, "nvim")
+VIM = os.path.join(macos.xdg_config, "nvim")
 """The path of the vim configuration directory symlink."""
-TMUX = os.path.join(config.xdg_config, "tmux", "tmux.conf")
+TMUX = os.path.join(macos.xdg_config, "tmux", "tmux.conf")
 """The path of the tmux configuration file symlink."""
 
 LOGGER = logging.getLogger(__name__)
