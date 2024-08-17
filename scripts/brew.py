@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__name__)
 """The Homebrew setup logger."""
 
 
-def setup(brewfile=config.brewfile, mas=False) -> None:
+def setup(brewfile=config.brewfile) -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
     LOGGER.info("Setting up Homebrew...")
     install_brew()
@@ -26,25 +26,27 @@ def setup(brewfile=config.brewfile, mas=False) -> None:
     # install packages from Brewfile
     LOGGER.info("Installing packages from Brewfile...")
     cmd = [BREW, "bundle", f"--file={brewfile}"]
-    utils.run_cmd(cmd, msg="Installing", throws=False)
+    utils.run(cmd, msg="Installing", throws=False)
     LOGGER.debug("Installed packages from Brewfile.")
 
     # upgrade packages
     LOGGER.info("Upgrading packages...")
-    utils.run_cmd([BREW, "upgrade"], msg="Upgrading")
+    utils.run([BREW, "upgrade"], msg="Upgrading")
     LOGGER.debug("Upgraded packages.")
 
     # cleanup
     LOGGER.info("Cleaning up...")
     cmd = [BREW, "cleanup", "--prune=all"]
-    utils.run_cmd(cmd, msg="Cleaning up")
+    utils.run(cmd, msg="Cleaning up")
     LOGGER.info("Homebrew setup complete.")
-    if not mas:
+
+    # macos specific setup
+    if not utils.is_macos():
         return
 
     # update app store packages
     LOGGER.info("Upgrading mac app store packages...")
-    utils.run_cmd([MAS, "upgrade"], msg="Upgrading")
+    utils.run([MAS, "upgrade"], msg="Upgrading")
     LOGGER.debug("Upgraded mac app store packages.")
 
 
@@ -52,16 +54,16 @@ def install_brew() -> None:
     """Install Homebrew on a new machine."""
     # update homebrew if it is already installed
     if os.path.exists(BREW):
-        utils.run_cmd([BREW, "update"], msg="Updating")
+        utils.run([BREW, "update"], msg="Updating")
         LOGGER.info("Homebrew was updated.")
     else:  # install homebrew otherwise
         LOGGER.info("Installing Homebrew...")
         cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
-        utils.run_cmd(cmd, msg="Installing")
+        utils.run(cmd, msg="Installing")
         LOGGER.info("Homebrew installed successfully.")
 
     # fix “zsh compinit: insecure directories” error
-    utils.run_cmd(f'chmod -R go-w "$({BREW} --prefix)/share"')
+    utils.run(f'chmod -R go-w "$({BREW} --prefix)/share"')
     LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
 
 

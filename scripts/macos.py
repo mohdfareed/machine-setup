@@ -4,6 +4,7 @@ machine."""
 import logging
 
 import config
+import macos
 import utils
 from scripts.brew import setup as brew_setup
 from scripts.git import setup as git_setup
@@ -39,10 +40,10 @@ def setup() -> None:
     ssh_setup()
 
     # macos-specific configuration
-    brew_setup(config.macos_brewfile, mas=True)
-    utils.symlink(config.macos_zshrc, ZSHRC)
-    utils.symlink(config.macos_zshenv, ZSHENV)
-    utils.symlink(config.macos_ps_profile, PS_PROFILE)
+    brew_setup(macos.brewfile)
+    utils.symlink(macos.zshrc, ZSHRC)
+    utils.symlink(macos.zshenv, ZSHENV)
+    utils.symlink(macos.ps_profile, PS_PROFILE)
 
     # setup vscode settings
     LOGGER.info("Setting up VSCode...")
@@ -53,7 +54,7 @@ def setup() -> None:
 
     # run the preferences script
     LOGGER.info("Setting system preferences...")
-    utils.run_cmd(f". {config.macos_preferences}")
+    utils.run(f". {macos.preferences}")
     LOGGER.debug("System preferences set.")
 
     # use touch ID for sudo

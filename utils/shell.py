@@ -24,8 +24,8 @@ def run(command, env=None, throws=True, msg=LOADING_STR) -> tuple[int, str]:
 
     Args:
         command (str | list[str]): The command to run.
-        env (dict[str, str], optional): The environment variables to set for the
-            command. Defaults to None.
+        env (dict[str, str], optional): The environment variables to set for
+            the command. Defaults to None.
         throws (bool, optional): Whether to throw an error if the command has a
             non-zero return code. Defaults to True.
         msg (str, optional): The status message to display while the command
@@ -35,8 +35,8 @@ def run(command, env=None, throws=True, msg=LOADING_STR) -> tuple[int, str]:
         tuple[int, str]: The return code and output of the command.
 
     Raises:
-        subprocess.CalledProcessError: If the command has a non-zero return code
-            and `throws` is True.
+        subprocess.CalledProcessError: If the command has a non-zero return
+        code and `throws` is True.
     """
 
     # show loading animation while command is running in background

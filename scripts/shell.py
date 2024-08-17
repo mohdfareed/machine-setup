@@ -34,10 +34,10 @@ def setup() -> None:
     utils.symlink(config.zshenv, ZSHENV)
 
     # clean up
-    utils.run_cmd("sudo rm -rf ~/.zcompdump*")
-    utils.run_cmd("sudo rm -rf ~/.zshrc")
-    utils.run_cmd("sudo rm -rf ~/.zsh_sessions")
-    utils.run_cmd("sudo rm -rf ~/.zsh_history")
+    utils.run("sudo rm -rf ~/.zcompdump*")
+    utils.run("sudo rm -rf ~/.zshrc")
+    utils.run("sudo rm -rf ~/.zsh_sessions")
+    utils.run("sudo rm -rf ~/.zsh_history")
     LOGGER.info("Shell setup complete.")
 
 
@@ -47,12 +47,12 @@ def install_omz() -> None:
 
     # load installation environment
     cmd = f"source {config.zshenv} && echo $ZSH"
-    env = dict(ZSH=utils.run_cmd(cmd)[1])
+    env = dict(ZSH=utils.run(cmd)[1])
 
     # install oh-my-zsh
-    utils.run_cmd(["sudo", "rm", "-rf", env["ZSH"]])  # remove existing files
+    utils.run(["sudo", "rm", "-rf", env["ZSH"]])  # remove existing files
     cmd = 'sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended'
-    utils.run_cmd(cmd, env=env, msg="Installing")
+    utils.run(cmd, env=env, msg="Installing")
 
     # remove zshrc backup files
     backups = os.path.expanduser(f"{ZSHRC}.pre-oh-my-zsh*")

@@ -5,6 +5,7 @@ import os
 from dataclasses import dataclass
 
 import config
+import macos
 import utils
 
 SSH_DIR: str = "~/.ssh/"
@@ -42,15 +43,15 @@ class SSHKeyPair:
         return os.path.splitext(base)[0]
 
 
-def setup(mac=False) -> None:
+def setup() -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory.
     """
 
     LOGGER.info("Setting up SSH...")
-    utils.symlink(config.macos_ssh_config, os.path.join(SSH_DIR, "config"))
+    utils.symlink(macos.ssh_config, os.path.join(SSH_DIR, "config"))
     for key in load_keys(config.ssh_keys):
-        setup_key(key, mac)
+        setup_key(key)
     LOGGER.info("SSH setup complete")
 
 
@@ -78,7 +79,7 @@ def load_keys(keys_dir: str) -> list[SSHKeyPair]:
     return keys
 
 
-def setup_key(key: SSHKeyPair, mac: bool) -> None:
+def setup_key(key: SSHKeyPair) -> None:
     """Setup an ssh key on a machine."""
     LOGGER.info("[bold]Setting up SSH key:[/] %s", key.name)
 
@@ -98,17 +99,17 @@ def setup_key(key: SSHKeyPair, mac: bool) -> None:
         os.chmod(key.public, 0o644)
 
     # get key fingerprint
-    fingerprint = utils.run_cmd(["ssh-keygen", "-lf", key.public])[1]
+    fingerprint = utils.run(["ssh-keygen", "-lf", key.public])[1]
     fingerprint = fingerprint.split(" ")[1]
     LOGGER.info("[bold]Key fingerprint:[/] %s", fingerprint)
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
-    if utils.run_cmd(cmd, throws=False)[0] != 0:
-        if not mac:
-            utils.run_cmd(f"ssh-add '{key.private}'")
+    if utils.run(cmd, throws=False)[0] != 0:
+        if not utils.is_macos():
+            utils.run(f"ssh-add '{key.private}'")
         else:
-            utils.run_cmd(f"ssh-add --apple-use-keychain '{key.private}'")
+            utils.run(f"ssh-add --apple-use-keychain '{key.private}'")
         LOGGER.info("Added key to SSH agent")
     else:
         LOGGER.info("Key already exists in SSH agent")

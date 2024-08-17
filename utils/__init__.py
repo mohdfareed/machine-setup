@@ -6,7 +6,7 @@ import platform
 from enum import Enum
 
 from .logging import LOGGER, setup_logging
-from .shell import run as run_cmd
+from .shell import run
 
 
 class PLATFORM(Enum):
