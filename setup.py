@@ -2,7 +2,7 @@
 
 import logging
 
-import scripts.macos
+import macos.setup as macos
 import utils
 
 LOGGER = logging.getLogger(__name__)
@@ -16,9 +16,20 @@ def main(debug=False) -> None:
         debug (bool): Whether to log debug messages.
     """
     utils.setup_logging(debug)
-
     LOGGER.info("Setting up machine...")
-    scripts.run_setup(scripts.macos.setup)
+
+    if utils.is_macos():
+        macos.setup()
+    elif utils.is_linux():
+        LOGGER.error("Linux setup not implemented.")
+        return
+    elif utils.is_windows():
+        LOGGER.error("Windows setup not implemented.")
+        return
+    else:
+        LOGGER.error("Unsupported operating system.")
+        return
+
     LOGGER.warning("Restart for some changes to apply.")
     LOGGER.info("Machine setup complete.")
 

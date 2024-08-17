@@ -15,14 +15,16 @@ import argparse
 import os
 import shutil
 import subprocess
+import sys
 import urllib.request
 
 REPO = "https://github.com/mohdfareed/machine.git"
 """URL of the repository to clone."""
-MACHINE = "https://raw.githubusercontent.com/mohdfareed/machine/main"
-"""URL of the machine repository."""
-SHELL_ENV = f"{MACHINE}/config/shell/zshenv"
+SHELL_ENV = (
+    "https://raw.githubusercontent.com/mohdfareed/machine/main/macos/zshenv"
+)
 """URL of the shell environment file."""
+# REVIEW: reuse for different machines
 
 SCRIPT = "setup.py"
 """Machine setup script filename."""
@@ -32,23 +34,24 @@ VENV = ".venv"
 """Path to the virtual environment."""
 
 
-def main(overwrite=False):
+def main(overwrite=False) -> None:
     """Bootstrap the machine setup process."""
 
+    prompt = "Authenticate to accept Xcode license agreement: "
     try:  # accept xcode license
-        prompt = "Authenticate to accept Xcode license agreement: "
         run(["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"])
-    except subprocess.CalledProcessError:
-        raise Exception(
+    except subprocess.CalledProcessError as ex:
+        raise RuntimeError(
             "Failed to accept Xcode license."
             "Ensure Xcode is installed using: xcode-select --install"
-        )
+        ) from ex
 
     # resolve machine path
     with urllib.request.urlopen(SHELL_ENV) as response:
         env_file = response.read().decode()
     machine_path = run(f"{env_file} \n echo $MACHINE", silent=True, text=True)
     machine_path = os.path.realpath(machine_path)
+
     # resolve environment paths
     req_file = os.path.join(machine_path, REQUIREMENTS)
     machine_venv_path = os.path.join(machine_path, VENV)
@@ -68,14 +71,18 @@ def main(overwrite=False):
     run(f"python3 -m venv {machine_venv_path} {venv_options}", silent=True)
     cmd = [python, "-m", "pip", "install", "-r", req_file, "--upgrade"]
     run(cmd, silent=True)  # install dependencies
+
     # execute machine setup script
     script = os.path.join(machine_path, SCRIPT)
     run([python, script], safe=False)
 
 
 def run(cmd, silent=False, safe=False, text=False):
-    options: dict = dict(check=not safe, capture_output=silent, text=text)
-    result = subprocess.run(cmd, shell=isinstance(cmd, str), **options)
+    """Run a shell command."""
+    options: dict = dict(capture_output=silent, text=text)
+    result = subprocess.run(
+        cmd, shell=isinstance(cmd, str), check=not safe, **options
+    )
     return result.stdout.strip() if text else result.returncode
 
 
@@ -91,7 +98,7 @@ if __name__ == "__main__":
 
     try:
         main(args.force)
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         print(f"\033[31;1m{'Error:'}\033[0m {e}")
         print(f"\033[31;1m{'Failed to bootstrap machine'}\033[0m")
-        exit(1)
+        sys.exit(1)

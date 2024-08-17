@@ -3,7 +3,7 @@
 import os as _os
 
 # macos
-macos = _os.path.dirname(_os.path.realpath(__file__))
+macos = _os.path.join(_os.path.dirname(_os.path.realpath(__file__)), "config")
 """The path of git configuration directory."""
 brewfile = _os.path.join(macos, "brewfile")
 """The path of macOS specific Homebrew packages file."""
