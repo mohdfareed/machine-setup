@@ -14,7 +14,7 @@ vim = _os.path.join(config, "vim")
 vscode = _os.path.join(config, "vscode")
 """The path of VSCode configuration directory."""
 
-# shell, ssh, and tmux
+# shell, ssh, tmux, powershell
 zshrc = _os.path.join(config, "zshrc")
 """The path of zshrc file."""
 zshenv = _os.path.join(config, "zshenv")
@@ -25,6 +25,8 @@ tmux = _os.path.join(config, "tmux.conf")
 """The path of the tmux configuration file."""
 npmrc = _os.path.join(config, "npmrc")
 """The path of the npm configuration file."""
+ps_profile = _os.path.join(config, "profile.ps1")
+"""The path of the PowerShell profile file."""
 
 # git
 gitconfig = _os.path.join(git, "gitconfig")
