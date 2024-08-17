@@ -5,6 +5,8 @@ export DEV="$HOME/Developer"
 export MACHINE="$DEV/machine"
 export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 export PRIVATE_MACHINE="$ICLOUD/.machine"
+export SSH_KEY_PUB="$HOME/.ssh/personal.pub"
+export SSH_KEY_PRI="$HOME/.ssh/personal.key"
 
 # global environment variables
 source "$MACHINE/config/shell/zshenv"

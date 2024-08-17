@@ -27,7 +27,8 @@ unset brew_prefix
 # =============================================================================
 
 alias docker_restart='colima stop && colima start'
-alias update='brew update && brew upgrade && brew cleanup'
+alias update='brew update && brew upgrade && brew cleanup && mas upgrade'
+alias fix-ssh="ssh-add --apple-use-keychain $SSH_KEY_PRI"
 
 # ssh into raspberry pi
 function ssh-pi {

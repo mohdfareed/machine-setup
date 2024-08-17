@@ -1,19 +1,25 @@
 {
-  // editor ===================================================================
+  // MARK: editor
+  // #region ===================================================================
   "editor.lineNumbers": "relative",
   "editor.wordWrap": "on",
   "editor.wrappingIndent": "indent",
   "editor.guides.bracketPairs": true,
   "editor.formatOnSave": true,
-  // whitespace ===============================================================
+  "editor.minimap.showRegionSectionHeaders": true,
+  // # endregion
+  // MARK: whitespace
+  // #region ===================================================================
   "editor.renderWhitespace": "all",
   "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
-  // visual ===================================================================
+  // # endregion
+  // MARK: visual
+  // #region ===================================================================
   "editor.stickyScroll.enabled": true,
   "editor.minimap.renderCharacters": false,
-  "editor.minimap.enabled": false,
+  "editor.minimap.autohide": true,
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.occurrencesHighlight": "multiFile",
@@ -30,7 +36,9 @@
     80,
     120
   ],
-  // font =====================================================================
+  // # endregion
+  // MARK: font
+  // #region ===================================================================
   "editor.fontFamily": "JetBrainsMono Nerd Font",
   "editor.fontSize": 13,
   "editor.fontLigatures": true,
@@ -38,18 +46,27 @@
   "terminal.integrated.fontSize": 14,
   "terminal.integrated.smoothScrolling": true,
   // TODO - check if terminal ligature is supported
-  // vscode ===================================================================
+  // # endregion
+  // MARK: vscode
+  // #region ===================================================================
   "window.openWithoutArgumentsInNewWindow": "on",
   "workbench.startupEditor": "newUntitledFile",
   "explorer.confirmDelete": false,
-  // suggestions ==============================================================
+  // # endregion
+  // MARK: suggestions
+  // #region ===================================================================
   "editor.suggest.preview": true,
   "editor.inlineSuggest.enabled": true,
   "cSpell.showAutocompleteSuggestions": true,
   "cSpell.enableFiletypes": [
     "*"
   ],
-  // terminal =================================================================
+  "cSpell.userWords": [
+    "endregion"
+  ],
+  // # endregion
+  // MARK: terminal
+  // #region ===================================================================
   "terminal.integrated.macOptionIsMeta": true,
   "terminal.integrated.gpuAcceleration": "auto",
   "terminal.integrated.cursorStyle": "line",
@@ -59,7 +76,9 @@
   "accessibility.signals.terminalBell": {
     "sound": "on"
   },
-  // git ======================================================================
+  // # endregion
+  // MARK: git
+  // #region ===================================================================
   "git.allowForcePush": true,
   "git.autofetch": "all",
   "git.ignoreLegacyWarning": true,
@@ -72,14 +91,18 @@
   "gitlens.hovers.currentLine.over": "line",
   "gitlens.graph.minimap.enabled": false,
   "multiDiffEditor.experimental.enabled": true,
-  // copilot ==================================================================
+  // # endregion
+  // MARK: copilot
+  // #region ===================================================================
   "github.copilot.enable": {
     "*": true,
     "plaintext": true,
     "markdown": true,
     "scminput": false
   },
-  // comment anchors ==========================================================
+  // # endregion
+  // MARK: comment anchors
+  // #region ===================================================================
   "commentAnchors.scrollPosition": "center",
   "commentAnchors.tags.displayLineNumber": false,
   "commentAnchors.tags.sortMethod": "type",
@@ -94,12 +117,16 @@
       "scope": "workspace"
     }
   },
-  // vim ======================================================================
+  // # endregion
+  // MARK: vim
+  // #region ===================================================================
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
-  // markdown =================================================================
+  // # endregion
+  // MARK: markdown
+  // #region ===================================================================
   "markdown.preview.typographer": true,
   "markdown.preview.scrollPreviewWithEditor": false,
   "markdown.preview.scrollEditorWithPreview": false,
@@ -114,7 +141,9 @@
       "other": "on"
     }
   },
-  // python ===================================================================
+  // # endregion
+  // MARK: python
+  // #region ===================================================================
   "python.analysis.typeCheckingMode": "standard",
   "python.analysis.autoSearchPaths": true,
   "python.analysis.diagnosticMode": "workspace",
@@ -156,7 +185,9 @@
     "--profile",
     "black"
   ],
-  // c# =======================================================================
+  // # endregion
+  // MARK: c#
+  // #region ===================================================================
   "[csharp]": {
     "editor.codeActionsOnSave": {
       "source.addMissingImports": "explicit"
@@ -168,20 +199,27 @@
   "omnisharp.organizeImportsOnFormat": true,
   "dotnet.codeLens.enableReferencesCodeLens": false,
   "godotTools.editorPath.godot4": "${GODOT_PATH}",
-  // go =======================================================================
+  // # endregion
+  // MARK: go
+  // #region ===================================================================
   "go.toolsManagement.autoUpdate": true,
   "[go]": {
     "editor.defaultFormatter": "golang.go"
   },
-  // lua ======================================================================
+  // # endregion
+  // MARK: lua
+  // #region ===================================================================
   "[lua]": {
     "editor.defaultFormatter": "sumneko.lua",
     "editor.tabSize": 2
   },
-  // latex ====================================================================
+  // # endregion
+  // MARK: latex
+  // #region ===================================================================
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  }
-  // misc =====================================================================
-  // REVIEW - manually modified settings above ================================
+  },
+  "commentAnchors.workspace.lazyLoad": false
+  // # endregion
+  // REVIEW - new customizations above =========================================
 }
