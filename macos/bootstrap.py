@@ -115,9 +115,3 @@ if __name__ == "__main__":
         print(f"\033[31;1m{'Error:'}\033[0m {e}")
         print(f"\033[31;1m{'Failed to bootstrap machine'}\033[0m")
         sys.exit(1)
-    try:
-        main(True)
-    except Exception as e:  # pylint: disable=broad-except
-        print(f"\033[31;1m{'Error:'}\033[0m {e}")
-        print(f"\033[31;1m{'Failed to bootstrap machine'}\033[0m")
-        sys.exit(1)
