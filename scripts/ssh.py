@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 import macos
 import utils
+from utils import shell
 
 SSH_DIR: str = "~/.ssh/"
 """The path to the SSH directory."""
@@ -98,17 +99,17 @@ def setup_key(key: SSHKeyPair) -> None:
         os.chmod(key.public, 0o644)
 
     # get key fingerprint
-    fingerprint = utils.run(["ssh-keygen", "-lf", key.public])[1]
+    fingerprint = shell.run(["ssh-keygen", "-lf", key.public])[1]
     fingerprint = fingerprint.split(" ")[1]
     LOGGER.info("[bold]Key fingerprint:[/] %s", fingerprint)
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
-    if utils.run(cmd, throws=False)[0] != 0:
+    if shell.run(cmd, throws=False)[0] != 0:
         if not utils.is_macos():
-            utils.run(f"ssh-add '{key.private}'")
+            shell.run(f"ssh-add '{key.private}'")
         else:
-            utils.run(f"ssh-add --apple-use-keychain '{key.private}'")
+            shell.run(f"ssh-add --apple-use-keychain '{key.private}'")
         LOGGER.info("Added key to SSH agent")
     else:
         LOGGER.info("Key already exists in SSH agent")
@@ -116,10 +117,6 @@ def setup_key(key: SSHKeyPair) -> None:
 
 
 if __name__ == "__main__":
-    import argparse
-
-    import scripts
-
-    parser = argparse.ArgumentParser(description="SSH setup script.")
-    args = parser.parse_args()
-    scripts.run_setup_isolated(setup)
+    utils.parser.description = "SSH setup script."
+    args = utils.startup()
+    utils.execute(setup)

@@ -105,6 +105,7 @@
   // MARK: comment anchors
   // #region ===================================================================
   "commentAnchors.scrollPosition": "center",
+  "commentAnchors.workspace.lazyLoad": false,
   "commentAnchors.tags.displayLineNumber": false,
   "commentAnchors.tags.sortMethod": "type",
   "commentAnchors.tags.anchors": {
@@ -220,8 +221,7 @@
   // #region ===================================================================
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  },
-  "commentAnchors.workspace.lazyLoad": false
+  }
   // # endregion
   // REVIEW - new customizations above =========================================
 }

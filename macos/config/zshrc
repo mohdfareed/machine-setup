@@ -78,3 +78,21 @@ function zip-encrypt {
     mv "$dir_name.zip" ..
     cd - >/dev/null
 }
+
+# unzip a folder with password
+function unzip-encrypt {
+    usage="usage: $0 file"
+    if (($# != 1)); then echo $usage && return 1; fi
+
+    if [[ ! -f "$1" ]]; then
+        echo "'$1' is not a file"
+        return 1
+    fi
+
+    unzip -P $(openssl rand -base64 32 | tr -d /=+) "$1"
+}
+
+# Post-Configuration
+# =============================================================================
+
+ssh-fix-keychain

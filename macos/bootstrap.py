@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Bootstrap a new machine. This will clone machine configuration and execute
-the setup script.
+"""Bootstrap a new macOS machine. This will clone machine configuration and
+execute the setup script.
 
 Requirements: Xcode Commandline Tools.
 
@@ -24,7 +24,6 @@ SHELL_ENV = (
     "https://raw.githubusercontent.com/mohdfareed/machine/main/macos/zshenv"
 )
 """URL of the shell environment file."""
-# REVIEW: reuse for different machines
 
 SCRIPT = "macos/setup.py"
 """Machine setup script filename."""
@@ -34,7 +33,7 @@ VENV = ".venv"
 """Path to the virtual environment."""
 
 
-def main(overwrite=False) -> None:
+def main(overwrite=False, verbose=False) -> None:
     """Bootstrap the machine setup process."""
 
     prompt = "Authenticate to accept Xcode license agreement: "
@@ -74,7 +73,8 @@ def main(overwrite=False) -> None:
 
     # execute machine setup script
     script = os.path.join(machine_path, SCRIPT)
-    run([python, script], safe=False)
+    command = f"{script}{' -d' if verbose else ''}"
+    run([python, command], safe=False)
 
 
 def run(cmd, silent=False, safe=False, text=False):
@@ -100,17 +100,23 @@ if __name__ == "__main__":
         action="store_true",
         help="print verbose output",
     )
-    parser.add_argument(
-        "-m",
-        "--machine",
-        type=str,
-        choices=["macos", "rpi"],
-        help="specify the type of machine to setup",
-    )
+    # parser.add_argument(
+    #     "-m",
+    #     "--machine",
+    #     type=str,
+    #     choices=["macos", "rpi"],
+    #     help="specify the type of machine to setup",
+    # )
     args = parser.parse_args()
 
     try:
-        main(args.force)
+        main(args.force, args.verbose)
+    except Exception as e:  # pylint: disable=broad-except
+        print(f"\033[31;1m{'Error:'}\033[0m {e}")
+        print(f"\033[31;1m{'Failed to bootstrap machine'}\033[0m")
+        sys.exit(1)
+    try:
+        main(True)
     except Exception as e:  # pylint: disable=broad-except
         print(f"\033[31;1m{'Error:'}\033[0m {e}")
         print(f"\033[31;1m{'Failed to bootstrap machine'}\033[0m")

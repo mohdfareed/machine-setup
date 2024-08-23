@@ -1,8 +1,7 @@
-"""Shell module executing shell commands. The module provides a shell class
-that can be used to run shell commands and retrieve their outputs and return
-codes. Upon import, the module creates a global shell instance and asks the
-user for their password. Individual commands can't display sudo prompts, so
-the password is cached and reused for all commands that require sudo access.
+"""Shell commands execution. The module provides a function that can be used
+to run shell commands and retrieve their outputs and return codes.
+Individual commands can't display sudo prompts, so the password is cached and
+reused for all commands that require sudo access.
 If user input is required, the user must be prompted outside the shell command.
 """
 

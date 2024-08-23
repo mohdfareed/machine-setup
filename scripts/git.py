@@ -26,10 +26,6 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    import argparse
-
-    import scripts
-
-    parser = argparse.ArgumentParser(description="Git setup script.")
-    args = parser.parse_args()
-    scripts.run_setup_isolated(setup)
+    utils.parser.description = "Git setup script."
+    args = utils.startup()
+    utils.execute(setup)

@@ -6,6 +6,7 @@ import os
 
 import config
 import utils
+from utils import shell
 
 BIN = "/opt/homebrew/bin"
 """The path to the Homebrew executables."""
@@ -26,18 +27,18 @@ def setup(brewfile=config.brewfile) -> None:
     # install packages from Brewfile
     LOGGER.info("Installing packages from Brewfile...")
     cmd = [BREW, "bundle", f"--file={brewfile}"]
-    utils.run(cmd, msg="Installing", throws=False)
+    shell.run(cmd, msg="Installing", throws=False)
     LOGGER.debug("Installed packages from Brewfile.")
 
     # upgrade packages
     LOGGER.info("Upgrading packages...")
-    utils.run([BREW, "upgrade"], msg="Upgrading")
+    shell.run([BREW, "upgrade"], msg="Upgrading")
     LOGGER.debug("Upgraded packages.")
 
     # cleanup
     LOGGER.info("Cleaning up...")
     cmd = [BREW, "cleanup", "--prune=all"]
-    utils.run(cmd, msg="Cleaning up")
+    shell.run(cmd, msg="Cleaning up")
     LOGGER.info("Homebrew setup complete.")
 
     # macos specific setup
@@ -46,7 +47,7 @@ def setup(brewfile=config.brewfile) -> None:
 
     # update app store packages
     LOGGER.info("Upgrading mac app store packages...")
-    utils.run([MAS, "upgrade"], msg="Upgrading")
+    shell.run([MAS, "upgrade"], msg="Upgrading")
     LOGGER.debug("Upgraded mac app store packages.")
 
 
@@ -54,25 +55,20 @@ def install_brew() -> None:
     """Install Homebrew on a new machine."""
     # update homebrew if it is already installed
     if os.path.exists(BREW):
-        utils.run([BREW, "update"], msg="Updating")
+        shell.run([BREW, "update"], msg="Updating")
         LOGGER.info("Homebrew was updated.")
     else:  # install homebrew otherwise
         LOGGER.info("Installing Homebrew...")
         cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
-        utils.run(cmd, msg="Installing")
+        shell.run(cmd, msg="Installing")
         LOGGER.info("Homebrew installed successfully.")
 
     # fix “zsh compinit: insecure directories” error
-    utils.run(f'chmod -R go-w "$({BREW} --prefix)/share"')
+    shell.run(f'chmod -R go-w "$({BREW} --prefix)/share"')
     LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
 
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Homebrew setup script.")
-    args = parser.parse_args()
-
-    import scripts
-
-    scripts.run_setup_isolated(setup)
+    utils.parser.description = "Homebrew setup script."
+    args = utils.startup()
+    utils.execute(setup)

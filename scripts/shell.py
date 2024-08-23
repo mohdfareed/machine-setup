@@ -9,6 +9,7 @@ import os
 import config
 import macos
 import utils
+from utils import shell
 
 ZSHENV = "~/.zshenv"
 """The path to the zsh environment file symlink."""
@@ -35,10 +36,10 @@ def setup() -> None:
     utils.symlink(config.zshenv, ZSHENV)
 
     # clean up
-    utils.run("sudo rm -rf ~/.zcompdump*")
-    utils.run("sudo rm -rf ~/.zshrc")
-    utils.run("sudo rm -rf ~/.zsh_sessions")
-    utils.run("sudo rm -rf ~/.zsh_history")
+    shell.run("sudo rm -rf ~/.zcompdump*")
+    shell.run("sudo rm -rf ~/.zshrc")
+    shell.run("sudo rm -rf ~/.zsh_sessions")
+    shell.run("sudo rm -rf ~/.zsh_history")
     LOGGER.info("Shell setup complete.")
 
 
@@ -48,12 +49,12 @@ def install_omz() -> None:
 
     # load installation environment
     cmd = f"source {config.zshenv} && echo $ZSH"
-    env = dict(ZSH=utils.run(cmd)[1])
+    env = dict(ZSH=shell.run(cmd)[1])
 
     # install oh-my-zsh
-    utils.run(["sudo", "rm", "-rf", env["ZSH"]])  # remove existing files
+    shell.run(["sudo", "rm", "-rf", env["ZSH"]])  # remove existing files
     cmd = 'sh -c "$(curl -fsSL https://git.io/JvzfK)" "" --unattended'
-    utils.run(cmd, env=env, msg="Installing")
+    shell.run(cmd, env=env, msg="Installing")
 
     # remove zshrc backup files
     backups = os.path.expanduser(f"{ZSHRC}.pre-oh-my-zsh*")
@@ -64,10 +65,6 @@ def install_omz() -> None:
 
 
 if __name__ == "__main__":
-    import argparse
-
-    import scripts
-
-    parser = argparse.ArgumentParser(description="Shell setup script.")
-    args = parser.parse_args()
-    scripts.run_setup_isolated(setup)
+    utils.parser.description = "Shell setup script."
+    args = utils.startup()
+    utils.execute(setup)

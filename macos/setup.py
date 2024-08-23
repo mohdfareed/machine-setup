@@ -1,5 +1,5 @@
-"""Setup module containing a `setup` function for setting up Git on a new
-machine."""
+#!/usr/bin/env python3
+"""Setup module containing a `setup` function for setting up macOS."""
 
 import logging
 
@@ -11,6 +11,7 @@ from scripts.git import setup as git_setup
 from scripts.shell import ZSHENV, ZSHRC
 from scripts.shell import setup as shell_setup
 from scripts.ssh import setup as ssh_setup
+from utils import shell
 
 PS_PROFILE = "~/.config/powershell/profile.ps1"
 """The path to the PowerShell profile file."""
@@ -54,7 +55,7 @@ def setup() -> None:
 
     # run the preferences script
     LOGGER.info("Setting system preferences...")
-    utils.run(f". {macos.preferences}")
+    shell.run(f". {macos.preferences}")
     LOGGER.debug("System preferences set.")
 
     # use touch ID for sudo
@@ -72,10 +73,6 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    import argparse
-
-    import scripts
-
-    parser = argparse.ArgumentParser(description="macOS setup script.")
-    args = parser.parse_args()
-    scripts.run_setup_isolated(setup)
+    utils.parser.description = "macOS setup script."
+    args = utils.startup()
+    utils.execute(setup)

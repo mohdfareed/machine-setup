@@ -8,17 +8,19 @@ intervention.
 ## Usage
 
 To set up a machine, run the following command:
-<!-- TODO - allow setting up different machines -->
 
 ```sh
-url=https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py
-curl -fsSL $url | python3 - [-f|--force] [-h|--help]
+repo_url='https://raw.githubusercontent.com/mohdfareed/machine/main'
+script_url="${repo_url}/[machine]/bootstrap.py"
+curl -fsSL $script_url | python3 - [-f|--force] [-v|--verbose] [-h|--help]
 ```
 
 Where the arguments are as follows:
 
+- `machine`: the machine to set up (only macOS is supported).
 - `-f|--force`: forces cloning the repo even if it already exists.
-- `-h|--help`: prints the help message.
+- `-v|--verbose`: prints verbose output (debug messages).
+- `-h|--help`: prints a help message.
 
 ### Setting Up Individual Components
 
