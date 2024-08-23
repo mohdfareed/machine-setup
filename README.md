@@ -1,12 +1,14 @@
 # Machine
 
-This is a Python project that provides a collection of modules for
-setting up various aspects of a machine, along with a library of utility
-modules that are used throughout the project.
+This repository contains the configuration files and Python setup scripts for
+various machines. It’s designed to streamline the setup and update process,
+ensuring consistent configurations across all devices with minimal manual
+intervention.
 
 ## Usage
 
-To set up the machine, run the following command:
+To set up a machine, run the following command:
+<!-- TODO - allow setting up different machines -->
 
 ```sh
 url=https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py
@@ -18,7 +20,7 @@ Where the arguments are as follows:
 - `-f|--force`: forces cloning the repo even if it already exists.
 - `-h|--help`: prints the help message.
 
-### Individual Setup
+### Setting Up Individual Components
 
 Individual machine components can be set up by running the respective setup
 module, provided that the bootstrapping script has already been run. Run the
@@ -33,7 +35,7 @@ python -m scripts.[component] [-h]
 To update the machine, reapplying setup config, run the following command:
 
 ```sh
-python -m scripts.[machine] [-h]
+python -m [machine].setup [-h]
 ```
 
 ## Configuration
@@ -49,9 +51,9 @@ have the configuration below.
 
 ### Packages
 
-- `nvim`
 - `oh-my-zsh`
-- `pure` shell theme
+- `pure`
+- `nvim`
 - `bat`
 - `eza`
 
