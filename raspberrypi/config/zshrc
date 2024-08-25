@@ -8,12 +8,10 @@ export PATH="$PATH:$HOME/.local/bin"    # add local packages to path
 fpath+=($PURE)                          # add pure prompt to fpath
 fpath+=($ZSHCOMP/src)                   # add zsh-completions to fpath
 
-# zsh plugins
-plugins=(
-)
+# load core machine configuration
+source $MACHINE/config/zshrc
 
-# shell config, syntax highlighting, auto-suggestions, and auto-completion
-source $MACHINE/config.sh
+# syntax highlighting, auto-suggestions, and auto-completion
 source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 

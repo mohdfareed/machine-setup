@@ -2,15 +2,15 @@
 # =============================================================================
 
 # homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)" && brew_prefix="$(brew --prefix)"
-fpath+=("$brew_prefix/share/zsh/site-functions")         # pure prompt
-fpath+=("$brew_prefix/share/zsh-completions")            # completions
+eval "$(/opt/homebrew/bin/brew shellenv)"
+fpath+=("$(brew --prefix)/share/zsh/site-functions")     # pure prompt
+fpath+=("$(brew --prefix)/share/zsh-completions")        # completions
 export PATH="$(brew --prefix python)/libexec/bin:$PATH"  # python
 eval "$(pyenv init -)"                                   # pyenv
 eval "$(pyenv virtualenv-init -)"                        # pyenv-virtualenv
 
 # dotnet
-export DOTNET_ROOT="$brew_prefix/bin"
+export DOTNET_ROOT="$(brew --prefix)/bin"
 
 # environment variables
 COMPLETION_WAITING_DOTS=true   # show dots while loading completions

@@ -14,21 +14,9 @@ sudo addgroup --system docker && sudo adduser $USER docker
 git clone https://github.com/mohdfareed/chatgpt-bot $MACHINE/chatgpt-bot
 $MACHINE/chatgpt-bot/scripts/update.py
 
-# load system services
-echo "Setting up VSCode service..."
-vscode_script="/usr/bin/code tunnel --accept-server-license-terms"
-cron_job="@reboot $vscode_script" # the CRON job to start the VSCode server
-current_cron=$(mktemp) # temporary file to store current cron jobs
-# set up CRON job to start the app on boot
-crontab -l > "$current_cron" 2>/dev/null || true
-if [ -z "$(grep "$cron_job" $current_cron)" ]; then
-  echo "$cron_job" >> "$current_cron"
-  crontab "$current_cron"
-  echo "VSCode service setup complete."
-else
-  echo "VSCode service already exists."
-fi
-rm "$current_cron" # remove temporary file
+# set up vscode tunnel service
+echo "Setting up vscode tunnel..."
+/usr/bin/code tunnel service install --accept-server-license-terms --name rpi
 
 # instructions
 source $MACHINE/zprofile

@@ -1,13 +1,14 @@
-# Environment: macOS
+# Environment: Raspberry Pi
 # =============================================================================
 
 # machine specific environment variables
-export DEV="$HOME/Developer"
-export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-export GODOT_PATH="/Applications/Godot_mono.app/Contents/MacOS/Godot"
+export DEV="$HOME"
+export PURE="$HOME/.zsh/pure"
+export ZSHCOMP="$HOME/.zsh/zsh-completions"
+export TAILSCALE_DOMAIN="rpi.tail2a477.ts.net"
 
 # required environment variables
-export MACHINE="$DEV/machine"
+export MACHINE="$HOME/machine"
 export PRIVATE_MACHINE="$ICLOUD/.machine"
 
 # remote environment variables
