@@ -46,12 +46,11 @@ def setup() -> None:
 
     # setup core machine
     git_setup()
-    brew_setup()
+    brew_setup(brewfile)
     shell_setup()
     ssh_setup()
 
-    # macos-specific configuration
-    brew_setup(brewfile)
+    # shell configuration
     utils.symlink(zshrc, ZSHRC)
     utils.symlink(zshenv, ZSHENV)
 
@@ -77,6 +76,7 @@ def setup() -> None:
         LOGGER.debug("Touch ID for sudo already set up.")
 
     LOGGER.info("macOS setup complete.")
+    LOGGER.warning("Restart for some changes to apply.")
 
 
 if __name__ == "__main__":

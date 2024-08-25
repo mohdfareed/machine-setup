@@ -19,22 +19,24 @@ LOGGER = logging.getLogger(__name__)
 """The Homebrew setup logger."""
 
 
-def setup(brewfile=config.brewfile) -> None:
+def setup(machine_brewfile: str | None = None) -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
-    if brewfile == config.brewfile:
-        LOGGER.info("Setting up Homebrew...")
-    else:  # log custom brewfile setup
-        LOGGER.info("Setting up machine-specific Homebrew configuration...")
+    LOGGER.info("Setting up Homebrew...")
     install_brew()
 
-    # install packages from Brewfile
-    LOGGER.info("Installing packages from Brewfile...")
-    cmd = [BREW, "bundle", f"--file={brewfile}"]
-    shell.run(cmd, msg="Installing", throws=False)
+    # install brew and core packages
+    LOGGER.info("Installing core packages...")
+    cmd = [BREW, "bundle", f"--file={config.brewfile}"]
+    shell.run(cmd, msg="Installing packages", throws=False)
+
+    if machine_brewfile:  # install machine specific packages
+        LOGGER.info("Installing machine specific packages...")
+        cmd = [BREW, "bundle", f"--file={machine_brewfile}"]
+        shell.run(cmd, msg="Installing packages", throws=False)
 
     # upgrade packages
     LOGGER.info("Upgrading packages...")
-    shell.run([BREW, "upgrade"], msg="Upgrading", throws=False)
+    shell.run([BREW, "upgrade"], msg="Upgrading packages", throws=False)
 
     # cleanup
     LOGGER.info("Cleaning up...")
@@ -42,25 +44,19 @@ def setup(brewfile=config.brewfile) -> None:
     shell.run(cmd, msg="Cleaning up", throws=False)
     LOGGER.info("Homebrew setup complete.")
 
-    # macos specific setup
-    if not utils.is_macos():
-        return
-
-    # update app store packages
-    LOGGER.info("Upgrading mac app store packages...")
-    shell.run([MAS, "upgrade"], msg="Upgrading")
-
 
 def install_brew() -> None:
     """Install Homebrew on a new machine."""
+
     # update homebrew if it is already installed
     if os.path.exists(BREW):
-        shell.run([BREW, "update"], msg="Updating")
+        shell.run([BREW, "update"], msg="Updating brew")
         LOGGER.info("Homebrew was updated.")
+
     else:  # install homebrew otherwise
         LOGGER.info("Installing Homebrew...")
         cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
-        shell.run(cmd, msg="Installing")
+        shell.run(cmd, msg="Installing brew")
         LOGGER.info("Homebrew installed successfully.")
 
     # fix “zsh compinit: insecure directories” error
