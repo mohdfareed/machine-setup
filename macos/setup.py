@@ -4,7 +4,6 @@
 import logging
 
 import config
-import macos
 import utils
 from scripts.brew import setup as brew_setup
 from scripts.git import setup as git_setup
@@ -13,8 +12,8 @@ from scripts.shell import setup as shell_setup
 from scripts.ssh import setup as ssh_setup
 from utils import shell
 
-PS_PROFILE = "~/.config/powershell/profile.ps1"
-"""The path to the PowerShell profile file."""
+from . import brewfile, preferences, zshenv, zshrc
+
 VSCODE = "~/Library/Application Support/Code/User"
 """The path to the VSCode user settings directory on macOS."""
 PAM_SUDO = "/etc/pam.d/sudo_local"
@@ -41,10 +40,9 @@ def setup() -> None:
     ssh_setup()
 
     # macos-specific configuration
-    brew_setup(macos.brewfile)
-    utils.symlink(macos.zshrc, ZSHRC)
-    utils.symlink(macos.zshenv, ZSHENV)
-    utils.symlink(macos.ps_profile, PS_PROFILE)
+    brew_setup(brewfile)
+    utils.symlink(zshrc, ZSHRC)
+    utils.symlink(zshenv, ZSHENV)
 
     # setup vscode settings
     LOGGER.info("Setting up VSCode...")
@@ -55,7 +53,7 @@ def setup() -> None:
 
     # run the preferences script
     LOGGER.info("Setting system preferences...")
-    shell.run(f". {macos.preferences}")
+    shell.run(f". {preferences}")
     LOGGER.debug("System preferences set.")
 
     # use touch ID for sudo

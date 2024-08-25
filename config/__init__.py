@@ -15,6 +15,10 @@ vim = _os.path.join(config, "vim")
 """The path of vim configuration files."""
 brewfile = _os.path.join(config, "brewfile")
 """The path of Homebrew packages file."""
+ssh_config = _os.path.join(config, "ssh.config")
+"""The path of the global ssh config file."""
+ps_profile = _os.path.join(config, "powershell.ps1")
+"""The path of the PowerShell profile file."""
 
 # git
 gitconfig = _os.path.join(config, ".gitconfig")

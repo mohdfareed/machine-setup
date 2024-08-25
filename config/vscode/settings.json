@@ -175,7 +175,8 @@
   "pylint.args": [
     "--enable-all-extensions",
     "--disable=while_used",
-    "--disable=too-few-public-methods"
+    "--disable=too-few-public-methods",
+    "--disable=fixme"
   ],
   "mypy-type-checker.args": [
     "--check-untyped-defs"
@@ -221,7 +222,8 @@
   // #region ===================================================================
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  }
+  },
+  "svg.preview.mode": "img"
   // # endregion
   // REVIEW - new customizations above =========================================
 }

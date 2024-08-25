@@ -107,6 +107,7 @@ if __name__ == "__main__":
     #     choices=["macos", "rpi"],
     #     help="specify the type of machine to setup",
     # )
+    # TODO: use a single cli command to bootstrap any machine
     args = parser.parse_args()
 
     try:

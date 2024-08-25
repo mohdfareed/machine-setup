@@ -19,6 +19,8 @@ VIM = os.path.join(macos.xdg_config, "nvim")
 """The path of the vim configuration directory symlink."""
 TMUX = os.path.join(macos.xdg_config, "tmux", "tmux.conf")
 """The path of the tmux configuration file symlink."""
+PS_PROFILE = "~/.config/powershell/profile.ps1"
+"""The path to the PowerShell profile file."""
 
 LOGGER = logging.getLogger(__name__)
 """The ZSH setup logger."""
@@ -34,6 +36,7 @@ def setup() -> None:
     utils.symlink(config.tmux, TMUX)
     utils.symlink(config.zshrc, ZSHRC)
     utils.symlink(config.zshenv, ZSHENV)
+    utils.symlink(config.ps_profile, PS_PROFILE)
 
     # clean up
     shell.run("sudo rm -rf ~/.zcompdump*")

@@ -4,6 +4,7 @@ import logging
 import os
 from dataclasses import dataclass
 
+import config
 import macos
 import utils
 from utils import shell
@@ -49,7 +50,7 @@ def setup() -> None:
     """
 
     LOGGER.info("Setting up SSH...")
-    utils.symlink(macos.ssh_config, os.path.join(SSH_DIR, "config"))
+    utils.symlink(config.ssh_config, os.path.join(SSH_DIR, "config"))
     for key in load_keys(macos.ssh_keys):
         setup_key(key)
     LOGGER.info("SSH setup complete")
