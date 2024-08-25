@@ -63,18 +63,20 @@ def load_keys(keys_dir: str) -> list[SSHKeyPair]:
         dict[str, SSHKey]: A dict of key names to key pairs.
     """
     keys_dir = os.path.abspath(keys_dir)
-    keys = []  # map of key names to key pairs
+    keys: list[SSHKeyPair] = []  # map of key names to key pairs
+    files = os.listdir(keys_dir)  # list of files in the directory
 
-    # load keys by finding private keys and matching public keys
-    files = os.listdir(keys_dir)
+    # load private keys
     for filename in files:
         if filename.endswith(PK_EXT):
             continue  # skip public keys
-
         key = SSHKeyPair(private=os.path.join(keys_dir, filename))
+        keys += [key]  # add key pair to list
+
+    # load public keys
+    for key in keys:
         if key.name + PK_EXT in files:  # find matching public key
             key.public = os.path.join(keys_dir, key.name + PK_EXT)
-            keys += [key]  # add key pair to list
 
     LOGGER.debug("Loaded [bold]%d[/] ssh keys.", len(keys))
     return keys
