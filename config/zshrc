@@ -1,16 +1,24 @@
 # Configuration (shared across machines)
 # =============================================================================
 
-COMPLETION_WAITING_DOTS=true   # show dots while loading completions
-HYPHEN_INSENSITIVE=true        # ignore hyphens in commands
-ZSH_THEME=""                   # use external theme
-zstyle ':omz:update' mode auto # update automatically without asking
+# homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)" && brew_prefix="$(brew --prefix)"
+fpath+=("$brew_prefix/share/zsh/site-functions")         # pure prompt
+fpath+=("$brew_prefix/share/zsh-completions")            # completions
+export PATH="$(brew --prefix python)/libexec/bin:$PATH"  # python
+eval "$(pyenv init -)"                                   # pyenv
+eval "$(pyenv virtualenv-init -)"                        # pyenv-virtualenv
 
 # create directories
 [ -d "$XDG_CACHE_HOME/zsh" ] || mkdir -p "$XDG_CACHE_HOME/zsh"
 [ -f "$HISTFILE" ] || touch "$HISTFILE"
 [ -d "$IPYTHONDIR" ] || mkdir -p "$IPYTHONDIR"
 
+# oh-my-zsh
+COMPLETION_WAITING_DOTS=true   # show dots while loading completions
+HYPHEN_INSENSITIVE=true        # ignore hyphens in commands
+ZSH_THEME=""                   # use external theme
+zstyle ':omz:update' mode auto # update automatically without asking
 source $ZSH/oh-my-zsh.sh # load oh-my-zsh
 
 # Shell Configuration

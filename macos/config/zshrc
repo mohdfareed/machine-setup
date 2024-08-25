@@ -1,17 +1,6 @@
 # Configuration: macOS
 # =============================================================================
 
-# diable login message
-[ -f "$HOME/.hushlogin" ] || touch "$HOME/.hushlogin"
-
-# load homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)" && brew_prefix="$(brew --prefix)"
-fpath+=("$brew_prefix/share/zsh/site-functions")         # pure prompt
-fpath+=("$brew_prefix/share/zsh-completions")            # completions
-export PATH="$(brew --prefix python)/libexec/bin:$PATH"  # python
-eval "$(pyenv init -)"                                   # pyenv
-eval "$(pyenv virtualenv-init -)"                        # pyenv-virtualenv
-
 # zsh plugins
 plugins=(
     macos # macos-specific utilities
@@ -23,11 +12,12 @@ source "$brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 source "$brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 unset brew_prefix
 
+# disable login message
+[ -f "$HOME/.hushlogin" ] || touch "$HOME/.hushlogin"
+
 # Functions and Aliases
 # =============================================================================
 
-alias docker-restart='colima stop && colima start'
-alias sys-update='brew update && brew upgrade && mas upgrade && brew cleanup'
 alias ssh-create-key="ssh-keygen -t ed25519 -C"
 
 # add all ssh keys to keychain
@@ -91,9 +81,3 @@ function unzip-encrypt {
 
     unzip -P $(openssl rand -base64 32 | tr -d /=+) "$1"
 }
-
-# Post-Configuration
-# =============================================================================
-
-# REVIEW: check if this is necessary
-ssh-fix-keychain > /dev/null 2>&1

@@ -32,13 +32,13 @@ def setup(brewfile=config.brewfile) -> None:
 
     # upgrade packages
     LOGGER.info("Upgrading packages...")
-    shell.run([BREW, "upgrade"], msg="Upgrading")
+    shell.run([BREW, "upgrade"], msg="Upgrading", throws=False)
     LOGGER.debug("Upgraded packages.")
 
     # cleanup
     LOGGER.info("Cleaning up...")
     cmd = [BREW, "cleanup", "--prune=all"]
-    shell.run(cmd, msg="Cleaning up")
+    shell.run(cmd, msg="Cleaning up", throws=False)
     LOGGER.info("Homebrew setup complete.")
 
     # macos specific setup
