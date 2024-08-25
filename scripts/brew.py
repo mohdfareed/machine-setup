@@ -21,19 +21,20 @@ LOGGER = logging.getLogger(__name__)
 
 def setup(brewfile=config.brewfile) -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
-    LOGGER.info("Setting up Homebrew...")
+    if brewfile == config.brewfile:
+        LOGGER.info("Setting up Homebrew...")
+    else:  # log custom brewfile setup
+        LOGGER.info("Setting up machine-specific Homebrew configuration...")
     install_brew()
 
     # install packages from Brewfile
     LOGGER.info("Installing packages from Brewfile...")
     cmd = [BREW, "bundle", f"--file={brewfile}"]
     shell.run(cmd, msg="Installing", throws=False)
-    LOGGER.debug("Installed packages from Brewfile.")
 
     # upgrade packages
     LOGGER.info("Upgrading packages...")
     shell.run([BREW, "upgrade"], msg="Upgrading", throws=False)
-    LOGGER.debug("Upgraded packages.")
 
     # cleanup
     LOGGER.info("Cleaning up...")
@@ -48,7 +49,6 @@ def setup(brewfile=config.brewfile) -> None:
     # update app store packages
     LOGGER.info("Upgrading mac app store packages...")
     shell.run([MAS, "upgrade"], msg="Upgrading")
-    LOGGER.debug("Upgraded mac app store packages.")
 
 
 def install_brew() -> None:

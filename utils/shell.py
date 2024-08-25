@@ -34,7 +34,7 @@ def run(command, env=None, throws=True, msg=LOADING_STR) -> tuple[int, str]:
         tuple[int, str]: The return code and output of the command.
 
     Raises:
-        subprocess.CalledProcessError: If the command has a non-zero return
+        ShellError: If the command has a non-zero return
         code and `throws` is True.
     """
 
@@ -53,7 +53,7 @@ def run(command, env=None, throws=True, msg=LOADING_STR) -> tuple[int, str]:
         output, returncode = _print_output(process, status, msg)
     # handle return code and/or output
     if throws and returncode != 0:
-        raise subprocess.CalledProcessError(returncode, command, output)
+        raise ShellError(returncode, command, output)
     return returncode, output
 
 
@@ -85,3 +85,7 @@ def _print_output(process, status, msg):
         if process.poll() is not None:
             break
     return output.strip(), process.wait()
+
+
+class ShellError(Exception):
+    """Exception due to a shell error."""

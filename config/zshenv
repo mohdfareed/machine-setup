@@ -35,7 +35,6 @@ export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 
 # dotnet
-export DOTNET_ROOT="/usr/local/share/dotnet/bin"
 export PATH="$PATH:$HOME/.dotnet/tools"
 # go
 export GOPATH="$XDG_DATA_HOME/go"

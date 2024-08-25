@@ -9,15 +9,20 @@ export PATH="$(brew --prefix python)/libexec/bin:$PATH"  # python
 eval "$(pyenv init -)"                                   # pyenv
 eval "$(pyenv virtualenv-init -)"                        # pyenv-virtualenv
 
+# dotnet
+export DOTNET_ROOT="$brew_prefix/bin"
+
+# environment variables
+COMPLETION_WAITING_DOTS=true   # show dots while loading completions
+HYPHEN_INSENSITIVE=true        # ignore hyphens in commands
+ZSH_THEME=""                   # use external theme
+
 # create directories
 [ -d "$XDG_CACHE_HOME/zsh" ] || mkdir -p "$XDG_CACHE_HOME/zsh"
 [ -f "$HISTFILE" ] || touch "$HISTFILE"
 [ -d "$IPYTHONDIR" ] || mkdir -p "$IPYTHONDIR"
 
 # oh-my-zsh
-COMPLETION_WAITING_DOTS=true   # show dots while loading completions
-HYPHEN_INSENSITIVE=true        # ignore hyphens in commands
-ZSH_THEME=""                   # use external theme
 zstyle ':omz:update' mode auto # update automatically without asking
 source $ZSH/oh-my-zsh.sh # load oh-my-zsh
 

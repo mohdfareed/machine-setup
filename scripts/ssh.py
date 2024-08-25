@@ -102,7 +102,7 @@ def setup_key(key: SSHKeyPair) -> None:
     # get key fingerprint
     fingerprint = shell.run(["ssh-keygen", "-lf", key.public])[1]
     fingerprint = fingerprint.split(" ")[1]
-    LOGGER.info("[bold]Key fingerprint:[/] %s", fingerprint)
+    LOGGER.debug("[bold]Key fingerprint:[/] %s", fingerprint)
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
@@ -114,7 +114,6 @@ def setup_key(key: SSHKeyPair) -> None:
         LOGGER.info("Added key to SSH agent")
     else:
         LOGGER.info("Key already exists in SSH agent")
-    LOGGER.info("Key setup complete")
 
 
 if __name__ == "__main__":

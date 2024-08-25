@@ -1,7 +1,6 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
 import logging
-import subprocess
 
 import config
 import utils
@@ -36,10 +35,11 @@ def setup() -> None:
     prompt = "Authenticate to accept Xcode license agreement: "
     try:  # accept xcode license
         shell.run(
-            ["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"]
+            ["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"],
+            msg="Authenticate to accept Xcode license",
         )
-    except subprocess.CalledProcessError as ex:
-        raise RuntimeError(
+    except shell.ShellError as ex:
+        raise utils.SetupError(
             "Failed to accept Xcode license."
             "Ensure Xcode is installed using: xcode-select --install"
         ) from ex
@@ -56,19 +56,17 @@ def setup() -> None:
     utils.symlink(zshenv, ZSHENV)
 
     # setup vscode settings
-    LOGGER.info("Setting up VSCode...")
+    LOGGER.debug("Setting up VSCode...")
     utils.symlink_at(config.vscode_settings, VSCODE)
     utils.symlink_at(config.vscode_keybindings, VSCODE)
     utils.symlink_at(config.vscode_snippets, VSCODE)
-    LOGGER.debug("Linked VSCode settings.")
 
     # run the preferences script
-    LOGGER.info("Setting system preferences...")
+    LOGGER.debug("Setting system preferences...")
     shell.run(f". {preferences}")
-    LOGGER.debug("System preferences set.")
 
     # use touch ID for sudo
-    LOGGER.info("Setting up Touch ID for sudo...")
+    LOGGER.debug("Setting up Touch ID for sudo...")
     with open(PAM_SUDO, "r", encoding="utf-8") as f:
         lines = f.read()
     if PAM_SUDO_MODULE not in lines:
