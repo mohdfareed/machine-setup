@@ -34,9 +34,9 @@ def setup() -> None:
     install_omz()
     utils.symlink(config.vim, VIM)
     utils.symlink(config.tmux, TMUX)
-    utils.symlink(config.zshrc, ZSHRC)
-    utils.symlink(config.zshenv, ZSHENV)
     utils.symlink(config.ps_profile, PS_PROFILE)
+    utils.symlink(macos.zshrc, ZSHRC)
+    utils.symlink(macos.zshenv, ZSHENV)
 
     # dotnet and uno setup
     dotnet_path = utils.load_env_var(ZSHENV, "DOTNET_ROOT")

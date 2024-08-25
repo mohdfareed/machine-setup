@@ -5,6 +5,8 @@ import argparse as _argparse
 import sys as _sys
 from collections.abc import Callable as _Callable
 
+from utils.shell import ShellError
+
 from .helpers import *  # make all helpers available at the root level
 from .logging import LOGGER
 from .logging import setup_logging as _setup_logging
@@ -46,7 +48,7 @@ def execute(setup: _Callable, *args, **kwargs) -> None:
         print()
         LOGGER.warning("Setup interrupted.")
         _sys.exit(0)
-    except SetupError as exception:
+    except (SetupError, ShellError) as exception:
         LOGGER.exception(exception)
         LOGGER.error("Setup failed.")
         _sys.exit(1)
@@ -54,7 +56,6 @@ def execute(setup: _Callable, *args, **kwargs) -> None:
         LOGGER.exception(exception)
         LOGGER.error("An unexpected error occurred.")
         _sys.exit(1)
-    LOGGER.warning("Restart for some changes to apply.")
 
 
 class SetupError(Exception):

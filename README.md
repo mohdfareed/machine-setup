@@ -10,17 +10,17 @@ intervention.
 To set up a machine, run the following command:
 
 ```sh
-repo_url='https://raw.githubusercontent.com/mohdfareed/machine/main'
-script_url="${repo_url}/[machine]/bootstrap.py"
-curl -fsSL $script_url | python3 - [-f|--force] [-v|--verbose] [-h|--help]
+github_url='https://raw.githubusercontent.com/mohdfareed'
+script_url="${github_url}/[machine]/main/bootstrap.py"
+curl -fsSL $script_url | python3 - [-h|--help] machine [-f|--force] [-h|--help]
 ```
 
 Where the arguments are as follows:
 
+- `-h|--help`: prints the bootstrapping help message.
 - `machine`: the machine to set up (only macOS is supported).
 - `-f|--force`: forces cloning the repo even if it already exists.
-- `-v|--verbose`: prints verbose output (debug messages).
-- `-h|--help`: prints a help message.
+- `-h|--help`: prints the help message of the machine's setup script.
 
 ### Setting Up Individual Components
 
