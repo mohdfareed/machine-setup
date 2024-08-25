@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
 """Setup module containing a `setup` function for setting up macOS."""
 
 import logging
+import subprocess
 
 import config
 import utils
@@ -32,6 +32,17 @@ LOGGER = logging.getLogger(__name__)
 def setup() -> None:
     """Setup macOS on a new machine."""
     LOGGER.info("Setting up macOS...")
+
+    prompt = "Authenticate to accept Xcode license agreement: "
+    try:  # accept xcode license
+        shell.run(
+            ["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"]
+        )
+    except subprocess.CalledProcessError as ex:
+        raise RuntimeError(
+            "Failed to accept Xcode license."
+            "Ensure Xcode is installed using: xcode-select --install"
+        ) from ex
 
     # setup core machine
     git_setup()
