@@ -36,6 +36,8 @@ brew "bat"    # cat replacement
 brew "tmux"   # terminal multiplexer
 brew "tpm"    # tmux plugin manager
 brew "btop"   # resource monitor
+# FIXME: conflicts with dotnet-sdk
+# brew "dotnet" # .net core runtime
 
 # FONTS
 # =============================================================================

@@ -58,6 +58,7 @@ have the configuration below.
 - `nvim`
 - `bat`
 - `eza`
+- `dotnet-sdk`
 
 ### Git
 

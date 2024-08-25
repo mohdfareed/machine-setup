@@ -38,6 +38,11 @@ def setup() -> None:
     utils.symlink(config.zshenv, ZSHENV)
     utils.symlink(config.ps_profile, PS_PROFILE)
 
+    # dotnet and uno setup
+    dotnet_path = utils.load_env_var(ZSHENV, "DOTNET_ROOT")
+    shell.run(f"{dotnet_path}/dotnet tool install -g uno.check")
+    shell.run(f"{dotnet_path}/dotnet tool update -g uno.check")
+
     # clean up
     shell.run("sudo rm -rf ~/.zcompdump*")
     shell.run("sudo rm -rf ~/.zshrc")
