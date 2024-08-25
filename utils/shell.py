@@ -17,6 +17,9 @@ followed by a loading animation."""
 LOGGER = logging.getLogger(__name__)
 """The shell logger."""
 
+_error_token = "error"
+_warning_token = "warning"
+
 
 def run(command, env=None, throws=True, msg=LOADING_STR) -> tuple[int, str]:
     """Run a shell command and return its output and return code.
@@ -68,10 +71,20 @@ def _print_output(process, status, msg):
             line = ""
             if fd == process.stdout.fileno():
                 if line := process.stdout.readline().strip():
-                    LOGGER.debug(line)
+                    if _error_token in line.lower():
+                        LOGGER.error(line)
+                    elif _warning_token in line.lower():
+                        LOGGER.warning(line)
+                    else:
+                        LOGGER.debug(line)
             if fd == process.stderr.fileno():
                 if line := process.stderr.readline().strip():
-                    LOGGER.error(line)
+                    if _error_token in line.lower():
+                        LOGGER.error(line)
+                    elif _warning_token in line.lower():
+                        LOGGER.warning(line)
+                    else:
+                        LOGGER.error(line)
             status.start()
 
             if line:  # sanitize output and update status
