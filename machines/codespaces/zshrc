@@ -1,0 +1,17 @@
+# Configuration: macOS
+# =============================================================================
+
+# load core machine configuration
+source $MACHINE/config/zshrc
+
+# FIXME: install packages without brew
+# # syntax highlighting, auto-suggestions, and auto-completion
+# brew_prefix=$(brew --prefix)
+# source "$brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+# source "$brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+# unset brew_prefix
+
+# Functions and Aliases
+# =============================================================================
+
+alias setup-machine="$MACHINE/setup.sh codespaces"

@@ -1,0 +1,7 @@
+# Environment: macOS
+# =============================================================================
+
+# required environment variables
+export MACHINE="~/machine"
+# remote environment variables
+source "$MACHINE/config/zshenv" # global environment variables
