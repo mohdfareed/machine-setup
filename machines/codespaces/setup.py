@@ -3,7 +3,7 @@
 import logging
 
 import utils
-from machines.codespaces import zshenv, zshrc
+from machines import codespaces
 from scripts import git, shell
 from scripts.shell import ZSHENV, ZSHRC
 
@@ -20,8 +20,8 @@ def setup() -> None:
     shell.setup()
 
     # shell configuration
-    utils.symlink(zshrc, ZSHRC)
-    utils.symlink(zshenv, ZSHENV)
+    utils.symlink(codespaces.zshrc, ZSHRC)
+    utils.symlink(codespaces.zshenv, ZSHENV)
 
     LOGGER.info("Codespace setup complete.")
 

@@ -5,23 +5,28 @@ import logging
 import os
 
 import config
-import machines.macos
 import utils
-
-GITCONFIG: str = os.path.join(machines.macos.xdg_config, "git", "config")
-"""The path to the git configuration file on the machine."""
-GITIGNORE: str = os.path.join(machines.macos.xdg_config, "git", "ignore")
-"""The path to the git ignore file on the machine."""
+from utils import shell
 
 LOGGER = logging.getLogger(__name__)
 """The git setup logger."""
 
 
-def setup() -> None:
+def setup(xdg_config: str | None = None) -> None:
     """Setup git on a new machine."""
     LOGGER.info("Setting up git...")
-    utils.symlink(config.gitconfig, GITCONFIG)
-    utils.symlink(config.gitignore, GITIGNORE)
+
+    if xdg_config is None:
+        xdg_config = shell.run("echo $XDG_CONFIG_HOME")[1]
+    if not xdg_config:
+        xdg_config = os.path.expanduser("~/.config")
+
+    # resolve git configuration paths
+    gitconfig = os.path.join(xdg_config, "git", "config")
+    gitignore = os.path.join(xdg_config, "git", "ignore")
+
+    utils.symlink(config.gitconfig, gitconfig)
+    utils.symlink(config.gitignore, gitignore)
     LOGGER.debug("Git was setup successfully.")
 
 
