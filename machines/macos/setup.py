@@ -2,7 +2,6 @@
 
 import logging
 
-import config
 import utils
 from machines.macos import brewfile, preferences, zshenv, zshrc
 from scripts.brew import setup as brew_setup
@@ -10,10 +9,9 @@ from scripts.git import setup as git_setup
 from scripts.shell import ZSHENV, ZSHRC
 from scripts.shell import setup as shell_setup
 from scripts.ssh import setup as ssh_setup
+from scripts.vscode import setup as vscode_setup
 from utils import shell
 
-VSCODE = "~/Library/Application Support/Code/User"
-"""The path to the VSCode user settings directory on macOS."""
 PAM_SUDO = "/etc/pam.d/sudo_local"
 """The path to the sudo PAM configuration file on macOS."""
 PAM_SUDO_MODULE = "pam_tid.so"
@@ -48,16 +46,11 @@ def setup() -> None:
     brew_setup(brewfile)
     shell_setup()
     ssh_setup()
+    vscode_setup()
 
     # shell configuration
     utils.symlink(zshrc, ZSHRC)
     utils.symlink(zshenv, ZSHENV)
-
-    # setup vscode settings
-    LOGGER.debug("Setting up VSCode...")
-    utils.symlink_at(config.vscode_settings, VSCODE)
-    utils.symlink_at(config.vscode_keybindings, VSCODE)
-    utils.symlink_at(config.vscode_snippets, VSCODE)
 
     # run the preferences script
     LOGGER.debug("Setting system preferences...")

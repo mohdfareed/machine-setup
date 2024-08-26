@@ -14,8 +14,13 @@ from .logging import LOGGER
 from .logging import setup_logging as _setup_logging
 from .shell import run as _run
 
-
 # MARK - Platform
+
+
+class UnsupportedOS(Exception):
+    """Exception due to an unsupported operating system."""
+
+
 class PLATFORM(_Enum):
     """Enumeration of supported platforms."""
 

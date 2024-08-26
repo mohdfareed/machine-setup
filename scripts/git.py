@@ -22,7 +22,7 @@ def setup() -> None:
     LOGGER.info("Setting up git...")
     utils.symlink(config.gitconfig, GITCONFIG)
     utils.symlink(config.gitignore, GITIGNORE)
-    LOGGER.info("Git was setup successfully.")
+    LOGGER.debug("Git was setup successfully.")
 
 
 if __name__ == "__main__":
