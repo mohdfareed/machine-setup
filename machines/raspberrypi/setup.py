@@ -43,6 +43,5 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.parser.description = "Raspberry Pi setup script."
-    args = utils.startup()
+    args = utils.startup(description="Raspberry Pi setup script.")
     utils.execute(setup)

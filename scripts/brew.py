@@ -65,6 +65,5 @@ def install_brew() -> None:
 
 
 if __name__ == "__main__":
-    utils.parser.description = "Homebrew setup script."
-    args = utils.startup()
+    args = utils.startup(description="Homebrew setup script.")
     utils.execute(setup)

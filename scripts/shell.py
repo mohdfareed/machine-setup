@@ -73,6 +73,5 @@ def install_omz() -> None:
 
 
 if __name__ == "__main__":
-    utils.parser.description = "Shell setup script."
-    args = utils.startup()
+    args = utils.startup(description="Shell setup script.")
     utils.execute(setup)

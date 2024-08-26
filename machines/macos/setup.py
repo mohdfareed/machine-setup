@@ -79,6 +79,5 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.parser.description = "macOS setup script."
-    args = utils.startup()
+    args = utils.startup(description="macOS setup script.")
     utils.execute(setup)

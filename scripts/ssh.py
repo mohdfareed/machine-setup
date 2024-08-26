@@ -119,6 +119,5 @@ def setup_key(key: SSHKeyPair) -> None:
 
 
 if __name__ == "__main__":
-    utils.parser.description = "SSH setup script."
-    args = utils.startup()
+    args = utils.startup(description="SSH setup script.")
     utils.execute(setup)

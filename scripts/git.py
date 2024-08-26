@@ -26,6 +26,5 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.parser.description = "Git setup script."
-    args = utils.startup()
+    args = utils.startup(description="Git setup script.")
     utils.execute(setup)
