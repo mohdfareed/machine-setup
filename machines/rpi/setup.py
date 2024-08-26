@@ -3,7 +3,7 @@
 import logging
 
 import utils
-from machines import raspberrypi
+from machines import rpi
 from scripts import brew, git, shell, ssh, vscode
 from scripts.shell import ZSHENV, ZSHRC
 
@@ -21,12 +21,12 @@ def setup() -> None:
     git.setup()
     brew.setup()
     shell.setup()
-    ssh.setup(raspberrypi.ssh_keys)
+    ssh.setup(rpi.ssh_keys)
     vscode.setup()
 
     # shell configuration
-    utils.symlink(raspberrypi.zshrc, ZSHRC)
-    utils.symlink(raspberrypi.zshenv, ZSHENV)
+    utils.symlink(rpi.zshrc, ZSHRC)
+    utils.symlink(rpi.zshenv, ZSHENV)
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")
