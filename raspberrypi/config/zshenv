@@ -2,7 +2,6 @@
 # =============================================================================
 
 # machine specific environment variables
-export DEV="$HOME"
 export PURE="$HOME/.zsh/pure"
 export ZSHCOMP="$HOME/.zsh/zsh-completions"
 export TAILSCALE_DOMAIN="rpi.tail2a477.ts.net"

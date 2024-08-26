@@ -62,6 +62,7 @@
     "*"
   ],
   "cSpell.userWords": [
+    "codespaces",
     "endregion",
     "Raycast"
   ],
@@ -223,7 +224,8 @@
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
   },
-  "svg.preview.mode": "img"
+  "svg.preview.mode": "img",
+  "editor.minimap.enabled": false
   // # endregion
   // REVIEW - new customizations above =========================================
 }

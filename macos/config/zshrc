@@ -41,16 +41,6 @@ function ssh-pi {
     fi
 }
 
-# uninstall homebrew package with its dependencies
-function brew-uninstall {
-    usage="usage: $0 package..."
-	if (($# < 1)); then echo $usage && return 1; fi
-
-    brew uninstall $@
-    brew autoremove
-    brew cleanup
-}
-
 # zip a folder with password without compression
 function zip-encrypt {
     usage="usage: $0 dir"

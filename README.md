@@ -42,8 +42,20 @@ python -m [machine].setup [-h]
 
 ## Configuration
 
-The common configuration that is shared across all machines. All machines must
-have the configuration below.
+The common configuration that is shared across all machines. A machine is
+configured by creating a new module in the `machines` package, with the
+following structure:
+
+```plaintext
+machines/
+  [machine]/
+    config/
+      zshenv.sh
+    __init__.py
+    setup.py
+```
+
+Where:
 
 ### Files
 
@@ -51,7 +63,7 @@ have the configuration below.
   such as API keys.
 - `keys/`: a directory containing the SSH keys used by the machine.
 
-### Packages
+### Shell
 
 - `oh-my-zsh`
 - `pure`
@@ -59,10 +71,12 @@ have the configuration below.
 - `bat`
 - `eza`
 - `dotnet-sdk`
+- `zdotdir` defined in the machine's module.
 
 ### Git
 
 - `~/.ssh/github.pub`: public key for GitHub.
+- `xdg_config` defined in the machine's module.
 
 ## macOS Backup
 

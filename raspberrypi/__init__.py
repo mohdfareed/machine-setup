@@ -4,13 +4,13 @@ import os as _os
 
 import utils as _utils
 
-# macos
+# rpi
 rpi = _os.path.join(_os.path.dirname(_os.path.realpath(__file__)), "config")
-"""The path of macOS configuration files."""
+"""The path of rpi configuration files."""
 zshenv = _os.path.join(rpi, "zshenv")
-"""The path of macOS zshenv file."""
+"""The path of rpi zshenv file."""
 zshrc = _os.path.join(rpi, "zshrc")
-"""The path of macOS zshrc file."""
+"""The path of rpi zshrc file."""
 
 # private files
 private_machine = _utils.load_env_var(zshenv, "PRIVATE_MACHINE")

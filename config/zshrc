@@ -93,3 +93,13 @@ venv-activate() {
 
 	source "$venv/bin/activate"
 }
+
+# uninstall homebrew package with its dependencies
+brew-uninstall() {
+    usage="usage: $0 package..."
+	if (($# < 1)); then echo $usage && return 1; fi
+
+    brew uninstall $@
+    brew autoremove
+    brew cleanup
+}

@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
-"""Bootstrap a new macOS machine. This will clone machine configuration and
+"""Bootstrap a new machine. This will clone the machine's configuration and
 execute the setup script.
 
-Requirements: Xcode Commandline Tools.
+Requirements:
+    - Configured `[machine]` module in the repository
+    - `[machine]/setup.py` setup script
+    - `[machine]/config/zshenv` shell environment file
+    - `$MACHINE` environment variable to resolve machine path
 
 External effects:
-  - Clones machine into `$MACHINE`
-  - Creates a virtual environment at `$MACHINE`
-  - Executes `setup.sh`
+    - Clones machine into `$MACHINE`
+    - Creates a virtual environment at `$MACHINE`
+    - Executes `setup.sh`
 """
 
 import argparse
@@ -21,7 +25,7 @@ REPO = "https://github.com/mohdfareed/machine.git"
 """URL of the repository to clone."""
 SOURCE_URL = "https://raw.githubusercontent.com/mohdfareed/machine/main"
 """URL of the shell environment file."""
-MACHINE_VAR = "machine"
+MACHINE_VAR = "MACHINE"
 """Environment variable to resolve machine config path."""
 
 # paths at machine repository
