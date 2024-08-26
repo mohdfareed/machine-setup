@@ -19,6 +19,9 @@
 [pull]
     ; rebase local commits on top of the updated upstream branch
     rebase = true
+[rerere]
+    ; enable reuse recorded resolution (remember conflict resolutions)
+    enabled = true
 
 ; terminal settings
 [status]
