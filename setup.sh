@@ -6,6 +6,11 @@ usage="usage: $0 machine [args]"
 machine=""
 args=()
 
+# github codespaces automatically executes the script with no arguments
+if [ "$#" -eq 0 ]; then
+    machine="codespaces"
+fi
+
 # parse arguments
 for arg in "$@"; do
     if [ -z "$machine" ]; then
