@@ -5,7 +5,6 @@ import logging
 import utils
 from machines import codespaces
 from scripts import git, shell
-from scripts.shell import ZSHENV, ZSHRC
 
 LOGGER = logging.getLogger(__name__)
 """The macOS setup logger."""
@@ -17,11 +16,12 @@ def setup() -> None:
 
     # setup core machine
     git.setup()
-    shell.setup()
-
-    # shell configuration
-    utils.symlink(codespaces.zshrc, ZSHRC)
-    utils.symlink(codespaces.zshenv, ZSHENV)
+    shell.setup(
+        codespaces.xdg_config,
+        codespaces.zdotdir,
+        codespaces.zshrc,
+        codespaces.zshenv,
+    )
 
     LOGGER.info("Codespace setup complete.")
 

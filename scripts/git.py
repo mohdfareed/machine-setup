@@ -31,5 +31,11 @@ def setup(xdg_config: str | None = None) -> None:
 
 
 if __name__ == "__main__":
+    utils.PARSER.add_argument(
+        "xdg_config",
+        help="The path to the XDG configuration directory.",
+        nargs="?",
+        default=None,
+    )
     args = utils.startup(description="Git setup script.")
-    utils.execute(setup)
+    utils.execute(setup, args.xdg_config)

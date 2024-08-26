@@ -5,7 +5,6 @@ import logging
 import utils
 from machines import rpi
 from scripts import brew, git, shell, ssh, vscode
-from scripts.shell import ZSHENV, ZSHRC
 
 VSCODE = "~/Library/Application Support/Code/User"
 """The path to the VSCode user settings directory on macOS."""
@@ -20,13 +19,9 @@ def setup() -> None:
     # setup core machine
     git.setup()
     brew.setup()
-    shell.setup()
+    shell.setup(rpi.xdg_config, rpi.zdotdir, rpi.zshrc, rpi.zshenv)
     ssh.setup(rpi.ssh_keys)
     vscode.setup()
-
-    # shell configuration
-    utils.symlink(rpi.zshrc, ZSHRC)
-    utils.symlink(rpi.zshenv, ZSHENV)
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

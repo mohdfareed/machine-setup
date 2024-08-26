@@ -5,7 +5,6 @@ import logging
 import utils
 from machines import macos
 from scripts import brew, git, shell, ssh, vscode
-from scripts.shell import ZSHENV, ZSHRC
 from utils import shell as shell_utils
 
 PAM_SUDO = "/etc/pam.d/sudo_local"
@@ -40,13 +39,9 @@ def setup() -> None:
     # setup core machine
     git.setup(macos.xdg_config)
     brew.setup(macos.brewfile)
-    shell.setup()
+    shell.setup(macos.xdg_config, macos.zdotdir, macos.zshrc, macos.zshenv)
     ssh.setup(macos.ssh_keys)
     vscode.setup()
-
-    # shell configuration
-    utils.symlink(macos.zshrc, ZSHRC)
-    utils.symlink(macos.zshenv, ZSHENV)
 
     # run the preferences script
     LOGGER.debug("Setting system preferences...")
