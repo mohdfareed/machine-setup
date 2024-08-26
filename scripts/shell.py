@@ -7,17 +7,17 @@ import logging
 import os
 
 import config
-import macos
+import machines.macos
 import utils
 from utils import shell
 
 ZSHENV = "~/.zshenv"
 """The path to the zsh environment file symlink."""
-ZSHRC = os.path.join(macos.zdotdir, ".zshrc")
+ZSHRC = os.path.join(machines.macos.zdotdir, ".zshrc")
 """The path to the zsh configuration file symlink."""
-VIM = os.path.join(macos.xdg_config, "nvim")
+VIM = os.path.join(machines.macos.xdg_config, "nvim")
 """The path of the vim configuration directory symlink."""
-TMUX = os.path.join(macos.xdg_config, "tmux", "tmux.conf")
+TMUX = os.path.join(machines.macos.xdg_config, "tmux", "tmux.conf")
 """The path of the tmux configuration file symlink."""
 PS_PROFILE = "~/.config/powershell/profile.ps1"
 """The path to the PowerShell profile file."""
@@ -35,8 +35,8 @@ def setup() -> None:
     utils.symlink(config.vim, VIM)
     utils.symlink(config.tmux, TMUX)
     utils.symlink(config.ps_profile, PS_PROFILE)
-    utils.symlink(macos.zshrc, ZSHRC)
-    utils.symlink(macos.zshenv, ZSHENV)
+    utils.symlink(machines.macos.zshrc, ZSHRC)
+    utils.symlink(machines.macos.zshenv, ZSHENV)
 
     # dotnet and uno setup
     dotnet_path = utils.load_env_var(ZSHENV, "DOTNET_ROOT")

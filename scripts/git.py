@@ -5,12 +5,12 @@ import logging
 import os
 
 import config
-import macos
+import machines.macos
 import utils
 
-GITCONFIG: str = os.path.join(macos.xdg_config, "git", "config")
+GITCONFIG: str = os.path.join(machines.macos.xdg_config, "git", "config")
 """The path to the git configuration file on the machine."""
-GITIGNORE: str = os.path.join(macos.xdg_config, "git", "ignore")
+GITIGNORE: str = os.path.join(machines.macos.xdg_config, "git", "ignore")
 """The path to the git ignore file on the machine."""
 
 LOGGER = logging.getLogger(__name__)
