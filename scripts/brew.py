@@ -65,5 +65,11 @@ def install_brew() -> None:
 
 
 if __name__ == "__main__":
+    utils.PARSER.add_argument(
+        "machine_brewfile",
+        help="The path to the machine specific brewfile.",
+        nargs="?",
+        default=None,
+    )
     args = utils.startup(description="Homebrew setup script.")
-    utils.execute(setup)
+    utils.execute(setup, args.machine_brewfile)

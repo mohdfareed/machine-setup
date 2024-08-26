@@ -3,14 +3,10 @@
 import logging
 
 import utils
-from machines.macos import brewfile, preferences, zshenv, zshrc
-from scripts.brew import setup as brew_setup
-from scripts.git import setup as git_setup
+from machines.macos import brewfile, preferences, ssh_keys, zshenv, zshrc
+from scripts import brew, git, shell, ssh, vscode
 from scripts.shell import ZSHENV, ZSHRC
-from scripts.shell import setup as shell_setup
-from scripts.ssh import setup as ssh_setup
-from scripts.vscode import setup as vscode_setup
-from utils import shell
+from utils import shell as shell_utils
 
 PAM_SUDO = "/etc/pam.d/sudo_local"
 """The path to the sudo PAM configuration file on macOS."""
@@ -31,22 +27,22 @@ def setup() -> None:
 
     prompt = "Authenticate to accept Xcode license agreement: "
     try:  # accept xcode license
-        shell.run(
+        shell_utils.run(
             ["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"],
             msg="Authenticate to accept Xcode license",
         )
-    except shell.ShellError as ex:
+    except shell_utils.ShellError as ex:
         raise utils.SetupError(
             "Failed to accept Xcode license."
             "Ensure Xcode is installed using: xcode-select --install"
         ) from ex
 
     # setup core machine
-    git_setup()
-    brew_setup(brewfile)
-    shell_setup()
-    ssh_setup()
-    vscode_setup()
+    git.setup()
+    brew.setup(brewfile)
+    shell.setup()
+    ssh.setup(ssh_keys)
+    vscode.setup()
 
     # shell configuration
     utils.symlink(zshrc, ZSHRC)
@@ -54,7 +50,7 @@ def setup() -> None:
 
     # run the preferences script
     LOGGER.debug("Setting system preferences...")
-    shell.run(f". {preferences}")
+    shell_utils.run(f". {preferences}")
 
     # use touch ID for sudo
     LOGGER.debug("Setting up Touch ID for sudo...")

@@ -23,16 +23,21 @@ LOGGER = logging.getLogger(__name__)
 """The git setup logger."""
 
 
-def setup() -> None:
+def setup(vscode_settings=VSCODE) -> None:
     """Setup git on a new machine."""
     LOGGER.info("Setting up VSCode...")
 
-    utils.symlink_at(config.vscode_settings, VSCODE)
-    utils.symlink_at(config.vscode_keybindings, VSCODE)
-    utils.symlink_at(config.vscode_snippets, VSCODE)
-    LOGGER.debug("Git was setup successfully.")
+    for file in config.vscode:
+        utils.symlink_at(file, vscode_settings)
+    LOGGER.debug("VSCode was setup successfully.")
 
 
 if __name__ == "__main__":
-    args = utils.startup(description="Git setup script.")
-    utils.execute(setup)
+    utils.PARSER.add_argument(
+        "vscode_settings",
+        help="The path to the VSCode user settings directory.",
+        nargs="?",
+        default=VSCODE,
+    )
+    args = utils.startup(description="VSCode setup script.")
+    utils.execute(setup, args.vscode_settings)

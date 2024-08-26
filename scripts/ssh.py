@@ -5,7 +5,6 @@ import os
 from dataclasses import dataclass
 
 import config
-import machines.macos
 import utils
 from utils import shell
 
@@ -44,14 +43,14 @@ class SSHKeyPair:
         return os.path.splitext(base)[0]
 
 
-def setup() -> None:
+def setup(ssh_keys: str) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory.
     """
 
     LOGGER.info("Setting up SSH...")
     utils.symlink(config.ssh_config, os.path.join(SSH_DIR, "config"))
-    for key in load_keys(machines.macos.ssh_keys):
+    for key in load_keys(ssh_keys):
         setup_key(key)
     LOGGER.info("SSH setup complete")
 
@@ -119,5 +118,8 @@ def setup_key(key: SSHKeyPair) -> None:
 
 
 if __name__ == "__main__":
+    utils.PARSER.add_argument(
+        "ssh_keys", help="The directory containing the ssh keys to setup."
+    )
     args = utils.startup(description="SSH setup script.")
-    utils.execute(setup)
+    utils.execute(setup, args.ssh_keys)

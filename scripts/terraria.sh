@@ -8,7 +8,7 @@
 
 # dependencies: tmux, wget, unzip, curl, tar, ngrok
 # requirements: .net at $DOTNET_ROOT
-# .net installation intructions are displayed when running the server
+# .net installation instructions are displayed when running the server
 
 # NOTE: this script is meant to be run inside a directory
 # place the script in a 'terraria' directory to keep things organized
