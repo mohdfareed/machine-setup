@@ -38,10 +38,10 @@ def setup() -> None:
 
     # setup core machine
     git.setup(macos.xdg_config)
-    brew.setup(macos.brewfile)
+    # brew.setup(macos.brewfile)
     shell.setup(macos.xdg_config, macos.zdotdir, macos.zshrc, macos.zshenv)
-    ssh.setup(macos.ssh_keys)
-    vscode.setup()
+    # ssh.setup(macos.ssh_keys)
+    # vscode.setup()
 
     # run the preferences script
     LOGGER.debug("Setting system preferences...")

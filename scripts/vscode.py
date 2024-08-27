@@ -9,14 +9,17 @@ import utils
 VSCODE: str
 """The path to the VSCode user settings directory."""
 
+LOGGER = logging.getLogger(__name__)
+"""The SSH setup logger."""
+
 if utils.is_macos():
     VSCODE = "~/Library/Application Support/Code/User"
-if utils.is_linux():
+elif utils.is_linux():
     VSCODE = "~/.config/Code/User"
-if utils.is_windows():
+elif utils.is_windows():
     VSCODE = "%APPDATA%\\Code\\User"
 else:
-    raise utils.UnsupportedOS("Unsupported operating system.")
+    raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
 
 LOGGER = logging.getLogger(__name__)

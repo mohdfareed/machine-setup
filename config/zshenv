@@ -1,11 +1,11 @@
 # Environment (shared across machines)
 # =============================================================================
 
-export EDITOR="$(which nvim)"        # default to neovim as the editor
-export LESS="-R --ignore-case"       # use less with colors, ignoring case
-export SYSTEMD_LESS=$LESS            # less arguments of systemd pager
-export BAT_PAGER="less $LESS"        # use less as the pager for bat
-export PIP_REQUIRE_VIRTUALENV=true   # require virtualenv for pip
+export EDITOR="$(which nvim)"       # default to neovim as the editor
+export LESS="-R --ignore-case"      # use less with colors, ignoring case
+export SYSTEMD_LESS=$LESS           # less arguments of systemd pager
+export BAT_PAGER="less $LESS"       # use less as the pager for bat
+export PIP_REQUIRE_VIRTUALENV=true  # require virtualenv for pip
 
 # XDG Base Directory Specification
 # Source: https://wiki.archlinux.org/title/XDG_Base_Directory
@@ -21,10 +21,16 @@ export PATH="$PATH:$XDG_LOCAL_HOME/bin" # add local packages to path
 
 # shell environment
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export ZSH="$XDG_DATA_HOME/oh-my-zsh"
+export ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 export SHELL_SESSIONS_DISABLE=1
+
+# zsh history
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export HISTSIZE=5000
+export HISTFILE=~/.zsh_history
+export SAVEHIST=$HISTSIZE
+export HISTDUP=erase
 
 # python environment
 export PYTHON_HISTORY="$XDG_STATE_HOME/python/history"
@@ -38,7 +44,7 @@ export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export PATH="$PATH:$HOME/.dotnet/tools"
 # go
 export GOPATH="$XDG_DATA_HOME/go"
+export PATH="$PATH:$GOPATH/bin"
 # docker
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
-# whalebrew
 export WHALEBREW_CONFIG_DIR="$XDG_CONFIG_HOME/whalebrew"

@@ -3,6 +3,7 @@
     "brewfiles",
     "codespace",
     "Commandline",
+    "fpath",
     "keychain",
     "keygen",
     "mypy",
@@ -15,7 +16,8 @@
     "venv",
     "vscode",
     "zcompdump",
-    "zdotdir"
+    "zdotdir",
+    "zinit"
   ],
   "cSpell.ignorePaths": [
     "*/vscode/settings.json"

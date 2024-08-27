@@ -16,6 +16,9 @@ from .shell import run as _run
 
 # MARK - Platform
 
+OS = _platform.system()
+"""The current operating system."""
+
 
 class UnsupportedOS(Exception):
     """Exception due to an unsupported operating system."""

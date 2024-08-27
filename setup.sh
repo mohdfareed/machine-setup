@@ -32,7 +32,7 @@ machine_dir="$(dirname "$(realpath "$0")")"
 python="$machine_dir/.venv/bin/python"
 
 # ensure machine exists
-if [ ! -d "$machine_dir/$machine" ]; then
+if [ ! -d "$machine_dir/machines/$machine" ]; then
     echo -e "\033[31;1mError:\033[0m Machine '$machine' does not exist"
     echo "$usage"
     exit 1
@@ -40,5 +40,5 @@ fi
 
 # execute machine setup script
 cd "$machine_dir"
-$python -m "$machine.setup" "${args[@]}"
+$python -m "machines.$machine.setup" "${args[@]}"
 cd - >/dev/null
