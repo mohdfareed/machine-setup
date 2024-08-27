@@ -42,8 +42,12 @@ def setup(
     tmux = os.path.join(xdg_config, "tmux", "tmux.conf")
     ps_profile = os.path.join(xdg_config, "powershell", "profile.ps1")
 
+    # update zinit
+    shell.run("zinit self-update")
+    shell.run("zinit update")
+
     # install omz and symlink config files
-    install_omz(zshrc)
+    # install_omz(zshrc)
     utils.symlink(config.vim, vim)
     utils.symlink(config.tmux, tmux)
     utils.symlink(config.ps_profile, ps_profile)
@@ -51,7 +55,7 @@ def setup(
     utils.symlink(machine_zshenv, ZSHENV)
 
     # dotnet and uno setup
-    dotnet_path = utils.load_env_var(ZSHENV, "DOTNET_ROOT")
+    dotnet_path = utils.load_env_var(machine_zshenv, "DOTNET_ROOT")
     shell.run(f"{dotnet_path}/dotnet tool install -g uno.check")
     shell.run(f"{dotnet_path}/dotnet tool update -g uno.check")
 

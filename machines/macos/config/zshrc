@@ -4,12 +4,6 @@
 # load core machine configuration
 source $MACHINE/config/zshrc
 
-# syntax highlighting, auto-suggestions, and auto-completion
-brew_prefix=$(brew --prefix)
-source "$brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-source "$brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-unset brew_prefix
-
 # disable login message
 [ -f "$HOME/.hushlogin" ] || touch "$HOME/.hushlogin"
 

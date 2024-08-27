@@ -1,68 +1,42 @@
-# Configuration (shared across machines)
+_pwd=$(pwd) # needed due to some plugins changing the current directory
+
+# region - Setup
 # =============================================================================
 
-# homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
-fpath+=("$(brew --prefix)/share/zsh/site-functions")     # pure prompt
-fpath+=("$(brew --prefix)/share/zsh-completions")        # completions
-export PATH="$(brew --prefix python)/libexec/bin:$PATH"  # python
-eval "$(pyenv init -)"                                   # pyenv
-eval "$(pyenv virtualenv-init -)"                        # pyenv-virtualenv
-
-# dotnet
-export DOTNET_ROOT="$(brew --prefix)/bin"
-
-# environment variables
-COMPLETION_WAITING_DOTS=true   # show dots while loading completions
-HYPHEN_INSENSITIVE=true        # ignore hyphens in commands
-ZSH_THEME=""                   # use external theme
-
-# create directories
+# create required directories
 [ -d "$XDG_CACHE_HOME/zsh" ] || mkdir -p "$XDG_CACHE_HOME/zsh"
 [ -f "$HISTFILE" ] || touch "$HISTFILE"
 [ -d "$IPYTHONDIR" ] || mkdir -p "$IPYTHONDIR"
 
-# oh-my-zsh
-zstyle ':omz:update' mode auto # update automatically without asking
-source $ZSH/oh-my-zsh.sh # load oh-my-zsh
+# homebrew and tools
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"                # brew
+    export PATH="$(brew --prefix python)/libexec/bin:$PATH"  # python
+    eval "$(pyenv init -)"                                   # pyenv
+    eval "$(pyenv virtualenv-init -)"                        # pyenv-virtualenv
+    export DOTNET_ROOT="$(brew --prefix)/bin"                # dotnet
+    export PATH="$PATH:$DOTNET_ROOT"
+fi
 
-# Shell Configuration
-# =============================================================================
+# zinit
+repo=https://github.com/zdharma-continuum/zinit.git
+[ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
+[ ! -d $ZINIT_HOME/.git ] && git clone $repo $ZINIT_HOME
+source $ZINIT_HOME/zinit.zsh; unset repo
+source $MACHINE/config/plugins.zsh # load plugins
 
-unsetopt auto_list   # don't echo choices on ambiguous completion
-setopt menu_complete # auto-complete with menu selection
-
-# auto-completion
-zstyle ':completion:*' completer _complete _correct _approximate
-zstyle ':completion:*' format '%BCompleting %d:%b'
-zstyle ':completion:*' group-name ''
-
-# completions colors
-zstyle ':completion:*:options' list-colors '=(#b)(*)-- *==34' '=^(-- *)=34'
-zstyle ':completion:*:parameters' list-colors '=*=34'
-zstyle ':completion:*:commands' list-colors '=*=1;32'
-zstyle ':completion:*:builtins' list-colors '=*=1;32'
-zstyle ':completion:*:functions' list-colors '=*=1;35'
-zstyle ':completion:*:aliases' list-colors '=*=1;35'
-zstyle ':completion:*:systemctl:*' list-colors '=(#b)*(-- *)==34' '=-- *=34'
-
-# completion format of processes
-zstyle ':completion:*:*:*:*:processes' command \
-	"ps -u $USERNAME -o pid,%cpu,%mem,cputime,command"
-zstyle ':completion:*:*:kill:*:processes' list-colors \
-	'=(#b) #([0-9]#) #*[0-9]#:[0-9]#[:.][0-9]# #(*)=34=1;31=32'
-
-# zsh history and sessions
+# history
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
-compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
-# pure prompt
-PURE_PROMPT_SYMBOL='➜'
-autoload -U promptinit
-promptinit
-prompt pure
-
-# Functions and Aliases
+# endregion
+# region - Functions and Aliases
 # =============================================================================
 
 alias zsh::reload='exec $SHELL'
@@ -75,31 +49,35 @@ alias llst='lls -T'
 
 # time the startup of shell
 time-startup() {
-	usage="usage: $0 [iterations]"
-	if (($# > 1)); then echo $usage && return 1; fi
-	for i in $(seq 1 ${1-1}); do time $SHELL -i -c exit; done
+    usage="usage: $0 [iterations]"
+    if (($# > 1)); then echo $usage && return 1; fi
+    for i in $(seq 1 ${1-1}); do time $SHELL -i -c exit; done
 }
 
 # activate virtual environment
 venv-activate() {
-	usage="usage: $0 [venv_dir]"
-	if (($# > 1)); then echo $usage && return 1; fi
+    usage="usage: $0 [venv_dir]"
+    if (($# > 1)); then echo $usage && return 1; fi
 
-	venv=${1-.venv}
-	if [[ ! -d "$venv" ]]; then
-		echo "No virtual environment directory found"
-		return 1
-	fi
+    venv=${1-.venv}
+    if [[ ! -d "$venv" ]]; then
+        echo "No virtual environment directory found"
+        return 1
+    fi
 
-	source "$venv/bin/activate"
+    source "$venv/bin/activate"
 }
 
 # uninstall homebrew package with its dependencies
 brew-uninstall() {
     usage="usage: $0 package..."
-	if (($# < 1)); then echo $usage && return 1; fi
+    if (($# < 1)); then echo $usage && return 1; fi
 
     brew uninstall $@
     brew autoremove
     brew cleanup
 }
+
+# endregion
+
+cd $_pwd; unset _pwd

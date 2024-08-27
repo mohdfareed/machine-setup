@@ -2,42 +2,27 @@
 # =============================================================================
 
 # shell
-brew "zsh"                     # brew managed zsh
-brew "zsh-completions"         # extra completions
-brew "zsh-autosuggestions"     # auto suggestions
-brew "zsh-syntax-highlighting" # syntax highlighting
-brew "pure"                    # pure shell prompt
-
-# git
+brew "zsh"     # brew managed zsh
 brew "git"     # global git
 brew "git-lfs" # git large file storage
 brew "gh"      # github cli
+brew "go"      # go language
+
+# docker
+# TODO: convert to script
+brew "docker"         # containerization
+brew "docker-compose" # container orchestration
+brew "whalebrew"      # images manager
+
+# javascript
+# brew "node" # node.js
+# brew "nvm"  # node version manager
 
 # python
 brew "python"           # global python
 brew "pipx"             # python applications manager
 brew "pyenv"            # python version manager
 brew "pyenv-virtualenv" # python virtual environments
-
-# vim
-brew "neovim"  # vim editor
-brew "lazygit" # git ui
-brew "ripgrep" # grep replacement (telescope)
-brew "fd"      # find replacement (telescope)
-
-# docker
-brew "docker"         # containerization
-brew "docker-compose" # container orchestration
-brew "whalebrew"      # images manager
-
-# utilities
-brew "eza"    # ls replacement
-brew "bat"    # cat replacement
-brew "tmux"   # terminal multiplexer
-brew "tpm"    # tmux plugin manager
-brew "btop"   # resource monitor
-# FIXME: conflicts with dotnet-sdk
-# brew "dotnet" # .net core runtime
 
 # FONTS
 # =============================================================================
