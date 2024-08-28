@@ -3,8 +3,8 @@
 import logging
 import os
 
+import config
 import utils
-from config import config as global_config
 from machines import macos
 from scripts import brew, git, shell, ssh, vscode
 from utils import shell as shell_utils
@@ -73,8 +73,13 @@ def load_private_machine(private_machine: str) -> None:
     """Load private machine configuration."""
     LOGGER.info("Loading private machine configuration: %s", private_machine)
 
-    for file in os.listdir(private_machine):
-        utils.symlink_at(os.path.join(private_machine, file), global_config)
+    env_filename = os.path.basename(config.private_env)
+    private_env = os.path.join(private_machine, env_filename)
+    utils.symlink(private_env, config.private_env)
+
+    keys_dirname = os.path.basename(config.ssh_keys)
+    ssh_keys = os.path.join(private_machine, keys_dirname)
+    utils.symlink(ssh_keys, config.ssh_keys)
 
 
 if __name__ == "__main__":
