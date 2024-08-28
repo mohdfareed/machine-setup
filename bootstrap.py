@@ -59,7 +59,7 @@ def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
 
     # execute machine setup script
     script = os.path.join(path, SETUP_SCRIPT)
-    run(f"{script} {machine} {' '.join(setup_args or [])}", safe=False)
+    run([script, machine, *(setup_args or [])], safe=False)
 
 
 def run(cmd, silent=False, safe=False, text=False):

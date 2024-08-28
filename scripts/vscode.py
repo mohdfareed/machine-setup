@@ -2,6 +2,7 @@
 machine."""
 
 import logging
+import os
 
 import config
 import utils
@@ -27,8 +28,8 @@ def setup() -> None:
     """Setup VSCode on a new machine."""
 
     LOGGER.info("Setting up VSCode...")
-    for file in config.vscode:
-        utils.symlink_at(file, VSCODE)
+    for file in os.listdir(config.vscode):
+        utils.symlink_at(os.path.join(config.vscode, file), VSCODE)
     LOGGER.debug("VSCode was setup successfully.")
 
 

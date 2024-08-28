@@ -120,8 +120,8 @@ def symlink(src: str, dst: str) -> None:
     src = _os.path.expanduser(src)
     is_dir = _os.path.isdir(src)
 
-    try:  # remove existing file
-        _os.remove(dst)
+    try:  # remove existing symlink
+        _run(["sudo", "rm", "-rf", dst], throws=True)
     except FileNotFoundError:
         pass
 

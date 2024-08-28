@@ -40,20 +40,7 @@ def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
     utils.symlink(zshrc, _zshrc)
     utils.symlink(zshenv, ZSHENV)
 
-    # update zinit if installed
-    if shell.run("command -v zinit")[0] != 0:
-        LOGGER.warning("zinit not found, skipping zinit setup.")
-    else:
-        shell.run("zinit self-update")
-        shell.run("zinit update")
-
-    # dotnet and uno setup (if installed)
-    if shell.run("command -v dotnet")[0] != 0:
-        LOGGER.warning("dotnet not found, skipping dotnet setup.")
-    else:
-        dotnet_path = utils.load_env_var(zshenv, "DOTNET_ROOT")
-        shell.run(f"{dotnet_path}/dotnet tool install -g uno.check")
-        shell.run(f"{dotnet_path}/dotnet tool update -g uno.check")
+    # TODO: update zinit plugins
 
     # clean up
     shell.run("sudo rm -rf ~/.zcompdump*")

@@ -74,7 +74,7 @@ def load_private_machine(private_machine: str) -> None:
     LOGGER.info("Loading private machine configuration: %s", private_machine)
 
     for file in os.listdir(private_machine):
-        utils.symlink_at(file, global_config)
+        utils.symlink_at(os.path.join(private_machine, file), global_config)
 
 
 if __name__ == "__main__":
