@@ -32,33 +32,6 @@ setopt hist_ignore_dups
 setopt hist_find_no_dups
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 
-
-# endregion
-# region - Configuration
-# =============================================================================
-
-# auto-completion
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' matcher-list 'r:|[._-]=* r:|=* l:|=*'
-zstyle ':completion:*' completer _complete _correct _approximate
-zstyle ':completion:*' format '%BCompleting %d:%b'
-zstyle ':completion:*' group-name ''
-
-# # completions colors
-# zstyle ':completion:*:options' list-colors '=(#b)(*)-- *==34' '=^(-- *)=34'
-# zstyle ':completion:*:parameters' list-colors '=*=34'
-# zstyle ':completion:*:commands' list-colors '=*=1;32'
-# zstyle ':completion:*:builtins' list-colors '=*=1;32'
-# zstyle ':completion:*:functions' list-colors '=*=1;35'
-# zstyle ':completion:*:aliases' list-colors '=*=1;35'
-# zstyle ':completion:*:systemctl:*' list-colors '=(#b)*(-- *)==34' '=-- *=34'
-
-# # completion format of processes
-# zstyle ':completion:*:*:*:*:processes' command \
-# 	"ps -u $USERNAME -o pid,%cpu,%mem,cputime,command"
-# zstyle ':completion:*:*:kill:*:processes' list-colors \
-# 	'=(#b) #([0-9]#) #*[0-9]#:[0-9]#[:.][0-9]# #(*)=34=1;31=32'
-
 # endregion
 # region - Functions and Aliases
 # =============================================================================

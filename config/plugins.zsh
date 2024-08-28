@@ -28,10 +28,13 @@ zinit light zsh-users/zsh-autosuggestions
 # completions
 zinit ice wait lucid blockf atpull'zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' \
+'r:|[._-]=* r:|=* l:|=*' # case-insensitive completion
 
 # fzf (fuzzy finder) tab completion
 zinit ice wait lucid
 zinit light Aloxaf/fzf-tab
+eval "$(fzf --zsh)" # key bindings for fzf (ctrl-t, ctrl-r)
 # source: https://github.com/Aloxaf/fzf-tab?tab=readme-ov-file#configure
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
@@ -40,7 +43,6 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-eval "$(fzf --zsh)" # key bindings for fzf (ctrl-t, ctrl-r)
 
 # endregion
 # region - Tools

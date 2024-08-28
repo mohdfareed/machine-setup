@@ -4,6 +4,7 @@ import logging
 import os
 
 import utils
+from config import config as global_config
 from machines import macos
 from scripts import brew, git, shell, ssh, vscode
 from utils import shell as shell_utils
@@ -73,7 +74,7 @@ def load_private_machine(private_machine: str) -> None:
     LOGGER.info("Loading private machine configuration: %s", private_machine)
 
     for file in os.listdir(private_machine):
-        utils.symlink_at(file, macos.config)
+        utils.symlink_at(file, global_config)
 
 
 if __name__ == "__main__":

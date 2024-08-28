@@ -10,15 +10,15 @@ intervention.
 To set up a machine, run the following command:
 
 ```sh
-github_url='https://raw.githubusercontent.com/mohdfareed'
-script_url="${github_url}/[machine]/main/bootstrap.py"
-curl -fsSL $script_url | python3 - [-h|--help] machine [-f|--force] [-h|--help]
+url="https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py"
+curl -fsSL $url | python3 - [-h|--help] machine path [-f|--force] [-h|--help]
 ```
 
 Where the arguments are as follows:
 
 - `-h|--help`: prints the bootstrapping help message.
-- `machine`: the machine to set up (only macOS is supported).
+- `machine`: the machine to set up (macOS, RPi, and codespaces are supported).
+- `path`: the path to clone the repository into.
 - `-f|--force`: forces cloning the repo even if it already exists.
 - `-h|--help`: prints the help message of the machine's setup script.
 
@@ -42,7 +42,10 @@ python -m [machine].setup [-h]
 
 ## Configuration
 
-The common configuration that is shared across all machines. A machine is
+The `config` module contains common configuration that is shared across all
+machines. It works without dependencies on machine-specific configurations.
+
+A machine is
 configured by creating a new module in the `machines` package, with the
 following structure:
 
@@ -57,26 +60,15 @@ machines/
 
 Where:
 
-### Files
+### Private Configuration
 
-- `$PRIVATE_MACHINE/env.sh`: private machine-specific environment variables,
+Some machines can have private configurations that cannot be shared publicly. These configurations can be stored in a private directory and provided to the machine setup script as an argument.
+
+The following are the private configuration files supported:
+
+- `env.sh`: private environment variables,
   such as API keys.
-- `keys/`: a directory containing the SSH keys used by the machine.
-
-### Shell
-
-- `oh-my-zsh`
-- `pure`
-- `nvim`
-- `bat`
-- `eza`
-- `dotnet-sdk`
-- `zdotdir` defined in the machine's module.
-
-### Git
-
-- `~/.ssh/github.pub`: public key for GitHub.
-- `xdg_config` defined in the machine's module.
+- `keys/`: the SSH keys used by the machine.
 
 ## macOS Backup
 

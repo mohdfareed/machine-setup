@@ -19,7 +19,6 @@ import os
 import shutil
 import subprocess
 import sys
-import urllib.request
 
 REPO = "https://github.com/mohdfareed/machine.git"
 """URL of the repository to clone."""
@@ -35,41 +34,31 @@ SETUP_SCRIPT = "setup.sh"
 VENV = ".venv"
 
 
-def main(machine: str, overwrite=False, setup_args=None) -> None:
+def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
     """Bootstrap the machine setup process."""
 
-    # fetch machine shell environment file
-    shell_env = os.path.join(SOURCE_URL, machine, ZSHENV)
-    with urllib.request.urlopen(shell_env) as response:
-        env_file = response.read().decode()
-
-    # resolve machine path
-    cmd = [f"eval '{env_file}' > /dev/null; echo ${MACHINE_VAR}"]
-    machine_path = run(cmd[0], silent=True, text=True)
-    machine_path = os.path.realpath(machine_path)
-
     # clone machine, overwrite if prompted
-    print(f"Cloning machine into: {machine_path}")
-    if overwrite and os.path.exists(machine_path):
+    print(f"Cloning machine into: {path}")
+    if overwrite and os.path.exists(path):
         print("Removing existing machine...")
-        shutil.rmtree(machine_path, ignore_errors=True)
-    if not os.path.exists(machine_path):  # clone machine otherwise
-        run(["git", "clone", "-q", REPO, machine_path], silent=True)
+        shutil.rmtree(path, ignore_errors=True)
+    if not os.path.exists(path):  # clone machine otherwise
+        run(["git", "clone", "-q", REPO, path], silent=True)
 
     # create virtual environment
     print("Creating virtual environment...")
     venv_options = "--clear --upgrade-deps --prompt machine"
-    machine_venv_path = os.path.join(machine_path, VENV)
+    machine_venv_path = os.path.join(path, VENV)
     run(f"python3 -m venv {machine_venv_path} {venv_options}", silent=True)
 
     # install dependencies
     python = os.path.join(machine_venv_path, "bin", "python")
-    req_file = os.path.join(machine_path, REQUIREMENTS)
+    req_file = os.path.join(path, REQUIREMENTS)
     cmd = [python, "-m", "pip", "install", "-r", req_file, "--upgrade"]
     run(cmd, silent=True)  # install dependencies
 
     # execute machine setup script
-    script = os.path.join(machine_path, SETUP_SCRIPT)
+    script = os.path.join(path, SETUP_SCRIPT)
     run(f"{script} {machine} {' '.join(setup_args or [])}", safe=False)
 
 
@@ -87,8 +76,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "machine",
         type=str,
-        choices=["macos", "rpi"],
-        help="specify the type of machine to setup",
+        choices=["macos", "rpi", "codespaces"],
+        help="the machine to setup",
+    )
+    parser.add_argument(
+        "path",
+        type=str,
+        help="the path to the machine repo",
     )
     parser.add_argument(
         "-f",
@@ -101,11 +95,12 @@ if __name__ == "__main__":
     # parse arguments
     args = parser.parse_args()
     machine_name = args.machine
+    machine_path = args.path
     force = args.force
     additional_args = args.args
 
     try:
-        main(machine_name, force, additional_args)
+        main(machine_name, machine_path, force, additional_args)
     except Exception as e:  # pylint: disable=broad-except
         print(f"\033[31;1m{'Error:'}\033[0m {e}")
         print(f"\033[31;1m{'Failed to bootstrap machine'}\033[0m")
