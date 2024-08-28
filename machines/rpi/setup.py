@@ -1,16 +1,9 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
-import logging
-import os
-
 import utils
-from config import config as global_config
-from machines import rpi
+from machines import LOGGER, load_private_machine, rpi
 from scripts import brew, git, shell, ssh, vscode
 from utils import shell as shell_utils
-
-LOGGER = logging.getLogger(__name__)
-"""The Raspberry Pi setup logger."""
 
 
 def setup(private_machine: str | None = None) -> None:
@@ -57,14 +50,6 @@ def setup(private_machine: str | None = None) -> None:
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")
-
-
-def load_private_machine(private_machine: str) -> None:
-    """Load private machine configuration."""
-    LOGGER.info("Loading private machine configuration: %s", private_machine)
-
-    for file in os.listdir(private_machine):
-        utils.symlink_at(os.path.join(private_machine, file), global_config)
 
 
 if __name__ == "__main__":

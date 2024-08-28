@@ -1,13 +1,8 @@
 """Setup module containing a `setup` function for setting up a codespace."""
 
-import logging
-
 import utils
-from machines import codespaces
+from machines import LOGGER, codespaces
 from scripts import git, shell
-
-LOGGER = logging.getLogger(__name__)
-"""The codespaces setup logger."""
 
 
 def setup() -> None:

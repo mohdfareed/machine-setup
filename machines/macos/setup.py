@@ -1,11 +1,7 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
-import logging
-import os
-
-import config
 import utils
-from machines import macos
+from machines import LOGGER, load_private_machine, macos
 from scripts import brew, git, shell, ssh, vscode
 from utils import shell as shell_utils
 
@@ -17,9 +13,6 @@ PAM_SUDO_CONTENT = f"""
 auth       sufficient     {PAM_SUDO_MODULE}
 """
 """The content to add to the sudo PAM configuration file to enable Touch ID."""
-
-LOGGER = logging.getLogger(__name__)
-"""The macOS setup logger."""
 
 
 def setup(private_machine: str | None = None) -> None:
@@ -67,19 +60,6 @@ def setup(private_machine: str | None = None) -> None:
 
     LOGGER.info("macOS setup complete.")
     LOGGER.warning("Restart for some changes to apply.")
-
-
-def load_private_machine(private_machine: str) -> None:
-    """Load private machine configuration."""
-    LOGGER.info("Loading private machine configuration: %s", private_machine)
-
-    env_filename = os.path.basename(config.private_env)
-    private_env = os.path.join(private_machine, env_filename)
-    utils.symlink(private_env, config.private_env)
-
-    keys_dirname = os.path.basename(config.ssh_keys)
-    ssh_keys = os.path.join(private_machine, keys_dirname)
-    utils.symlink(ssh_keys, config.ssh_keys)
 
 
 if __name__ == "__main__":
