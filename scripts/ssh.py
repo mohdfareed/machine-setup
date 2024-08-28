@@ -8,13 +8,13 @@ import config
 import utils
 from utils import shell
 
+LOGGER = logging.getLogger(__name__)
+"""The SSH setup logger."""
+
 SSH_DIR: str = "~/.ssh/"
 """The path to the SSH directory."""
 PK_EXT: str = ".pub"
 """The extension of the public key files."""
-
-LOGGER = logging.getLogger(__name__)
-"""The SSH setup logger."""
 
 
 @dataclass
@@ -43,14 +43,17 @@ class SSHKeyPair:
         return os.path.splitext(base)[0]
 
 
-def setup(ssh_keys: str) -> None:
+def setup() -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
-    config file are copied from the specified directory.
-    """
-
+    config file are copied from the specified directory."""
     LOGGER.info("Setting up SSH...")
+
+    if not os.path.exists(config.ssh_keys):
+        LOGGER.error("SSH keys directory does not exist.")
+        return
+
     utils.symlink(config.ssh_config, os.path.join(SSH_DIR, "config"))
-    for key in load_keys(ssh_keys):
+    for key in load_keys(config.ssh_keys):
         setup_key(key)
     LOGGER.info("SSH setup complete")
 
@@ -118,8 +121,5 @@ def setup_key(key: SSHKeyPair) -> None:
 
 
 if __name__ == "__main__":
-    utils.PARSER.add_argument(
-        "ssh_keys", help="The directory containing the ssh keys to setup."
-    )
     args = utils.startup(description="SSH setup script.")
-    utils.execute(setup, args.ssh_keys)
+    utils.execute(setup)

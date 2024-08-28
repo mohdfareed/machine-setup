@@ -1,6 +1,7 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
 import logging
+import os
 
 import utils
 from machines import macos
@@ -20,10 +21,15 @@ LOGGER = logging.getLogger(__name__)
 """The macOS setup logger."""
 
 
-def setup() -> None:
+def setup(private_machine: str | None = None) -> None:
     """Setup macOS on a new machine."""
     LOGGER.info("Setting up macOS...")
 
+    # load private machine configuration if provided
+    if private_machine:
+        load_private_machine(private_machine)
+
+    # ensure xcode license is accepted
     prompt = "Authenticate to accept Xcode license agreement: "
     try:  # accept xcode license
         shell_utils.run(
@@ -37,11 +43,11 @@ def setup() -> None:
         ) from ex
 
     # setup core machine
-    git.setup(macos.xdg_config)
-    # brew.setup(macos.brewfile)
-    shell.setup(macos.xdg_config, macos.zdotdir, macos.zshrc, macos.zshenv)
-    # ssh.setup(macos.ssh_keys)
-    # vscode.setup()
+    git.setup()
+    brew.setup(macos.brewfile)
+    shell.setup(macos.zshrc, macos.zshenv)
+    ssh.setup()
+    vscode.setup()
 
     # run the preferences script
     LOGGER.debug("Setting system preferences...")
@@ -62,6 +68,21 @@ def setup() -> None:
     LOGGER.warning("Restart for some changes to apply.")
 
 
+def load_private_machine(private_machine: str) -> None:
+    """Load private machine configuration."""
+    LOGGER.info("Loading private machine configuration: %s", private_machine)
+
+    for file in os.listdir(private_machine):
+        utils.symlink_at(file, macos.config)
+
+
 if __name__ == "__main__":
+    utils.PARSER.add_argument(
+        "private_machine",
+        metavar="PRIVATE_MACHINE",
+        nargs="?",
+        help="The path to a private machine configuration directory.",
+        default=None,
+    )
     args = utils.startup(description="macOS setup script.")
-    utils.execute(setup)
+    utils.execute(setup, args.private_machine)

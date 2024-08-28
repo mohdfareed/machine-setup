@@ -1,20 +1,8 @@
 # Configuration: Raspberry Pi
 # =============================================================================
 
-# machine paths and environment variables
-export PATH="/snap/bin:$PATH"           # add snap to path
-export PATH="$PATH:$HOME/go/bin"        # add go packages to path
-export PATH="$PATH:$HOME/.local/bin"    # add local packages to path
-fpath+=($PURE)                          # add pure prompt to fpath
-fpath+=($ZSHCOMP/src)                   # add zsh-completions to fpath
-
 # load core machine configuration
 source $MACHINE/config/zshrc
-
-# syntax highlighting, auto-suggestions, and auto-completion
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 
 # Functions and Aliases
 # =============================================================================
@@ -22,10 +10,16 @@ source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 alias bat='batcat'
 alias compose-machine='cd $MACHINE && docker compose'
 alias reboot='sudo reboot'
-alias update='sudo apt update && \
-              sudo apt full-upgrade -y && \
-              sudo apt autoremove -y && \
-              sudo snap refresh'
+
+# update the system
+function update {
+    sudo apt update
+    sudo apt full-upgrade -y
+    sudo apt autoremove -y
+    sudo brew upgrade
+    sudo brew upgrade
+    sudo brew cleanup
+}
 
 # display the cpu and gpt temperature of raspberry pi
 function temp {

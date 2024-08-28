@@ -9,7 +9,6 @@ brew "gh"      # github cli
 brew "go"      # go language
 
 # docker
-# TODO: convert to script
 brew "docker"         # containerization
 brew "docker-compose" # container orchestration
 brew "whalebrew"      # images manager

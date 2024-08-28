@@ -1,6 +1,7 @@
 version: latest
 services:
-  pihole: # UI at 80
+  pihole:
+    # UI at 80
     image: pihole/pihole:latest
     container_name: pihole
     restart: unless-stopped
@@ -14,7 +15,8 @@ services:
       - "./pihole:/etc/pihole"
       - "./pihole/dns:/etc/dnsmasq.d"
 
-  proxy-manager: # UI at 81, default creds: admin@example.com changeme
+  proxy-manager:
+    # UI at 81, default creds: admin@example.com changeme
     image: jc21/nginx-proxy-manager:latest
     container_name: proxy-manager
     restart: unless-stopped
@@ -24,11 +26,12 @@ services:
       - ./proxy-manager:/data
       - ./proxy-manager/encryption:/etc/letsencrypt
     healthcheck:
-      test: ["CMD", "/bin/check-health"]
+      test: [ "CMD", "/bin/check-health" ]
       interval: 10s
       timeout: 3s
 
-  dashboard: # UI at 3000
+  dashboard:
+    # UI at 3000
     image: ghcr.io/benphelps/homepage:latest
     container_name: dashboard
     restart: unless-stopped
@@ -42,7 +45,8 @@ services:
       - ./dashboard:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro # docker stats
 
-  speedtracker: # UI at 80, default creds: admin@example.com password
+  speedtracker:
+    # UI at 80, default creds: admin@example.com password
     image: ghcr.io/alexjustesen/speedtest-tracker:latest
     container_name: speed-tracker
     restart: unless-stopped
@@ -50,19 +54,6 @@ services:
       - ./speed-tracker:/config
       - ./speed-tracker/web:/etc/ssl/web
       - /etc/localtime:/etc/localtime:ro
-
-  chatgpt-bot: # webhook at 80
-    build: ./chatgpt-bot
-    container_name: chatgpt-bot
-    restart: unless-stopped
-    environment:
-      - OPENAI_API_KEY
-      - TELEGRAM_BOT_TOKEN
-      - WEBHOOK=https://$TAILSCALE_DOMAIN/chatgpt
-      - WEBHOOK_ADDR=chatgpt-bot
-    volumes:
-      - ./chatgpt-bot/database:/chatgpt_bot/database
-      - ./chatgpt-bot/logs:/chatgpt_bot/logs
 
 networks:
   default:

@@ -7,21 +7,15 @@ from machines import codespaces
 from scripts import git, shell
 
 LOGGER = logging.getLogger(__name__)
-"""The macOS setup logger."""
+"""The codespaces setup logger."""
 
 
 def setup() -> None:
     """Setup a new GitHub codespace."""
     LOGGER.info("Setting up codespace...")
 
-    # setup core machine
     git.setup()
-    shell.setup(
-        codespaces.xdg_config,
-        codespaces.zdotdir,
-        codespaces.zshrc,
-        codespaces.zshenv,
-    )
+    shell.setup(zshrc=codespaces.zshrc)
 
     LOGGER.info("Codespace setup complete.")
 

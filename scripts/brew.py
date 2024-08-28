@@ -8,21 +8,33 @@ import config
 import utils
 from utils import shell
 
-BIN = "/opt/homebrew/bin"
+LOGGER = logging.getLogger(__name__)
+"""The Homebrew setup logger."""
+
+BIN: str
 """The path to the Homebrew executables."""
+
+if utils.is_macos():
+    BIN = "/opt/homebrew/bin"
+elif utils.is_linux():
+    BIN = "/home/linuxbrew/.linuxbrew/bin"
+else:
+    raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+
 BREW = os.path.join(BIN, "brew")
 """The path to the brew executable."""
 MAS = os.path.join(BIN, "mas")
 """The path to the mas executable."""
 
-LOGGER = logging.getLogger(__name__)
-"""The Homebrew setup logger."""
-
 
 def setup(machine_brewfile: str | None = None) -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
     LOGGER.info("Setting up Homebrew...")
-    install_brew()
+
+    try:  # install homebrew
+        install_brew()
+    except shell.ShellError as ex:
+        raise utils.SetupError("Failed to install Homebrew.") from ex
 
     # install brew and core packages
     LOGGER.info("Installing core packages...")
@@ -30,6 +42,10 @@ def setup(machine_brewfile: str | None = None) -> None:
     shell.run(cmd, msg="Installing packages", throws=False)
 
     if machine_brewfile:  # install machine specific packages
+        if not os.path.exists(machine_brewfile):
+            LOGGER.error("Machine brewfile does not exist.")
+            return
+
         LOGGER.info("Installing machine specific packages...")
         cmd = [BREW, "bundle", f"--file={machine_brewfile}"]
         shell.run(cmd, msg="Installing packages", throws=False)

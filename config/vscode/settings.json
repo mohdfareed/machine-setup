@@ -177,7 +177,8 @@
     "--enable-all-extensions",
     "--disable=while_used",
     "--disable=too-few-public-methods",
-    "--disable=fixme"
+    // "--disable=expression-not-assigned",
+    "--disable=fixme",
   ],
   "mypy-type-checker.args": [
     "--check-untyped-defs"

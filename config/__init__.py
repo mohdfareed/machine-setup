@@ -2,9 +2,10 @@
 
 import os as _os
 
+import utils as _utils
+
 config = _os.path.dirname(_os.path.realpath(__file__))
 """The path to the machine configuration directory."""
-
 
 vim = _os.path.join(config, "vim")
 """The path of vim configuration files."""
@@ -33,3 +34,20 @@ zshrc = _os.path.join(config, "zshrc")
 """The path of zshrc file."""
 zshenv = _os.path.join(config, "zshenv")
 """The path of zshenv file."""
+
+# environment variables
+
+MACHINE = _utils.load_env_var(zshenv, "MACHINE")
+"""The path to the machine repository."""
+
+xdg_config = _utils.load_env_var(zshenv, "XDG_CONFIG_HOME")
+"""The path of the XDG configuration directory."""
+
+zdotdir = _utils.load_env_var(zshenv, "ZDOTDIR")
+"""The path of the ZDOTDIR directory."""
+
+private_env = _utils.load_env_var(zshenv, "PRIVATE_ENV")
+"""The path of the machine private environment file."""
+
+ssh_keys = _utils.load_env_var(zshenv, "SSH_KEYS")
+"""The path of the machine ssh keys directory."""
