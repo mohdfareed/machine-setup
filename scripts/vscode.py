@@ -38,7 +38,7 @@ def setup() -> None:
 
 
 def setup_tunnels() -> None:
-    """Setup VSCode SSH tunnels on a new machine."""
+    """Setup VSCode SSH tunnels as a service."""
 
     LOGGER.info("Setting up VSCode SSH tunnels...")
 
@@ -47,7 +47,7 @@ def setup_tunnels() -> None:
         f"{vscode} tunnel service install "
         "--accept-server-license-terms --name rpi"
     )
-    shell.run(cmd, msg="Installing VSCode SSH tunnels")
+    shell.run(cmd, info=True)
 
     LOGGER.debug("VSCode SSH tunnels were setup successfully.")
 

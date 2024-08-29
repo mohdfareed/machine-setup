@@ -24,12 +24,9 @@ def setup(private_machine: str | None = None) -> None:
     if private_machine:
         load_private_machine(private_machine)
 
-    # ensure xcode license is accepted
-    try:  # accept xcode license
-        shell_utils.run(
-            "sudo xcodebuild -license accept",
-            msg="Authenticate to accept Xcode license agreement",
-        )
+    LOGGER.info("Authenticate to accept Xcode license.")
+    try:  # ensure xcode license is accepted
+        shell_utils.run("sudo xcodebuild -license accept", info=True)
     except shell_utils.ShellError as ex:
         raise utils.SetupError(
             "Failed to accept Xcode license. "

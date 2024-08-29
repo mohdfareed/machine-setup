@@ -39,7 +39,7 @@ def setup(machine_brewfile: str | None = None) -> None:
     # install brew and core packages
     LOGGER.info("Installing core packages...")
     cmd = f"{BREW} bundle --file={config.brewfile}"
-    shell.run(cmd, msg="Installing packages", throws=False)
+    shell.run(cmd, throws=False)
 
     if machine_brewfile:  # install machine specific packages
         if not os.path.exists(machine_brewfile):
@@ -48,16 +48,16 @@ def setup(machine_brewfile: str | None = None) -> None:
 
         LOGGER.info("Installing machine specific packages...")
         cmd = f"{BREW} bundle --file={machine_brewfile}"
-        shell.run(cmd, msg="Installing packages", throws=False)
+        shell.run(cmd, throws=False)
 
     # upgrade packages
     LOGGER.info("Upgrading packages...")
-    shell.run(f"{BREW} upgrade", msg="Upgrading packages", throws=False)
+    shell.run(f"{BREW} upgrade", throws=False)
 
     # cleanup
     LOGGER.info("Cleaning up...")
     cmd = f"{BREW} cleanup --prune=all"
-    shell.run(cmd, msg="Cleaning up", throws=False)
+    shell.run(cmd, throws=False)
     LOGGER.info("Homebrew setup complete.")
 
 
@@ -66,14 +66,13 @@ def install_brew() -> None:
 
     # update homebrew if it is already installed
     if os.path.exists(BREW):
-        shell.run(f"{BREW} update", msg="Updating brew")
-        LOGGER.info("Homebrew was updated.")
+        LOGGER.info("Updating Homebrew...")
+        shell.run(f"{BREW} update")
 
     else:  # install homebrew otherwise
         LOGGER.info("Installing Homebrew...")
         cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
-        shell.run(cmd, msg="Installing brew")
-        LOGGER.info("Homebrew installed successfully.")
+        shell.run(cmd)
 
     # fix “zsh compinit: insecure directories” error
     shell.run(f'chmod -R go-w "$({BREW} --prefix)/share"')

@@ -21,6 +21,7 @@ def setup(private_machine: str | None = None) -> None:
     shell.setup(rpi.zshrc, rpi.zshenv)
     ssh.setup()
     vscode.setup()
+    vscode.setup_tunnels()
 
     # setup docker
     # shell_utils.run("sudo snap enable docker")
