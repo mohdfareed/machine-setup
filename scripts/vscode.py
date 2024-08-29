@@ -11,6 +11,8 @@ from utils import shell
 LOGGER = logging.getLogger(__name__)
 """The VSCode setup logger."""
 
+_ignored_files = [".DS_Store"]
+
 VSCODE: str
 """The path to the VSCode user settings directory."""
 
@@ -29,6 +31,8 @@ def setup() -> None:
 
     LOGGER.info("Setting up VSCode...")
     for file in os.listdir(config.vscode):
+        if file in _ignored_files:
+            continue
         utils.symlink_at(os.path.join(config.vscode, file), VSCODE)
     LOGGER.debug("VSCode was setup successfully.")
 
@@ -38,11 +42,11 @@ def setup_tunnels() -> None:
 
     LOGGER.info("Setting up VSCode SSH tunnels...")
 
-    vscode = shell.run(["which", "code"])[1].strip()
+    vscode = shell.run("which code")[1].strip()
     cmd = (
         f"{vscode} tunnel service install "
         "--accept-server-license-terms --name rpi"
-    ).split()
+    )
     shell.run(cmd, msg="Installing VSCode SSH tunnels")
 
     LOGGER.debug("VSCode SSH tunnels were setup successfully.")

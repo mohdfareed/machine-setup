@@ -38,7 +38,7 @@ def setup(machine_brewfile: str | None = None) -> None:
 
     # install brew and core packages
     LOGGER.info("Installing core packages...")
-    cmd = [BREW, "bundle", f"--file={config.brewfile}"]
+    cmd = f"{BREW} bundle --file={config.brewfile}"
     shell.run(cmd, msg="Installing packages", throws=False)
 
     if machine_brewfile:  # install machine specific packages
@@ -47,16 +47,16 @@ def setup(machine_brewfile: str | None = None) -> None:
             return
 
         LOGGER.info("Installing machine specific packages...")
-        cmd = [BREW, "bundle", f"--file={machine_brewfile}"]
+        cmd = f"{BREW} bundle --file={machine_brewfile}"
         shell.run(cmd, msg="Installing packages", throws=False)
 
     # upgrade packages
     LOGGER.info("Upgrading packages...")
-    shell.run([BREW, "upgrade"], msg="Upgrading packages", throws=False)
+    shell.run(f"{BREW} upgrade", msg="Upgrading packages", throws=False)
 
     # cleanup
     LOGGER.info("Cleaning up...")
-    cmd = [BREW, "cleanup", "--prune=all"]
+    cmd = f"{BREW} cleanup --prune=all"
     shell.run(cmd, msg="Cleaning up", throws=False)
     LOGGER.info("Homebrew setup complete.")
 
@@ -66,7 +66,7 @@ def install_brew() -> None:
 
     # update homebrew if it is already installed
     if os.path.exists(BREW):
-        shell.run([BREW, "update"], msg="Updating brew")
+        shell.run(f"{BREW} update", msg="Updating brew")
         LOGGER.info("Homebrew was updated.")
 
     else:  # install homebrew otherwise

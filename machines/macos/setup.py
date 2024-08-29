@@ -1,5 +1,6 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
+import config
 import utils
 from machines import LOGGER, load_private_machine, macos
 from scripts import brew, git, shell, ssh, vscode
@@ -24,15 +25,14 @@ def setup(private_machine: str | None = None) -> None:
         load_private_machine(private_machine)
 
     # ensure xcode license is accepted
-    prompt = "Authenticate to accept Xcode license agreement: "
     try:  # accept xcode license
         shell_utils.run(
-            ["sudo", "--prompt", prompt, "xcodebuild", "-license", "accept"],
-            msg="Authenticate to accept Xcode license",
+            "sudo xcodebuild -license accept",
+            msg="Authenticate to accept Xcode license agreement",
         )
     except shell_utils.ShellError as ex:
         raise utils.SetupError(
-            "Failed to accept Xcode license."
+            "Failed to accept Xcode license. "
             "Ensure Xcode is installed using: xcode-select --install"
         ) from ex
 
@@ -71,4 +71,5 @@ if __name__ == "__main__":
         default=None,
     )
     args = utils.startup(description="macOS setup script.")
+    config.report(None)
     utils.execute(setup, args.private_machine)

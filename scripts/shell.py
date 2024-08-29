@@ -43,10 +43,11 @@ def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
     # TODO: update zinit plugins
 
     # clean up
-    shell.run("sudo rm -rf ~/.zcompdump*")
-    shell.run("sudo rm -rf ~/.zshrc")
-    shell.run("sudo rm -rf ~/.zsh_sessions")
-    shell.run("sudo rm -rf ~/.zsh_history")
+    shell.run("sudo rm -rf ~/.zcompdump*", throws=False)
+    shell.run("sudo rm -rf ~/.zshrc", throws=False)
+    shell.run("sudo rm -rf ~/.zsh_sessions", throws=False)
+    shell.run("sudo rm -rf ~/.zsh_history", throws=False)
+    shell.run("sudo rm -rf ~/.lesshst", throws=False)
     LOGGER.info("Shell setup complete.")
 
 

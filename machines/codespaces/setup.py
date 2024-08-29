@@ -1,5 +1,6 @@
 """Setup module containing a `setup` function for setting up a codespace."""
 
+import config
 import utils
 from machines import LOGGER, codespaces
 from scripts import git, shell
@@ -17,4 +18,5 @@ def setup() -> None:
 
 if __name__ == "__main__":
     args = utils.startup(description="Codespaces setup script.")
+    config.report(None)
     utils.execute(setup)

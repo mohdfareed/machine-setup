@@ -13,8 +13,10 @@ LOGGER = logging.getLogger(__name__)
 
 SSH_DIR: str = "~/.ssh/"
 """The path to the SSH directory."""
-PK_EXT: str = ".pub"
-"""The extension of the public key files."""
+PUBLIC_EXT: str = ".pub"
+"""The extension of the public key filenames."""
+PRIVATE_EXT: str = ".key"
+"""The extension of the private key filenames."""
 
 
 @dataclass
@@ -32,15 +34,18 @@ class SSHKeyPair:
         return os.path.basename(self.private)
 
     @property
-    def public_filename(self) -> str | None:
-        """The filename of the public key."""
-        return os.path.basename(self.public) if self.public else None
+    def public_filename(self) -> str:
+        """The filename of the public key, based on the private key if the
+        public key doesn't exist."""
+        if self.public:
+            return os.path.basename(self.public)
+        else:
+            return self.name + PUBLIC_EXT
 
     @property
     def name(self) -> str:
         """The name of the key pair based on the private key filename."""
-        base = os.path.basename(self.private)
-        return os.path.splitext(base)[0]
+        return os.path.splitext(self.private_filename)[0]
 
 
 def setup() -> None:
@@ -49,7 +54,7 @@ def setup() -> None:
     LOGGER.info("Setting up SSH...")
 
     if not os.path.exists(config.ssh_keys):
-        LOGGER.error("SSH keys directory does not exist.")
+        LOGGER.error("SSH keys directory does not exist: %s", config.ssh_keys)
         return
 
     utils.symlink(config.ssh_config, os.path.join(SSH_DIR, "config"))
@@ -65,23 +70,22 @@ def load_keys(keys_dir: str) -> list[SSHKeyPair]:
         dict[str, SSHKey]: A dict of key names to key pairs.
     """
     keys_dir = os.path.abspath(keys_dir)
-    keys: list[SSHKeyPair] = []  # map of key names to key pairs
     files = os.listdir(keys_dir)  # list of files in the directory
 
     # load private keys
-    for filename in files:
-        if filename.endswith(PK_EXT):
-            continue  # skip public keys
-        key = SSHKeyPair(private=os.path.join(keys_dir, filename))
-        keys += [key]  # add key pair to list
+    private_keys = [
+        SSHKeyPair(private=os.path.join(keys_dir, filename))
+        for filename in files
+        if filename.endswith(PRIVATE_EXT)
+    ]
 
     # load public keys
-    for key in keys:
-        if key.name + PK_EXT in files:  # find matching public key
-            key.public = os.path.join(keys_dir, key.name + PK_EXT)
+    for key in private_keys:
+        if key.public_filename in files:
+            key.public = os.path.join(keys_dir, key.name + PUBLIC_EXT)
 
-    LOGGER.debug("Loaded [bold]%d[/] ssh keys.", len(keys))
-    return keys
+    LOGGER.debug("Loaded [bold]%d[/] ssh keys.", len(private_keys))
+    return private_keys
 
 
 def setup_key(key: SSHKeyPair) -> None:
@@ -89,22 +93,14 @@ def setup_key(key: SSHKeyPair) -> None:
     LOGGER.info("[bold]Setting up SSH key:[/] %s", key.name)
 
     # symlink private key and set permissions
-    utils.symlink(
-        key.private,
-        os.path.join(SSH_DIR, key.private_filename),
-    )
+    utils.symlink(key.private, os.path.join(SSH_DIR, key.private_filename))
     os.chmod(key.private, 0o600)
-
-    # symlink public key and set permissions
-    if key.public and key.public_filename:
-        utils.symlink(
-            key.public,
-            os.path.join(SSH_DIR, os.path.basename(key.public_filename)),
-        )
+    if key.public:  # symlink public key if it exists and set permissions
+        utils.symlink(key.public, os.path.join(SSH_DIR, key.public_filename))
         os.chmod(key.public, 0o644)
 
     # get key fingerprint
-    fingerprint = shell.run(["ssh-keygen", "-lf", key.public])[1]
+    fingerprint = shell.run(f"ssh-keygen -lf {key.private}")[1]
     fingerprint = fingerprint.split(" ")[1]
     LOGGER.debug("[bold]Key fingerprint:[/] %s", fingerprint)
 

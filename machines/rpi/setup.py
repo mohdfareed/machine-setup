@@ -1,5 +1,6 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
+import config
 import utils
 from machines import LOGGER, load_private_machine, rpi
 from scripts import brew, git, shell, ssh, vscode
@@ -61,4 +62,5 @@ if __name__ == "__main__":
         default=None,
     )
     args = utils.startup(description="Raspberry Pi setup script.")
+    config.report(None)
     utils.execute(setup)

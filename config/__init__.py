@@ -1,8 +1,12 @@
 """Machine configuration files."""
 
+import logging as _logging
 import os as _os
 
 import utils as _utils
+
+LOGGER = _logging.getLogger(__name__)
+"""The machine configuration logger."""
 
 config = _os.path.dirname(_os.path.realpath(__file__))
 """The path to the machine configuration directory."""
@@ -51,3 +55,19 @@ private_env = _utils.load_env_var(zshenv, "PRIVATE_ENV")
 
 ssh_keys = _utils.load_env_var(zshenv, "SSH_KEYS")
 """The path of the machine ssh keys directory."""
+
+
+def report(env: dict[str, str] | None) -> None:
+    """Report the machine configuration."""
+    LOGGER.debug("Machine configuration:")
+    LOGGER.debug("MACHINE: %s", MACHINE)
+    LOGGER.debug("XDG_CONFIG_HOME: %s", xdg_config)
+    LOGGER.debug("ZDOTDIR: %s", zdotdir)
+    LOGGER.debug("PRIVATE_ENV: %s", private_env)
+    LOGGER.debug("SSH_KEYS: %s", ssh_keys)
+
+    if env:
+        LOGGER.debug("Additional configuration:")
+        for key, value in env.items():
+            LOGGER.debug("%s: %s", key, value)
+    LOGGER.debug("Machine configuration reported.")

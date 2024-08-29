@@ -120,14 +120,10 @@ def symlink(src: str, dst: str) -> None:
     src = _os.path.expanduser(src)
     is_dir = _os.path.isdir(src)
 
-    try:  # remove existing symlink
-        _run(["sudo", "rm", "-rf", dst], throws=True)
-    except FileNotFoundError:
-        pass
-
+    _run(f"sudo rm -rf '{dst}'", throws=False)
     _os.makedirs(_os.path.dirname(dst), exist_ok=True)
     _os.symlink(src, dst, target_is_directory=is_dir)
-    LOGGER.debug("Linked \\[%s] -> \\[%s]", src, dst)
+    LOGGER.debug("Linked '%s' -> '%s'", src, dst)
 
 
 def symlink_at(src: str, dst_dir: str) -> None:
