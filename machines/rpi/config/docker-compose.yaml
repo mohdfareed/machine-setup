@@ -1,60 +1,12 @@
-version: latest
 services:
-  pihole:
-    # UI at 80
-    image: pihole/pihole:latest
-    container_name: pihole
-    restart: unless-stopped
-    ports:
-      - 53:53/tcp
-      - 53:53/udp
+  tailscale:
+    image: tailscale/tailscale:latest
+    network_mode: "host" # use the host's network stack
     environment:
-      VIRTUAL_HOST: pihole.pi
-      WEBPASSWORD: $SERVICES_PASSWORD
+      - TS_AUTH_ONCE=true # authenticate only once
+      - TS_AUTHKEY=${TAILSCALE_AUTHKEY} # Tailscale auth key
+      - TS_STATE_DIR=/var/lib/tailscale # directory for Tailscale state
     volumes:
-      - "./pihole:/etc/pihole"
-      - "./pihole/dns:/etc/dnsmasq.d"
-
-  proxy-manager:
-    # UI at 81, default creds: admin@example.com changeme
-    image: jc21/nginx-proxy-manager:latest
-    container_name: proxy-manager
-    restart: unless-stopped
-    ports:
-      - 80:80
-    volumes:
-      - ./proxy-manager:/data
-      - ./proxy-manager/encryption:/etc/letsencrypt
-    healthcheck:
-      test: [ "CMD", "/bin/check-health" ]
-      interval: 10s
-      timeout: 3s
-
-  dashboard:
-    # UI at 3000
-    image: ghcr.io/benphelps/homepage:latest
-    container_name: dashboard
-    restart: unless-stopped
-    environment:
-      HOMEPAGE_VAR_TS_DEVICE_ID: $TAILSCALE_DEVICEID
-      HOMEPAGE_VAR_TS_API_TOKEN: $TAILSCALE_API_TOKEN
-      HOMEPAGE_VAR_PIHOLE_API_TOKEN: $PIHOLE_TOKEN
-      HOMEPAGE_VAR_USERNAME: $SERVICES_USERNAME
-      HOMEPAGE_VAR_PASSWORD: $SERVICES_PASSWORD
-    volumes:
-      - ./dashboard:/app/config
-      - /var/run/docker.sock:/var/run/docker.sock:ro # docker stats
-
-  speedtracker:
-    # UI at 80, default creds: admin@example.com password
-    image: ghcr.io/alexjustesen/speedtest-tracker:latest
-    container_name: speed-tracker
-    restart: unless-stopped
-    volumes:
-      - ./speed-tracker:/config
-      - ./speed-tracker/web:/etc/ssl/web
-      - /etc/localtime:/etc/localtime:ro
-
-networks:
-  default:
-    name: machine
+      - /var/lib/tailscale:/var/lib/tailscale # persist Tailscale state
+      - /dev/net/tun:/dev/net/tun # provide TUN device for network tunneling
+    restart: unless-stopped # ensure Tailscale restarts automatically

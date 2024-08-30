@@ -48,7 +48,6 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
         shell=True,
         text=True,
         executable="/bin/zsh",
-        close_fds=True,
     ) as process:
         (output, returncode) = _exec_process(process, info)
 
