@@ -2,7 +2,9 @@
 # =============================================================================
 
 # global environment variables
-source $(realpath "$(readlink "$HOME/.zshenv")/../../../../config/zshenv")
+config="$(dirname "$(realpath "$(readlink "$HOME/.zshenv")")")"
+source "$config/../../../config/zshenv" # macos -> machines -> machine
+unset config
 
 # machine specific environment variables
 export DEV="$HOME/Developer"

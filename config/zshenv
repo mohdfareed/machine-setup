@@ -48,9 +48,9 @@ export EDITOR="$(which nvim)"      # default to neovim as the editor
 export PIP_REQUIRE_VIRTUALENV=true # require virtualenv for pip
 
 # pager
-export LESS="-R --ignore-case"     # use less with colors, ignoring case
-export SYSTEMD_LESS=$LESS          # less arguments of systemd pager
-export BAT_PAGER="less $LESS"      # use less as the pager for bat
+export LESS="-R --ignore-case" # use less with colors, ignoring case
+export SYSTEMD_LESS=$LESS      # less arguments of systemd pager
+export BAT_PAGER="less $LESS"  # use less as the pager for bat
 
 # Development Environment
 # =============================================================================

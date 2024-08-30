@@ -32,6 +32,9 @@ setopt hist_ignore_dups
 setopt hist_find_no_dups
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 
+# disable login message
+[ -f "$HOME/.hushlogin" ] || touch "$HOME/.hushlogin"
+
 # endregion
 # region - Functions and Aliases
 # =============================================================================

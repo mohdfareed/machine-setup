@@ -4,9 +4,6 @@
 # load core machine configuration
 source $MACHINE/config/zshrc
 
-# disable login message
-[ -f "$HOME/.hushlogin" ] || touch "$HOME/.hushlogin"
-
 # Functions and Aliases
 # =============================================================================
 
