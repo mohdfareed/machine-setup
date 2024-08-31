@@ -8,14 +8,21 @@ zinit light monitor # monitor for updates to file with url
 zinit light patch-dl # download files with dl"URL file"
 zinit light zdharma-continuum/zinit-annex-man # README of plugins as manpage
 
-# pure theme
-PURE_PROMPT_SYMBOL='➜' # prompt symbol
-PURE_PROMPT_VICMD_SYMBOL='»' # vi mode symbol
-PURE_CMD_MAX_EXEC_TIME=1 # show time if command takes more than 1 second
-zstyle :prompt:pure:git:stash show yes # show stash count
-zstyle :prompt:pure:git:fetch only_upstream yes # only show upstream changes
-zinit ice pick'async.zsh' src'pure.zsh'
-zinit light sindresorhus/pure
+# # pure theme
+# PURE_PROMPT_SYMBOL='➜' # prompt symbol
+# PURE_PROMPT_VICMD_SYMBOL='»' # vi mode symbol
+# PURE_CMD_MAX_EXEC_TIME=1 # show time if command takes more than 1 second
+# zstyle :prompt:pure:git:stash show yes # show stash count
+# zstyle :prompt:pure:git:fetch only_upstream yes # only show upstream changes
+# zinit ice pick'async.zsh' src'pure.zsh'
+# zinit light sindresorhus/pure
+
+# oh-my-posh theme
+if ! command -v oh-my-posh >/dev/null; then
+    curl -s https://ohmyposh.dev/install.sh | bash -s
+fi
+theme="$POSH_THEMES_PATH/cert.omp.json"
+eval "$(oh-my-posh init zsh --config "$theme")" && unset theme
 
 # syntax highlighting
 zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay;"
@@ -75,7 +82,6 @@ zinit light tmux/tmux
 # tmux plugin manager
 [ ! -d $XDG_CONFIG_HOME/tmux/plugins/tpm ] &&
 git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
-
 
 # nvim dependencies ===========================================================
 

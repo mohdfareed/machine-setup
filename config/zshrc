@@ -1,4 +1,4 @@
-_pwd=$(pwd) # needed due to some plugins changing the current directory
+working_dir=$(pwd) # needed due to some plugins changing the current directory
 
 # region - Setup
 # =============================================================================
@@ -80,4 +80,4 @@ brew-uninstall() {
 
 # endregion
 
-cd $_pwd; unset _pwd
+cd $working_dir; unset working_dir

@@ -30,9 +30,10 @@ export PATH="$PATH:$XDG_LOCAL_HOME/bin" # add local packages to path
 
 # shell environment
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 export SHELL_SESSIONS_DISABLE=1
+export ZINIT_HOME="$XDG_DATA_HOME/zinit/zinit.git"
+export POSH_THEMES_PATH="$XDG_CACHE_HOME/oh-my-posh/themes"
 [ -d "$XDG_CACHE_HOME/zsh" ] || mkdir -p "$XDG_CACHE_HOME/zsh"
 
 # zsh history
