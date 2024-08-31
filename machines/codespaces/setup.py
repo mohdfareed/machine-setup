@@ -13,6 +13,10 @@ def setup() -> None:
     git.setup()
     shell.setup(zshrc=codespaces.zshrc)
 
+    # set zsh as the default shell
+    cmd = 'sudo chsh "$(id -un)" --shell "/usr/bin/zsh"'
+    utils.shell.run(cmd, throws=False)
+
     LOGGER.info("Codespace setup complete.")
 
 
