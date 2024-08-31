@@ -40,7 +40,6 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' \
 # fzf (fuzzy finder) tab completion
 zinit ice wait lucid
 zinit light Aloxaf/fzf-tab
-eval "$(fzf --zsh)" # key bindings for fzf (ctrl-t, ctrl-r)
 # source: https://github.com/Aloxaf/fzf-tab?tab=readme-ov-file#configure
 zstyle ':completion:*:git-checkout:*' sort false
 zstyle ':completion:*:descriptions' format '[%d]'
@@ -55,7 +54,8 @@ zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 # =============================================================================
 
 # fzf (fuzzy finder)
-zinit ice wait lucid as"program" from"gh-r" mv"fzf* -> fzf" pick"fzf"
+zinit ice wait lucid as"program" from"gh-r" mv"fzf* -> fzf" pick"fzf" \
+      atload"eval \"\$(fzf --zsh)\"" # key bindings for fzf (ctrl-t, ctrl-r)
 zinit light junegunn/fzf
 
 # eza (enhanced ls)

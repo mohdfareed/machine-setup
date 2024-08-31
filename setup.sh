@@ -56,7 +56,7 @@ python="$venv_dir/bin/python"
 
 # create virtual environment and install requirements
 echo "Creating virtual environment..."
-venv_options="--clear --upgrade-deps --prompt machine"
+venv_options="--clear --upgrade-deps --prompt $machine"
 python3 -m venv $venv_dir $venv_options > /dev/null 2>&1
 $python -m pip install -r $req_file --upgrade > /dev/null 2>&1
 
