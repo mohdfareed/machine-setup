@@ -83,4 +83,6 @@ export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 # =============================================================================
 
 # load private environment
-[ -f "$PRIVATE_ENV" ] && source $PRIVATE_ENV
+if [[ -f "$PRIVATE_ENV" ]]; then
+    source "$PRIVATE_ENV"
+fi

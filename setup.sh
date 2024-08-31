@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 usage="usage: $0 machine [args]"
 
@@ -68,6 +68,7 @@ if [ ! -d "$machine_dir/machines/$machine" ]; then
 fi
 
 # execute machine setup script
+echo "Setting up machine '$machine'..."
 cd "$machine_dir"
 $python -m "machines.$machine.setup" "${args[@]}"
 cd - >/dev/null

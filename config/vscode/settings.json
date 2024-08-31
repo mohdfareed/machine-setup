@@ -78,6 +78,9 @@
   "accessibility.signals.terminalBell": {
     "sound": "on"
   },
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
   // # endregion
   // MARK: git
   // #region ===================================================================
@@ -178,7 +181,7 @@
     "--disable=while_used",
     "--disable=too-few-public-methods",
     // "--disable=expression-not-assigned",
-    "--disable=fixme",
+    "--disable=fixme"
   ],
   "mypy-type-checker.args": [
     "--check-untyped-defs"
@@ -225,8 +228,7 @@
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
   },
-  "svg.preview.mode": "img",
-  "editor.minimap.enabled": false
+  "svg.preview.mode": "img"
   // # endregion
   // REVIEW - new customizations above =========================================
 }

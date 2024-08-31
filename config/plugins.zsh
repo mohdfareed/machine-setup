@@ -6,7 +6,6 @@
 zinit light zdharma-continuum/zinit-annex-unscope # reference without usernames
 zinit light monitor # monitor for updates to file with url
 zinit light patch-dl # download files with dl"URL file"
-zinit light zdharma-continuum/zinit-annex-man # README of plugins as manpage
 
 # # pure theme
 # PURE_PROMPT_SYMBOL='➜' # prompt symbol
