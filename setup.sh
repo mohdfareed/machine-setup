@@ -2,12 +2,12 @@
 
 usage="usage: $0 machine [args]"
 
-# initialize variables
+# initialize arguments
 machine=""
 args=()
 
-# github codespaces automatically executes the script with no arguments
-if [ "$#" -eq 0 ]; then
+# check if setting up a codespace
+if [ -n "$CODESPACES" ]; then
     machine="codespaces"
 fi
 
@@ -27,9 +27,38 @@ if [ -z "$machine" ]; then
     exit 1
 fi
 
-# set python path
+# helpers =====================================================================
+
+# Function to run commands silently
+run() {
+    silent=false
+    for arg in "$@"; do
+        if [ "$arg" = "-s" ] || [ "$arg" = "--silent" ]; then
+            silent=true
+            break
+        fi
+    done
+
+    if [ "$silent" = true ]; then
+        "$1" > /dev/null 2>&1
+    else
+        "$1"
+    fi
+}
+
+# setup =======================================================================
+
+# set variables
 machine_dir="$(dirname "$(realpath "$0")")"
-python="$machine_dir/.venv/bin/python"
+venv_dir="$machine_dir/.venv"
+req_file="$machine_dir/requirements.txt"
+python="$venv_dir/bin/python"
+
+# create virtual environment and install requirements
+echo "Creating virtual environment..."
+venv_options="--clear --upgrade-deps --prompt machine"
+python3 -m venv $venv_dir $venv_options > /dev/null 2>&1
+$python -m pip install -r $req_file --upgrade > /dev/null 2>&1
 
 # ensure machine exists
 if [ ! -d "$machine_dir/machines/$machine" ]; then

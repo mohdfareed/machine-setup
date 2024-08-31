@@ -6,7 +6,8 @@ vim.opt.guicursor = 'n-v-c:hor25,i-ci:ver25,r-cr:block,n:blinkon250'
 vim.opt.scrolloff = 8 -- keep 8 lines above/below cursorline
 
 if not vim.g.vscode then
-  vim.opt.colorcolumn = '80' -- show 80 column
+  vim.opt.colorcolumn = '80' -- show 80 chars column
+  vim.opt.colorcolumn = '120' -- show 120 chars column
   vim.opt.listchars:append 'space:⋅' -- show spaces
   vim.opt.spell = true -- enable spell checker
 

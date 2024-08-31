@@ -18,10 +18,10 @@ zinit light zdharma-continuum/zinit-annex-man # README of plugins as manpage
 # zinit light sindresorhus/pure
 
 # oh-my-posh theme
-if ! command -v oh-my-posh >/dev/null; then
+if [[ ! $(command -v oh-my-posh) ]]; then
     curl -s https://ohmyposh.dev/install.sh | bash -s
 fi
-theme="$POSH_THEMES_PATH/cert.omp.json"
+theme="$POSH_THEMES_PATH/pure.omp.json"
 eval "$(oh-my-posh init zsh --config "$theme")" && unset theme
 
 # syntax highlighting
@@ -36,7 +36,7 @@ zinit light zsh-users/zsh-autosuggestions
 zinit ice wait lucid blockf atpull'zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' \
-'r:|[._-]=* r:|=* l:|=*' # case-insensitive completion
+'r:|[._-]=* r:|=* l:|=*' # case-insensitive completion, ignore dots and hyphens
 
 # fzf (fuzzy finder) tab completion
 zinit ice wait lucid

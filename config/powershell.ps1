@@ -1,5 +1,8 @@
 # environment variables
-$script = (Get-Item -Path $MyInvocation.MyCommand.Path).Target -or $MyInvocation.MyCommand.Path
+$script = (Get-Item -Path $MyInvocation.MyCommand.Path).Target
+if (-not $script) {
+    $script = $MyInvocation.MyCommand.Path
+}
 $env:MACHINE = Resolve-Path "$script/.."
 Remove-Variable -Name "script"
 
@@ -14,16 +17,13 @@ if (Test-Path -Path "/opt/homebrew/bin/brew") {
 }
 
 # oh-my-posh theme
-if (Get-Command -Name "oh-my-posh" -ErrorAction SilentlyContinue) {
-    $theme = "$env:POSH_THEMES_PATH/cert.omp.json"
-    oh-my-posh init pwsh --config "$theme" | Invoke-Expression
-    Remove-Variable -Name "theme"
+if (-not (Get-Command -Name "oh-my-posh" -ErrorAction SilentlyContinue)) {
+    $installScript = 'https://ohmyposh.dev/install.ps1'
+    $webClient = New-Object System.Net.WebClient
+    Set-ExecutionPolicy Bypass -Scope Process -Force
+    Invoke-Expression ($webClient.DownloadString($installScript))
+    Remove-Variable -Name "installScript"; Remove-Variable -Name "webClient"
 }
-
-<#
-.SYNOPSIS
-    Reloads the current PowerShell session.
-#>
-function Resolve-Profile {
-    pwsh
-}
+$theme = "$env:POSH_THEMES_PATH/pure.omp.json"
+oh-my-posh init pwsh --config "$theme" | Invoke-Expression
+Remove-Variable -Name "theme"
