@@ -8,10 +8,9 @@ import sys as _sys
 from collections.abc import Callable as _Callable
 from enum import Enum as _Enum
 
-from utils.shell import ShellError
-
 from .logging import LOGGER
 from .logging import setup_logging as _setup_logging
+from .shell import ShellError
 from .shell import run as _run
 
 # MARK - Platform
@@ -42,6 +41,12 @@ def is_linux() -> bool:
     """Check if the current operating system is Linux."""
 
     return _platform.system() == PLATFORM.LINUX.value
+
+
+def is_unix() -> bool:
+    """Check if the current operating system is Unix."""
+
+    return is_macos() or is_linux()
 
 
 def is_windows() -> bool:
@@ -106,9 +111,18 @@ def execute(setup: _Callable, *args, **kwargs) -> None:
 # MARK - File System
 
 
-def load_env_var(zshenv_path: str, var_name: str) -> str:
-    """Load the environment variable value."""
-    command = f"source '{zshenv_path}' && echo ${var_name}"
+def load_env_var(env_path: str, var_name: str) -> str:
+    """Load the environment variable value.
+    On Windows, the environment variable is loaded using PowerShell. On Unix,
+    the environment variable is loaded using the Z shell."""
+    if is_windows():
+        ps_command = f"& {{ . '{env_path}'; Write-Output $env:{var_name} }}"
+        command = (
+            f"powershell -NoProfile -ExecutionPolicy Bypass"
+            f'-Command "{ps_command}"'
+        )
+    else:
+        command = f"source '{env_path}' && echo ${var_name}"
     return _run(command)[1]
 
 
@@ -120,7 +134,10 @@ def symlink(src: str, dst: str) -> None:
     src = _os.path.expanduser(src)
     is_dir = _os.path.isdir(src)
 
-    _run(f"sudo rm -rf '{dst}'", throws=False)
+    if is_windows():
+        _run(f"Remove-Item -Recurse -Force '{dst}'", throws=False)
+    else:
+        _run(f"sudo rm -rf '{dst}'", throws=False)
     _os.makedirs(_os.path.dirname(dst), exist_ok=True)
     _os.symlink(src, dst, target_is_directory=is_dir)
     LOGGER.debug("Linked '%s' -> '%s'", src, dst)

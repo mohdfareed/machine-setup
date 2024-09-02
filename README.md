@@ -7,7 +7,8 @@ intervention.
 
 ## Requirements
 
-- `zsh`: the Z shell.
+- `zsh`: the Z shell if setting up a unix-based machine.
+- `powershell`: PowerShell if setting up a Windows machine.
 - `git`: the version control system.
 - `python3`: the Python interpreter.
 
@@ -18,6 +19,15 @@ To set up a machine, run the following command:
 ```sh
 url="https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py"
 curl -fsSL $url | python3 - [-h] [-f] path [-h] machine [-h]
+# example:
+# cd private_config_path (explained below)
+# curl -fsSL $url | python3 - ~/Developer/machine macos .
+```
+
+Or download it and run it locally:
+
+```sh
+python3 bootstrap.py [-h] [-f] path [-h] machine [-h]
 ```
 
 Where the arguments are as follows:
@@ -26,7 +36,7 @@ Where the arguments are as follows:
 - `-f|--force`: forces cloning the repo even if it already exists.
 - `path`: the path to clone the repository into.
 - `-h|--help`: prints the setup help message.
-- `machine`: the machine to set up (macOS, RPi, and codespaces are supported).
+- `machine`: the machine to set up.
 - `-h|--help`: prints the machine's setup help message.
 
 ### Setting Up Individual Components
@@ -82,10 +92,10 @@ The following are the private configuration files supported on all machines:
   sourced by `config.zshenv`.
 - `keys/`: the SSH keys used by the machine; set up with `scripts.ssh`.
 
-These files can be loaded by calling
+These files can be configured by calling
 `config.load_private_config(config_path: str)` in the machine's setup script,
 where `config_path` is the path to the private configuration directory
-containing the files.
+containing the files, read from the command line arguments.
 
 ## macOS Backup
 

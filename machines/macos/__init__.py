@@ -11,6 +11,9 @@ brewfile = _os.path.join(config, "brewfile")
 preferences = _os.path.join(config, "preferences.sh")
 """The path of macOS preferences file of shell commands."""
 
+ssh_config = _os.path.join(config, "ssh.config")
+"""The path of the global ssh config file."""
+
 zshenv = _os.path.join(config, "zshenv")
 """The path of macOS zshenv file."""
 

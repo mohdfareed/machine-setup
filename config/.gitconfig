@@ -34,17 +34,19 @@
     ; prompt to correct typos in git commands
     autoCorrect = prompt
 
-; vscode
+; vim editor
 [core]
-    editor = code --wait
+    editor = nvim
+    ; convert windows line endings to unix
+    autocrlf = input
 [diff]
-    tool = vscode
-[difftool "vscode"]
-    cmd = code --wait --diff $LOCAL $REMOTE
+    tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = nvim -d $LOCAL $REMOTE
 [merge]
-    tool = vscode
-[mergetool "vscode"]
-    cmd = code --wait $MERGED
+    tool = nvimdiff
+[mergetool "nvimdiff"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED
 
 ; aliases
 [alias]

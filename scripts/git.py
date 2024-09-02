@@ -16,8 +16,12 @@ def setup() -> None:
     LOGGER.info("Setting up git...")
 
     # resolve git configuration paths
-    gitconfig = os.path.join(config.xdg_config, "git", "config")
-    gitignore = os.path.join(config.xdg_config, "git", "ignore")
+    if utils.is_windows():
+        gitconfig = os.path.join(os.environ["USERPROFILE"], ".gitconfig")
+        gitignore = os.path.join(os.environ["USERPROFILE"], ".gitignore")
+    else:
+        gitconfig = os.path.join(config.xdg_config, "git", "config")
+        gitignore = os.path.join(config.xdg_config, "git", "ignore")
 
     utils.symlink(config.gitconfig, gitconfig)
     utils.symlink(config.gitignore, gitignore)

@@ -15,9 +15,9 @@ BIN: str
 """The path to the Homebrew executables."""
 
 if utils.is_macos():
-    BIN = "/opt/homebrew/bin"
+    BIN = os.path.join("/", "opt", "homebrew", "bin")
 elif utils.is_linux():
-    BIN = "/home/linuxbrew/.linuxbrew/bin"
+    BIN = os.path.join("/", "home", "linuxbrew", ".linuxbrew", "bin")
 else:
     raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
@@ -43,8 +43,7 @@ def setup(machine_brewfile: str | None = None) -> None:
 
     if machine_brewfile:  # install machine specific packages
         if not os.path.exists(machine_brewfile):
-            LOGGER.error("Machine brewfile does not exist.")
-            return
+            raise utils.SetupError("Machine brewfile does not exist.")
 
         LOGGER.info("Installing machine specific packages...")
         cmd = f"{BREW} bundle --file={machine_brewfile}"
@@ -83,7 +82,7 @@ if __name__ == "__main__":
     utils.PARSER.add_argument(
         "machine_brewfile",
         help="The path to the machine specific brewfile.",
-        nargs="?",
+        nargs="?",  # optional argument
         default=None,
     )
     args = utils.startup(description="Homebrew setup script.")

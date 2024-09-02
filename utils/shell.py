@@ -6,6 +6,7 @@ If user input is required, the user must be prompted outside the shell command.
 """
 
 import logging
+import os as _os
 import subprocess
 
 LOGGER = logging.getLogger(__name__)
@@ -14,6 +15,8 @@ LOGGER = logging.getLogger(__name__)
 _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
+_WINDOWS = "nt"
+_EXECUTABLE = "/bin/zsh" if not _os.name == _WINDOWS else "powershell"
 
 
 def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
@@ -36,7 +39,7 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
         code and `throws` is True.
         KeyboardInterrupt: If the command is interrupted by the user.
     """
-    if _SUDO_TOKEN in command.lower():
+    if _SUDO_TOKEN in command.lower() and _os.name != _WINDOWS:
         LOGGER.debug("Running sudo command: %s", command)
 
     # execute the command
@@ -45,9 +48,9 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
         env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
+        executable=_EXECUTABLE,
         shell=True,
         text=True,
-        executable="/bin/zsh",
     ) as process:
         (output, returncode) = _exec_process(process, info)
 

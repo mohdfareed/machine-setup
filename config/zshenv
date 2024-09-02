@@ -8,7 +8,7 @@ unset script_dir
 
 # private environment
 export SSH_KEYS="$MACHINE/config/keys"
-export PRIVATE_ENV="$MACHINE/config/env.sh"
+export PRIVATE_ENV="$MACHINE/config/private.sh"
 if [[ -f "$PRIVATE_ENV" ]]; then
     source "$PRIVATE_ENV"
 fi

@@ -11,7 +11,7 @@ from utils import shell
 LOGGER = logging.getLogger(__name__)
 """The SSH setup logger."""
 
-SSH_DIR: str = "~/.ssh/"
+SSH_DIR: str = os.path.join(os.path.expanduser("~"), ".ssh")
 """The path to the SSH directory."""
 PUBLIC_EXT: str = ".pub"
 """The extension of the public key filenames."""
@@ -48,7 +48,7 @@ class SSHKeyPair:
         return os.path.splitext(self.private_filename)[0]
 
 
-def setup() -> None:
+def setup(ssh_config: str) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory."""
     LOGGER.info("Setting up SSH...")
@@ -57,7 +57,7 @@ def setup() -> None:
         LOGGER.error("SSH keys directory does not exist: %s", config.ssh_keys)
         return
 
-    utils.symlink(config.ssh_config, os.path.join(SSH_DIR, "config"))
+    utils.symlink(ssh_config, os.path.join(SSH_DIR, "config"))
     for key in load_keys(config.ssh_keys):
         setup_key(key)
     LOGGER.info("SSH setup complete")
@@ -118,4 +118,5 @@ def setup_key(key: SSHKeyPair) -> None:
 
 if __name__ == "__main__":
     args = utils.startup(description="SSH setup script.")
+    # TODO: support windows
     utils.execute(setup)

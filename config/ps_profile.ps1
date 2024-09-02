@@ -1,0 +1,61 @@
+param (
+    [switch]$EnvironmentOnly = $false
+)
+
+# Environment (shared across machines)
+# =============================================================================
+
+# set the machine repo path
+$script = (Get-Item -Path $MyInvocation.MyCommand.Path).Target
+if (-not $script) {
+    $script = $MyInvocation.MyCommand.Path
+}
+$env:MACHINE = Resolve-Path "$script/.."
+Remove-Variable -Name "script"
+
+# private environment
+$env:SSH_KEYS = "$env:MACHINE/config/keys"
+$env:PRIVATE_ENV = "$env:MACHINE/config/private.ps1"
+if (Test-Path -Path $env:PRIVATE_ENV) {
+    . $env:PRIVATE_ENV
+}
+
+# misc
+$env:PIP_REQUIRE_VIRTUALENV = "true"
+
+# Shell Setup
+# =============================================================================
+if ($EnvironmentOnly) { return } # don't run the rest of the script
+
+# set execution policy
+if ($IsWindows) {
+    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+}
+
+# oh-my-posh theme
+if (-not (Get-Command -Name "oh-my-posh" -ErrorAction SilentlyContinue)) {
+    $installScript = 'https://ohmyposh.dev/install.ps1'
+    $webClient = New-Object System.Net.WebClient
+    Set-ExecutionPolicy Bypass -Scope Process -Force
+    Invoke-Expression ($webClient.DownloadString($installScript))
+    Remove-Variable -Name "installScript"; Remove-Variable -Name "webClient"
+}
+$theme = "$env:POSH_THEMES_PATH/pure.omp.json"
+oh-my-posh init pwsh --config "$theme" | Invoke-Expression
+Remove-Variable -Name "theme"
+
+# load homebrew in powershell if on unix
+if (Test-Path -Path "/opt/homebrew/bin/brew") {
+    $(/opt/homebrew/bin/brew shellenv) | Invoke-Expression
+}
+
+# install nvim if not installed
+if (-not (Get-Command -Name "nvim" -ErrorAction SilentlyContinue)) {
+    if ($IsWindows) {
+        winget install Neovim.Neovim -e --id Neovim.Neovim
+    }
+    else {
+        # install outside powershell on unix
+        Write-Error "Neovim is not installed. Please install it."
+    }
+}

@@ -3,7 +3,7 @@
 import config
 import utils
 from machines import LOGGER, rpi
-from scripts import brew, git, shell, ssh, vscode
+from scripts import brew, git, shell, vscode
 from utils import shell as shell_utils
 
 
@@ -13,13 +13,12 @@ def setup(private_machine: str | None = None) -> None:
 
     # load private machine configuration if provided
     if private_machine:
-        config.load_private_config(private_machine)
+        config.link_private_config(private_machine)
 
     # setup core machine
     git.setup()
     brew.setup(rpi.brewfile)
     shell.setup(rpi.zshrc, rpi.zshenv)
-    ssh.setup()
     vscode.setup()
     vscode.setup_tunnels()
 

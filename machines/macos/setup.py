@@ -1,12 +1,14 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
+import os
+
 import config
 import utils
 from machines import LOGGER, macos
 from scripts import brew, git, shell, ssh, vscode
 from utils import shell as shell_utils
 
-PAM_SUDO = "/etc/pam.d/sudo_local"
+PAM_SUDO = os.path.join("/", "etc", "pam.d", "sudo_local")
 """The path to the sudo PAM configuration file on macOS."""
 PAM_SUDO_MODULE = "pam_tid.so"
 """The name of the PAM module to enable Touch ID for sudo."""
@@ -22,7 +24,7 @@ def setup(private_machine: str | None = None) -> None:
 
     # load private machine configuration if provided
     if private_machine:
-        config.load_private_config(private_machine)
+        config.link_private_config(private_machine)
 
     LOGGER.info("Authenticate to accept Xcode license.")
     try:  # ensure xcode license is accepted
@@ -37,7 +39,7 @@ def setup(private_machine: str | None = None) -> None:
     git.setup()
     brew.setup(macos.brewfile)
     shell.setup(macos.zshrc, macos.zshenv)
-    ssh.setup()
+    ssh.setup(macos.ssh_config)
     vscode.setup()
 
     # run the preferences script

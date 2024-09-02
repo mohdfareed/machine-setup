@@ -1,16 +1,16 @@
 #!/usr/bin/env zsh
 
 script_name="$(basename "$0")"
-usage="usage: $script_name [-h] {macos,rpi,codespaces} ...
+usage="usage: $script_name [-h] machine ...
 
 Set up a machine with the provided name.
 
 positional arguments:
-  {macos,rpi,codespaces}  the name of the machine to set up
-  args                    additional machine setup arguments
+  machine     the name of the machine to set up
+  args        additional machine setup arguments
 
 options:
-  -h, --help              show this help message and exit"
+  -h, --help  show this help message and exit"
 machine=""
 args=()
 

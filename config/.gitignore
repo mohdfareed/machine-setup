@@ -2,6 +2,11 @@
 *.DS_Store
 ._*
 
+# windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
 # vscode
 .vscode/*
 !.vscode/settings.json

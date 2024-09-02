@@ -1,6 +1,7 @@
 # private files
 config/keys
-config/env.sh
+config/private.sh
+config/private.ps1
 
 # python
 *__pycache__*

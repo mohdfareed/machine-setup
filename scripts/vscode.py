@@ -17,11 +17,17 @@ VSCODE: str
 """The path to the VSCode user settings directory."""
 
 if utils.is_macos():
-    VSCODE = "~/Library/Application Support/Code/User"
+    VSCODE = os.path.join(
+        os.path.expanduser("~"),
+        "Library",
+        "Application Support",
+        "Code",
+        "User",
+    )
 elif utils.is_linux():
-    VSCODE = "~/.config/Code/User"
+    VSCODE = os.path.join(os.path.expanduser("~"), ".config", "Code", "User")
 elif utils.is_windows():
-    VSCODE = "%APPDATA%\\Code\\User"
+    VSCODE = os.path.join(os.environ["APPDATA"], "Code", "User")
 else:
     raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 

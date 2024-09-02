@@ -7,11 +7,11 @@ Usage: $scriptName [-h] <machine> ...
 Set up a machine with the provided name.
 
 positional arguments:
-  {console,gleason}  the name of the machine to set up
-  args               additional machine setup arguments
+  machine     the name of the machine to set up
+  args        additional machine setup arguments
 
 options:
-  -h, --help         show this help message and exit
+  -h, --help  show this help message and exit
 "@
 $machine = ""
 $machineArgs = @()
