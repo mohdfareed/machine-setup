@@ -25,14 +25,15 @@ def setup(private_machine: str | None = None) -> None:
     vscode.setup_tunnels()
 
     # setup docker
-    shell_utils.run("sudo snap enable docker")
-    shell_utils.run("sudo addgroup --system docker")
-    shell_utils.run("sudo adduser $USER docker")
+    shell_utils.run("sudo snap enable docker", throws=False)
+    shell_utils.run("sudo addgroup --system docker", throws=False)
+    shell_utils.run("sudo adduser $USER docker", throws=False)
 
     # machine-specific setup
-    shell_utils.run("chsh -s $(which zsh)")  # set zsh as default shell
-    shell_utils.run("sudo touch $HOME/.hushlogin")  # remove login message
-    shell_utils.run("sudo mkdir -p $HOME/.config")  # create config directory
+    shell_utils.run("sudo loginctl enable-linger $USER", throws=False)  # code
+    shell_utils.run("sudo chsh -s $(which zsh)", throws=False)  # change shell
+    shell_utils.run("sudo touch $HOME/.hushlogin", throws=False)  # quite login
+    shell_utils.run("sudo mkdir -p $HOME/.config", throws=False)  # create dirs
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

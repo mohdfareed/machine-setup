@@ -14,7 +14,7 @@ sudo snap install docker
 sudo apt install -y npm
 
 # vscode
-sudo snap install -y code
+sudo apt install -y code
 
 # clean packages
 sudo apt autoremove -y

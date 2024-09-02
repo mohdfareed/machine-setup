@@ -7,10 +7,10 @@ intervention.
 
 ## Requirements
 
-- `zsh`: the Z shell if setting up a unix-based machine.
-- `powershell`: PowerShell if setting up a Windows machine.
-- `git`: the version control system.
 - `python3`: the Python interpreter.
+- `git`: the version control system.
+- `zsh`: if setting up a *unix machine.
+- `powershell`: if setting up a Windows machine.
 
 ## Usage
 
@@ -19,9 +19,10 @@ To set up a machine, run the following command:
 ```sh
 url="https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py"
 curl -fsSL $url | python3 - [-h] [-f] path [-h] machine [-h]
+
 # example:
 # cd private_config_path (explained below)
-# curl -fsSL $url | python3 - ~/Developer/machine macos .
+# curl -fsSL $url | python3 - ~/machine rpi .
 ```
 
 Or download it and run it locally:
@@ -97,7 +98,17 @@ These files can be configured by calling
 where `config_path` is the path to the private configuration directory
 containing the files, read from the command line arguments.
 
-## macOS Backup
+## Machines
+
+The following are notes related to specific supported machines.
+
+### macOS
+
+Back up the following:
 
 - Raycast configuration
 - Downloads folder
+
+### Raspberry Pi
+
+- `zsh` must be installed before running the setup script.
