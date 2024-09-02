@@ -5,7 +5,7 @@ import os
 import config
 import utils
 from machines import LOGGER, macos
-from scripts import brew, git, shell, ssh, vscode
+from scripts import brew, git, shell, ssh, tailscale, vscode
 from utils import shell as shell_utils
 
 PAM_SUDO = os.path.join("/", "etc", "pam.d", "sudo_local")
@@ -41,6 +41,7 @@ def setup(private_machine: str | None = None) -> None:
     shell.setup(macos.zshrc, macos.zshenv)
     ssh.setup(macos.ssh_config)
     vscode.setup()
+    tailscale.setup()
 
     # run the preferences script
     LOGGER.debug("Setting system preferences...")

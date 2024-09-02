@@ -3,8 +3,10 @@
 import config
 import utils
 from machines import LOGGER, rpi
-from scripts import git, shell, vscode
+from scripts import git, shell, tailscale, vscode
 from utils import shell as shell_utils
+
+PACKAGES = ["zsh", "git", "code", "npm", "docker-compose"]
 
 
 def setup(private_machine: str | None = None) -> None:
@@ -15,28 +17,48 @@ def setup(private_machine: str | None = None) -> None:
     if private_machine:
         config.link_private_config(private_machine)
 
-    # install rpi packages script
-    shell_utils.run(rpi.packages)
+    # update packages
+    update()
+    # install docker
+    shell_utils.run("curl -fsSL https://get.docker.com | sh", throws=False)
+    # install packages
+    install(PACKAGES)
 
     # setup core machine
     git.setup()
     shell.setup(rpi.zshrc, rpi.zshenv)
     vscode.setup()
     vscode.setup_tunnels()
-
-    # setup docker
-    shell_utils.run("sudo snap enable docker", throws=False)
-    shell_utils.run("sudo addgroup --system docker", throws=False)
-    shell_utils.run("sudo adduser $USER docker", throws=False)
+    tailscale.setup()
 
     # machine-specific setup
-    shell_utils.run("sudo loginctl enable-linger $USER", throws=False)  # code
-    shell_utils.run("sudo chsh -s $(which zsh)", throws=False)  # change shell
-    shell_utils.run("sudo touch $HOME/.hushlogin", throws=False)  # quite login
-    shell_utils.run("sudo mkdir -p $HOME/.config", throws=False)  # create dirs
+    shell_utils.run(
+        "sudo loginctl enable-linger $USER", throws=False
+    )  # code server
+    shell_utils.run(
+        "sudo chsh -s $(which zsh)", throws=False
+    )  # change default shell
+    shell_utils.run(
+        "sudo touch $HOME/.hushlogin", throws=False
+    )  # remove login message
+    shell_utils.run(
+        "sudo mkdir -p $HOME/.config", throws=False
+    )  # create config directory
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")
+
+
+def update() -> None:
+    """Update Raspberry Pi packages."""
+    utils.shell.run("sudo apt update && sudo apt upgrade -y")
+    utils.shell.run("sudo apt autoremove -y")
+
+
+def install(packages: list[str]) -> None:
+    """Install packages on Raspberry Pi."""
+    utils.shell.run(f"sudo apt install -y {' '.join(packages)}")
+    utils.shell.run("sudo apt autoremove -y")
 
 
 if __name__ == "__main__":

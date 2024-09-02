@@ -11,19 +11,17 @@ from utils import shell
 LOGGER = logging.getLogger(__name__)
 """The Homebrew setup logger."""
 
-BIN: str
+BIN: str | None = None
 """The path to the Homebrew executables."""
 
 if utils.is_macos():
     BIN = os.path.join("/", "opt", "homebrew", "bin")
 elif utils.is_linux():
     BIN = os.path.join("/", "home", "linuxbrew", ".linuxbrew", "bin")
-else:
-    raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
-BREW = os.path.join(BIN, "brew")
+BREW = os.path.join(BIN, "brew") if BIN else None
 """The path to the brew executable."""
-MAS = os.path.join(BIN, "mas")
+MAS = os.path.join(BIN, "mas") if BIN else None
 """The path to the mas executable."""
 
 
@@ -64,10 +62,12 @@ def install_brew() -> None:
     """Install Homebrew on a new machine."""
 
     # update homebrew if it is already installed
-    if os.path.exists(BREW):
+    if BREW and os.path.exists(BREW):
         LOGGER.info("Updating Homebrew...")
         shell.run(f"{BREW} update")
-
+    elif not BREW:  # check if homebrew is supported on the OS
+        LOGGER.error("Homebrew is not supported on this OS.")
+        return
     else:  # install homebrew otherwise
         LOGGER.info("Installing Homebrew...")
         cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
@@ -76,6 +76,11 @@ def install_brew() -> None:
     # fix “zsh compinit: insecure directories” error
     shell.run(f'chmod -R go-w "$({BREW} --prefix)/share"')
     LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
+
+
+def is_installed() -> bool:
+    """Check if Homebrew is installed on the machine."""
+    return BREW is not None and os.path.exists(BREW)
 
 
 if __name__ == "__main__":
