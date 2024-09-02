@@ -17,16 +17,17 @@ To set up a machine, run the following command:
 
 ```sh
 url="https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py"
-curl -fsSL $url | python3 - [-h|--help] machine path [-f|--force] [-h|--help]
+curl -fsSL $url | python3 - [-h] [-f] path [-h] machine [-h]
 ```
 
 Where the arguments are as follows:
 
 - `-h|--help`: prints the bootstrapping help message.
-- `machine`: the machine to set up (macOS, RPi, and codespaces are supported).
-- `path`: the path to clone the repository into.
 - `-f|--force`: forces cloning the repo even if it already exists.
-- `-h|--help`: prints the help message of the machine's setup script.
+- `path`: the path to clone the repository into.
+- `-h|--help`: prints the setup help message.
+- `machine`: the machine to set up (macOS, RPi, and codespaces are supported).
+- `-h|--help`: prints the machine's setup help message.
 
 ### Setting Up Individual Components
 
@@ -89,3 +90,4 @@ containing the files.
 ## macOS Backup
 
 - Raycast configuration
+- Downloads folder

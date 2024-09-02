@@ -6,7 +6,6 @@
   "editor.wrappingIndent": "indent",
   "editor.guides.bracketPairs": true,
   "editor.formatOnSave": true,
-  "editor.minimap.showRegionSectionHeaders": true,
   // # endregion
   // MARK: whitespace
   // #region ===================================================================
@@ -23,6 +22,7 @@
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.occurrencesHighlight": "multiFile",
+  "editor.minimap.showRegionSectionHeaders": true,
   "workbench.editor.showTabs": "single",
   "workbench.editor.empty.hint": "hidden",
   "workbench.activityBar.location": "top",
@@ -227,8 +227,7 @@
   // #region ===================================================================
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  },
-  "svg.preview.mode": "img"
+  }
   // # endregion
   // REVIEW - new customizations above =========================================
 }

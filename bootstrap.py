@@ -3,7 +3,13 @@
 execute the setup script.
 
 Requirements:
-    - SETUP_SCRIPT at the root of the machine repository
+    - Python 3.7+
+    - git must be installed
+    - setup script at the root of the machine repository
+    - if unix:
+        - zsh must be installed
+    - if windows:
+        - powershell must be installed
 
 External effects:
     - Clones machine into the specified path
@@ -12,6 +18,7 @@ External effects:
 
 import argparse
 import os
+import platform
 import shutil
 import subprocess
 import sys
@@ -20,12 +27,19 @@ REPO = "https://github.com/mohdfareed/machine.git"
 """URL of the repository to clone."""
 SETUP_SCRIPT = "setup.sh"
 """Name of the setup script to execute."""
+SETUP_SCRIPT_WINDOWS = "setup.ps1"
+"""Name of the setup script for Windows."""
 
 
-def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
+def main(path: str, overwrite=False, setup_args=None) -> None:
     """Bootstrap the machine setup process."""
 
-    # clone machine, overwrite if prompted
+    # Determine the appropriate setup script based on the OS
+    windows_platform = "Windows"
+    is_windows = platform.system() == windows_platform
+    setup_script = SETUP_SCRIPT_WINDOWS if is_windows else SETUP_SCRIPT
+
+    # clone machine, overwrite if requested
     print(f"Cloning machine into: {path}")
     if overwrite and os.path.exists(path):
         print("Removing existing machine...")
@@ -34,23 +48,29 @@ def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
         run(["git", "clone", "-q", REPO, path], silent=True)
 
     # execute machine setup script
-    script = os.path.join(path, SETUP_SCRIPT)
-    run([script, machine, *(setup_args or [])])
+    script = os.path.join(path, setup_script)
+    if not is_windows:
+        run([script, *(setup_args or [])])
+    else:
+        run(
+            [
+                "powershell",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                script,
+                *(setup_args or []),
+            ]
+        )
 
 
-def run(cmd, silent=False):
+def run(cmd, silent=False) -> None:
     """Run a shell command."""
     subprocess.run(cmd, capture_output=silent, check=True)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Bootstrap machine setup.")
-    parser.add_argument(
-        "machine",
-        type=str,
-        choices=["macos", "rpi", "codespaces"],
-        help="the machine to setup",
-    )
+    parser = argparse.ArgumentParser(description="Bootstrap a new machine.")
     parser.add_argument(
         "path",
         type=str,
@@ -62,17 +82,18 @@ if __name__ == "__main__":
         action="store_true",
         help="overwrite machine if it exists",
     )
-    parser.add_argument("args", nargs=argparse.REMAINDER)
+    parser.add_argument(
+        "args", nargs=argparse.REMAINDER, help="additional setup arguments"
+    )
 
     # parse arguments
     args = parser.parse_args()
-    machine_name = args.machine
     machine_path = args.path
     force = args.force
     additional_args = args.args
 
     try:
-        main(machine_name, machine_path, force, additional_args)
+        main(machine_path, force, additional_args)
     except Exception as e:  # pylint: disable=broad-except
         print(rf"\033[31;1m{'Error:'}\033[0m {e}")
         print(rf"\033[31;1m{'Failed to bootstrap machine'}\033[0m")

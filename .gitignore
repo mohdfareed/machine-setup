@@ -4,16 +4,12 @@ config/env.sh
 
 # python
 *__pycache__*
-
-# virtualenv
 .venv/
 
 # log files
 *.log
 
-# lock files
+# misc
 *.lock.json
 *-lock.json
-
-# lazyvim
 *lazyvim.json
