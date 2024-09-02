@@ -6,10 +6,6 @@ Requirements:
     - Python 3.7+
     - git must be installed
     - setup script at the root of the machine repository
-    - if unix:
-        - zsh must be installed
-    - if windows:
-        - powershell must be installed
 
 External effects:
     - Clones machine into the specified path
@@ -38,6 +34,7 @@ def main(path: str, overwrite=False, setup_args=None) -> None:
     windows_platform = "Windows"
     is_windows = platform.system() == windows_platform
     setup_script = SETUP_SCRIPT_WINDOWS if is_windows else SETUP_SCRIPT
+    setup_script = os.path.join(path, setup_script)
 
     # clone machine, overwrite if requested
     print(f"Cloning machine into: {path}")
@@ -45,28 +42,24 @@ def main(path: str, overwrite=False, setup_args=None) -> None:
         print("Removing existing machine...")
         shutil.rmtree(path, ignore_errors=True)
     if not os.path.exists(path):  # clone machine otherwise
-        run(["git", "clone", "-q", REPO, path], silent=True)
+        subprocess.run(["git", "clone", "-q", REPO, path], check=True)
 
     # execute machine setup script
-    script = os.path.join(path, setup_script)
+    print(f"Executing setup script: {setup_script}")
     if not is_windows:
-        run([script, *(setup_args or [])])
+        subprocess.run([setup_script, *(setup_args or [])], check=True)
     else:
-        run(
+        subprocess.run(
             [
                 "powershell",
                 "-ExecutionPolicy",
                 "Bypass",
                 "-File",
-                script,
+                setup_script,
                 *(setup_args or []),
-            ]
+            ],
+            check=True,
         )
-
-
-def run(cmd, silent=False) -> None:
-    """Run a shell command."""
-    subprocess.run(cmd, capture_output=silent, check=True)
 
 
 if __name__ == "__main__":
@@ -95,6 +88,6 @@ if __name__ == "__main__":
     try:
         main(machine_path, force, additional_args)
     except Exception as e:  # pylint: disable=broad-except
-        print(rf"\033[31;1m{'Error:'}\033[0m {e}")
-        print(rf"\033[31;1m{'Failed to bootstrap machine'}\033[0m")
+        print(f"\033[31;1m{'Error:'}\033[0m {e}")
+        print(f"\033[31;1m{'Failed to bootstrap machine'}\033[0m")
         sys.exit(1)
