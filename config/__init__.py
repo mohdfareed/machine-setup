@@ -57,6 +57,22 @@ ssh_keys = _utils.load_env_var(zshenv, "SSH_KEYS")
 """The path of the machine ssh keys directory."""
 
 
+def load_private_config(private_machine: str) -> None:
+    """Load private machine configuration."""
+    LOGGER.info("Loading private machine configuration: %s", private_machine)
+    source_env = _os.path.join(private_machine, _os.path.basename(private_env))
+    source_keys = _os.path.join(private_machine, _os.path.basename(ssh_keys))
+
+    try:  # symlink private environment
+        _utils.symlink(source_env, private_env)
+    except FileNotFoundError:
+        LOGGER.warning("Private environment not found.")
+    try:  # symlink SSH keys
+        _utils.symlink(source_keys, ssh_keys)
+    except FileNotFoundError:
+        LOGGER.warning("SSH keys not found.")
+
+
 def report(env: dict[str, str] | None) -> None:
     """Report the machine configuration."""
     LOGGER.debug("Machine configuration:")

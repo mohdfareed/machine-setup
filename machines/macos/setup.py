@@ -2,7 +2,7 @@
 
 import config
 import utils
-from machines import LOGGER, load_private_machine, macos
+from machines import LOGGER, macos
 from scripts import brew, git, shell, ssh, vscode
 from utils import shell as shell_utils
 
@@ -22,7 +22,7 @@ def setup(private_machine: str | None = None) -> None:
 
     # load private machine configuration if provided
     if private_machine:
-        load_private_machine(private_machine)
+        config.load_private_config(private_machine)
 
     LOGGER.info("Authenticate to accept Xcode license.")
     try:  # ensure xcode license is accepted
