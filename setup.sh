@@ -4,11 +4,6 @@ usage="usage: $0 machine [args]"
 machine=""
 args=()
 
-# check if setting up a codespace
-if [ -n "$CODESPACES" ]; then
-    machine="codespaces"
-fi
-
 # parse arguments
 for arg in "$@"; do
     if [ -z "$machine" ]; then
@@ -17,6 +12,11 @@ for arg in "$@"; do
         args+=("$arg")
     fi
 done
+
+# check if setting up a github codespace
+if [ -n "$CODESPACES" ]; then
+    machine="codespaces"
+fi
 
 # ensure valid machine is provided
 machine_path="$(dirname "$(realpath "$0")")"

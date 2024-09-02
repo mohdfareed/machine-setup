@@ -35,46 +35,56 @@ module, provided that the bootstrapping script has already been run. Run the
 following command to set up a component:
 
 ```sh
-python -m scripts.[component] [-h]
+python -m scripts.[component] [-h|--help]
 ```
+
+Where the `args` are the arguments required by the component setup script.
 
 ### Updating and Cleaning
 
-To update the machine, reapplying setup config, run the following command:
+To update the machine and reapplying setup config, run the following command:
 
 ```sh
-python -m [machine].setup [-h]
+python -m machines.[machine].setup [-h|--help]
+```
+
+Or:
+
+```sh
+./setup.sh machine [-h|--help]
 ```
 
 ## Configuration
 
 The `config` module contains common configuration that is shared across all
-machines. It works without dependencies on machine-specific configurations.
+machines. It works without dependencies on machines modules.
 
-A machine is
-configured by creating a new module in the `machines` package, with the
-following structure:
+A machine is configured by creating a new module in the `machines` package,
+with the following structure:
 
 ```plaintext
 machines/
-  [machine]/
-    config/
-      zshenv.sh
-    __init__.py
-    setup.py
+  [machine]/ # the machine's module, includes config files
+    __init__.py # defines paths to config files
+    setup.py # the machine's setup script
 ```
-
-Where:
 
 ### Private Configuration
 
-Some machines can have private configurations that cannot be shared publicly. These configurations can be stored in a private directory and provided to the machine setup script as an argument.
+Some machines can have private configurations that cannot be shared publicly.
+These configurations can be stored in a private directory and provided to the
+machine's setup script as an argument, where supported.
 
-The following are the private configuration files supported:
+The following are the private configuration files supported on all machines:
 
-- `env.sh`: private environment variables,
-  such as API keys.
-- `keys/`: the SSH keys used by the machine.
+- `env.sh`: private environment variables, such as API keys; automatically
+  sourced by `config.zshenv`.
+- `keys/`: the SSH keys used by the machine; set up with `scripts.ssh`.
+
+These files can be loaded by calling
+`config.load_private_config(config_path: str)` in the machine's setup script,
+where `config_path` is the path to the private configuration directory
+containing the files.
 
 ## macOS Backup
 

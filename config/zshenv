@@ -9,6 +9,9 @@ unset script_dir
 # private environment
 export SSH_KEYS="$MACHINE/config/keys"
 export PRIVATE_ENV="$MACHINE/config/env.sh"
+if [[ -f "$PRIVATE_ENV" ]]; then
+    source "$PRIVATE_ENV"
+fi
 
 # XDG Base Directory Specification
 # Source: https://wiki.archlinux.org/title/XDG_Base_Directory =================
@@ -79,10 +82,3 @@ export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 [ -d "$IPYTHONDIR" ] || mkdir -p "$IPYTHONDIR"
-
-# =============================================================================
-
-# load private environment
-if [[ -f "$PRIVATE_ENV" ]]; then
-    source "$PRIVATE_ENV"
-fi
