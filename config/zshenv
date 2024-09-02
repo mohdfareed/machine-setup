@@ -1,7 +1,7 @@
 # Environment (shared across machines)
 # =============================================================================
 
-# set the machine repo path
+# set the machine path
 script_dir=$(dirname "$(realpath "$0")")
 export MACHINE="$(dirname "$script_dir")"
 unset script_dir

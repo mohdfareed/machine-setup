@@ -3,7 +3,7 @@
 import config
 import utils
 from machines import LOGGER, rpi
-from scripts import brew, git, shell, vscode
+from scripts import git, shell, vscode
 from utils import shell as shell_utils
 
 
@@ -15,39 +15,24 @@ def setup(private_machine: str | None = None) -> None:
     if private_machine:
         config.link_private_config(private_machine)
 
+    # install rpi packages script
+    shell_utils.run(rpi.packages)
+
     # setup core machine
     git.setup()
-    brew.setup(rpi.brewfile)
     shell.setup(rpi.zshrc, rpi.zshenv)
     vscode.setup()
     vscode.setup_tunnels()
 
     # setup docker
-    # shell_utils.run("sudo snap enable docker")
+    shell_utils.run("sudo snap enable docker")
     shell_utils.run("sudo addgroup --system docker")
     shell_utils.run("sudo adduser $USER docker")
 
-    # FIXME: fix the following
-    #     chsh -s $(which zsh)          # change default shell to zsh
-    # sudo touch "$HOME/.hushlogin" # remove login message
-    # sudo mkdir -p $HOME/.config   # create config directory
-
-    # TODO: figure installing npm (potential dependency) and docker
-    # TODO: update and cleanup apt
-
-    # # update packages
-    # sudo apt update
-    # sudo apt upgrade -y
-    # # vim
-    # sudo apt install -y npm
-    # # snap store
-    # sudo apt install -y snapd
-    # sudo snap install core
-    # sudo snap refresh
-    # # docker
-    # sudo snap install docker
-    # # clean packages
-    # sudo apt autoremove -y
+    # machine-specific setup
+    shell_utils.run("chsh -s $(which zsh)")  # set zsh as default shell
+    shell_utils.run("sudo touch $HOME/.hushlogin")  # remove login message
+    shell_utils.run("sudo mkdir -p $HOME/.config")  # create config directory
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

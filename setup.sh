@@ -12,7 +12,7 @@ positional arguments:
 options:
   -h, --help  show this help message and exit"
 machine=""
-args=()
+args=""
 
 # arguments ===================================================================
 
