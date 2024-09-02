@@ -58,9 +58,7 @@ def is_windows() -> bool:
 # MARK - Setup
 
 PARSER = _argparse.ArgumentParser(
-    prog="machine-setup",
-    description="Setup the machine.",
-    epilog="REPO: github.com/mohdfareed/machine",
+    description="Machine setup script.",
     formatter_class=_argparse.ArgumentDefaultsHelpFormatter,
 )
 """The command line argument parser."""

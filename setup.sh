@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env sh
 
 script_name="$(basename "$0")"
 usage="usage: $script_name [-h] machine ...
@@ -32,7 +32,7 @@ for arg in "$@"; do
     if [ -z "$machine" ]; then
         machine="$arg"
     else
-        args+=("$arg")
+        args="$args $arg"
     fi
 done
 
@@ -52,13 +52,14 @@ req_file="$machine_path/requirements.txt"
 python="$venv_dir/bin/python"
 
 # create virtual environment and install requirements
-echo "Creating virtual environment..."
-venv_options=(--clear --upgrade-deps --prompt "$machine")
-python3 -m venv "${venv_options[@]}" "$venv_dir" > /dev/null 2>&1
-$python -m pip install -r $req_file --upgrade > /dev/null 2>&1
+if [ ! -d "$venv_dir" ]; then # only if it doesn't exist
+    echo "Creating virtual environment..."
+    python3 -m venv --clear --prompt "$machine" --upgrade-deps "$venv_dir"
+    $python -m pip install -r $req_file --upgrade
+fi
 
 # execute machine setup script
 echo "Setting up machine '$machine'..."
 cd "$machine_path"
-$python -m "machines.$machine.setup" "${args[@]}"
-cd - >/dev/null
+$python -m "machines.$machine.setup" $args
+cd - > /dev/null
