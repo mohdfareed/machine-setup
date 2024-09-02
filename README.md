@@ -5,6 +5,12 @@ various machines. It’s designed to streamline the setup and update process,
 ensuring consistent configurations across all devices with minimal manual
 intervention.
 
+## Requirements
+
+- `zsh`: the Z shell.
+- `git`: the version control system.
+- `python3`: the Python interpreter.
+
 ## Usage
 
 To set up a machine, run the following command:

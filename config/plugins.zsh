@@ -67,11 +67,13 @@ zinit ice wait lucid as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
 zinit light sharkdp/bat
 
 # btop
-zinit ice wait lucid as"program" from"gh-r" atpull"./install.sh && ./setuid.sh" pick"btop"
+zinit ice wait lucid as"program" from"gh-r" \
+      atpull"./install.sh && ./setuid.sh" pick"btop"
 zinit light aristocratos/btop
 
 # nvim (neovim)
-zinit ice wait lucid as"command" from"gh-r" mv"nvim* -> nvim" pick"neovim/neovim"
+zinit ice wait lucid as"command" from"gh-r" mv"nvim* -> nvim" \
+      pick"neovim/neovim"
 zinit light neovim/neovim
 
 # tmux
@@ -85,7 +87,8 @@ git clone https://github.com/tmux-plugins/tpm $XDG_CONFIG_HOME/tmux/plugins/tpm
 # nvim dependencies ===========================================================
 
 # lazygit
-zinit ice wait lucid as"program" from"gh-r" mv"lazygit* -> lazygit" pick"lazygit"
+zinit ice wait lucid as"program" from"gh-r" mv"lazygit* -> lazygit" \
+      pick"lazygit"
 zinit light jesseduffield/lazygit
 
 # ripgrep

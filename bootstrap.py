@@ -3,15 +3,11 @@
 execute the setup script.
 
 Requirements:
-    - Configured `[machine]` module in the repository
-    - `[machine]/setup.py` setup script
-    - `[machine]/config/zshenv` shell environment file
-    - `$MACHINE` environment variable to resolve machine path
+    - SETUP_SCRIPT at the root of the machine repository
 
 External effects:
-    - Clones machine into `$MACHINE`
-    - Creates a virtual environment at `$MACHINE`
-    - Executes `setup.sh`
+    - Clones machine into the specified path
+    - Executes the setup script
 """
 
 import argparse
@@ -22,16 +18,8 @@ import sys
 
 REPO = "https://github.com/mohdfareed/machine.git"
 """URL of the repository to clone."""
-SOURCE_URL = "https://raw.githubusercontent.com/mohdfareed/machine/main"
-"""URL of the shell environment file."""
-MACHINE_VAR = "MACHINE"
-"""Environment variable to resolve machine config path."""
-
-# paths at machine repository
-ZSHENV = os.path.join("config", "zshenv")
-REQUIREMENTS = "requirements.txt"
 SETUP_SCRIPT = "setup.sh"
-VENV = ".venv"
+"""Name of the setup script to execute."""
 
 
 def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
@@ -45,30 +33,14 @@ def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
     if not os.path.exists(path):  # clone machine otherwise
         run(["git", "clone", "-q", REPO, path], silent=True)
 
-    # create virtual environment
-    print("Creating virtual environment...")
-    venv_options = "--clear --upgrade-deps --prompt machine"
-    machine_venv_path = os.path.join(path, VENV)
-    run(f"python3 -m venv {machine_venv_path} {venv_options}", silent=True)
-
-    # install dependencies
-    python = os.path.join(machine_venv_path, "bin", "python")
-    req_file = os.path.join(path, REQUIREMENTS)
-    cmd = [python, "-m", "pip", "install", "-r", req_file, "--upgrade"]
-    run(cmd, silent=True)  # install dependencies
-
     # execute machine setup script
     script = os.path.join(path, SETUP_SCRIPT)
-    run([script, machine, *(setup_args or [])], safe=False)
+    run([script, machine, *(setup_args or [])])
 
 
-def run(cmd, silent=False, safe=False, text=False):
+def run(cmd, silent=False):
     """Run a shell command."""
-    options: dict = dict(capture_output=silent, text=text)
-    result = subprocess.run(
-        cmd, shell=isinstance(cmd, str), check=not safe, **options
-    )
-    return result.stdout.strip() if text else result.returncode
+    subprocess.run(cmd, capture_output=silent, check=True)
 
 
 if __name__ == "__main__":
