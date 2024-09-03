@@ -25,6 +25,8 @@ def setup() -> None:
     else:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
+    # start tailscale
+    utils.shell.run("sudo tailscale up", info=True)
     LOGGER.debug("Tailscale was setup successfully.")
 
 

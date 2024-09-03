@@ -72,7 +72,8 @@ zinit ice wait lucid as"program" from"gh-r" \
 zinit light aristocratos/btop
 
 # nvim (neovim)
-zinit ice wait lucid as"command" from"gh-r" mv"nvim* -> nvim" pick"nvim/bin/nvim"
+zinit ice wait lucid as"command" from"gh-r" mv"nvim* -> nvim" \
+      pick"nvim/bin/nvim"
 zinit light neovim/neovim
 
 # tmux
@@ -91,7 +92,7 @@ zinit ice wait lucid as"program" from"gh-r" mv"lazygit* -> lazygit" \
 zinit light jesseduffield/lazygit
 
 # ripgrep
-zinit ice wait lucid as"program" from"gh-r" mv"ripgrep* -> rg" pick"rg"
+zinit ice wait lucid as"program" from"gh-r" mv"ripgrep* -> rg" pick"rg/rg"
 zinit light BurntSushi/ripgrep
 
 # fd
