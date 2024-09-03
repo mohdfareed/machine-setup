@@ -76,6 +76,7 @@ zinit ice wait lucid as"command" from"gh-r" mv"nvim* -> nvim" \
       pick"nvim/bin/nvim"
 zinit light neovim/neovim
 
+
 # tmux
 zinit ice wait lucid as"command" from"gh-r" mv"tmux* -> tmux" pick"tmux/tmux"
 zinit light tmux/tmux

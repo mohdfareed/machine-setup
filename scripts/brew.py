@@ -4,9 +4,9 @@ machine."""
 import logging
 import os
 
-import config
 import utils
 from utils import shell
+from utils.helpers import is_macos
 
 LOGGER = logging.getLogger(__name__)
 """The Homebrew setup logger."""
@@ -25,70 +25,103 @@ MAS = os.path.join(BIN, "mas") if BIN else None
 """The path to the mas executable."""
 
 
-def setup(machine_brewfile: str | None = None) -> None:
+def setup() -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
     LOGGER.info("Setting up Homebrew...")
-
-    try:  # install homebrew
-        install_brew()
-    except shell.ShellError as ex:
-        raise utils.SetupError("Failed to install Homebrew.") from ex
-
-    # install brew and core packages
-    LOGGER.info("Installing core packages...")
-    cmd = f"{BREW} bundle --file={config.brewfile}"
-    shell.run(cmd, throws=False)
-
-    if machine_brewfile:  # install machine specific packages
-        if not os.path.exists(machine_brewfile):
-            raise utils.SetupError("Machine brewfile does not exist.")
-
-        LOGGER.info("Installing machine specific packages...")
-        cmd = f"{BREW} bundle --file={machine_brewfile}"
-        shell.run(cmd, throws=False)
-
-    # upgrade packages
-    LOGGER.info("Upgrading packages...")
-    shell.run(f"{BREW} upgrade", throws=False)
-
-    # cleanup
-    LOGGER.info("Cleaning up...")
-    cmd = f"{BREW} cleanup --prune=all"
-    shell.run(cmd, throws=False)
+    install_brew()
+    install(f"zsh git git-lfs gh nvim {'mas' if utils.is_macos() else ''}")
+    update()
     LOGGER.info("Homebrew setup complete.")
 
 
 def install_brew() -> None:
     """Install Homebrew on a new machine."""
 
-    # update homebrew if it is already installed
-    if BREW and os.path.exists(BREW):
-        LOGGER.info("Updating Homebrew...")
-        shell.run(f"{BREW} update")
-    elif not BREW:  # check if homebrew is supported on the OS
+    if not BREW:  # check if homebrew is supported on the OS
         LOGGER.error("Homebrew is not supported on this OS.")
         return
-    else:  # install homebrew otherwise
-        LOGGER.info("Installing Homebrew...")
-        cmd = '/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"'
-        shell.run(cmd)
+
+    # brew already exists
+    if os.path.exists(BREW):
+        return
+
+    LOGGER.info("Installing Homebrew...")
+    try:  # install homebrew otherwise
+        shell.run('/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"')
+    except shell.ShellError as ex:
+        raise utils.SetupError("Failed to install Homebrew.") from ex
 
     # fix “zsh compinit: insecure directories” error
     shell.run(f'chmod -R go-w "$({BREW} --prefix)/share"')
     LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
 
 
+def update() -> None:
+    """Update Homebrew and its packages."""
+    LOGGER.info("Updating Homebrew...")
+    shell.run(f"{BREW} update && {BREW} upgrade")
+    if is_macos():
+        shell.run(f"{MAS} upgrade")
+    LOGGER.info("Homebrew was updated successfully.")
+
+
+def install(package: str, cask=False) -> None:
+    """Install a Homebrew package."""
+    LOGGER.info("Installing %s from Homebrew...", package)
+    shell.run(f"{BREW} install {'--cask' if cask else ''} {package}")
+    shell.run(f"{BREW} cleanup --prune=all", throws=False)
+    LOGGER.debug("%s was installed successfully.", package)
+
+
+def install_mas(package: str) -> None:
+    """Install a Mac App Store package."""
+    if not utils.is_macos():
+        raise utils.UnsupportedOS("Mac App Store is only supported on macOS.")
+
+    LOGGER.info("Installing %s from the Mac App Store...", package)
+    shell.run(f"{MAS} install {package}")
+    LOGGER.debug("%s was installed successfully.", package)
+
+
+def install_brewfile(file: str) -> None:
+    """Install Homebrew packages from a Brewfile."""
+    LOGGER.info("Installing Homebrew packages from Brewfile...")
+    shell.run(f"{BREW} bundle install --file={file}")
+    LOGGER.debug("Homebrew packages were installed successfully.")
+
+
+def setup_python() -> None:
+    """Setup python on a new Debian machine."""
+    LOGGER.info("Setting up Python...")
+    install("python pipx pyenv pyenv-virtualenv")
+    LOGGER.debug("Python was setup successfully.")
+
+
+def setup_node() -> None:
+    """Setup node on a new Debian machine."""
+    LOGGER.info("Setting up Node...")
+    install("node nvm")
+    LOGGER.debug("Node was setup successfully.")
+
+
+def setup_fonts() -> None:
+    """Setup fonts on a new machine."""
+    LOGGER.info("Setting up fonts...")
+    install("font-computer-modern")
+    install("font-jetbrains-mono-nerd-font")
+    LOGGER.debug("Fonts were setup successfully.")
+
+
 def is_installed() -> bool:
     """Check if Homebrew is installed on the machine."""
-    return BREW is not None and os.path.exists(BREW)
+    return utils.is_installed("brew")
+
+
+def is_mas_installed() -> bool:
+    """Check if Mac App Store is installed on the machine."""
+    return utils.is_installed("mas")
 
 
 if __name__ == "__main__":
-    utils.PARSER.add_argument(
-        "machine_brewfile",
-        help="The path to the machine specific brewfile.",
-        nargs="?",  # optional argument
-        default=None,
-    )
     args = utils.startup(description="Homebrew setup script.")
-    utils.execute(setup, args.machine_brewfile)
+    utils.execute(setup)

@@ -3,7 +3,7 @@
 import config
 import utils
 from machines import LOGGER, rpi
-from scripts import git, shell, tailscale, vscode
+from scripts import apt, git, shell, tailscale, vscode
 from utils import shell as shell_utils
 
 PACKAGES = ["zsh", "git", "code", "npm", "docker-compose"]
@@ -17,31 +17,24 @@ def setup(private_machine: str | None = None) -> None:
     if private_machine:
         config.link_private_config(private_machine)
 
-    # update packages
-    update()
-    # install packages
-    install(PACKAGES)
-
-    # install docker
-    shell_utils.run("curl -fsSL https://get.docker.com | sh", throws=False)
-
-    # install snap store
-    shell_utils.run(
-        "sudo apt install -y snapd && "
-        "sudo snap install core && "
-        "sudo snap refresh",
-        throws=False,
-    )  # install snap store
-    shell_utils.run(
-        "sudo snap install nvim --classic", throws=False
-    )  # install nvim
-
     # setup core machine
     git.setup()
     shell.setup(rpi.zshrc, rpi.zshenv)
     vscode.setup()
     vscode.setup_tunnels()
     tailscale.setup()
+
+    # setup apt
+    apt.setup()
+    apt.setup_snap()
+    apt.setup_docker()
+    apt.setup_python()
+    apt.setup_node()
+    apt.install_snap("go", classic=True)
+    apt.install_snap("dotnet-sdk", classic=True)
+    apt.install_snap("node", classic=True)
+    apt.install_snap("code", classic=True)
+    apt.install_snap("nvim", classic=True)
 
     # machine-specific setup
     shell_utils.run(
@@ -59,18 +52,6 @@ def setup(private_machine: str | None = None) -> None:
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")
-
-
-def update() -> None:
-    """Update Raspberry Pi packages."""
-    utils.shell.run("sudo apt update && sudo apt upgrade -y")
-    utils.shell.run("sudo apt autoremove -y")
-
-
-def install(packages: list[str]) -> None:
-    """Install packages on Raspberry Pi."""
-    utils.shell.run(f"sudo apt install -y {' '.join(packages)}")
-    utils.shell.run("sudo apt autoremove -y")
 
 
 if __name__ == "__main__":

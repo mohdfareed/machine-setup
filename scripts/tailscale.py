@@ -35,7 +35,7 @@ def setup_macos():
     LOGGER.debug("Installing tailscale for macOS...")
 
     if brew.is_installed():
-        utils.shell.run("brew install --cask tailscale")
+        brew.install("tailscale", cask=True)
     else:
         LOGGER.error("Homebrew is not installed. Skipping tailscale setup.")
 

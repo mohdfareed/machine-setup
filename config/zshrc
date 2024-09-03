@@ -6,13 +6,13 @@ working_dir=$(pwd) # needed due to some plugins changing the current directory
 # homebrew
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)" # activate homebrew
+    export PATH="$(brew --prefix python)/libexec/bin:$PATH" # python
+fi
 
-    # setup brew python and pyenv
-    export PATH="$(brew --prefix python)/libexec/bin:$PATH"
-    if [[ -d "$(brew --prefix pyenv)" ]]; then
-        eval "$(pyenv init -)"
-        eval "$(pyenv virtualenv-init -)"
-    fi
+# pyenv
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
 fi
 
 # zinit

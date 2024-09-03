@@ -7,5 +7,4 @@ source "$config/../../../config/zshenv" # rpi -> machines -> machine
 unset config
 
 # machine specific environment variables
-export TAILSCALE_DOMAIN="rpi.tail2a477.ts.net"
 export PATH="$PATH:/snap/bin"

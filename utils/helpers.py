@@ -147,3 +147,16 @@ def symlink_at(src: str, dst_dir: str) -> None:
     does not exist, it will be created."""
     dst = _os.path.join(_os.path.expanduser(dst_dir), _os.path.basename(src))
     symlink(src, dst)
+
+
+def is_installed(command: str) -> bool:
+    """Check if a command is installed."""
+    if is_windows():
+        return (
+            _run(
+                f"Get-Command {command} -ErrorAction SilentlyContinue",
+                throws=False,
+            )[0]
+            == 0
+        )
+    return _run(f"command -v {command}", throws=False)[0] == 0

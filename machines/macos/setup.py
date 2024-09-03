@@ -35,9 +35,16 @@ def setup(private_machine: str | None = None) -> None:
             "Ensure Xcode is installed using: xcode-select --install"
         ) from ex
 
+    # setup Homebrew
+    brew.setup()
+    brew.setup_fonts()
+    brew.setup_python()
+    brew.setup_node()
+    brew.install("go")
+    # brew.install_brewfile(macos.brewfile)
+
     # setup core machine
     git.setup()
-    brew.setup(macos.brewfile)
     shell.setup(macos.zshrc, macos.zshenv)
     ssh.setup(macos.ssh_config)
     vscode.setup()

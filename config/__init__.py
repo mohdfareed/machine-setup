@@ -24,9 +24,6 @@ gitconfig = _os.path.join(config, ".gitconfig")
 gitignore = _os.path.join(config, ".gitignore")
 """The path of the global gitignore file."""
 
-brewfile = _os.path.join(config, "brewfile")
-"""The path of Homebrew packages file."""
-
 ps_profile = _os.path.join(config, "ps_profile.ps1")
 """The path of the PowerShell profile file."""
 
