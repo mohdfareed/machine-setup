@@ -19,10 +19,22 @@ def setup(private_machine: str | None = None) -> None:
 
     # update packages
     update()
-    # install docker
-    shell_utils.run("curl -fsSL https://get.docker.com | sh", throws=False)
     # install packages
     install(PACKAGES)
+
+    # install docker
+    shell_utils.run("curl -fsSL https://get.docker.com | sh", throws=False)
+
+    # install snap store
+    shell_utils.run(
+        "sudo apt install -y snapd && "
+        "sudo snap install core && "
+        "sudo snap refresh",
+        throws=False,
+    )  # install snap store
+    shell_utils.run(
+        "sudo snap install nvim --classic", throws=False
+    )  # install nvim
 
     # setup core machine
     git.setup()

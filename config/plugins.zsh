@@ -72,8 +72,7 @@ zinit ice wait lucid as"program" from"gh-r" \
 zinit light aristocratos/btop
 
 # nvim (neovim)
-zinit ice wait lucid as"command" from"gh-r" mv"nvim* -> nvim" \
-      pick"neovim/neovim"
+zinit ice wait lucid as"command" from"gh-r" mv"nvim* -> nvim" pick"nvim/bin/nvim"
 zinit light neovim/neovim
 
 # tmux

@@ -55,7 +55,7 @@ python="$venv_dir/bin/python"
 if [ ! -d "$venv_dir" ]; then # only if it doesn't exist
     echo "Creating virtual environment..."
     python3 -m venv --clear --prompt "$machine" --upgrade-deps "$venv_dir"
-    $python -m pip install -r $req_file --upgrade
+    $python -m pip install -r $req_file --upgrade > /dev/null
 fi
 
 # execute machine setup script

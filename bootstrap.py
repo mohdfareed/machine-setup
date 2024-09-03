@@ -36,11 +36,13 @@ def main(path: str, overwrite=False, setup_args=None) -> None:
     setup_script = SETUP_SCRIPT_WINDOWS if is_windows else SETUP_SCRIPT
     setup_script = os.path.join(path, setup_script)
 
-    # clone machine, overwrite if requested
-    print(f"Cloning machine into: {path}")
+    # remove existing machine if requested
     if overwrite and os.path.exists(path):
         print("Removing existing machine...")
         shutil.rmtree(path, ignore_errors=True)
+
+    # clone machine if it doesn't exist
+    print(f"Cloning machine into: {path}")
     if not os.path.exists(path):  # clone machine otherwise
         subprocess.run(["git", "clone", "-q", REPO, path], check=True)
 

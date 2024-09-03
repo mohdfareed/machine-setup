@@ -7,8 +7,6 @@ source $MACHINE/config/zshrc
 # Functions and Aliases
 # =============================================================================
 
-alias bat='batcat'
-alias compose-machine='cd $MACHINE && docker compose'
 alias reboot='sudo reboot'
 
 # update the system
