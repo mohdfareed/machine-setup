@@ -54,7 +54,7 @@ def install() -> None:
     if utils.is_macos():
         brew.install("visual-studio-code")
     elif utils.is_linux():
-        apt.install("code")
+        apt.install_snap("code", classic=True)
     elif utils.is_windows():
         LOGGER.info("Please install VSCode manually.")
     else:

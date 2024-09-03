@@ -7,14 +7,8 @@ cask "raycast"            # spotlight replacement
 cask "visual-studio-code" # code editor
 # cask "zed"                # text editor
 
-# development
-cask "dotnet-sdk"         # .net sdk
-cask "powershell"         # powershell
-cask "docker"             # containerization
-cask "godot-mono"         # game engine
-cask "mactex-no-gui"      # latex
-
 # utilities
+cask "mactex-no-gui"  # latex
 cask "iina"           # video player
 cask "openinterminal" # open terminal in current directory
 cask "sf-symbols"     # system font symbols

@@ -32,9 +32,6 @@ def setup(private_machine: str | None = None) -> None:
     apt.setup_node()
     apt.install_snap("go", classic=True)
     apt.install_snap("dotnet-sdk", classic=True)
-    apt.install_snap("node", classic=True)
-    apt.install_snap("code", classic=True)
-    apt.install_snap("nvim", classic=True)
 
     # machine-specific setup
     shell_utils.run(

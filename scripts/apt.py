@@ -33,6 +33,7 @@ def setup_snap() -> None:
     LOGGER.info("Setting up the snap store...")
     install("snapd")
     install_snap("snapd")
+    install_snap("nvim")
     LOGGER.debug("The snap store was setup successfully.")
 
 

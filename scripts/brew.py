@@ -6,7 +6,6 @@ import os
 
 import utils
 from utils import shell
-from utils.helpers import is_macos
 
 LOGGER = logging.getLogger(__name__)
 """The Homebrew setup logger."""
@@ -60,7 +59,7 @@ def update() -> None:
     """Update Homebrew and its packages."""
     LOGGER.info("Updating Homebrew...")
     shell.run(f"{BREW} update && {BREW} upgrade")
-    if is_macos():
+    if utils.is_macos():
         shell.run(f"{MAS} upgrade")
     LOGGER.info("Homebrew was updated successfully.")
 
