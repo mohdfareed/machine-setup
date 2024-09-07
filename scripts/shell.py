@@ -50,7 +50,9 @@ def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
     utils.symlink(zshrc, _zshrc)
     utils.symlink(zshenv, ZSHENV)
 
-    # TODO: update zinit and its plugins
+    # update zinit and its plugins
+    source_env = f"source {zshrc} && source {zshenv}"
+    shell.run(f"{source_env} && zinit self-update && zinit update")
 
     # clean up
     shell.run("sudo rm -rf ~/.zcompdump*", throws=False)

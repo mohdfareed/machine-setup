@@ -9,6 +9,12 @@ source $MACHINE/config/zshrc
 
 alias setup-machine="$MACHINE/setup.sh macos"
 alias ssh-create-key="ssh-keygen -t ed25519 -C"
+alias update="\
+brew update && \
+brew upgrade && \
+brew cleanup && \
+zinit self-update && \
+zinit update"
 
 # add all ssh keys to keychain
 function ssh-fix-keychain {

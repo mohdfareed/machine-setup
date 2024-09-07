@@ -40,11 +40,12 @@ def setup(private_machine: str | None = None) -> None:
     brew.setup_fonts()
     brew.setup_python()
     brew.setup_node()
+    brew.install("mas")
     brew.install("go")
-    brew.install("dotnet-sdk", cask=True)
     brew.install("powershell", cask=True)
-    brew.install("docker", cask=True)
+    brew.install("dotnet-sdk", cask=True)
     brew.install("godot-mono", cask=True)
+    # brew.install("docker", cask=True)
     # brew.install_brewfile(macos.brewfile)
 
     # setup core machine

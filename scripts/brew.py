@@ -28,7 +28,7 @@ def setup() -> None:
     """Setup Homebrew on a new machine by installing it and its packages."""
     LOGGER.info("Setting up Homebrew...")
     install_brew()
-    install(f"zsh git git-lfs gh nvim {'mas' if utils.is_macos() else ''}")
+    install("zsh git git-lfs gh nvim")
     update()
     LOGGER.info("Homebrew setup complete.")
 
