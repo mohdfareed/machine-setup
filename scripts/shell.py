@@ -37,6 +37,7 @@ def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
     if not os.path.exists(zshenv):
         raise SetupError("Machine zshenv file does not exist.")
     LOGGER.info("Setting up shell...")
+    _install_dependencies()
 
     # resolve shell configuration paths
     _zshrc = os.path.join(config.zdotdir, ".zshrc")
@@ -54,15 +55,6 @@ def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
     # update zinit and its plugins
     source_env = f"source {zshrc} && source {zshenv}"
     shell.run(f"{source_env} && zinit self-update && zinit update")
-
-    # install nvim, btop, zsh, powershell
-    if scripts.brew.try_install("zsh nvim btop"):
-        scripts.brew.install("powershell", cask=True)
-    elif scripts.apt.try_install("zsh"):
-        if not scripts.snap.try_install("nvim btop powershell"):
-            LOGGER.error("Could not install nvim or btop.")
-    else:
-        LOGGER.error("Could not install zsh. Please install it manually.")
 
     # clean up
     shell.run("sudo rm -rf ~/.zcompdump*", throws=False)
@@ -82,6 +74,7 @@ def setup_windows(ps_profile=config.ps_profile) -> None:
     if not os.path.exists(ps_profile):
         raise SetupError("Machine powershell profile file does not exist.")
     LOGGER.info("Setting up shell...")
+    _install_dependencies()
 
     # resolve shell configuration paths
     vim = os.path.join(config.local_data, "nvim")
@@ -90,11 +83,29 @@ def setup_windows(ps_profile=config.ps_profile) -> None:
     utils.symlink(config.vim, vim)
     utils.symlink(config.ps_profile, PS_PROFILE)
 
-    # install powershell and nvim
-    if scripts.winget.try_install("Microsoft.PowerShell Neovim.Neovim "):
-        pass
-    elif scripts.scoop.try_install("neovim"):
-        pass
+
+def _install_dependencies() -> None:
+    # windows-specific dependencies
+    if utils.is_windows():  # install nvim, powershell
+        if scripts.winget.try_install("Microsoft.PowerShell Neovim.Neovim "):
+            pass
+        elif scripts.scoop.try_install("neovim"):
+            pass
+        return
+
+    # install nvim, btop, zsh, powershell
+
+    # brew
+    if scripts.brew.try_install("zsh nvim btop"):
+        scripts.brew.install("powershell", cask=True)
+
+    # apt and snap
+    elif scripts.apt.try_install("zsh"):
+        if not scripts.snap.try_install("nvim btop powershell"):
+            LOGGER.error("Could not install nvim, btop, or powershell.")
+
+    else:
+        LOGGER.error("Could not install zsh. Please install it manually.")
 
 
 if __name__ == "__main__":

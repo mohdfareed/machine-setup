@@ -41,23 +41,23 @@ def setup(private_machine: str | None = None) -> None:
     brew.setup()
     brew.setup_fonts()
     mas.setup()
-    brew.install("go")
-    brew.install("dotnet-sdk", cask=True)
-    brew.install("godot-mono", cask=True)
-    # brew.install_brewfile(macos.brewfile)
 
     # setup core machine
     git.setup()
-    brew.install("gh")
     shell.setup(macos.zshrc, macos.zshenv)
     ssh.setup(macos.ssh_config)
     vscode.setup()
     tailscale.setup()
+    # brew.install_brewfile(macos.brewfile)
 
     # setup dev tools
     scripts.setup_docker()
     scripts.setup_python()
     scripts.setup_node()
+    brew.install("gh")
+    brew.install("go")
+    brew.install("dotnet-sdk", cask=True)
+    brew.install("godot-mono", cask=True)
 
     # run the preferences script
     LOGGER.debug("Setting system preferences...")

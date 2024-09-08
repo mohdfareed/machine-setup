@@ -21,12 +21,8 @@ def setup(private_machine: str | None = None) -> None:
 
     # setup apt
     apt.setup()
+    apt.setup_fonts()
     snap.setup()
-    scripts.setup_docker()
-    scripts.setup_python()
-    scripts.setup_node()
-    snap.install("go", classic=True)
-    snap.install("dotnet-sdk", classic=True)
 
     # setup core machine
     git.setup()
@@ -34,6 +30,13 @@ def setup(private_machine: str | None = None) -> None:
     vscode.setup()
     vscode.setup_tunnels("rpi")
     tailscale.setup()
+
+    # setup dev tools
+    scripts.setup_docker()
+    scripts.setup_python()
+    scripts.setup_node()
+    snap.install("go", classic=True)
+    snap.install("dotnet-sdk", classic=True)
 
     # machine-specific setup
     shell_utils.run(

@@ -18,6 +18,15 @@ def setup() -> None:
     LOGGER.debug("Debian apt was setup successfully.")
 
 
+def setup_fonts() -> None:
+    """Setup fonts on a new machine."""
+    validate()
+
+    LOGGER.info("Setting up fonts...")
+    install("fonts-jetbrains-mono")
+    LOGGER.debug("Fonts were setup successfully.")
+
+
 def install(package: str) -> None:
     """Install an apt package."""
     validate()

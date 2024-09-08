@@ -16,6 +16,7 @@ def setup() -> None:
 
     git.setup()
     shell.setup(zshrc=codespaces.zshrc)
+    apt.setup_fonts()
 
     # set zsh as the default shell
     cmd = 'sudo chsh "$(id -un)" --shell "/usr/bin/zsh"'

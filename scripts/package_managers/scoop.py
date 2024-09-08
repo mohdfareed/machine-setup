@@ -26,6 +26,15 @@ def setup() -> None:
     LOGGER.debug("Scoop was setup successfully.")
 
 
+def setup_fonts() -> None:
+    """Setup fonts on a new machine."""
+    validate()
+
+    LOGGER.info("Setting up fonts...")
+    install("nerd-fonts/JetBrains-Mono")
+    LOGGER.debug("Fonts were setup successfully.")
+
+
 def install(package: str) -> None:
     """Install a Scoop package."""
     validate()
