@@ -17,11 +17,11 @@ def setup() -> None:
     LOGGER.info("Setting up tailscale...")
 
     if utils.is_macos():
-        setup_macos()
+        _setup_macos()
     elif utils.is_linux():
-        setup_linux()
+        _setup_linux()
     elif utils.is_windows():
-        setup_windows()
+        _setup_windows()
     else:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
@@ -30,26 +30,19 @@ def setup() -> None:
     LOGGER.debug("Tailscale was setup successfully.")
 
 
-def setup_macos():
-    """Setup Tailscale on macOS."""
-    LOGGER.debug("Installing tailscale for macOS...")
+def _setup_macos():
     scripts.brew.install("tailscale", cask=True)
 
 
-def setup_linux():
-    """Setup Tailscale on Linux."""
-    LOGGER.debug("Installing tailscale for Linux...")
+def _setup_linux():
     utils.shell.run(
         "curl -fsSL https://tailscale.com/install.sh | sh", info=True
     )
 
 
-def setup_windows():
-    """Setup Tailscale on Windows."""
-    LOGGER.debug("Installing tailscale for Windows...")
+def _setup_windows():
     installer_url = "https://pkgs.tailscale.com/stable/tailscale-setup.exe"
     installer_path = os.path.join(os.environ["TEMP"], "tailscale-setup.exe")
-
     urllib.request.urlretrieve(installer_url, installer_path)
     utils.shell.run(
         f"Start-Process -FilePath {installer_path} "
