@@ -7,7 +7,7 @@ source $MACHINE/config/zshrc
 # Functions and Aliases
 # =============================================================================
 
-alias setup-machine="$MACHINE/setup.sh macos"
+alias setup-machine="$MACHINE/bootstrap.py macos -d"
 alias ssh-create-key="ssh-keygen -t ed25519 -C"
 alias update="\
 brew update && \

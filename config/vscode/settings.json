@@ -23,7 +23,7 @@
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.occurrencesHighlight": "multiFile",
   "editor.minimap.showRegionSectionHeaders": true,
-  "workbench.editor.showTabs": "single",
+  "workbench.editor.showTabs": "none",
   "workbench.editor.empty.hint": "hidden",
   "workbench.activityBar.location": "top",
   "workbench.tree.enableStickyScroll": true,

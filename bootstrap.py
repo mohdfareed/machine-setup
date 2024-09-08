@@ -102,14 +102,19 @@ def validate_machine(machine: str, path: str) -> tuple[str, str]:
     if not machine and os.environ.get("CODESPACES"):
         machine = "codespaces"
 
-    module_path = os.path.join(path, "machines", machine, "setup.py")
-    module_init = os.path.join(path, "machines", machine, "__init__.py")
+    script_path = os.path.join(path, "machines", machine, "setup.py")
+    module_path = os.path.join(path, "machines", machine, "__init__.py")
     if (
         not machine
+        or not os.path.exists(script_path)
         or not os.path.exists(module_path)
-        or not os.path.exists(module_init)
     ):
-        raise ValueError(f"Machine '{machine}' setup module not found.")
+        raise ValueError(
+            f"Invalid machine: {machine}.\n"
+            f"At path: {path}.\n"
+            f"Ensure the machine is a valid module with a setup script.\n"
+            f"Module: {module_path}\nScript: {script_path}"
+        )
 
     req_file = os.path.join(path, "requirements.txt")
     if not os.path.exists(req_file):
@@ -122,15 +127,6 @@ if __name__ == "__main__":
         description="Bootstrap a new machine.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-
-    parser.add_argument(
-        "path",
-        type=str,
-        help="the path to the machine repo",
-        nargs="?",  # Make the argument optional
-        default=default_machine_path,
-    )
-    parser.add_argument("machine", type=str, help="the machine to bootstrap")
     parser.add_argument(
         "-f",
         "--force",
@@ -138,14 +134,23 @@ if __name__ == "__main__":
         help="overwrite machine if it exists",
     )
     parser.add_argument(
+        "-p",
+        "--path",
+        type=str,
+        help="the path to the machine repo",
+        default=default_machine_path,
+    )
+
+    parser.add_argument("machine", type=str, help="the machine to bootstrap")
+    parser.add_argument(
         "args", nargs=argparse.REMAINDER, help="additional setup arguments"
     )
 
     # parse arguments
     args = parser.parse_args()
-    machine_name = args.machine
-    machine_path = args.path
     force = args.force
+    machine_path = args.path
+    machine_name = args.machine
     additional_args = args.args
 
     try:

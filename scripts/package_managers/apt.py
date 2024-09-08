@@ -31,10 +31,11 @@ def install(package: str) -> None:
     """Install an apt package."""
     validate()
 
-    LOGGER.info("Installing %s from apt...", package)
-    utils.shell.run(f"sudo apt install -y {package}")
+    for pkg in package.split():
+        LOGGER.info("Installing %s from apt...", pkg)
+        utils.shell.run(f"sudo apt install -y {pkg}")
+        LOGGER.debug("%s was installed successfully.", pkg)
     utils.shell.run("sudo apt autoremove -y")
-    LOGGER.debug("%s was installed successfully.", package)
 
 
 def validate() -> None:

@@ -48,10 +48,11 @@ def install(package: str, cask=False) -> None:
     """Install a Homebrew package."""
     validate()
 
-    LOGGER.info("Installing %s from Homebrew...", package)
-    shell.run(f"{BREW} install {'--cask' if cask else ''} {package}")
+    for pkg in package.split():
+        LOGGER.info("Installing %s from Homebrew...", pkg)
+        shell.run(f"{BREW} install {'--cask' if cask else ''} {pkg}")
+        LOGGER.debug("%s was installed successfully.", pkg)
     shell.run(f"{BREW} cleanup --prune=all", throws=False)
-    LOGGER.debug("%s was installed successfully.", package)
 
 
 def install_brewfile(file: str) -> None:

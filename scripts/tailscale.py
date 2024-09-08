@@ -24,9 +24,6 @@ def setup() -> None:
         _setup_windows()
     else:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
-
-    # start tailscale
-    utils.shell.run("sudo tailscale up", info=True)
     LOGGER.debug("Tailscale was setup successfully.")
 
 
@@ -38,6 +35,7 @@ def _setup_linux():
     utils.shell.run(
         "curl -fsSL https://tailscale.com/install.sh | sh", info=True
     )
+    utils.shell.run("sudo tailscale up", info=True)
 
 
 def _setup_windows():

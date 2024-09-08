@@ -24,12 +24,13 @@ def install(package: str, classic=False) -> None:
     """Install a snap store package."""
     validate()
 
-    LOGGER.info("Installing %s from the snap store...", package)
-    utils.shell.run(
-        f"sudo snap install {package} {'--classic' if classic else ''}"
-    )
+    for pkg in package.split():
+        LOGGER.info("Installing %s from the snap store...", pkg)
+        utils.shell.run(
+            f"sudo snap install {pkg} {'--classic' if classic else ''}"
+        )
+        LOGGER.debug("%s was installed successfully.", pkg)
     utils.shell.run("sudo snap refresh")
-    LOGGER.debug("%s was installed successfully.", package)
 
 
 def validate() -> None:

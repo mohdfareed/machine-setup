@@ -51,7 +51,7 @@ def setup(private_machine: str | None = None) -> None:
     # brew.install_brewfile(macos.brewfile)
 
     # setup dev tools
-    scripts.setup_docker()
+    # scripts.setup_docker()
     scripts.setup_python()
     scripts.setup_node()
     brew.install("gh")

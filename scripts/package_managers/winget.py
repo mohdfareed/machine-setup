@@ -26,9 +26,10 @@ def install(package: str) -> None:
     """Install a winget package."""
     validate()
 
-    LOGGER.info("Installing %s from winget...", package)
-    shell.run(f"winget install -e --id {package}")
-    LOGGER.debug("%s was installed successfully.", package)
+    for pkg in package.split():
+        LOGGER.info("Installing %s from winget...", pkg)
+        shell.run(f"winget install -e --id {pkg}")
+        LOGGER.debug("%s was installed successfully.", pkg)
 
 
 def try_install(package: str) -> bool:

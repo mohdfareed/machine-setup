@@ -30,9 +30,10 @@ def setup() -> None:
 def install(package: str) -> None:
     """Install a Mac App Store package."""
     validate()
-    LOGGER.info("Installing %s from the Mac App Store...", package)
-    shell.run(f"{MAS} install {package}")
-    LOGGER.debug("%s was installed successfully.", package)
+    for pkg in package.split():
+        LOGGER.info("Installing %s from the Mac App Store...", pkg)
+        shell.run(f"{MAS} install {pkg}")
+        LOGGER.debug("%s was installed successfully.", pkg)
 
 
 def validate() -> None:

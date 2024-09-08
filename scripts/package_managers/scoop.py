@@ -38,9 +38,10 @@ def setup_fonts() -> None:
 def install(package: str) -> None:
     """Install a Scoop package."""
     validate()
-    LOGGER.info("Installing %s with Scoop...", package)
-    utils.shell.run(f"scoop install {package}")
-    LOGGER.debug("%s was installed successfully.", package)
+    for pkg in package.split():
+        LOGGER.info("Installing %s with Scoop...", pkg)
+        utils.shell.run(f"scoop install {pkg}")
+        LOGGER.debug("%s was installed successfully.", pkg)
 
 
 def validate() -> None:
