@@ -34,6 +34,15 @@ def setup() -> None:
     LOGGER.info("Homebrew setup complete.")
 
 
+def try_setup() -> bool:
+    """Try to setup Homebrew and return whether it was successful."""
+    try:
+        setup()
+    except utils.SetupError:
+        return False
+    return True
+
+
 def setup_fonts() -> None:
     """Setup fonts on a new machine."""
     validate()

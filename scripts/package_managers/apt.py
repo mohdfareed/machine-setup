@@ -44,6 +44,15 @@ def validate() -> None:
         raise utils.SetupError("APT is not installed on this machine.")
 
 
+def try_validate() -> bool:
+    """Try to validate the setup and return whether it was successful."""
+    try:
+        validate()
+    except utils.SetupError:
+        return False
+    return True
+
+
 def try_install(package: str) -> bool:
     """Try to install a package and return whether it was successful."""
     try:

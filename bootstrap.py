@@ -22,85 +22,87 @@ import shutil
 import subprocess
 import sys
 
-REPO = "https://github.com/mohdfareed/machine.git"
-"""URL of the repository to clone."""
-_WIN_PLATFORM = "Windows"
+REPOSITORY = "https://github.com/mohdfareed/machine.git"
+"""Machine configuration repository."""
+VIRTUAL_ENV = ".venv"
+"""Virtual environment directory name."""
+REQUIREMENTS = "requirements.txt"
+"""Requirements file name."""
+MODULE = "machines.{}.setup"
+"""Machine setup module name."""
 
-default_machine_path = os.environ.get("MACHINE") or os.path.join(
+DEFAULT_MACHINE = "codespaces" if os.environ.get("CODESPACES") else None
+"""Default machine name."""
+DEFAULT_MACHINE_PATH = os.environ.get("MACHINE") or os.path.join(
     os.path.expanduser("~"), ".machine"
 )  # default to $MACHINE or ~/.machine
 """Default path to clone the machine repository."""
 
 
-def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
+def main(
+    machine=DEFAULT_MACHINE,
+    path=DEFAULT_MACHINE_PATH,
+    overwrite=False,
+    setup_args=None,
+):
     """Bootstrap the machine setup process."""
-    # validate arguments
-    path = validate_machine(machine, path)
+    path = os.path.realpath(path)
+    if not machine:
+        raise ValueError("Machine name not provided.")
 
-    # clone machine, overwrite if necessary
-    if overwrite and os.path.exists(path):
-        print("Removing existing machine...")
-        shutil.rmtree(path, ignore_errors=True)
-        os.removedirs(path)
-    if not os.path.exists(path):
-        print(f"Cloning machine into: {path}")
-        clone_machine(REPO, path)
+    # set up environment
+    clone_machine(path, overwrite)
+    module = MODULE.format(machine)
+    module_path = os.path.join(path, *module.split(".")) + ".py"
+    if not os.path.exists(module_path):
+        raise FileNotFoundError(f"Machine '{machine}' not found.")
 
-    # create virtual environment
-    venv = os.path.join(path, ".venv")
-    python = create_virtual_env(venv, machine)
-    install_dependencies(python, os.path.join(path, "requirements.txt"))
-
-    # execute machine setup script
-    print(f"Setting up machine: {machine}")
-    setup_machine(python, machine, path, setup_args)
+    # bootstrap machine
+    python = create_virtual_env(path, machine)
+    install_dependencies(python, path)
+    setup_machine(python, module, path, setup_args)
 
 
-def clone_machine(repo: str, path: str) -> None:
+def clone_machine(path: str, clean: bool):
     """Clone the machine repository into the specified path."""
-    subprocess.run(["git", "clone", "-q", repo, path], check=True)
+    if clean and os.path.exists(path):  # remove existing
+        shutil.rmtree(path, ignore_errors=True)
+    if not os.path.exists(path):  # clone if not exists
+        subprocess.run(["git", "clone", "-q", REPOSITORY, path], check=True)
+
+    else:  # pull latest changes if exists
+        if (  # warn user if there are uncommitted changes
+            subprocess.run(
+                ["git", "diff", "--quiet"], cwd=path, check=False
+            ).returncode
+            != 0
+        ):
+            print(f"\033[33m{'WARNING'}\033[0m  Uncommitted changes found.")
+            return
+        subprocess.run(["git", "pull", "-q"], cwd=path, check=True)
 
 
-def create_virtual_env(venv: str, prompt: str) -> str:
-    """Create a virtual environment in the specified path. Return the python
-    executable path."""
+def create_virtual_env(path: str, prompt: str) -> str:
+    """Create a virtual environment in the specified path.
+    Return the python executable path."""
+    venv = os.path.join(path, VIRTUAL_ENV)
     opts = ["--clear", "--prompt", prompt, "--upgrade-deps"]
     subprocess.run(["python3", "-m", "venv", *opts, venv], check=True)
-    python = os.path.join(
-        venv,
-        "bin" if platform.system() != _WIN_PLATFORM else "Scripts",
-        "python",
-    )
-
-    if not os.path.exists(python):
-        raise FileNotFoundError("Python executable not found.")
-    return python
+    bin_path = "bin" if platform.system() != (_ := "Windows") else "Scripts"
+    return os.path.join(venv, bin_path, "python")
 
 
-def install_dependencies(python: str, req_file: str) -> None:
+def install_dependencies(python: str, path: str):
     """Install and/or upgrade dependencies from the requirements file."""
+    req_file = os.path.join(path, REQUIREMENTS)
     cmd = [python, "-m", "pip", "install", "-r", req_file, "--upgrade"]
     subprocess.run(cmd, capture_output=True, check=True)
 
 
-def setup_machine(
-    python: str, machine: str, path: str, setup_args=None
-) -> None:
+def setup_machine(python: str, machine: str, path: str, setup_args=None):
     """Bootstrap the machine setup process."""
-    setup = [python, "-m", f"machines.{machine}.setup", *(setup_args or [])]
-    os.chdir(path)
-    subprocess.run(setup, check=False)
-
-
-def validate_machine(machine: str, path: str) -> str:
-    """Validate the machine requirements. Returns machine path."""
-    path = path or default_machine_path
-    path = os.path.abspath(os.path.realpath(path))
-
-    # check if setting up a github codespace
-    if not machine and os.environ.get("CODESPACES"):
-        machine = "codespaces"
-    return path
+    setup = [python, "-m", machine, *(setup_args or [])]
+    subprocess.run(setup, cwd=path, check=False)
 
 
 if __name__ == "__main__":
@@ -119,10 +121,15 @@ if __name__ == "__main__":
         "--path",
         type=str,
         help="the path to the machine repo",
-        default=default_machine_path,
+        default=DEFAULT_MACHINE_PATH,
     )
-
-    parser.add_argument("machine", type=str, help="the machine to bootstrap")
+    parser.add_argument(
+        "machine",
+        type=str,
+        help="the machine to bootstrap",
+        nargs="?",
+        default=DEFAULT_MACHINE,
+    )
     parser.add_argument(
         "args", nargs=argparse.REMAINDER, help="additional setup arguments"
     )
@@ -139,6 +146,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         sys.exit(0)
     except Exception as e:  # pylint: disable=broad-except
-        print(f"\033[31;1m{'Error:'}\033[0m {e}")
+        print(f"\033[31m{'ERROR'}\033[0m    {e}")
         print(f"\033[31;1m{'Failed to bootstrap machine.'}\033[0m")
         sys.exit(1)

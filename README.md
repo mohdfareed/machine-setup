@@ -8,8 +8,10 @@ intervention.
 ## Requirements
 
 - `python3`: the Python interpreter.
+  - `pip`: the Python package manager.
+  - `venv`: the Python virtual environment module.
 - `git`: the version control system.
-- `zsh`: if setting up a *unix machine.
+- `zsh`: if setting up a Unix machine.
 - `powershell`: if setting up a Windows machine.
 
 ## Usage
