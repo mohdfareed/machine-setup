@@ -66,20 +66,25 @@ def main(
 def clone_machine(path: str, clean: bool):
     """Clone the machine repository into the specified path."""
     if clean and os.path.exists(path):  # remove existing
+        _log_info("Removing existing machine...")
         shutil.rmtree(path, ignore_errors=True)
+
     if not os.path.exists(path):  # clone if not exists
+        _log_info("Cloning machine repository...")
         subprocess.run(["git", "clone", "-q", REPOSITORY, path], check=True)
 
-    else:  # pull latest changes if exists
-        if (  # warn user if there are uncommitted changes
-            subprocess.run(
-                ["git", "diff", "--quiet"], cwd=path, check=False
-            ).returncode
-            != 0
-        ):
-            print(f"\033[33m{'WARNING'}\033[0m  Uncommitted changes found.")
-            return
-        subprocess.run(["git", "pull", "-q"], cwd=path, check=True)
+    elif (  # check for uncommitted changes
+        subprocess.run(
+            ["git", "diff", "--quiet"], cwd=path, check=False
+        ).returncode
+        != 0
+    ):
+        _log_warning("Uncommitted changes found.")
+        return
+
+    # pull latest changes if exists
+    _log_info("Pulling latest changes...")
+    subprocess.run(["git", "pull", "-q"], cwd=path, check=True)
 
 
 def create_virtual_env(path: str, prompt: str) -> str:
@@ -87,6 +92,7 @@ def create_virtual_env(path: str, prompt: str) -> str:
     Return the python executable path."""
     venv = os.path.join(path, VIRTUAL_ENV)
     opts = ["--clear", "--prompt", prompt, "--upgrade-deps"]
+    _log_info("Creating virtual environment...")
     subprocess.run(["python3", "-m", "venv", *opts, venv], check=True)
     bin_path = "bin" if platform.system() != (_ := "Windows") else "Scripts"
     return os.path.join(venv, bin_path, "python")
@@ -96,13 +102,31 @@ def install_dependencies(python: str, path: str):
     """Install and/or upgrade dependencies from the requirements file."""
     req_file = os.path.join(path, REQUIREMENTS)
     cmd = [python, "-m", "pip", "install", "-r", req_file, "--upgrade"]
+    _log_info("Installing dependencies...")
     subprocess.run(cmd, capture_output=True, check=True)
 
 
 def setup_machine(python: str, machine: str, path: str, setup_args=None):
     """Bootstrap the machine setup process."""
     setup = [python, "-m", machine, *(setup_args or [])]
+    _log_info("Bootstrapping machine...")
     subprocess.run(setup, cwd=path, check=False)
+
+
+def _log_error(msg: str):
+    print(f"\033[31m{'ERROR'}\033[0m    {msg}")
+
+
+def _log_success(msg: str):
+    print(f"\033[32m{'SUCCESS'}\033[0m  {msg}")
+
+
+def _log_warning(msg: str):
+    print(f"\033[33m{'WARNING'}\033[0m  {msg}")
+
+
+def _log_info(msg: str):
+    print(f"\033[34m{'INFO'}\033[0m     {msg}")
 
 
 if __name__ == "__main__":
@@ -146,6 +170,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         sys.exit(0)
     except Exception as e:  # pylint: disable=broad-except
-        print(f"\033[31m{'ERROR'}\033[0m    {e}")
+        _log_error("Failed to bootstrap machine.")
         print(f"\033[31;1m{'Failed to bootstrap machine.'}\033[0m")
         sys.exit(1)
+    _log_success("Machine was bootstrapped successfully.")

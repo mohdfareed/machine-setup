@@ -14,5 +14,4 @@ if (-not (Test-Path $script -PathType Leaf)) {
 }
 
 # Bootstrap
-Write-Host "Bootstrapping machine..."
 & python $script @args

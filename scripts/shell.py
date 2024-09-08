@@ -8,6 +8,7 @@ import os
 import config
 import scripts
 import utils
+from scripts.package_managers import snap
 from utils import shell
 from utils.helpers import SetupError
 
@@ -93,19 +94,29 @@ def _install_dependencies() -> None:
             pass
         return
 
-    # install nvim, btop, zsh, powershell
-
     # brew
     if scripts.brew.try_install("zsh nvim btop"):
         scripts.brew.install("powershell", cask=True)
 
     # apt and snap
     elif scripts.apt.try_install("zsh"):
-        if not scripts.snap.try_install("nvim btop powershell"):
-            LOGGER.error("Could not install nvim, btop, or powershell.")
+        if not scripts.snap.try_install("nvim btop"):
+            LOGGER.error("Could not install nvim or btop.")
+        # powershell
+        if not snap.try_install("powershell"):
+            url = "https://packages.microsoft.com/config/debian"
+            utils.shell.run(
+                "sudo apt install -y wget && "
+                "source /etc/os-release && "
+                f"wget -q {url}/$VERSION_ID/packages-microsoft-prod.deb && "
+                "sudo dpkg -i packages-microsoft-prod.deb && "
+                "rm packages-microsoft-prod.deb && "
+                "sudo apt update && "
+                "sudo apt install -y powershell"
+            )
 
     else:
-        LOGGER.error("Could not install zsh. Please install it manually.")
+        LOGGER.error("Could not install shell dependencies.")
 
 
 if __name__ == "__main__":

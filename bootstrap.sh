@@ -14,5 +14,4 @@ if [ ! -f "$script" ]; then
 fi
 
 # bootstrap
-echo "Bootstrapping machine..."
 $script "$@" || exit 1
