@@ -30,7 +30,7 @@ curl -fsSL $url | python3 - [-h] [-f] [path] machine [-h]
 Or download it and run it locally:
 
 ```sh
-./bootstrap.py [-h] [-f] [-p path] machine [-h]
+./bootstrap.py [-h] [-f] [-p path] [machine] [-h] ...
 ```
 
 Where the arguments are as follows:
@@ -39,8 +39,9 @@ Where the arguments are as follows:
 - `-f|--force`: forces cloning the repo even if it already exists.
 - `-p|--path`: the path to clone the repository into.
   - Defaults to `$MACHINE` then `$HOME/machine`.
-- `machine`: the machine to set up.
+- `machine`: the machine to set up, defaults to a testing machine.
 - `-h|--help`: prints the machine's setup help message.
+- `args`: the arguments required by the machine's setup script.
 
 ### Setting Up Individual Components
 
@@ -62,19 +63,21 @@ To update the machine and reapplying setup config, run the following command:
 python -m machines.[machine].setup [-h|--help]
 ```
 
-Or:
-
-```sh
-./setup.sh machine [-h|--help]
-```
-
 ## Configuration
 
 The `config` module contains common configuration that is shared across all
 machines. It works without dependencies on machines modules.
 
-A machine is configured by creating a new module in the `machines` package,
-with the following structure:
+The `scripts` module contains scripts that use the configuration to set up
+individual components on the machine. Each script is designed to be run
+independently of the machine setup script, failing on missing requirements.
+
+A machine is configured by creating a new module in the `machines` package that
+calls the appropriate scripts to set up the machine. The module can define
+custom configuration files and scripts to be used by the setup script.
+
+
+Machine modules have the following structure:
 
 ```plaintext
 machines/
