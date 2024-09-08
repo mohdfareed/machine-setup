@@ -36,13 +36,6 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.PARSER.add_argument(
-        "private_machine",
-        metavar="PRIVATE_MACHINE",
-        nargs="?",
-        help="The path to a private machine configuration directory.",
-        default=None,
-    )
-    args = utils.startup(description="Windows setup script.")
+    args = utils.startup(description="Gleason machine setup script.")
     config.report(None)
-    utils.execute(setup, args.private_machine)
+    utils.execute(setup)

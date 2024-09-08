@@ -31,7 +31,7 @@ REQUIREMENTS = "requirements.txt"
 MODULE = "machines.{}.setup"
 """Machine setup module name."""
 
-DEFAULT_MACHINE = "codespaces" if os.environ.get("CODESPACES") else None
+DEFAULT_MACHINE = "codespaces" if os.environ.get("CODESPACES") else "dummy"
 """Default machine name."""
 DEFAULT_MACHINE_PATH = os.environ.get("MACHINE") or os.path.join(
     os.path.expanduser("~"), ".machine"
@@ -123,7 +123,7 @@ def _log_error(msg: str):
 
 
 def _log_success(msg: str):
-    print(f"\033[32m{'SUCCESS'}\033[0m  {msg}")
+    print(f"\033[35m{'SUCCESS'}\033[0m  {msg}")
 
 
 def _log_warning(msg: str):
@@ -153,7 +153,8 @@ if __name__ == "__main__":
         default=DEFAULT_MACHINE_PATH,
     )
     parser.add_argument(
-        "machine",
+        "-m",
+        "--machine",
         type=str,
         help="the machine to bootstrap",
         nargs="?",
