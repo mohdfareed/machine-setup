@@ -5,6 +5,7 @@ import os
 from dataclasses import dataclass
 
 import config
+import scripts
 import utils
 from utils import shell
 
@@ -39,8 +40,7 @@ class SSHKeyPair:
         public key doesn't exist."""
         if self.public:
             return os.path.basename(self.public)
-        else:
-            return self.name + PUBLIC_EXT
+        return self.name + PUBLIC_EXT
 
     @property
     def name(self) -> str:
@@ -52,6 +52,11 @@ def setup(ssh_config: str) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory."""
     LOGGER.info("Setting up SSH...")
+
+    if utils.is_windows():
+        utils.shell.run("Add-WindowsCapability -Online -Name OpenSSH.Client")
+    elif utils.is_linux():
+        scripts.apt.try_install("openssh-client")
 
     if not os.path.exists(config.ssh_keys):
         LOGGER.error("SSH keys directory does not exist: %s", config.ssh_keys)
@@ -94,10 +99,10 @@ def setup_key(key: SSHKeyPair) -> None:
 
     # symlink private key and set permissions
     utils.symlink(key.private, os.path.join(SSH_DIR, key.private_filename))
-    os.chmod(key.private, 0o600)
+    set_permissions(key.private, private=True)
     if key.public:  # symlink public key if it exists and set permissions
         utils.symlink(key.public, os.path.join(SSH_DIR, key.public_filename))
-        os.chmod(key.public, 0o644)
+        set_permissions(key.public, private=False)
 
     # get key fingerprint
     fingerprint = shell.run(f"ssh-keygen -lf {key.private}")[1]
@@ -107,16 +112,46 @@ def setup_key(key: SSHKeyPair) -> None:
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
     if shell.run(cmd, throws=False)[0] != 0:
-        if not utils.is_macos():
-            shell.run(f"ssh-add '{key.private}'")
-        else:
+        if utils.is_macos():
             shell.run(f"ssh-add --apple-use-keychain '{key.private}'")
+        else:
+            shell.run(f"ssh-add '{key.private}'")
         LOGGER.info("Added key to SSH agent")
     else:
         LOGGER.info("Key already exists in SSH agent")
 
 
+def set_permissions(filepath: str, private: bool) -> None:
+    """Set file permissions based on the operating system."""
+    if utils.is_windows():
+        shell.run(
+            f"icacls {filepath} /inheritance:r /grant:r "
+            f"{os.getlogin()}:{"F" if private else "R"}"
+        )
+    else:
+        os.chmod(filepath, 0o600 if private else 0o644)
+
+
+def setup_server() -> None:
+    """setup an ssh server on a new machine."""
+    LOGGER.info("Setting up SSH server...")
+    if utils.is_windows():
+        utils.shell.run("Add-WindowsCapability -Online -Name OpenSSH.Server")
+        utils.shell.run(
+            "Get-Service -Name sshd | Set-Service -StartupType Automatic"
+        )
+        utils.shell.run("Start-Service sshd")
+    elif utils.is_macos():
+        utils.shell.run("sudo systemsetup -setremotelogin on")
+    elif utils.is_linux():
+        scripts.apt.try_install("openssh-server")
+        utils.shell.run("sudo systemctl start ssh")
+        utils.shell.run("sudo systemctl enable ssh")
+    else:
+        LOGGER.error("Unsupported operating system: %s", utils.OS)
+    LOGGER.info("SSH server setup complete.")
+
+
 if __name__ == "__main__":
     args = utils.startup(description="SSH setup script.")
-    # TODO: support windows
     utils.execute(setup)

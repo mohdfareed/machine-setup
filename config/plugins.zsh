@@ -66,16 +66,10 @@ zinit light eza-community/eza
 zinit ice wait lucid as"command" from"gh-r" mv"bat* -> bat" pick"bat/bat"
 zinit light sharkdp/bat
 
-# btop
-zinit ice wait lucid as"program" from"gh-r" \
-      atpull"./install.sh && ./setuid.sh" pick"btop"
-zinit light aristocratos/btop
-
 # nvim (neovim)
 zinit ice wait lucid as"command" from"gh-r" mv"nvim* -> nvim" \
       pick"nvim/bin/nvim"
 zinit light neovim/neovim
-
 
 # tmux
 zinit ice wait lucid as"command" from"gh-r" mv"tmux* -> tmux" pick"tmux/tmux"

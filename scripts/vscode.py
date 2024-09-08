@@ -6,7 +6,7 @@ import os
 
 import config
 import utils
-from scripts import apt, brew
+from scripts import brew, snap, winget
 from utils import shell
 
 LOGGER = logging.getLogger(__name__)
@@ -37,9 +37,9 @@ def setup() -> None:
     """Setup VSCode on a new machine."""
     if not VSCODE:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
-    install()
 
     LOGGER.info("Setting up VSCode...")
+    _install()
     for file in os.listdir(config.vscode):
         if file not in _config_files:
             continue
@@ -47,34 +47,29 @@ def setup() -> None:
     LOGGER.debug("VSCode was setup successfully.")
 
 
-def install() -> None:
-    """Install VSCode on a new machine."""
-
-    LOGGER.info("Installing VSCode...")
-    if utils.is_macos():
-        brew.install("visual-studio-code")
-    elif utils.is_linux():
-        apt.install_snap("code", classic=True)
-    elif utils.is_windows():
-        LOGGER.info("Please install VSCode manually.")
-    else:
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
-    LOGGER.debug("VSCode was installed successfully.")
-
-
-def setup_tunnels() -> None:
+def setup_tunnels(name: str) -> None:
     """Setup VSCode SSH tunnels as a service."""
+    if not utils.is_installed("code"):
+        raise utils.SetupError("VSCode is not installed on this machine.")
 
     LOGGER.info("Setting up VSCode SSH tunnels...")
-
-    vscode = shell.run("which code")[1].strip()
     cmd = (
-        f"{vscode} tunnel service install "
-        "--accept-server-license-terms --name rpi"
+        f"code tunnel service install "
+        f"--accept-server-license-terms --name {name}"
     )
     shell.run(cmd, info=True)
-
     LOGGER.debug("VSCode SSH tunnels were setup successfully.")
+
+
+def _install():
+    if not (
+        brew.try_install("visual-studio-code")
+        or winget.try_install("Microsoft.VisualStudioCode")
+        or snap.try_install("code", classic=True)
+    ):
+        raise utils.SetupError(
+            "Could not install VSCode. Please install it manually."
+        )
 
 
 if __name__ == "__main__":

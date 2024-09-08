@@ -5,6 +5,7 @@ import logging
 import os
 
 import config
+import scripts
 import utils
 
 LOGGER = logging.getLogger(__name__)
@@ -14,6 +15,17 @@ LOGGER = logging.getLogger(__name__)
 def setup() -> None:
     """Setup git on a new machine."""
     LOGGER.info("Setting up git...")
+
+    # install git
+    if not (
+        scripts.brew.try_install("git git-lfs")
+        or scripts.apt.try_install("git git-lfs")
+        or scripts.winget.try_install(
+            "Git.Git GitHub.GitLFS GitHub.CLI "
+            "Microsoft.GitCredentialManagerCore"
+        )
+    ):
+        LOGGER.error("Could not install git. Please install it manually.")
 
     # resolve git configuration paths
     if utils.is_windows():
@@ -32,4 +44,4 @@ def setup() -> None:
 
 if __name__ == "__main__":
     args = utils.startup(description="Git setup script.")
-    utils.execute(setup, args.xdg_config)
+    utils.execute(setup)

@@ -15,6 +15,7 @@
     "userconfig",
     "venv",
     "vscode",
+    "winget",
     "zcompdump",
     "zdotdir",
     "zinit"

@@ -114,7 +114,9 @@ def load_env_var(env_path: str, var_name: str) -> str:
     On Windows, the environment variable is loaded using PowerShell. On Unix,
     the environment variable is loaded using the Z shell."""
     if is_windows():
-        ps_command = f"& {{ . '{env_path}'; Write-Output $env:{var_name} }}"
+        ps_command = (
+            f"& {{ . '{env_path}' -EnvOnly; Write-Output $env:{var_name} }}"
+        )
         command = (
             f"powershell -NoProfile -ExecutionPolicy Bypass"
             f'-Command "{ps_command}"'

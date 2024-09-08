@@ -18,17 +18,17 @@ To set up a machine, run the following command:
 
 ```sh
 url="https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py"
-curl -fsSL $url | python3 - [-h] [-f] path [-h] machine [-h]
+curl -fsSL $url | python3 - [-h] [-f] [path] machine [-h]
 
 # example:
 # cd private_config_path (explained below)
-# curl -fsSL $url | python3 - ~/machine rpi .
+# curl -fsSL $url | python3 - rpi
 ```
 
 Or download it and run it locally:
 
 ```sh
-python3 bootstrap.py [-h] [-f] path [-h] machine [-h]
+./bootstrap.py [-h] [-f] [path] machine [-h]
 ```
 
 Where the arguments are as follows:
@@ -36,7 +36,7 @@ Where the arguments are as follows:
 - `-h|--help`: prints the bootstrapping help message.
 - `-f|--force`: forces cloning the repo even if it already exists.
 - `path`: the path to clone the repository into.
-- `-h|--help`: prints the setup help message.
+  - Defaults to `$MACHINE` then `$HOME/machine`.
 - `machine`: the machine to set up.
 - `-h|--help`: prints the machine's setup help message.
 

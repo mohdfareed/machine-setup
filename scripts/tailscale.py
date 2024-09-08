@@ -5,8 +5,8 @@ import logging
 import os
 import urllib.request
 
+import scripts
 import utils
-from scripts import brew
 
 LOGGER = logging.getLogger(__name__)
 """The tailscale setup logger."""
@@ -33,11 +33,7 @@ def setup() -> None:
 def setup_macos():
     """Setup Tailscale on macOS."""
     LOGGER.debug("Installing tailscale for macOS...")
-
-    if brew.is_installed():
-        brew.install("tailscale", cask=True)
-    else:
-        LOGGER.error("Homebrew is not installed. Skipping tailscale setup.")
+    scripts.brew.install("tailscale", cask=True)
 
 
 def setup_linux():

@@ -3,9 +3,11 @@
 import os
 
 import config
+import scripts
 import utils
 from machines import LOGGER, macos
-from scripts import brew, git, shell, ssh, tailscale, vscode
+from scripts import git, shell, ssh, tailscale, vscode
+from scripts.package_managers import brew, mas
 from utils import shell as shell_utils
 
 PAM_SUDO = os.path.join("/", "etc", "pam.d", "sudo_local")
@@ -38,22 +40,24 @@ def setup(private_machine: str | None = None) -> None:
     # setup Homebrew
     brew.setup()
     brew.setup_fonts()
-    brew.setup_python()
-    brew.setup_node()
-    brew.install("mas")
+    mas.setup()
     brew.install("go")
-    brew.install("powershell", cask=True)
     brew.install("dotnet-sdk", cask=True)
     brew.install("godot-mono", cask=True)
-    # brew.install("docker", cask=True)
     # brew.install_brewfile(macos.brewfile)
 
     # setup core machine
     git.setup()
+    brew.install("gh")
     shell.setup(macos.zshrc, macos.zshenv)
     ssh.setup(macos.ssh_config)
     vscode.setup()
     tailscale.setup()
+
+    # setup dev tools
+    scripts.setup_docker()
+    scripts.setup_python()
+    scripts.setup_node()
 
     # run the preferences script
     LOGGER.debug("Setting system preferences...")

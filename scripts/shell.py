@@ -6,6 +6,7 @@ import logging
 import os
 
 import config
+import scripts
 import utils
 from utils import shell
 from utils.helpers import SetupError
@@ -54,6 +55,15 @@ def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
     source_env = f"source {zshrc} && source {zshenv}"
     shell.run(f"{source_env} && zinit self-update && zinit update")
 
+    # install nvim, btop, zsh, powershell
+    if scripts.brew.try_install("zsh nvim btop"):
+        scripts.brew.install("powershell", cask=True)
+    elif scripts.apt.try_install("zsh"):
+        if not scripts.snap.try_install("nvim btop powershell"):
+            LOGGER.error("Could not install nvim or btop.")
+    else:
+        LOGGER.error("Could not install zsh. Please install it manually.")
+
     # clean up
     shell.run("sudo rm -rf ~/.zcompdump*", throws=False)
     shell.run("sudo rm -rf ~/.zshrc", throws=False)
@@ -79,6 +89,12 @@ def setup_windows(ps_profile=config.ps_profile) -> None:
     # symlink config files
     utils.symlink(config.vim, vim)
     utils.symlink(config.ps_profile, PS_PROFILE)
+
+    # install powershell and nvim
+    if scripts.winget.try_install("Microsoft.PowerShell Neovim.Neovim "):
+        pass
+    elif scripts.scoop.try_install("neovim"):
+        pass
 
 
 if __name__ == "__main__":

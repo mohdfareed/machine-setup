@@ -4,11 +4,15 @@ import config
 import utils
 from machines import LOGGER, codespaces
 from scripts import git, shell
+from scripts.package_managers import apt, snap
 
 
 def setup() -> None:
     """Setup a new GitHub codespace."""
     LOGGER.info("Setting up codespace...")
+
+    apt.setup()
+    snap.setup()
 
     git.setup()
     shell.setup(zshrc=codespaces.zshrc)

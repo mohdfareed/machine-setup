@@ -1,5 +1,5 @@
 param (
-    [switch]$EnvironmentOnly = $false
+    [switch]$EnvOnly = $false
 )
 
 # Environment (shared across machines)
@@ -22,10 +22,10 @@ if (Test-Path -Path $env:PRIVATE_ENV) {
 
 # misc
 $env:PIP_REQUIRE_VIRTUALENV = "true"
+if ($EnvOnly) { return } # don't run the rest of the script
 
 # Shell Setup
 # =============================================================================
-if ($EnvironmentOnly) { return } # don't run the rest of the script
 
 # set execution policy
 if ($IsWindows) {
@@ -47,15 +47,4 @@ Remove-Variable -Name "theme"
 # load homebrew in powershell if on unix
 if (Test-Path -Path "/opt/homebrew/bin/brew") {
     $(/opt/homebrew/bin/brew shellenv) | Invoke-Expression
-}
-
-# install nvim if not installed
-if (-not (Get-Command -Name "nvim" -ErrorAction SilentlyContinue)) {
-    if ($IsWindows) {
-        winget install Neovim.Neovim -e --id Neovim.Neovim
-    }
-    else {
-        # install outside powershell on unix
-        Write-Error "Neovim is not installed. Please install it."
-    }
 }

@@ -1,9 +1,11 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
 import config
+import scripts
 import utils
 from machines import LOGGER, rpi
-from scripts import apt, git, shell, tailscale, vscode
+from scripts import git, shell, tailscale, vscode
+from scripts.package_managers import apt, snap
 from utils import shell as shell_utils
 
 PACKAGES = ["zsh", "git", "code", "npm", "docker-compose"]
@@ -17,21 +19,21 @@ def setup(private_machine: str | None = None) -> None:
     if private_machine:
         config.link_private_config(private_machine)
 
+    # setup apt
+    apt.setup()
+    snap.setup()
+    scripts.setup_docker()
+    scripts.setup_python()
+    scripts.setup_node()
+    snap.install("go", classic=True)
+    snap.install("dotnet-sdk", classic=True)
+
     # setup core machine
     git.setup()
     shell.setup(rpi.zshrc, rpi.zshenv)
     vscode.setup()
-    vscode.setup_tunnels()
+    vscode.setup_tunnels("rpi")
     tailscale.setup()
-
-    # setup apt
-    apt.setup()
-    apt.setup_snap()
-    apt.setup_docker()
-    apt.setup_python()
-    apt.setup_node()
-    apt.install_snap("go", classic=True)
-    apt.install_snap("dotnet-sdk", classic=True)
 
     # machine-specific setup
     shell_utils.run(
