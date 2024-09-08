@@ -2,6 +2,8 @@
 
 import os as _os
 
+from .setup import setup_wsl
+
 config = _os.path.join(_os.path.dirname(_os.path.realpath(__file__)), "config")
 """The path of macOS configuration files."""
 

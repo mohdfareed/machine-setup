@@ -1,4 +1,4 @@
-"""Setup module containing a `setup` function for setting up macOS."""
+"""Setup module containing a `setup` function for setting up Windows."""
 
 import config
 import scripts
@@ -38,9 +38,23 @@ def setup(private_machine: str | None = None) -> None:
     winget.install("GoLang.Go")
     winget.install("Microsoft.DotNet.SDK")
     scoop.install("extras/godot")
+    setup_wsl()  # install wsl
 
     LOGGER.info("Windows setup complete.")
     LOGGER.warning("Restart for some changes to apply.")
+
+
+def setup_wsl(wsl_module="machines.windows.wsl") -> None:
+    """Setup WSL on a new machine."""
+    LOGGER.info("Setting up WSL...")
+    utils.shell.run("wsl --install", info=True)
+
+    wsl_commands = (
+        f"cd {config.MACHINE} && ",
+        f"python -m {wsl_module}",
+    )
+    utils.shell.run(f'wsl -e bash -c "{wsl_commands}"', info=True)
+    LOGGER.info("WSL setup complete.")
 
 
 if __name__ == "__main__":
