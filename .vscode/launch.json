@@ -6,9 +6,6 @@
       "type": "debugpy",
       "request": "launch",
       "module": "machines.${input:machine}.setup",
-      "args": [
-        "--debug"
-      ],
       "console": "integratedTerminal"
     },
     {

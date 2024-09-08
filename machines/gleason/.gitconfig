@@ -1,15 +1,8 @@
 [user]
     name = Mohammed Fareed
-    email = mohdf.fareed@icloud.com
-    signingkey = ~/.ssh/github.pub
+    email = mfareed@gleason.com
 
 ; git settings
-[commit]
-    ; sign commits
-    gpgsign = true
-[gpg]
-    ; use ssh key for signing
-    format = ssh
 [init]
     ; use main as default branch name
     defaultBranch = main
@@ -34,19 +27,19 @@
     ; prompt to correct typos in git commands
     autoCorrect = prompt
 
-; vim editor
+; vscode editor
 [core]
-    editor = nvim
+    editor = code
     ; convert windows line endings to unix
     autocrlf = input
 [diff]
-    tool = nvimdiff
-[difftool "nvimdiff"]
-    cmd = nvim -d $LOCAL $REMOTE
+    tool = vscode
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
 [merge]
-    tool = nvimdiff
-[mergetool "nvimdiff"]
-    cmd = nvim -d $LOCAL $REMOTE $MERGED
+    tool = vscode
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
 
 ; lfs (large file system)
 [filter "lfs"]

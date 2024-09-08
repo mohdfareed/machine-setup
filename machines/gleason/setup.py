@@ -3,7 +3,7 @@
 import config
 import scripts
 import utils
-from machines import LOGGER, windows
+from machines import LOGGER, gleason, windows
 from scripts import git, shell, vscode
 from scripts.package_managers import scoop, winget
 
@@ -19,7 +19,7 @@ def setup() -> None:
     scoop.setup_fonts()
 
     # setup core machine
-    git.setup()
+    git.setup(gleason.gitconfig)
     shell.setup_windows(windows.ps_profile)
     vscode.setup()
 

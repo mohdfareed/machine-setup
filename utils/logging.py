@@ -25,9 +25,7 @@ def setup_logging(debug: bool = False) -> None:
     """
     # logging formats
     console_formatter = logging.Formatter(
-        r"%(message)s [bright_black]- [italic]%(name)s[/italic] "
-        r"\[[underline]%(filename)s:%(lineno)d[/underline]]",
-        datefmt=r"%Y-%m-%d %H:%M:%S.%f",
+        r"%(message)s",
     )
     file_formatter = logging.Formatter(
         r"[%(asctime)s.%(msecs)03d] %(levelname)-8s "
@@ -37,11 +35,10 @@ def setup_logging(debug: bool = False) -> None:
 
     # setup console logger
     console_handler = RichHandler(
-        markup=True,
-        show_path=False,
+        show_time=False,
+        show_path=True,
         tracebacks_show_locals=debug,
         rich_tracebacks=True,
-        tracebacks_width=80,
     )
     console_handler.setFormatter(console_formatter)
     console_handler.setLevel(logging.DEBUG if debug else logging.INFO)

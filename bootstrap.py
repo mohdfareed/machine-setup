@@ -46,10 +46,8 @@ def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
         clone_machine(REPO, path)
 
     # create virtual environment
-    print("Creating virtual environment...")
     venv = os.path.join(path, ".venv")
     python = create_virtual_env(venv, machine)
-    print("Installing dependencies...")
     install_dependencies(python, req_file)
 
     # execute machine setup script
@@ -155,6 +153,8 @@ if __name__ == "__main__":
 
     try:
         main(machine_name, machine_path, force, additional_args)
+    except KeyboardInterrupt:
+        sys.exit(0)
     except Exception as e:  # pylint: disable=broad-except
         print(f"\033[31;1m{'Error:'}\033[0m {e}")
         print(f"\033[31;1m{'Failed to bootstrap machine.'}\033[0m")

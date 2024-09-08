@@ -13,7 +13,7 @@ from .logging import setup_logging as _setup_logging
 from .shell import ShellError
 from .shell import run as _run
 
-# MARK - Platform
+# MARK - Platform =============================================================
 
 OS = _platform.system()
 """The current operating system."""
@@ -55,7 +55,7 @@ def is_windows() -> bool:
     return _platform.system() == PLATFORM.WINDOWS.value
 
 
-# MARK - Setup
+# MARK - Setup ================================================================
 
 PARSER = _argparse.ArgumentParser(
     description="Machine setup script.",
@@ -80,10 +80,10 @@ def startup(
         PARSER.description = description
 
     PARSER.add_argument(
-        "-d", "--debug", action="store_true", help="print debug messages"
-    )
+        "-q", "--quiet", action="store_true", help="disable debug messages"
+    )  # default to logging debug messages
     args = PARSER.parse_args()
-    execute(_setup_logging, debug=args.debug)  # type: ignore
+    execute(_setup_logging, debug=not args.quiet)  # type: ignore
     return args
 
 
@@ -106,7 +106,7 @@ def execute(setup: _Callable, *args, **kwargs) -> None:
         _sys.exit(1)
 
 
-# MARK - File System
+# MARK - File System ==========================================================
 
 
 def load_env_var(env_path: str, var_name: str) -> str:

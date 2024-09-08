@@ -12,7 +12,7 @@ LOGGER = logging.getLogger(__name__)
 """The git setup logger."""
 
 
-def setup() -> None:
+def setup(gitconfig=config.gitconfig, gitignore=config.gitignore) -> None:
     """Setup git on a new machine."""
     LOGGER.info("Setting up git...")
 
@@ -29,16 +29,16 @@ def setup() -> None:
 
     # resolve git configuration paths
     if utils.is_windows():
-        gitconfig = os.path.join(os.environ["USERPROFILE"], ".gitconfig")
-        gitignore = os.path.join(os.environ["USERPROFILE"], ".gitignore")
+        gitconfig_path = os.path.join(os.environ["USERPROFILE"], ".gitconfig")
+        gitignore_path = os.path.join(os.environ["USERPROFILE"], ".gitignore")
     elif utils.is_unix():
-        gitconfig = os.path.join(config.xdg_config, "git", "config")
-        gitignore = os.path.join(config.xdg_config, "git", "ignore")
+        gitconfig_path = os.path.join(config.xdg_config, "git", "config")
+        gitignore_path = os.path.join(config.xdg_config, "git", "ignore")
     else:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
-    utils.symlink(config.gitconfig, gitconfig)
-    utils.symlink(config.gitignore, gitignore)
+    utils.symlink(gitconfig, gitconfig_path)
+    utils.symlink(gitignore, gitignore_path)
     LOGGER.debug("Git was setup successfully.")
 
 
