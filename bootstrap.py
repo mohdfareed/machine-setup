@@ -52,14 +52,11 @@ def main(
 
     # set up environment
     clone_machine(path, overwrite)
-    module = MODULE.format(machine)
-    module_path = os.path.join(path, *module.split(".")) + ".py"
-    if not os.path.exists(module_path):
-        raise FileNotFoundError(f"Machine '{machine}' not found.")
-
-    # bootstrap machine
     python = create_virtual_env(path, machine)
     install_dependencies(python, path)
+
+    # bootstrap machine
+    module = MODULE.format(machine)
     setup_machine(python, module, path, setup_args)
 
 
@@ -68,12 +65,16 @@ def clone_machine(path: str, clean: bool):
     if clean and os.path.exists(path):  # remove existing
         _log_info("Removing existing machine...")
         shutil.rmtree(path, ignore_errors=True)
-
     if not os.path.exists(path):  # clone if not exists
         _log_info("Cloning machine repository...")
         subprocess.run(["git", "clone", "-q", REPOSITORY, path], check=True)
+    else:
+        update_machine(path)
 
-    elif (  # check for uncommitted changes
+
+def update_machine(path: str):
+    """Update the machine repository in the specified path."""
+    if (  # check for uncommitted changes
         subprocess.run(
             ["git", "diff", "--quiet"], cwd=path, check=False
         ).returncode
@@ -83,7 +84,7 @@ def clone_machine(path: str, clean: bool):
         return
 
     # pull latest changes if exists
-    _log_info("Pulling latest changes...")
+    _log_info("Updating machine...")
     subprocess.run(["git", "pull", "-q"], cwd=path, check=True)
 
 
@@ -106,9 +107,13 @@ def install_dependencies(python: str, path: str):
     subprocess.run(cmd, capture_output=True, check=True)
 
 
-def setup_machine(python: str, machine: str, path: str, setup_args=None):
+def setup_machine(python: str, module: str, path: str, setup_args=None):
     """Bootstrap the machine setup process."""
-    setup = [python, "-m", machine, *(setup_args or [])]
+    script_path = os.path.join(path, *module.split(".")) + ".py"
+    if not os.path.exists(script_path):
+        raise FileNotFoundError(f"Machine script not found: {script_path}")
+
+    setup = [python, "-m", module, *(setup_args or [])]
     _log_info("Bootstrapping machine...")
     subprocess.run(setup, cwd=path, check=False)
 
@@ -170,7 +175,7 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         sys.exit(0)
     except Exception as e:  # pylint: disable=broad-except
-        _log_error("Failed to bootstrap machine.")
+        _log_error(f"{e}")
         print(f"\033[31;1m{'Failed to bootstrap machine.'}\033[0m")
         sys.exit(1)
     _log_success("Machine was bootstrapped successfully.")
