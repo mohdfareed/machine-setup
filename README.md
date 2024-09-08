@@ -30,7 +30,7 @@ curl -fsSL $url | python3 - [-h] [-f] [path] machine [-h]
 Or download it and run it locally:
 
 ```sh
-./bootstrap.py [-h] [-f] [-p path] [machine] [-h] ...
+./bootstrap.py [-h] [-f] [-p PATH] [machine] [-h] [-q] ...
 ```
 
 Where the arguments are as follows:
@@ -41,6 +41,7 @@ Where the arguments are as follows:
   - Defaults to `$MACHINE` then `$HOME/machine`.
 - `machine`: the machine to set up, defaults to a testing machine.
 - `-h|--help`: prints the machine's setup help message.
+- `-q|--quiet`: suppresses debug output.
 - `args`: the arguments required by the machine's setup script.
 
 ### Setting Up Individual Components

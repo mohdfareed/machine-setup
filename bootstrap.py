@@ -153,8 +153,7 @@ if __name__ == "__main__":
         default=DEFAULT_MACHINE_PATH,
     )
     parser.add_argument(
-        "-m",
-        "--machine",
+        "machine",
         type=str,
         help="the machine to bootstrap",
         nargs="?",

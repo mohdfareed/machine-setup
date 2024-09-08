@@ -45,7 +45,7 @@ def try_install(package: str, classic=False) -> bool:
     """Try to install a package and return whether it was successful."""
     try:
         install(package, classic)
-    except utils.SetupError:
+    except (utils.SetupError, utils.ShellError):
         return False
     return True
 
