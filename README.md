@@ -28,14 +28,14 @@ curl -fsSL $url | python3 - [-h] [-f] [path] machine [-h]
 Or download it and run it locally:
 
 ```sh
-./bootstrap.py [-h] [-f] [path] machine [-h]
+./bootstrap.py [-h] [-f] [-p path] machine [-h]
 ```
 
 Where the arguments are as follows:
 
 - `-h|--help`: prints the bootstrapping help message.
 - `-f|--force`: forces cloning the repo even if it already exists.
-- `path`: the path to clone the repository into.
+- `-p|--path`: the path to clone the repository into.
   - Defaults to `$MACHINE` then `$HOME/machine`.
 - `machine`: the machine to set up.
 - `-h|--help`: prints the machine's setup help message.
@@ -104,6 +104,8 @@ The following are notes related to specific supported machines.
 
 ### macOS
 
+- `xcode-select --install` must be run before running the setup script.
+
 Back up the following:
 
 - Raycast configuration
@@ -112,3 +114,7 @@ Back up the following:
 ### Raspberry Pi
 
 - `zsh` must be installed before running the setup script.
+
+### Windows
+
+- `powershell` must be installed before running the setup script.

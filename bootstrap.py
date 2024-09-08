@@ -35,20 +35,21 @@ default_machine_path = os.environ.get("MACHINE") or os.path.join(
 def main(machine: str, path: str, overwrite=False, setup_args=None) -> None:
     """Bootstrap the machine setup process."""
     # validate arguments
-    path, req_file = validate_machine(machine, path)
+    path = validate_machine(machine, path)
 
     # clone machine, overwrite if necessary
     if overwrite and os.path.exists(path):
         print("Removing existing machine...")
         shutil.rmtree(path, ignore_errors=True)
-    elif not os.path.exists(path):
+        os.removedirs(path)
+    if not os.path.exists(path):
         print(f"Cloning machine into: {path}")
         clone_machine(REPO, path)
 
     # create virtual environment
     venv = os.path.join(path, ".venv")
     python = create_virtual_env(venv, machine)
-    install_dependencies(python, req_file)
+    install_dependencies(python, os.path.join(path, "requirements.txt"))
 
     # execute machine setup script
     print(f"Setting up machine: {machine}")
@@ -91,7 +92,7 @@ def setup_machine(
     subprocess.run(setup, check=False)
 
 
-def validate_machine(machine: str, path: str) -> tuple[str, str]:
+def validate_machine(machine: str, path: str) -> str:
     """Validate the machine requirements. Returns machine path."""
     path = path or default_machine_path
     path = os.path.abspath(os.path.realpath(path))
@@ -99,25 +100,7 @@ def validate_machine(machine: str, path: str) -> tuple[str, str]:
     # check if setting up a github codespace
     if not machine and os.environ.get("CODESPACES"):
         machine = "codespaces"
-
-    script_path = os.path.join(path, "machines", machine, "setup.py")
-    module_path = os.path.join(path, "machines", machine, "__init__.py")
-    if (
-        not machine
-        or not os.path.exists(script_path)
-        or not os.path.exists(module_path)
-    ):
-        raise ValueError(
-            f"Invalid machine: {machine}.\n"
-            f"At path: {path}.\n"
-            f"Ensure the machine is a valid module with a setup script.\n"
-            f"Module: {module_path}\nScript: {script_path}"
-        )
-
-    req_file = os.path.join(path, "requirements.txt")
-    if not os.path.exists(req_file):
-        raise FileNotFoundError("Requirements file not found.")
-    return path, req_file
+    return path
 
 
 if __name__ == "__main__":
