@@ -57,7 +57,9 @@ class HomeBrew(PackageManager):
     @override
     @staticmethod
     def is_supported() -> bool:
-        return utils.is_macos() or (utils.is_linux() and not utils.is_arm())
+        return utils.is_macos() or (
+            (utils.is_linux() or utils.is_windows()) and not utils.is_arm()
+        )
 
     @override
     def _setup(self) -> None:

@@ -35,7 +35,7 @@ class SnapStore(PackageManager):
     @override
     @staticmethod
     def is_supported() -> bool:
-        return utils.is_linux()
+        return True
 
     @override
     def _setup(self) -> None:

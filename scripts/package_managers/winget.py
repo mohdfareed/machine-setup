@@ -28,7 +28,7 @@ class WinGet(PackageManager):
     @override
     @staticmethod
     def is_supported() -> bool:
-        return utils.is_windows() and utils.is_installed("winget")
+        return utils.is_installed("winget")
 
     @override
     def _setup(self) -> None:

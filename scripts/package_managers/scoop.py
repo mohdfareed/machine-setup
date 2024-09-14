@@ -21,7 +21,8 @@ class Scoop(PackageManager):
         self.install("nerd-fonts/JetBrains-Mono")
         LOGGER.debug("Fonts were setup successfully.")
 
-    def add_bucket(self, bucket: str) -> None:
+    @staticmethod
+    def add_bucket(bucket: str) -> None:
         """Add a bucket to the scoop package manager."""
         LOGGER.info("Adding bucket %s to scoop...", bucket)
         utils.shell.run(f"scoop bucket add {bucket}", throws=False)

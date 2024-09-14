@@ -57,7 +57,7 @@ class APT(PackageManager):
     @override
     @staticmethod
     def is_supported() -> bool:
-        return utils.is_linux() and utils.is_installed("apt")
+        return utils.is_installed("apt")
 
     @override
     def _setup(self) -> None:
