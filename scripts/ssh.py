@@ -83,8 +83,14 @@ def _setup_key(key: "_SSHKeyPair") -> None:
     fingerprint = fingerprint.split(" ")[1]
     LOGGER.debug("Key fingerprint: %s", fingerprint)
 
+    if utils.is_windows():  # set up ssh agent on windows
+        shell.run("Get-Service ssh-agent | Set-Service -StartupType Automatic")
+        shell.run("Start-Service ssh-agent")
+        cmd = f"ssh-add -l | Select-String -Pattern '{fingerprint}'"
+    else: # command to check if key already exists in ssh agent
+        cmd = "ssh-add -l | grep -q " + fingerprint
+
     # add key to ssh agent if it doesn't exist
-    cmd = "ssh-add -l | grep -q " + fingerprint
     if shell.run(cmd, throws=False)[0] != 0:
         if utils.is_macos(): # add key to keychain on macOS
             shell.run(f"ssh-add --apple-use-keychain '{key.private}'")

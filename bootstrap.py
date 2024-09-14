@@ -85,7 +85,7 @@ def update_machine(path: str):
 
     # pull latest changes if exists
     _log_info("Updating machine...")
-    subprocess.run(["git", "pull", "-q"], cwd=path, check=True)
+    subprocess.run(["git", "pull"], cwd=path, check=True)
 
 
 def create_virtual_env(path: str, prompt: str, clean: bool) -> str:
