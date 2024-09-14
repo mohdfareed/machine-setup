@@ -98,9 +98,7 @@ class ShellError(Exception):
 
 
 if _IS_WINDOWS:
-    run("Get-Process", info=True)  # check if PowerShell is installed
     # print the PowerShell executable path
-    # _EXECUTABLE = (
-    #     "pwsh" if _os.system("pwsh -Command exit") == 0 else "powershell"
-    # )
+    _EXECUTABLE = r"C:\Program Files\PowerShell\7\pwsh.exe"
+    run("Get-Process", info=True)  # check if PowerShell is installed
     LOGGER.info("PowerShell executable: %s", _EXECUTABLE)
