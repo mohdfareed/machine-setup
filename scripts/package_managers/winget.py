@@ -2,51 +2,49 @@
 Windows machine."""
 
 import logging
+from typing import override
 
 import utils
+from scripts.package_managers import PackageManager
 from utils import shell
 
 LOGGER = logging.getLogger(__name__)
-"""The WinGet setup logger."""
+"""WinGet package manager logger."""
 
 
-def setup() -> None:
-    """Setup WinGet on a new Windows machine."""
-    if not utils.is_windows():
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
-    validate()
+class WinGet(PackageManager):
+    """WinGet package manager."""
 
-    LOGGER.info("Setting up WinGet...")
-    shell.run("winget install -e --id Microsoft.Powershell")
-    shell.run("winget install -e --id Microsoft.Git")
-    LOGGER.debug("WinGet was setup successfully.")
+    @override
+    def install(self, package: str | list[str]) -> None:
+        if isinstance(package, str):
+            package = package.split()
 
+        for pkg in package:
+            LOGGER.info("Installing %s from winget...", pkg)
+            shell.run(f"winget install -e --id {pkg}")
+            LOGGER.debug("%s was installed successfully.", pkg)
 
-def install(package: str) -> None:
-    """Install a winget package."""
-    validate()
+    @override
+    @staticmethod
+    def is_supported() -> bool:
+        return utils.is_windows() and utils.is_installed("winget")
 
-    for pkg in package.split():
-        LOGGER.info("Installing %s from winget...", pkg)
-        shell.run(f"winget install -e --id {pkg}")
-        LOGGER.debug("%s was installed successfully.", pkg)
-
-
-def try_install(package: str) -> bool:
-    """Try to install a package and return whether it was successful."""
-    try:
-        install(package)
-    except utils.SetupError:
-        return False
-    return True
-
-
-def validate() -> None:
-    """Validate that winget is installed on the machine."""
-    if not utils.is_installed("winget"):
-        raise utils.SetupError("WinGet is not installed on this machine.")
+    @override
+    def _setup(self) -> None:
+        LOGGER.info("Setting up Scoop...")
+        utils.shell.run(
+            "Set-ExecutionPolicy -ExecutionPolicy "
+            "RemoteSigned -Scope CurrentUser"
+        )
+        utils.shell.run(
+            "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
+        )
+        utils.shell.run("scoop update")
+        utils.shell.run("scoop update *")
+        LOGGER.debug("Scoop was setup successfully.")
 
 
 if __name__ == "__main__":
     args = utils.startup(description="WinGet setup script.")
-    utils.execute(setup)
+    utils.execute(WinGet)

@@ -58,12 +58,15 @@ if _utils.is_windows():
     local_data = _utils.load_env_var(ps_profile, "LOCALAPPDATA")
     """The path of the Windows local data directory."""
 
-else:  # unix systems
+    app_data = _utils.load_env_var(ps_profile, "APPDATA")
+    """The path of the Windows application data directory."""
+
+if _utils.is_unix():
     xdg_config = _utils.load_env_var(zshenv, "XDG_CONFIG_HOME")
     """The path of the XDG configuration directory."""
 
-    zdotdir = _utils.load_env_var(zshenv, "ZDOTDIR")
-    """The path of the ZDOTDIR directory."""
+    xdg_data = _utils.load_env_var(zshenv, "XDG_DATA_HOME")
+    """The path of the XDG data directory."""
 
 
 # helper functions ============================================================
@@ -92,16 +95,20 @@ def report(machine_config: dict[str, str] | None) -> None:
     """
 
     LOGGER.debug("Machine configuration:")
-    LOGGER.debug("MACHINE: %s", MACHINE)
-    LOGGER.debug("PRIVATE_ENV: %s", private_env)
-    LOGGER.debug("SSH_KEYS: %s", ssh_keys)
+    LOGGER.debug("\tMACHINE: %s", MACHINE)
+    LOGGER.debug("\tPRIVATE_ENV: %s", private_env)
+    LOGGER.debug("\tSSH_KEYS: %s", ssh_keys)
 
     if _utils.is_unix():
-        LOGGER.debug("XDG_CONFIG_HOME: %s", xdg_config)
-        LOGGER.debug("ZDOTDIR: %s", zdotdir)
+        LOGGER.debug("\tXDG_CONFIG_HOME: %s", xdg_config)
+        LOGGER.debug("\tXDG_DATA_HOME: %s", xdg_data)
+
+    if _utils.is_windows():
+        LOGGER.debug("\tLOCALAPPDATA: %s", local_data)
+        LOGGER.debug("\tAPPDATA: %s", app_data)
 
     if machine_config:
         LOGGER.debug("Additional configuration:")
         for key, value in machine_config.items():
-            LOGGER.debug("%s: %s", key, value)
+            LOGGER.debug("\t%s: %s", key, value)
     LOGGER.debug("Machine configuration reported.")

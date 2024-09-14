@@ -2,66 +2,48 @@
 Debian machine."""
 
 import logging
+from typing import override
 
 import utils
+from config import LOGGER
+from scripts.package_managers import PackageManager
 
 LOGGER = logging.getLogger(__name__)
-"""The apt setup logger."""
+"""The APT package manager logger."""
 
 
-def setup() -> None:
-    """Setup apt on a new Debian machine."""
-    validate()
+class APT(PackageManager):
+    """Advanced Package Tool (APT) package manager."""
 
-    LOGGER.info("Setting up Debian apt...")
-    utils.shell.run("sudo apt update && sudo apt upgrade -y")
-    LOGGER.debug("Debian apt was setup successfully.")
+    def setup_fonts(self) -> None:
+        """Setup fonts on a new machine."""
+        LOGGER.info("Setting up fonts...")
+        self.install("fonts-jetbrains-mono")
+        LOGGER.debug("Fonts were setup successfully.")
 
+    @override
+    def install(self, package: str | list[str]) -> None:
+        if isinstance(package, str):
+            package = package.split()
 
-def setup_fonts() -> None:
-    """Setup fonts on a new machine."""
-    validate()
+        for pkg in package:
+            LOGGER.info("Installing %s from apt...", pkg)
+            utils.shell.run(f"sudo apt install -y {pkg}")
+            LOGGER.debug("%s was installed successfully.", pkg)
+        utils.shell.run("sudo apt autoremove -y")
 
-    LOGGER.info("Setting up fonts...")
-    install("fonts-jetbrains-mono")
-    LOGGER.debug("Fonts were setup successfully.")
+    @override
+    @staticmethod
+    def is_supported() -> bool:
+        return utils.is_linux() and utils.is_installed("apt")
 
-
-def install(package: str) -> None:
-    """Install an apt package."""
-    validate()
-
-    for pkg in package.split():
-        LOGGER.info("Installing %s from apt...", pkg)
-        utils.shell.run(f"sudo apt install -y {pkg}")
-        LOGGER.debug("%s was installed successfully.", pkg)
-    utils.shell.run("sudo apt autoremove -y")
-
-
-def validate() -> None:
-    """Validate that manager's environment."""
-    if not utils.is_installed("apt"):
-        raise utils.SetupError("APT is not installed on this machine.")
-
-
-def try_validate() -> bool:
-    """Try to validate the setup and return whether it was successful."""
-    try:
-        validate()
-    except utils.SetupError:
-        return False
-    return True
-
-
-def try_install(package: str) -> bool:
-    """Try to install a package and return whether it was successful."""
-    try:
-        install(package)
-    except utils.SetupError:
-        return False
-    return True
+    @override
+    def _setup(self) -> None:
+        LOGGER.info("Setting up Debian apt...")
+        utils.shell.run("sudo apt update && sudo apt upgrade -y")
+        LOGGER.debug("Debian apt was setup successfully.")
 
 
 if __name__ == "__main__":
     args = utils.startup(description="APT setup script.")
-    utils.execute(setup)
+    utils.execute(APT)

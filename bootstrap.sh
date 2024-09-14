@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
 
-# variables
-machine_path="$(dirname "$(realpath "$0")")"
-"$machine_path/bootstrap.py" "$@" || exit 1
+url="https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py"
+curl -fsSL $url | python3 - "$@"

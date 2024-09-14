@@ -15,9 +15,6 @@ from .shell import run as _run
 
 # MARK - Platform =============================================================
 
-OS = _platform.system()
-"""The current operating system."""
-
 
 class UnsupportedOS(Exception):
     """Exception due to an unsupported operating system."""
@@ -29,6 +26,21 @@ class PLATFORM(_Enum):
     LINUX = "Linux"
     MACOS = "Darwin"
     WINDOWS = "Windows"
+
+
+class ARCHITECTURE(_Enum):
+    """Enumeration of supported architectures."""
+
+    ARM = "arm"
+    X86 = "x86"
+    X64 = "x64"
+
+
+OS = PLATFORM(_platform.system())
+"""The current operating system."""
+
+ARCH = ARCHITECTURE(_platform.machine())
+"""The current architecture."""
 
 
 def is_macos() -> bool:
@@ -53,6 +65,21 @@ def is_windows() -> bool:
     """Check if the current operating system is Windows."""
 
     return _platform.system() == PLATFORM.WINDOWS.value
+
+
+def is_arm() -> bool:
+    """Check if the current operating system is ARM based."""
+    return str(ARCHITECTURE.ARM) in _platform.machine()
+
+
+def is_x86() -> bool:
+    """Check if the current operating system is x86 based."""
+    return str(ARCHITECTURE.X86) in _platform.machine()
+
+
+def is_x64() -> bool:
+    """Check if the current operating system is x64 based."""
+    return str(ARCHITECTURE.X64) in _platform.machine()
 
 
 # MARK - Setup ================================================================

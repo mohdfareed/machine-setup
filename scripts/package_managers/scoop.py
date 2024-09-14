@@ -2,63 +2,54 @@
 Windows machine."""
 
 import logging
+from typing import override
 
 import utils
+from scripts.package_managers import PackageManager
 
 LOGGER = logging.getLogger(__name__)
-"""The scoop setup logger."""
+"""Scoop package manager logger."""
 
 
-def setup() -> None:
-    """Setup the Scoop on a new Windows machine."""
-    if not utils.is_windows():
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+class Scoop(PackageManager):
+    """Scoop package manager."""
 
-    LOGGER.info("Setting up Scoop...")
-    utils.shell.run(
-        "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"
-    )
-    utils.shell.run(
-        "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
-    )
-    utils.shell.run("scoop update")
-    utils.shell.run("scoop update *")
-    LOGGER.debug("Scoop was setup successfully.")
+    def setup_fonts(self) -> None:
+        """Setup fonts on a new machine."""
+        LOGGER.info("Setting up fonts...")
+        self.install("nerd-fonts/JetBrains-Mono")
+        LOGGER.debug("Fonts were setup successfully.")
 
+    @override
+    def install(self, package: str | list[str]) -> None:
+        if isinstance(package, str):
+            package = package.split()
 
-def setup_fonts() -> None:
-    """Setup fonts on a new machine."""
-    validate()
+        for pkg in package:
+            LOGGER.info("Installing %s with Scoop...", pkg)
+            utils.shell.run(f"scoop install {pkg}")
+            LOGGER.debug("%s was installed successfully.", pkg)
 
-    LOGGER.info("Setting up fonts...")
-    install("nerd-fonts/JetBrains-Mono")
-    LOGGER.debug("Fonts were setup successfully.")
+    @override
+    @staticmethod
+    def is_supported() -> bool:
+        return utils.is_windows()
 
-
-def install(package: str) -> None:
-    """Install a Scoop package."""
-    validate()
-    for pkg in package.split():
-        LOGGER.info("Installing %s with Scoop...", pkg)
-        utils.shell.run(f"scoop install {pkg}")
-        LOGGER.debug("%s was installed successfully.", pkg)
-
-
-def validate() -> None:
-    """Validate that Scoop is installed on the machine."""
-    if not utils.is_installed("scoop"):
-        raise utils.SetupError("Scoop is not installed on this machine.")
-
-
-def try_install(package: str) -> bool:
-    """Try to install a package and return whether it was successful."""
-    try:
-        install(package)
-    except utils.SetupError:
-        return False
-    return True
+    @override
+    def _setup(self) -> None:
+        LOGGER.info("Setting up Scoop...")
+        utils.shell.run(
+            "Set-ExecutionPolicy -ExecutionPolicy "
+            "RemoteSigned -Scope CurrentUser"
+        )
+        utils.shell.run(
+            "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
+        )
+        utils.shell.run("scoop update")
+        utils.shell.run("scoop update *")
+        LOGGER.debug("Scoop was setup successfully.")
 
 
 if __name__ == "__main__":
     args = utils.startup(description="Scoop setup script.")
-    utils.execute(setup)
+    utils.execute(Scoop)

@@ -2,55 +2,51 @@
 machine."""
 
 import logging
-import os
+from typing import override
 
 import utils
-from scripts.package_managers import brew
+from scripts.package_managers import HomeBrew, PackageManager
 from utils import shell
 
 LOGGER = logging.getLogger(__name__)
-"""The MAS setup logger."""
-
-MAS = os.path.join(brew.BIN, "mas") if brew.BIN else None
-"""The path to the mas executable."""
+"""The MAS package manager logger."""
 
 
-def setup() -> None:
-    """Setup Homebrew on a new machine by installing it and its packages."""
-    if not utils.is_macos():
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
-    brew.validate()
+class MAS(PackageManager):
+    """Mac App Store."""
 
-    LOGGER.info("Setting up the Mac App Store...")
-    brew.install("mas")
-    shell.run("mas upgrade")
-    LOGGER.info("Mac App Store setup complete.")
+    mas: str
+    """The path to the mas executable."""
 
+    def __init__(self, homebrew: HomeBrew) -> None:
+        super().__init__()
+        self.homebrew = homebrew
+        """The Homebrew package manager."""
 
-def install(package: str) -> None:
-    """Install a Mac App Store package."""
-    validate()
-    for pkg in package.split():
-        LOGGER.info("Installing %s from the Mac App Store...", pkg)
-        shell.run(f"{MAS} install {pkg}")
-        LOGGER.debug("%s was installed successfully.", pkg)
+    @override
+    def install(self, package: str | list[str]) -> None:
+        if isinstance(package, str):
+            package = package.split()
 
+        for pkg in package:
+            LOGGER.info("Installing %s from the Mac App Store...", pkg)
+            shell.run(f"{self.mas} install {pkg}")
+            LOGGER.debug("%s was installed successfully.", pkg)
+        shell.run(f"{self.homebrew.brew} cleanup --prune=all", throws=False)
 
-def validate() -> None:
-    """Validate that MAS is installed on the machine."""
-    if MAS is None or not os.path.exists(MAS):
-        raise utils.SetupError("MAS is not installed on this machine.")
+    @override
+    @staticmethod
+    def is_supported() -> bool:
+        return utils.is_macos()
 
-
-def try_install(package: str) -> bool:
-    """Try to install a package and return whether it was successful."""
-    try:
-        install(package)
-    except utils.SetupError:
-        return False
-    return True
+    @override
+    def _setup(self) -> None:
+        LOGGER.info("Setting up the Mac App Store...")
+        self.homebrew.install("mas")
+        shell.run("mas upgrade")
+        LOGGER.info("Mac App Store setup complete.")
 
 
 if __name__ == "__main__":
-    args = utils.startup(description="Homebrew setup script.")
-    utils.execute(setup)
+    args = utils.startup(description="MAS setup script.")
+    utils.execute(MAS)

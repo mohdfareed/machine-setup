@@ -7,10 +7,13 @@ import os
 
 import config
 import scripts
+import scripts.package_managers
 import utils
-from scripts.package_managers import snap
 from utils import shell
 from utils.helpers import SetupError
+
+LOGGER = logging.getLogger(__name__)
+"""The ZSH setup logger."""
 
 if utils.is_windows():
     PS_PROFILE = os.path.join(
@@ -23,9 +26,8 @@ if utils.is_windows():
 else:
     ZSHENV = os.path.join(os.path.expanduser("~"), ".zshenv")
     """The path to the zsh environment file symlink."""
-
-LOGGER = logging.getLogger(__name__)
-"""The ZSH setup logger."""
+    ZDOTDIR = utils.load_env_var(config.zshenv, "ZDOTDIR")
+    """The path of the ZDOTDIR directory on the machine."""
 
 
 def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
@@ -37,11 +39,12 @@ def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
         raise SetupError("Machine zshrc file does not exist.")
     if not os.path.exists(zshenv):
         raise SetupError("Machine zshenv file does not exist.")
+
     LOGGER.info("Setting up shell...")
-    _install_dependencies()
+    _install_unix_dependencies()
 
     # resolve shell configuration paths
-    _zshrc = os.path.join(config.zdotdir, ".zshrc")
+    _zshrc = os.path.join(ZDOTDIR, ".zshrc")
     vim = os.path.join(config.xdg_config, "nvim")
     tmux = os.path.join(config.xdg_config, "tmux", "tmux.conf")
     ps_profile = os.path.join(config.xdg_config, "powershell", "profile.ps1")
@@ -75,7 +78,7 @@ def setup_windows(ps_profile=config.ps_profile) -> None:
     if not os.path.exists(ps_profile):
         raise SetupError("Machine powershell profile file does not exist.")
     LOGGER.info("Setting up shell...")
-    _install_dependencies()
+    _install_windows_dependencies()
 
     # resolve shell configuration paths
     vim = os.path.join(config.local_data, "nvim")
@@ -85,38 +88,43 @@ def setup_windows(ps_profile=config.ps_profile) -> None:
     utils.symlink(config.ps_profile, PS_PROFILE)
 
 
-def _install_dependencies() -> None:
-    # windows-specific dependencies
-    if utils.is_windows():  # install nvim, powershell
-        if scripts.winget.try_install("Microsoft.PowerShell Neovim.Neovim "):
-            pass
-        elif scripts.scoop.try_install("neovim"):
-            pass
+def _install_windows_dependencies() -> None:
+    install_powershell()
+    if scripts.winget.try_install("Neovim.Neovim"):
+        return
+    if scripts.scoop.try_install("neovim"):
         return
 
-    # brew
-    if scripts.brew.try_install("zsh nvim btop"):
-        scripts.brew.install("powershell", cask=True)
 
-    # apt and snap
-    elif scripts.apt.try_install("zsh"):
+def _install_unix_dependencies() -> None:
+    install_powershell()
+    if scripts.brew.try_install("zsh nvim btop"):
+        return
+    if scripts.apt.try_install("zsh"):
         if not scripts.snap.try_install("nvim btop"):
             LOGGER.error("Could not install nvim or btop.")
-        # powershell
-        if not snap.try_install("powershell"):
-            url = "https://packages.microsoft.com/config/debian"
-            utils.shell.run(
-                "sudo apt install -y wget && "
-                "source /etc/os-release && "
-                f"wget -q {url}/$VERSION_ID/packages-microsoft-prod.deb && "
-                "sudo dpkg -i packages-microsoft-prod.deb && "
-                "rm packages-microsoft-prod.deb && "
-                "sudo apt update && "
-                "sudo apt install -y powershell"
-            )
+        return
+    LOGGER.error("Could not install shell dependencies.")
 
-    else:
-        LOGGER.error("Could not install shell dependencies.")
+
+def install_powershell() -> None:
+    """Install PowerShell on a machine."""
+    if scripts.brew.try_install("powershell", cask=True):
+        return
+    if scripts.winget.try_install("Microsoft.PowerShell"):
+        return
+    if scripts.snap.try_install("powershell"):
+        return
+
+
+def install_nvim() -> None:
+    """Install NeoVim on a machine."""
+    if scripts.winget.try_install("Neovim.Neovim"):
+        return
+    if scripts.brew.try_install("nvim"):
+        return
+    if scripts.snap.try_install("nvim btop"):
+        return
 
 
 if __name__ == "__main__":
