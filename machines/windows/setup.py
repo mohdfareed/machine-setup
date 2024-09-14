@@ -44,8 +44,11 @@ def setup(private_machine: str | None = None) -> None:
     scripts.setup_node(winget)
     winget.install("GoLang.Go")
     winget.install("Microsoft.DotNet.SDK")
-    scoop.install("extras/godot")
     setup_wsl()  # install ubuntu wsl
+
+    # extras
+    scoop.add_bucket("extras")
+    scoop.install("extras/godot")
 
     LOGGER.info("Windows setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

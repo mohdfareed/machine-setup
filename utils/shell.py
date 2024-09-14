@@ -52,7 +52,11 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
 
     # handle return code and/or output
     if throws and returncode != 0:
-        raise ShellError(returncode, command, ANSI_ESCAPE.sub("", output))
+        raise ShellError(
+            returncode=returncode,
+            command=command,
+            output=ANSI_ESCAPE.sub("", output),
+        )
     return returncode, output
 
 
@@ -117,6 +121,9 @@ def _log_line(line: str, info: bool) -> None:
 
 class ShellError(Exception):
     """Exception due to a shell error."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, kwargs)
 
 
 if _IS_WINDOWS:
