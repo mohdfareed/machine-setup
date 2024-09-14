@@ -29,12 +29,16 @@ def setup(private_machine: str | None = None) -> None:
     shell.install_btop(snap)
     shell.install_powershell(snap)
 
+    # setup ssh
+    ssh.generate_key_pair("personal", ssh.SSH_DIR)
+    ssh.setup(None, ssh.SSH_DIR)
+    ssh.setup_server(apt)
+
     # setup core machine
     git.setup(apt)
     vscode.setup(snap)
     vscode.setup_tunnels("rpi")
     tailscale.setup(None)
-    ssh.setup_server(apt)
     apt.setup_fonts()
 
     # setup dev tools

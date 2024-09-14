@@ -2,6 +2,7 @@
 
 import logging
 import os
+import shutil
 from dataclasses import dataclass
 
 import config
@@ -20,50 +21,27 @@ PRIVATE_EXT: str = ".key"
 """The extension of the private key filenames."""
 
 
-@dataclass
-class _SSHKeyPair:
-    """An SSH key pair of a private and optional public keys."""
-
-    private: str
-    """The path to the private key file."""
-    public: str | None = None
-    """The path to the public key file."""
-
-    @property
-    def private_filename(self) -> str:
-        """The filename of the private key."""
-        return os.path.basename(self.private)
-
-    @property
-    def public_filename(self) -> str:
-        """The filename of the public key, based on the private key if the
-        public key doesn't exist."""
-        if self.public:
-            return os.path.basename(self.public)
-        return self.name + PUBLIC_EXT
-
-    @property
-    def name(self) -> str:
-        """The name of the key pair based on the private key filename."""
-        return os.path.splitext(self.private_filename)[0]
-
-
-def setup(ssh_config: str) -> None:
+def setup(ssh_config: str | None, ssh_keys=config.ssh_keys) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory."""
 
     LOGGER.info("Setting up SSH...")
-    if not os.path.exists(config.ssh_keys):
-        LOGGER.error("SSH keys directory does not exist: %s", config.ssh_keys)
+
+    if ssh_config:  # symlink ssh config file
+        utils.symlink(ssh_config, os.path.join(SSH_DIR, "config"))
+
+    if not os.path.exists(ssh_keys): # check if ssh keys directory exists
+        LOGGER.warning("SSH keys directory does not exist: %s", ssh_keys)
+        LOGGER.info("Skipping SSH keys setup.")
         return
 
-    utils.symlink(ssh_config, os.path.join(SSH_DIR, "config"))
-    for key in _load_keys(config.ssh_keys):
-        _setup_key(key)
+    # read ssh keys from directory
+    for key in _load_keys(ssh_keys):
+        _setup_key(key) # setup ssh keys
     LOGGER.info("SSH setup complete")
 
 
-def _load_keys(keys_dir: str) -> list[_SSHKeyPair]:
+def _load_keys(keys_dir: str) -> list["_SSHKeyPair"]:
     """Load ssh keys from the specified directory.
 
     Returns:
@@ -88,15 +66,24 @@ def _load_keys(keys_dir: str) -> list[_SSHKeyPair]:
     return private_keys
 
 
-def _setup_key(key: _SSHKeyPair) -> None:
+def _setup_key(key: "_SSHKeyPair") -> None:
     """Setup an ssh key on a machine."""
     LOGGER.info("Setting up SSH key: %s", key.name)
 
     # symlink private key and set permissions
-    utils.symlink(key.private, os.path.join(SSH_DIR, key.private_filename))
+    if not os.path.samefile(
+        key.private,
+        (private_key := os.path.join(SSH_DIR, key.private_filename))
+    ):
+        utils.symlink(key.private, private_key)
     _set_permissions(key.private, private=True)
+
     if key.public:  # symlink public key if it exists and set permissions
-        utils.symlink(key.public, os.path.join(SSH_DIR, key.public_filename))
+        if not os.path.samefile(
+            key.public,
+            (public_key := os.path.join(SSH_DIR, key.public_filename))
+        ):
+            utils.symlink(key.public, public_key)
         _set_permissions(key.public, private=False)
 
     # get key fingerprint
@@ -157,6 +144,54 @@ def setup_server(apt: APT | None) -> None:
             "APT package manager is required for linux setup."
         )
     raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+
+def generate_key_pair(name: str, keys_dir: str=SSH_DIR) -> None:
+    """Create a new ssh key pair."""
+    LOGGER.info("Creating SSH key pair: %s", name)
+
+    keys_dir = os.path.abspath(keys_dir)
+    if not os.path.exists(keys_dir):
+        os.makedirs(keys_dir)
+
+    private_key=os.path.join(keys_dir, name + PRIVATE_EXT)
+    public_key=os.path.join(keys_dir, name + PUBLIC_EXT)
+    generated_public_key=os.path.join(keys_dir, name + ".pub")
+
+    shell.run(f"ssh-keygen -t ed25519 -C 'your_email@example.com' -f {private_key} -N ''")
+    shutil.move(generated_public_key, public_key)
+    LOGGER.info("SSH key pair generated: %s", name)
+
+    if os.path.exists(public_key):
+        LOGGER.info("Public key: %s", public_key)
+    LOGGER.info("Private key: %s", private_key)
+
+@dataclass
+class _SSHKeyPair:
+    """An SSH key pair of a private and optional public keys."""
+
+    private: str
+    """The path to the private key file."""
+    public: str | None = None
+    """The path to the public key file."""
+
+    @property
+    def private_filename(self) -> str:
+        """The filename of the private key."""
+        return os.path.basename(self.private)
+
+    @property
+    def public_filename(self) -> str:
+        """The filename of the public key, based on the private key if the
+        public key doesn't exist."""
+        if self.public:
+            return os.path.basename(self.public)
+        return self.name + PUBLIC_EXT
+
+    @property
+    def name(self) -> str:
+        """The name of the key pair based on the private key filename."""
+        return os.path.splitext(self.private_filename)[0]
+
 
 
 if __name__ == "__main__":
