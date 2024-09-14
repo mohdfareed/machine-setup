@@ -174,7 +174,7 @@ def delete(path: str) -> None:
     if not item.exists():
         return
 
-    if item.is_file():
+    if item.is_symlink() or item.is_file():
         item.unlink()
     if item.is_dir():
         _shutil.rmtree(item)
