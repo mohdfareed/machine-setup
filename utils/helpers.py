@@ -32,15 +32,12 @@ class ARCHITECTURE(_Enum):
     """Enumeration of supported architectures."""
 
     ARM = "arm"
-    X86 = "x86"
-    X64 = "x64"
+    AMD = "64"
 
-
-OS = PLATFORM(_platform.system())
-"""The current operating system."""
-
-ARCH = ARCHITECTURE(_platform.machine())
-"""The current architecture."""
+    @staticmethod
+    def current() -> str:
+        """Return the current architecture."""
+        return str(ARCHITECTURE.ARM) if is_arm() else str(ARCHITECTURE.AMD)
 
 
 def is_macos() -> bool:
@@ -72,15 +69,11 @@ def is_arm() -> bool:
     return str(ARCHITECTURE.ARM) in _platform.machine()
 
 
-def is_x86() -> bool:
-    """Check if the current operating system is x86 based."""
-    return str(ARCHITECTURE.X86) in _platform.machine()
+OS = PLATFORM(_platform.system())
+"""The current operating system."""
 
-
-def is_x64() -> bool:
-    """Check if the current operating system is x64 based."""
-    return str(ARCHITECTURE.X64) in _platform.machine()
-
+ARCH = ARCHITECTURE.ARM if is_arm() else ARCHITECTURE.AMD
+"""The current architecture."""
 
 # MARK - Setup ================================================================
 

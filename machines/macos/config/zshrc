@@ -23,21 +23,6 @@ function ssh-fix-keychain {
     done
 }
 
-# ssh into raspberry pi
-function ssh-pi {
-    usage="usage: $0 [local]"
-    if (($# > 1)); then echo $usage && return 1; fi
-
-    if [ "$1" = "" ]; then
-        ssh rpi
-    elif [ "$1" = "local" ]; then
-        ssh rpi.local
-    else
-        echo $usage
-        return 1
-    fi
-}
-
 # zip a folder with password without compression
 function zip-encrypt {
     usage="usage: $0 dir"
