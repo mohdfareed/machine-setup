@@ -88,7 +88,7 @@ def _create_process(command: str, env=None) -> _subprocess.Popen[str]:
 
     elif EXECUTABLE == SupportedExecutables.WSL:
         subprocess = _subprocess.Popen(  # pylint: disable=consider-using-with
-            [EXECUTABLE, "-e", "bash", "-c", command],
+            [EXECUTABLE, "-e", "bash", "-c", f"'{command}'"],
             env=env,
             stdout=_subprocess.PIPE,
             stderr=_subprocess.STDOUT,
