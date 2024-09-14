@@ -58,6 +58,7 @@ def setup(
     utils.symlink(zshenv, ZSHENV)
 
     # update zinit and its plugins
+    LOGGER.info("Updating zinit and its plugins...")
     source_env = f"source {zshrc} && source {zshenv}"
     shell.run(f"{source_env} && zinit self-update && zinit update")
 

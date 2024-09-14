@@ -9,23 +9,14 @@ import logging as _logging
 import os as _os
 import subprocess as _subprocess
 
-
-def _find_powershell() -> str:
-    pwsh_path = _os.path.join(_os.environ["ProgramFiles"], "PowerShell")
-    versions = _os.listdir(pwsh_path)
-    versions.sort(reverse=True)
-
-    return f'"{ _os.path.join(pwsh_path, versions[0], "pwsh.exe")}"'
-
-
 LOGGER = _logging.getLogger(__name__)
 """The shell logger."""
 
 _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
-_WINDOWS = "nt"
-_EXECUTABLE = "/bin/zsh" if not _os.name == _WINDOWS else None
+_WINDOWS = _os.name == "nt"
+_EXECUTABLE = "/bin/zsh" if not _WINDOWS else None
 
 
 def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
@@ -100,6 +91,12 @@ def _log_line(line: str, info: bool) -> None:
         LOGGER.info(line)
     else:
         LOGGER.debug(line)
+
+
+if _WINDOWS:
+    run(
+        "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force"
+    )
 
 
 class ShellError(Exception):

@@ -84,13 +84,13 @@ def _load_keys(keys_dir: str) -> list[_SSHKeyPair]:
         if key.public_filename in files:
             key.public = os.path.join(keys_dir, key.name + PUBLIC_EXT)
 
-    LOGGER.debug("Loaded [bold]%d[/] ssh keys.", len(private_keys))
+    LOGGER.debug("Loaded %d ssh keys.", len(private_keys))
     return private_keys
 
 
 def _setup_key(key: _SSHKeyPair) -> None:
     """Setup an ssh key on a machine."""
-    LOGGER.info("[bold]Setting up SSH key:[/] %s", key.name)
+    LOGGER.info("Setting up SSH key: %s", key.name)
 
     # symlink private key and set permissions
     utils.symlink(key.private, os.path.join(SSH_DIR, key.private_filename))
@@ -102,7 +102,7 @@ def _setup_key(key: _SSHKeyPair) -> None:
     # get key fingerprint
     fingerprint = shell.run(f"ssh-keygen -lf {key.private}")[1]
     fingerprint = fingerprint.split(" ")[1]
-    LOGGER.debug("[bold]Key fingerprint:[/] %s", fingerprint)
+    LOGGER.debug("Key fingerprint: %s", fingerprint)
 
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint

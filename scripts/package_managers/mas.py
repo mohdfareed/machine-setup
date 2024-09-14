@@ -19,9 +19,9 @@ class MAS(PackageManager):
     """The path to the mas executable."""
 
     def __init__(self, homebrew: HomeBrew) -> None:
-        super().__init__()
         self.homebrew = homebrew
         """The Homebrew package manager."""
+        super().__init__()
 
     @override
     def install(self, package: str | list[str]) -> None:
