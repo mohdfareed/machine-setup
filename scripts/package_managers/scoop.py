@@ -24,7 +24,7 @@ class Scoop(PackageManager):
     def add_bucket(self, bucket: str) -> None:
         """Add a bucket to the scoop package manager."""
         LOGGER.info("Adding bucket %s to scoop...", bucket)
-        utils.shell.run(f"scoop bucket add {bucket}")
+        utils.shell.run(f"scoop bucket add {bucket}", throws=False)
         LOGGER.debug("Bucket %s was added successfully.", bucket)
 
     @override
