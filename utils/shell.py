@@ -98,13 +98,5 @@ class ShellError(Exception):
 
 
 if _IS_WINDOWS:
-    # print the PowerShell executable path
     _EXECUTABLE = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-    cmd = (
-        r'"& { . '
-        "C:\\Users\\mohdfareed\\.machine\\config\\ps_profile.ps1"
-        ' -EnvOnly; Write-Output $env:MACHINE }"'
-    )
-
-    run(cmd, info=True)  # check if PowerShell is installed
-    LOGGER.info("PowerShell executable: %s", _EXECUTABLE)
+    run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
