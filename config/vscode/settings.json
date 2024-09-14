@@ -227,8 +227,7 @@
   // #region ===================================================================
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  },
-  "editor.minimap.enabled": false
+  }
   // # endregion
   // REVIEW - new customizations above =========================================
 }
