@@ -33,7 +33,7 @@ class WinGet(PackageManager):
     @override
     def _setup(self) -> None:
         LOGGER.info("Setting up WinGet...")
-        shell.run("winget upgrade --all")
+        shell.run("winget upgrade --all --include-unknown")
         LOGGER.debug("Scoop was setup successfully.")
 
 

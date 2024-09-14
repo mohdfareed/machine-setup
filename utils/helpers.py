@@ -5,13 +5,12 @@ import argparse as _argparse
 import os as _os
 import platform as _platform
 import sys as _sys
-from ast import arguments
 from collections.abc import Callable as _Callable
 from enum import Enum as _Enum
 
 from .logging import LOGGER
 from .logging import setup_logging as _setup_logging
-from .shell import _EXECUTABLE, ShellError
+from .shell import ShellError
 from .shell import run as _run
 
 # MARK - Platform =============================================================

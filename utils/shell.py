@@ -98,5 +98,6 @@ class ShellError(Exception):
 
 
 if _IS_WINDOWS:
-    _EXECUTABLE = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-    # run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
+    # _EXECUTABLE = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+    _EXECUTABLE = _os.system("for %i in (pwsh.exe) do @echo. %~$PATH:i")
+    run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
