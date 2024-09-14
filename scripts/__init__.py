@@ -41,7 +41,8 @@ def setup_python(pkg_manager: HomeBrew | APT | Scoop) -> None:
 
     if isinstance(pkg_manager, APT):
         pkg_manager.install("python3 python3-pip python3-venv pipx")
-        utils.shell.run("curl https://pyenv.run | bash")
+        if not utils.is_installed("pyenv"):
+            utils.shell.run("curl https://pyenv.run | bash")
 
     if isinstance(pkg_manager, Scoop):
         pkg_manager.install("python pipx pyenv")
@@ -64,7 +65,7 @@ def setup_node(pkg_manager: HomeBrew | WinGet | None) -> None:
         LOGGER.debug("Node was setup successfully.")
         return
 
-    if utils.is_unix():
+    if utils.is_unix() and not utils.is_installed("nvm"):
         url = "https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh"
         utils.shell.run(f"curl -o- {url} | bash")
         LOGGER.debug("Node was setup successfully.")
