@@ -1,35 +1,31 @@
 """Setup module containing a `setup` function for setting up WSL."""
 
 import config
-import scripts
 import utils
 from machines import LOGGER
 from scripts import git, shell
-from scripts.package_managers import apt, brew, scoop
+from scripts.package_managers import APT, HomeBrew, SnapStore
 
 
 def setup() -> None:
     """Setup WSL on a new Windows machine."""
     LOGGER.info("Setting up WSL...")
 
-    try:
-        brew.setup()
-    except utils.SetupError:
-        apt.setup()
-        scoop.setup()
-
-    try:
-        brew.setup_fonts()
-    except utils.SetupError:
-        scoop.setup_fonts()
+    # package managers
+    brew = HomeBrew.safe_setup()
+    apt = APT()
+    snap = SnapStore(apt)
 
     # setup core machine
-    git.setup()
-    shell.setup()
+    git.setup(brew or apt)
+    shell.setup(brew or apt)
+    shell.install_nvim(brew or snap)
+    shell.install_btop(brew or snap)
 
-    # setup dev tools
-    scripts.setup_python()
-    scripts.setup_node()
+    if brew:  # setup fonts
+        brew.setup_fonts()
+    else:
+        apt.setup_fonts()
 
     LOGGER.info("Windows WSL setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

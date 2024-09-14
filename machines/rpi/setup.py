@@ -4,8 +4,8 @@ import config
 import scripts
 import utils
 from machines import LOGGER, rpi
-from scripts import git, shell, tailscale, vscode
-from scripts.package_managers import apt, snap
+from scripts import git, shell, ssh, tailscale, vscode
+from scripts.package_managers import APT, SnapStore
 from utils import shell as shell_utils
 
 PACKAGES = ["zsh", "git", "code", "npm", "docker-compose"]
@@ -19,22 +19,28 @@ def setup(private_machine: str | None = None) -> None:
     if private_machine:
         config.link_private_config(private_machine)
 
-    # setup apt
-    apt.setup()
-    apt.setup_fonts()
-    snap.setup()
+    # package managers
+    apt = APT()
+    snap = SnapStore(apt)
+
+    # setup shell
+    shell.setup(apt, rpi.zshrc, rpi.zshenv)
+    shell.install_nvim(snap)
+    shell.install_btop(snap)
+    shell.install_powershell(snap)
 
     # setup core machine
-    git.setup()
-    shell.setup(rpi.zshrc, rpi.zshenv)
-    vscode.setup()
+    git.setup(apt)
+    vscode.setup(snap)
     vscode.setup_tunnels("rpi")
-    tailscale.setup()
+    tailscale.setup(None)
+    ssh.setup_server(apt)
+    apt.setup_fonts()
 
     # setup dev tools
-    scripts.setup_docker()
-    scripts.setup_python()
-    scripts.setup_node()
+    scripts.setup_docker(None)
+    scripts.setup_python(apt)
+    scripts.setup_node(None)
     snap.install("go", classic=True)
     snap.install("dotnet-sdk", classic=True)
 

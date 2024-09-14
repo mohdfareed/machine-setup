@@ -5,7 +5,7 @@ import scripts
 import utils
 from machines import LOGGER, windows
 from scripts import git, shell, ssh, tailscale, vscode
-from scripts.package_managers import scoop, winget
+from scripts.package_managers import Scoop, WinGet
 
 
 def setup(private_machine: str | None = None) -> None:
@@ -16,24 +16,29 @@ def setup(private_machine: str | None = None) -> None:
     if private_machine:
         config.link_private_config(private_machine)
 
-    # setup winget and scoop
-    winget.setup()
-    scoop.setup()
-    scoop.setup_fonts()
+    # setup package managers
+    winget = WinGet()
+    scoop = Scoop()
+
+    # setup shell
+    shell.setup_windows(windows.ps_profile)
+    shell.install_powershell(winget)
+    shell.install_nvim(winget)
+    shell.install_btop(scoop)
 
     # setup core machine
-    git.setup()
-    shell.setup_windows(windows.ps_profile)
+    git.setup(winget)
     ssh.setup(windows.ssh_config)
-    ssh.setup_server()
-    vscode.setup()
+    ssh.setup_server(None)
+    vscode.setup(winget)
     vscode.setup_tunnels("pc")
-    tailscale.setup()
+    tailscale.setup(None)
+    scoop.setup_fonts()
 
     # setup dev tools
-    scripts.setup_docker()
-    scripts.setup_python()
-    scripts.setup_node()
+    scripts.setup_docker(winget)
+    scripts.setup_python(scoop)
+    scripts.setup_node(winget)
     winget.install("GitHub.cli")
     winget.install("GoLang.Go")
     winget.install("Microsoft.DotNet.SDK")

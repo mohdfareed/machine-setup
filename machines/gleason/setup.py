@@ -5,7 +5,7 @@ import scripts
 import utils
 from machines import LOGGER, gleason, windows
 from scripts import git, shell, vscode
-from scripts.package_managers import scoop, winget
+from scripts.package_managers import Scoop, WinGet
 
 
 def setup() -> None:
@@ -13,20 +13,25 @@ def setup() -> None:
     LOGGER.info("Setting up Gleason machine...")
     utils.shell.run("wsl --install", info=True)
 
-    # setup winget and scoop
-    winget.setup()
-    scoop.setup()
-    scoop.setup_fonts()
+    # setup package managers
+    winget = WinGet()
+    scoop = Scoop()
+
+    # setup shell
+    shell.setup_windows(windows.ps_profile)
+    shell.install_powershell(winget)
+    shell.install_nvim(winget)
+    shell.install_btop(scoop)
 
     # setup core machine
-    git.setup(gleason.gitconfig)
-    shell.setup_windows(windows.ps_profile)
-    vscode.setup()
+    git.setup(winget, gleason.gitconfig)
+    vscode.setup(winget)
+    scoop.setup_fonts()
 
     # setup dev tools
-    scripts.setup_docker()
-    scripts.setup_python()
-    scripts.setup_node()
+    scripts.setup_docker(winget)
+    scripts.setup_python(scoop)
+    scripts.setup_node(None)
     winget.install("GoLang.Go")
     winget.install("Microsoft.DotNet.SDK")
     windows.setup_wsl("machines.gleason.wsl")  # install wsl

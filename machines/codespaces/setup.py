@@ -4,18 +4,22 @@ import config
 import utils
 from machines import LOGGER, codespaces
 from scripts import git, shell
-from scripts.package_managers import apt, snap
+from scripts.package_managers import APT, SnapStore
 
 
 def setup() -> None:
     """Setup a new GitHub codespace."""
     LOGGER.info("Setting up codespace...")
 
-    apt.setup()
-    snap.setup()
+    # package managers
+    apt = APT()
+    snap = SnapStore(apt)
 
-    git.setup()
-    shell.setup(zshrc=codespaces.zshrc)
+    # setup core tools
+    git.setup(apt)
+    shell.setup(apt, zshrc=codespaces.zshrc)
+    shell.install_nvim(snap)
+    shell.install_btop(snap)
     apt.setup_fonts()
 
     # set zsh as the default shell

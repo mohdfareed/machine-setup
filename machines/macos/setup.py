@@ -7,7 +7,7 @@ import scripts
 import utils
 from machines import LOGGER, macos
 from scripts import git, shell, ssh, tailscale, vscode
-from scripts.package_managers import brew, mas
+from scripts.package_managers import MAS, HomeBrew
 from utils import shell as shell_utils
 
 PAM_SUDO = os.path.join("/", "etc", "pam.d", "sudo_local")
@@ -37,45 +37,56 @@ def setup(private_machine: str | None = None) -> None:
             "Ensure Xcode is installed using: xcode-select --install"
         ) from ex
 
-    # setup Homebrew
-    brew.setup()
-    brew.setup_fonts()
-    mas.setup()
+    # setup package managers
+    brew = HomeBrew()
+    MAS(brew)
+
+    # setup shell
+    shell.setup(brew, macos.zshrc, macos.zshenv)
+    shell.install_nvim(brew)
+    shell.install_btop(brew)
 
     # setup core machine
-    git.setup()
-    shell.setup(macos.zshrc, macos.zshenv)
+    git.setup(brew)
     ssh.setup(macos.ssh_config)
-    vscode.setup()
-    tailscale.setup()
+    ssh.setup_server(None)
+    vscode.setup(brew)
+    tailscale.setup(brew)
     # brew.install_brewfile(macos.brewfile)
+    brew.setup_fonts()
 
     # setup dev tools
-    # scripts.setup_docker()
-    scripts.setup_python()
-    scripts.setup_node()
+    shell.install_powershell(brew)
+    # scripts.setup_docker(brew)
+    scripts.setup_python(brew)
+    scripts.setup_node(brew)
     brew.install("gh")
     brew.install("go")
     brew.install("dotnet-sdk", cask=True)
     brew.install("godot-mono", cask=True)
 
-    # run the preferences script
+    # setup system preferences
     LOGGER.debug("Setting system preferences...")
     shell_utils.run(f". {macos.preferences}")
-
-    # use touch ID for sudo
-    LOGGER.debug("Setting up Touch ID for sudo...")
-    with open(PAM_SUDO, "r", encoding="utf-8") as f:
-        lines = f.read()
-    if PAM_SUDO_MODULE not in lines:
-        with open(PAM_SUDO, "a", encoding="utf-8") as f:
-            f.write(PAM_SUDO_CONTENT)
-        LOGGER.debug("Touch ID for sudo set up.")
-    else:
-        LOGGER.debug("Touch ID for sudo already set up.")
+    enable_touch_id()
 
     LOGGER.info("macOS setup complete.")
     LOGGER.warning("Restart for some changes to apply.")
+
+
+def enable_touch_id() -> None:
+    """Enable Touch ID for sudo on macOS."""
+    LOGGER.info("Enabling Touch ID for sudo...")
+    with open(PAM_SUDO, "r", encoding="utf-8") as f:
+        lines = f.read()
+
+    if PAM_SUDO_MODULE not in lines:
+        with open(PAM_SUDO, "a", encoding="utf-8") as f:
+            f.write(PAM_SUDO_CONTENT)
+        LOGGER.info("Touch ID for sudo enabled.")
+
+    else:
+        LOGGER.info("Touch ID for sudo already enabled.")
 
 
 if __name__ == "__main__":

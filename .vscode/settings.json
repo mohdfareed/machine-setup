@@ -11,6 +11,7 @@
     "mypy",
     "nvim",
     "pycache",
+    "pyenv",
     "raspberrypi",
     "tailscale",
     "tracebacks",

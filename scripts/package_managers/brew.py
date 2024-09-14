@@ -25,6 +25,16 @@ class HomeBrew(PackageManager):
     brew = os.path.join(bin, "brew")
     """The path to the brew executable."""
 
+    @classmethod
+    def safe_setup(cls) -> "HomeBrew | None":
+        """Safely setup Homebrew without throwing exceptions."""
+
+        try:
+            return HomeBrew()
+        except utils.SetupError as ex:
+            LOGGER.error("Homebrew is not supported: %s", ex)
+            return None
+
     def setup_fonts(self) -> None:
         """Setup fonts on a new machine."""
 
