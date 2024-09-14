@@ -140,7 +140,9 @@ def load_env_var(env_path: str, var_name: str) -> str:
         #     f"{_EXECUTABLE} -NoProfile -File {env_path} -EnvOnly {ps_command}"
         # )
         argument_flag = "-EnvOnly"
-        command = f"Get-Content -Path '{env_path}' | ForEach-Object {{ $_ + ' {argument_flag}' }} | Invoke-Expression; Write-Output $env:{var_name}"
+        command = (
+            f"& '{env_path}' {argument_flag}; Write-Output $env:{var_name}"
+        )
     else:
         command = f"source '{env_path}' && echo ${var_name}"
     return _run(command)[1]
