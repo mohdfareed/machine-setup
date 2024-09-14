@@ -45,7 +45,9 @@ def setup_python(pkg_manager: HomeBrew | APT | Scoop) -> None:
             utils.shell.run("curl https://pyenv.run | bash")
 
     if isinstance(pkg_manager, Scoop):
-        pkg_manager.install("python pipx pyenv")
+        # python is installed by default when running the script
+        # it is done through winget
+        pkg_manager.install("pipx pyenv")
 
     LOGGER.debug("Python was setup successfully.")
 
@@ -56,19 +58,17 @@ def setup_node(pkg_manager: HomeBrew | WinGet | None) -> None:
 
     if isinstance(pkg_manager, HomeBrew):
         pkg_manager.install("nvm")
-        LOGGER.debug("Node was setup successfully.")
-        return
 
-    if isinstance(pkg_manager, WinGet):
+    elif isinstance(pkg_manager, WinGet):
         pkg_manager.install("Schniz.fnm")
-        utils.shell.run("fnm env --use-on-cd | Out-String | Invoke-Expression")
-        LOGGER.debug("Node was setup successfully.")
-        return
 
-    if utils.is_unix() and not utils.is_installed("nvm"):
+    elif utils.is_unix() and not utils.is_installed("nvm"):
         url = "https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh"
         utils.shell.run(f"curl -o- {url} | bash")
         LOGGER.debug("Node was setup successfully.")
         return
 
-    raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+    else:  # only on unix systems can there be no package manager
+        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+
+    LOGGER.debug("Node was setup successfully.")

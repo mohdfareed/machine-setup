@@ -48,3 +48,8 @@ Remove-Variable -Name "theme"
 if (Test-Path -Path "/opt/homebrew/bin/brew") {
     $(/opt/homebrew/bin/brew shellenv) | Invoke-Expression
 }
+
+# fnm (windows node version manager)
+if (-not (Get-Command -Name "fnm" -ErrorAction SilentlyContinue)) {
+    fnm env --use-on-cd | Out-String | Invoke-Expression
+}

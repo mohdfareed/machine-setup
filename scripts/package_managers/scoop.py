@@ -17,8 +17,15 @@ class Scoop(PackageManager):
     def setup_fonts(self) -> None:
         """Setup fonts on a new machine."""
         LOGGER.info("Setting up fonts...")
+        self.add_bucket("nerd-fonts")
         self.install("nerd-fonts/JetBrains-Mono")
         LOGGER.debug("Fonts were setup successfully.")
+
+    def add_bucket(self, bucket: str) -> None:
+        """Add a bucket to the scoop package manager."""
+        LOGGER.info("Adding bucket %s to scoop...", bucket)
+        utils.shell.run(f"scoop bucket add {bucket}")
+        LOGGER.debug("Bucket %s was added successfully.", bucket)
 
     @override
     def install(self, package: str | list[str]) -> None:
