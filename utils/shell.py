@@ -113,12 +113,7 @@ class ShellError(Exception):
 
 
 if _IS_WINDOWS:
-    # _EXECUTABLE = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-    # _EXECUTABLE = _subprocess.run(
-    #     ["cmd.exe", "for %i in (pwsh.exe) do @echo. %~$PATH:i"],
-    #     check=False,
-    #     capture_output=True,
-    #     text=True,
-    # ).stdout.strip()
-    print(_EXECUTABLE)
-    run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
+    run(
+        "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned "
+        "-Scope Process -Force"
+    )
