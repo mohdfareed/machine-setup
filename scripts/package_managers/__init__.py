@@ -18,8 +18,8 @@ class PackageManager(_ABC):
     def install(self, package: str | list[str]) -> None:
         """Install a package."""
 
-    @_abstractmethod
     @staticmethod
+    @_abstractmethod
     def is_supported() -> bool:
         """Check if the package manager is supported."""
 
