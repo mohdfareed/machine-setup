@@ -34,6 +34,9 @@ class SupportedExecutables(_StrEnum):
 EXECUTABLE: SupportedExecutables = SupportedExecutables.ZSH
 """The shell executable to use."""
 
+if _IS_WINDOWS:
+    EXECUTABLE = SupportedExecutables.PWSH_WIN
+
 
 def run(command: str, env=None, throws=True, info=False) -> "ShellResults":
     """Run a shell command and return its output and return code.
