@@ -23,7 +23,7 @@ _EXECUTABLE = "/bin/zsh"
 ANSI_ESCAPE = _re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
 
 
-def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
+def run(command: str, env=None, throws=True, info=False) -> "ShellResults":
     """Run a shell command and return its output and return code.
 
     Args:
@@ -48,16 +48,15 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
 
     # execute the command
     with _create_process(command, env) as process:
-        (output, returncode) = _exec_process(process, info)
+        results = _exec_process(process, info)
 
     # handle return code and/or output
-    if throws and returncode != 0:
+    if throws and results.returncode != 0:
         raise ShellError(
-            returncode=returncode,
             command=command,
-            output=ANSI_ESCAPE.sub("", output),
+            results=results,
         )
-    return returncode, output
+    return results
 
 
 def _create_process(command: str, env=None) -> _subprocess.Popen[str]:
@@ -85,11 +84,11 @@ def _create_process(command: str, env=None) -> _subprocess.Popen[str]:
 
 def _exec_process(
     process: _subprocess.Popen[str], info=False
-) -> tuple[str, int]:
+) -> "ShellResults":
 
     output = ""  # if the process has no output
     if process.stdout is None:
-        return output, process.wait()
+        return ShellResults(process.wait(), output)
 
     while True:  # read output from the process in real time
         line = process.stdout.readline().strip()
@@ -99,7 +98,7 @@ def _exec_process(
         # break if process is done
         if process.poll() is not None:
             break
-    return output.strip(), process.wait()
+    return ShellResults(process.wait(), ANSI_ESCAPE.sub("", output.strip()))
 
 
 def _log_line(line: str, info: bool) -> None:
@@ -117,6 +116,25 @@ def _log_line(line: str, info: bool) -> None:
         LOGGER.info(line)
     else:
         LOGGER.debug(line)
+
+
+class ShellResults(tuple[int, str]):
+    """Shell command output."""
+
+    def __new__(cls, returncode: int, output: str):
+        return super().__new__(cls, (returncode, output))
+
+    def __init__(self, returncode: int, output: str):
+        self.returncode = returncode
+        self.output = output
+
+    def __str__(self):
+        return f"[{self.returncode}] {self.output}"
+
+    def __repr__(self):
+        return (
+            f"ShellOutput(returncode={self.returncode}, output={self.output})"
+        )
 
 
 class ShellError(Exception):

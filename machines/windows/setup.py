@@ -17,7 +17,7 @@ def setup(private_machine: str | None = None) -> None:
         config.link_private_config(private_machine)
 
     # setup package managers
-    winget = WinGet()
+    # winget = WinGet()
     scoop = Scoop()
 
     # # setup shell
@@ -59,7 +59,13 @@ def setup_wsl(wsl_module="machines.windows.wsl") -> None:
     LOGGER.info("Setting up WSL...")
     utils.shell.run("wsl --install", info=True)
 
-    wsl_command = f"cd {config.MACHINE} && python -m {wsl_module}"
+    python: str
+    if utils.is_unix():
+        python = utils.shell.run("which python").output
+    else:
+        python = utils.shell.run("Get-Command python").output
+
+    wsl_command = f"cd {config.MACHINE} && {python} -m {wsl_module}"
     LOGGER.warning("Run the following command in WSL: %s", wsl_command)
     utils.shell.run(f"wsl -e bash -c {wsl_command}")
     LOGGER.info("WSL setup complete.")
