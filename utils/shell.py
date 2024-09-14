@@ -15,7 +15,7 @@ LOGGER = _logging.getLogger(__name__)
 _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
-_IS_WINDOWS = _os.name == (_WINDOWS := "nt")
+_IS_WINDOWS = _os.name == (_ := "nt")
 _EXECUTABLE = "/bin/zsh"
 
 
@@ -43,21 +43,36 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
         LOGGER.debug("Running sudo command: %s", command)
 
     # execute the command
-    with _subprocess.Popen(
-        command if not _IS_WINDOWS else f"{command}",
-        env=env,
-        stdout=_subprocess.PIPE,
-        stderr=_subprocess.STDOUT,
-        executable=_EXECUTABLE,
-        shell=True,
-        text=True,
-    ) as process:
+    with _create_process(command, env) as process:
         (output, returncode) = _exec_process(process, info)
 
     # handle return code and/or output
     if throws and returncode != 0:
         raise ShellError(returncode, command, output)
     return returncode, output
+
+
+def _create_process(command: str, env=None) -> _subprocess.Popen[str]:
+    subprocess = (
+        _subprocess.Popen(  # pylint: disable=consider-using-with
+            command,
+            env=env,
+            stdout=_subprocess.PIPE,
+            stderr=_subprocess.STDOUT,
+            executable=_EXECUTABLE,
+            shell=True,
+            text=True,
+        )
+        if not _IS_WINDOWS
+        else _subprocess.Popen(  # pylint: disable=consider-using-with
+            ["pwsh.exe", "-Command", command],
+            env=env,
+            stdout=_subprocess.PIPE,
+            stderr=_subprocess.STDOUT,
+            text=True,
+        )
+    )
+    return subprocess
 
 
 def _exec_process(
@@ -99,10 +114,11 @@ class ShellError(Exception):
 
 if _IS_WINDOWS:
     # _EXECUTABLE = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-    _EXECUTABLE = _subprocess.run(
-        ["cmd.exe", "for %i in (pwsh.exe) do @echo. %~$PATH:i"],
-        check=False,
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
+    # _EXECUTABLE = _subprocess.run(
+    #     ["cmd.exe", "for %i in (pwsh.exe) do @echo. %~$PATH:i"],
+    #     check=False,
+    #     capture_output=True,
+    #     text=True,
+    # ).stdout.strip()
+    print(_EXECUTABLE)
     run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
