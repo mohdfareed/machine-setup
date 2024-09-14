@@ -12,7 +12,12 @@ intervention.
   - `venv`: the Python virtual environment module.
 - `git`: the version control system.
 - `zsh`: if setting up a Unix machine.
-- `powershell 7`: if setting up a Windows machine.
+
+### Windows Requirements
+
+- `powershell`: Powershell version 5 or later.
+- `winget`: the Windows package manager.
+- `scoop`: the Scoop package manager.
 
 ## Usage
 

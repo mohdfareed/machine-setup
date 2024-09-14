@@ -33,21 +33,11 @@ class Scoop(PackageManager):
     @override
     @staticmethod
     def is_supported() -> bool:
-        return utils.is_windows()
+        return utils.is_windows() and utils.is_installed("scoop")
 
     @override
     def _setup(self) -> None:
         LOGGER.info("Setting up Scoop...")
-        utils.shell.run(
-            "Set-ExecutionPolicy -ExecutionPolicy "
-            "RemoteSigned -Scope CurrentUser"
-        )
-        utils.shell.run(
-            "$script = New-TemporaryFile; "
-            "irm get.scoop.sh -OutFile $script; "
-            "& $script; "
-            "Remove-Item $script"
-        )
         utils.shell.run("scoop update")
         utils.shell.run("scoop update *")
         LOGGER.debug("Scoop was setup successfully.")
