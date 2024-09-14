@@ -46,10 +46,12 @@ def setup(private_machine: str | None = None) -> None:
     shell.install_nvim(brew)
     shell.install_btop(brew)
 
-    # setup core machine
-    git.setup(brew)
+    # setup ssh
     ssh.setup(macos.ssh_config)
     ssh.setup_server(None)
+
+    # setup core machine
+    git.setup(brew)
     vscode.setup(brew)
     tailscale.setup(brew)
     # brew.install_brewfile(macos.brewfile)

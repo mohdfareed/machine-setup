@@ -27,8 +27,8 @@ def setup(private_machine: str | None = None) -> None:
     shell.install_btop(scoop)
 
     # setup ssh
-    ssh.generate_key_pair("personal", ssh.SSH_DIR)
-    ssh.setup(windows.ssh_config, ssh.SSH_DIR)
+    ssh.generate_key_pair("personal")
+    ssh.setup(windows.ssh_config)
     ssh.setup_server(None)
 
     # setup core machine

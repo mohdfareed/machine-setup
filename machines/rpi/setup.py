@@ -30,8 +30,8 @@ def setup(private_machine: str | None = None) -> None:
     shell.install_powershell(snap)
 
     # setup ssh
-    ssh.generate_key_pair("personal", ssh.SSH_DIR)
-    ssh.setup(None, ssh.SSH_DIR)
+    ssh.generate_key_pair("personal")
+    ssh.setup(rpi.ssh_config)
     ssh.setup_server(apt)
 
     # setup core machine

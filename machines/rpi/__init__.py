@@ -5,8 +5,8 @@ import os as _os
 config = _os.path.join(_os.path.dirname(_os.path.realpath(__file__)), "config")
 """The path of rpi configuration files."""
 
-packages = _os.path.join(config, "packages.sh")
-"""The path of rpi specific packages file."""
+ssh_config = _os.path.join(config, "ssh.config")
+"""The path of the global ssh config file."""
 
 zshenv = _os.path.join(config, "zshenv")
 """The path of rpi zshenv file."""
