@@ -5,6 +5,7 @@ import argparse as _argparse
 import os as _os
 import platform as _platform
 import sys as _sys
+from ast import arguments
 from collections.abc import Callable as _Callable
 from enum import Enum as _Enum
 
@@ -138,7 +139,7 @@ def load_env_var(env_path: str, var_name: str) -> str:
         # command = (
         #     f"{_EXECUTABLE} -NoProfile -File {env_path} -EnvOnly {ps_command}"
         # )
-        command = f"Get-Content -Path '{env_path}' | Invoke-Expression; Write-Output $env:{var_name}"
+        command = f"""Get-Content -Path '{env_path}' | ForEach-Object {{ $_ + " -EnvOnly" }} | Invoke-Expression; Write-Output $env:{var_name}"""
     else:
         command = f"source '{env_path}' && echo ${var_name}"
     return _run(command)[1]
