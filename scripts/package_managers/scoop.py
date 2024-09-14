@@ -43,10 +43,10 @@ class Scoop(PackageManager):
             "RemoteSigned -Scope CurrentUser"
         )
         utils.shell.run(
-            f"$script = New-TemporaryFile; "
-            f"irm get.scoop.sh -OutFile $script; "
-            f"& $script"
-            f"Remove-Item $script"
+            "$script = New-TemporaryFile; "
+            "irm get.scoop.sh -OutFile $script; "
+            "& $script; "
+            "Remove-Item $script"
         )
         utils.shell.run("scoop update")
         utils.shell.run("scoop update *")
