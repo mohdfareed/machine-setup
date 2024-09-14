@@ -1,5 +1,7 @@
 """Setup module containing a `setup` function for setting up Windows."""
 
+import sys
+
 import config
 import scripts
 import utils
@@ -59,13 +61,7 @@ def setup_wsl(wsl_module="machines.windows.wsl") -> None:
     LOGGER.info("Setting up WSL...")
     utils.shell.run("wsl --install", info=True)
 
-    python = (
-        utils.shell.run("which python").output
-        if utils.is_unix()
-        else utils.shell.run("(Get-Command python).Path").output
-    )
-
-    wsl_command = f"cd {config.MACHINE} && {python} -m {wsl_module}"
+    wsl_command = f"cd {config.MACHINE} && {sys.executable} -m {wsl_module}"
     LOGGER.warning("Run the following command in WSL: %s", wsl_command)
     utils.shell.run(f"wsl -e bash -c {wsl_command}")
     LOGGER.info("WSL setup complete.")
