@@ -17,7 +17,6 @@ intervention.
 
 - `powershell`: Powershell version 5 or later.
 - `winget`: the Windows package manager.
-- `scoop`: the Scoop package manager.
 
 ## Usage
 

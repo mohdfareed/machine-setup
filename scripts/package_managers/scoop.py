@@ -38,6 +38,11 @@ class Scoop(PackageManager):
     @override
     def _setup(self) -> None:
         LOGGER.info("Setting up Scoop...")
+        utils.shell.run(
+            "Set-ExecutionPolicy -ExecutionPolicy "
+            "RemoteSigned -Scope CurrentUser"
+        )
+        utils.shell.run('iex "& {$(irm get.scoop.sh)} -RunAsAdmin"')
         utils.shell.run("scoop update")
         utils.shell.run("scoop update *")
         LOGGER.debug("Scoop was setup successfully.")
