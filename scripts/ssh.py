@@ -155,7 +155,7 @@ def generate_key_pair(
     public_key=os.path.join(keys_dir, name + PUBLIC_EXT)
 
     key_args = f"-C '{email}' -f {private_key} -N '{passphrase}'"
-    shell.run(f"ssh-keygen -t ed25519 -C {key_args}")
+    shell.run(f"ssh-keygen -t ed25519 {key_args}")
     shutil.move(private_key + ".pub", public_key)
     LOGGER.info("SSH key pair generated: %s", name)
 
