@@ -12,7 +12,7 @@ from enum import Enum as _Enum
 
 from .logging import LOGGER
 from .logging import setup_logging as _setup_logging
-from .shell import ShellError
+from .shell import EXECUTABLE, ShellError, SupportedExecutables
 from .shell import run as _run
 
 # MARK - Platform =============================================================
@@ -183,7 +183,7 @@ def delete(path: str) -> None:
 
 def is_installed(command: str) -> bool:
     """Check if a command is installed."""
-    if is_windows():
+    if EXECUTABLE == SupportedExecutables.PWSH_WIN:
         return (
             _run(
                 f"Get-Command {command} -ErrorAction SilentlyContinue",
