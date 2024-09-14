@@ -150,7 +150,11 @@ def symlink(src: str, dst: str) -> None:
     is_dir = _os.path.isdir(src)
 
     if is_windows():
-        _os.removedirs(dst)
+        if _os.path.exists(dst):
+            if _os.path.isdir(dst):
+                _os.removedirs(dst)
+            else:
+                _os.remove(dst)
     else:
         _run(f"sudo rm -rf '{dst}'", throws=False)
     _os.makedirs(_os.path.dirname(dst), exist_ok=True)

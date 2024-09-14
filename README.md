@@ -60,6 +60,9 @@ python -m scripts.[component] [-h|--help]
 
 Where the `args` are the arguments required by the component setup script.
 
+**Note:** Not all components can be set up independently of the machine setup
+due to dependencies on other components.
+
 ### Updating and Cleaning
 
 To update the machine and reapplying setup config, run the following command:

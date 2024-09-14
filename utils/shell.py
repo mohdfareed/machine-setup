@@ -7,6 +7,7 @@ If user input is required, the user must be prompted outside the shell command.
 
 import logging as _logging
 import os as _os
+import re as _re
 import subprocess as _subprocess
 
 LOGGER = _logging.getLogger(__name__)
@@ -17,6 +18,9 @@ _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
 _IS_WINDOWS = _os.name == (_ := "nt")
 _EXECUTABLE = "/bin/zsh"
+
+# Regular expression to match ANSI escape codes
+ANSI_ESCAPE = _re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
 
 
 def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
@@ -97,6 +101,9 @@ def _exec_process(
 def _log_line(line: str, info: bool) -> None:
     if not line:
         return
+
+    # Strip ANSI escape codes
+    line = ANSI_ESCAPE.sub("", line)
 
     if any(token in line.lower() for token in _ERROR_TOKENS):
         LOGGER.error(line)
