@@ -14,7 +14,8 @@ def _find_powershell() -> str:
     pwsh_path = _os.path.join(_os.environ["ProgramFiles"], "PowerShell")
     versions = _os.listdir(pwsh_path)
     versions.sort(reverse=True)
-    return _os.path.join(pwsh_path, versions[0], "pwsh.exe")
+
+    return f'"{ _os.path.join(pwsh_path, versions[0], "pwsh.exe")}"'
 
 
 LOGGER = _logging.getLogger(__name__)
@@ -24,7 +25,7 @@ _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
 _WINDOWS = "nt"
-_EXECUTABLE = "/bin/zsh" if not _os.name == _WINDOWS else _find_powershell()
+_EXECUTABLE = "/bin/zsh" if not _os.name == _WINDOWS else None
 
 
 def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:

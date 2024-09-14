@@ -91,12 +91,15 @@ def update_machine(path: str):
 def create_virtual_env(path: str, prompt: str, clean: bool) -> str:
     """Create a virtual environment in the specified path.
     Return the python executable path."""
-    if clean and os.path.exists(path):  # remove existing
-        _log_info("Removing existing environment...")
     venv = os.path.join(path, VIRTUAL_ENV)
-    opts = ["--clear", "--prompt", prompt, "--upgrade-deps"]
+    if clean and os.path.exists(venv):  # remove existing
+        _log_info("Removing existing environment...")
+        shutil.rmtree(path, ignore_errors=True)
+    elif os.path.exists(venv):  # skip if exists
+        _log_warning("Virtual environment already exists. Skipping creation.")
 
     _log_info("Creating virtual environment...")
+    opts = ["--clear", "--prompt", prompt, "--upgrade-deps"]
     subprocess.run(["python3", "-m", "venv", *opts, venv], check=True)
     bin_path = "bin" if platform.system() != (_ := "Windows") else "Scripts"
     return os.path.join(venv, bin_path, "python")
