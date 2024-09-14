@@ -134,10 +134,11 @@ def load_env_var(env_path: str, var_name: str) -> str:
     On Windows, the environment variable is loaded using PowerShell. On Unix,
     the environment variable is loaded using the Z shell."""
     if is_windows():
-        ps_command = f"$env:{var_name}"
-        command = (
-            f"{_EXECUTABLE} -NoProfile -File {env_path} -EnvOnly {ps_command}"
-        )
+        # ps_command = f"$env:{var_name}"
+        # command = (
+        #     f"{_EXECUTABLE} -NoProfile -File {env_path} -EnvOnly {ps_command}"
+        # )
+        command = f"Get-Content -Path '{env_path}' | Invoke-Expression; Write-Output $env:{var_name}"
     else:
         command = f"source '{env_path}' && echo ${var_name}"
     return _run(command)[1]
