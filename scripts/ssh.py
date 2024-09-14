@@ -151,23 +151,40 @@ def generate_key_pair(
     passphrase=''
 ) -> None:
     """Create a new ssh key pair."""
-
     LOGGER.info("Creating SSH key pair: %s", name)
+
+    # ensure keys directory exists
     keys_dir = os.path.abspath(keys_dir)
     if not os.path.exists(keys_dir):
         os.makedirs(keys_dir)
 
+    # define key paths
     private_key=os.path.join(keys_dir, name + PRIVATE_EXT)
     public_key=os.path.join(keys_dir, name + PUBLIC_EXT)
 
+    # check if private key already exists
+    if os.path.exists(private_key):
+        LOGGER.warning("Private key already exists: %s", private_key)
+
+        if not os.path.exists(public_key): # regenerate public key
+            shell.run(f"ssh-keygen -y -f {private_key} > {public_key}")
+            LOGGER.info("Public key regenerated: %s", public_key)
+        return  # don't overwrite existing key pair
+
+    # overwrite public key if private key doesn't exists
+    if os.path.exists(public_key):
+        utils.delete(public_key)
+
+    # generate new key pair
+    LOGGER.debug("Generating new key pair...")
     key_args = f"-C '{email}' -f {private_key} -N '{passphrase}'"
     shell.run(f"ssh-keygen -t ed25519 {key_args}")
     shutil.move(private_key + ".pub", public_key)
-    LOGGER.info("SSH key pair generated: %s", name)
 
+    LOGGER.info("SSH key pair generated: %s", name)
     if os.path.exists(public_key):
-        LOGGER.info("Public key: %s", public_key)
-    LOGGER.info("Private key: %s", private_key)
+        LOGGER.debug("Public key: %s", public_key)
+    LOGGER.debug("Private key: %s", private_key)
 
 @dataclass
 class _SSHKeyPair:
