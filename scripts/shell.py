@@ -6,11 +6,9 @@ import logging
 import os
 
 import config
-import scripts
-import scripts.package_managers
 import utils
+from scripts.package_managers import APT, HomeBrew, Scoop, SnapStore, WinGet
 from utils import shell
-from utils.helpers import SetupError
 
 LOGGER = logging.getLogger(__name__)
 """The ZSH setup logger."""
@@ -30,18 +28,21 @@ else:
     """The path of the ZDOTDIR directory on the machine."""
 
 
-def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
+def setup(
+    pkg_manager: HomeBrew | APT, zshrc=config.zshrc, zshenv=config.zshenv
+) -> None:
     """Setup the shell environment on a machine."""
 
+    LOGGER.info("Setting up shell...")
     if not utils.is_unix():
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
     if not os.path.exists(zshrc):
-        raise SetupError("Machine zshrc file does not exist.")
+        raise utils.SetupError("Machine zshrc file does not exist.")
     if not os.path.exists(zshenv):
-        raise SetupError("Machine zshenv file does not exist.")
+        raise utils.SetupError("Machine zshenv file does not exist.")
 
-    LOGGER.info("Setting up shell...")
-    _install_unix_dependencies()
+    # install zsh
+    pkg_manager.install("zsh")
 
     # resolve shell configuration paths
     _zshrc = os.path.join(ZDOTDIR, ".zshrc")
@@ -71,14 +72,14 @@ def setup(zshrc=config.zshrc, zshenv=config.zshenv) -> None:
 
 def setup_windows(ps_profile=config.ps_profile) -> None:
     """Setup the shell environment on a Windows machine."""
-    LOGGER.info("Setting up shell...")
 
+    LOGGER.info("Setting up shell...")
     if not utils.is_windows():
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
     if not os.path.exists(ps_profile):
-        raise SetupError("Machine powershell profile file does not exist.")
-    LOGGER.info("Setting up shell...")
-    _install_windows_dependencies()
+        raise utils.SetupError(
+            "Machine powershell profile file does not exist."
+        )
 
     # resolve shell configuration paths
     vim = os.path.join(config.local_data, "nvim")
@@ -88,43 +89,34 @@ def setup_windows(ps_profile=config.ps_profile) -> None:
     utils.symlink(config.ps_profile, PS_PROFILE)
 
 
-def _install_windows_dependencies() -> None:
-    install_powershell()
-    if scripts.winget.try_install("Neovim.Neovim"):
-        return
-    if scripts.scoop.try_install("neovim"):
-        return
+def install_btop(pkg_manager: HomeBrew | Scoop | SnapStore) -> None:
+    """Install btop on a machine."""
+    if isinstance(pkg_manager, HomeBrew):
+        pkg_manager.install("btop")
+    if isinstance(pkg_manager, Scoop):
+        pkg_manager.install("btop-lhm")
+    if isinstance(pkg_manager, SnapStore):
+        pkg_manager.install("btop")
 
 
-def _install_unix_dependencies() -> None:
-    install_powershell()
-    if scripts.brew.try_install("zsh nvim btop"):
-        return
-    if scripts.apt.try_install("zsh"):
-        if not scripts.snap.try_install("nvim btop"):
-            LOGGER.error("Could not install nvim or btop.")
-        return
-    LOGGER.error("Could not install shell dependencies.")
-
-
-def install_powershell() -> None:
+def install_powershell(pkg_manager: HomeBrew | WinGet | SnapStore) -> None:
     """Install PowerShell on a machine."""
-    if scripts.brew.try_install("powershell", cask=True):
-        return
-    if scripts.winget.try_install("Microsoft.PowerShell"):
-        return
-    if scripts.snap.try_install("powershell"):
-        return
+    if isinstance(pkg_manager, HomeBrew):
+        pkg_manager.install("powershell", cask=True)
+    if isinstance(pkg_manager, WinGet):
+        pkg_manager.install("Microsoft.PowerShell")
+    if isinstance(pkg_manager, SnapStore):
+        pkg_manager.install("powershell")
 
 
-def install_nvim() -> None:
+def install_nvim(pkg_manager: HomeBrew | WinGet | SnapStore) -> None:
     """Install NeoVim on a machine."""
-    if scripts.winget.try_install("Neovim.Neovim"):
-        return
-    if scripts.brew.try_install("nvim"):
-        return
-    if scripts.snap.try_install("nvim btop"):
-        return
+    if isinstance(pkg_manager, HomeBrew):
+        pkg_manager.install("nvim")
+    if isinstance(pkg_manager, WinGet):
+        pkg_manager.install("Neovim.Neovim")
+    if isinstance(pkg_manager, SnapStore):
+        pkg_manager.install("nvim")
 
 
 if __name__ == "__main__":

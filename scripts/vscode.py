@@ -6,7 +6,7 @@ import os
 
 import config
 import utils
-from scripts import brew, snap, winget
+from scripts.package_managers import HomeBrew, SnapStore, WinGet
 from utils import shell
 
 LOGGER = logging.getLogger(__name__)
@@ -33,18 +33,29 @@ elif utils.is_windows():
 _config_files = ["settings.json", "keybindings.json", "snippets"]
 
 
-def setup() -> None:
+def setup(pkg_manager: HomeBrew | SnapStore | WinGet) -> None:
     """Setup VSCode on a new machine."""
+
+    LOGGER.info("Setting up VSCode...")
     if not VSCODE:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
-    LOGGER.info("Setting up VSCode...")
-    _install()
+    _install(pkg_manager)
     for file in os.listdir(config.vscode):
         if file not in _config_files:
             continue
         utils.symlink_at(os.path.join(config.vscode, file), VSCODE)
+
     LOGGER.debug("VSCode was setup successfully.")
+
+
+def _install(pkg_manager):
+    if isinstance(pkg_manager, HomeBrew) and (brew := pkg_manager):
+        brew.install("visual-studio-code")
+    if isinstance(pkg_manager, WinGet) and (winget := pkg_manager):
+        winget.install("Microsoft.VisualStudioCode")
+    if isinstance(pkg_manager, SnapStore) and (snap := pkg_manager):
+        snap.install("code", classic=True)
 
 
 def setup_tunnels(name: str) -> None:
@@ -59,17 +70,6 @@ def setup_tunnels(name: str) -> None:
     )
     shell.run(cmd, info=True)
     LOGGER.debug("VSCode SSH tunnels were setup successfully.")
-
-
-def _install():
-    if not (
-        brew.try_install("visual-studio-code")
-        or winget.try_install("Microsoft.VisualStudioCode")
-        or snap.try_install("code", classic=True)
-    ):
-        raise utils.SetupError(
-            "Could not install VSCode. Please install it manually."
-        )
 
 
 if __name__ == "__main__":

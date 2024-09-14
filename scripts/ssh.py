@@ -5,8 +5,8 @@ import os
 from dataclasses import dataclass
 
 import config
-import scripts
 import utils
+from scripts.package_managers import APT
 from utils import shell
 
 LOGGER = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ PRIVATE_EXT: str = ".key"
 
 
 @dataclass
-class SSHKeyPair:
+class _SSHKeyPair:
     """An SSH key pair of a private and optional public keys."""
 
     private: str
@@ -51,24 +51,19 @@ class SSHKeyPair:
 def setup(ssh_config: str) -> None:
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory."""
+
     LOGGER.info("Setting up SSH...")
-
-    if utils.is_windows():
-        utils.shell.run("Add-WindowsCapability -Online -Name OpenSSH.Client")
-    elif utils.is_linux():
-        scripts.apt.try_install("openssh-client")
-
     if not os.path.exists(config.ssh_keys):
         LOGGER.error("SSH keys directory does not exist: %s", config.ssh_keys)
         return
 
     utils.symlink(ssh_config, os.path.join(SSH_DIR, "config"))
-    for key in load_keys(config.ssh_keys):
-        setup_key(key)
+    for key in _load_keys(config.ssh_keys):
+        _setup_key(key)
     LOGGER.info("SSH setup complete")
 
 
-def load_keys(keys_dir: str) -> list[SSHKeyPair]:
+def _load_keys(keys_dir: str) -> list[_SSHKeyPair]:
     """Load ssh keys from the specified directory.
 
     Returns:
@@ -79,7 +74,7 @@ def load_keys(keys_dir: str) -> list[SSHKeyPair]:
 
     # load private keys
     private_keys = [
-        SSHKeyPair(private=os.path.join(keys_dir, filename))
+        _SSHKeyPair(private=os.path.join(keys_dir, filename))
         for filename in files
         if filename.endswith(PRIVATE_EXT)
     ]
@@ -93,16 +88,16 @@ def load_keys(keys_dir: str) -> list[SSHKeyPair]:
     return private_keys
 
 
-def setup_key(key: SSHKeyPair) -> None:
+def _setup_key(key: _SSHKeyPair) -> None:
     """Setup an ssh key on a machine."""
     LOGGER.info("[bold]Setting up SSH key:[/] %s", key.name)
 
     # symlink private key and set permissions
     utils.symlink(key.private, os.path.join(SSH_DIR, key.private_filename))
-    set_permissions(key.private, private=True)
+    _set_permissions(key.private, private=True)
     if key.public:  # symlink public key if it exists and set permissions
         utils.symlink(key.public, os.path.join(SSH_DIR, key.public_filename))
-        set_permissions(key.public, private=False)
+        _set_permissions(key.public, private=False)
 
     # get key fingerprint
     fingerprint = shell.run(f"ssh-keygen -lf {key.private}")[1]
@@ -121,7 +116,7 @@ def setup_key(key: SSHKeyPair) -> None:
         LOGGER.info("Key already exists in SSH agent")
 
 
-def set_permissions(filepath: str, private: bool) -> None:
+def _set_permissions(filepath: str, private: bool) -> None:
     """Set file permissions based on the operating system."""
     if utils.is_windows():
         shell.run(
@@ -132,24 +127,36 @@ def set_permissions(filepath: str, private: bool) -> None:
         os.chmod(filepath, 0o600 if private else 0o644)
 
 
-def setup_server() -> None:
+def setup_server(apt: APT | None) -> None:
     """setup an ssh server on a new machine."""
     LOGGER.info("Setting up SSH server...")
+
     if utils.is_windows():
         utils.shell.run("Add-WindowsCapability -Online -Name OpenSSH.Server")
         utils.shell.run(
             "Get-Service -Name sshd | Set-Service -StartupType Automatic"
         )
         utils.shell.run("Start-Service sshd")
-    elif utils.is_macos():
+        LOGGER.debug("SSH server setup complete.")
+        return
+
+    if utils.is_macos():
         utils.shell.run("sudo systemsetup -setremotelogin on")
-    elif utils.is_linux():
-        scripts.apt.try_install("openssh-server")
+        LOGGER.debug("SSH server setup complete.")
+        return
+
+    if utils.is_linux() and apt:
+        apt.install("openssh-server")
         utils.shell.run("sudo systemctl start ssh")
         utils.shell.run("sudo systemctl enable ssh")
-    else:
-        LOGGER.error("Unsupported operating system: %s", utils.OS)
-    LOGGER.info("SSH server setup complete.")
+        LOGGER.debug("SSH server setup complete.")
+        return
+
+    if utils.is_linux():
+        raise utils.SetupError(
+            "APT package manager is required for linux setup."
+        )
+    raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
 
 if __name__ == "__main__":

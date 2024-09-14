@@ -28,6 +28,10 @@ class PackageManager(_ABC):
         """Setup the package manager."""
 
 
+class PackageManagerException(Exception):
+    """Base exception for package manager errors."""
+
+
 # import all package managers.
 
 from .apt import APT  # pylint: disable=wrong-import-position

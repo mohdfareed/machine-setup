@@ -5,27 +5,35 @@ import logging
 import os
 
 import config
-import scripts
 import utils
+from scripts.package_managers import APT, HomeBrew, WinGet
 
 LOGGER = logging.getLogger(__name__)
 """The git setup logger."""
 
 
-def setup(gitconfig=config.gitconfig, gitignore=config.gitignore) -> None:
+def setup(
+    pkg_manager: HomeBrew | APT | WinGet,
+    gitconfig=config.gitconfig,
+    gitignore=config.gitignore,
+) -> None:
     """Setup git on a new machine."""
     LOGGER.info("Setting up git...")
+    if not os.path.exists(gitconfig):
+        raise utils.SetupError("Machine gitconfig file does not exist.")
+    if not os.path.exists(gitignore):
+        raise utils.SetupError("Machine gitignore file does not exist.")
 
     # install git
-    if not (
-        scripts.brew.try_install("git git-lfs")
-        or scripts.apt.try_install("git git-lfs")
-        or scripts.winget.try_install(
+    if isinstance(pkg_manager, HomeBrew):
+        pkg_manager.install("git git-lfs")
+    if isinstance(pkg_manager, APT):
+        pkg_manager.install("git git-lfs")
+    if isinstance(pkg_manager, WinGet):
+        pkg_manager.install(
             "Git.Git GitHub.GitLFS GitHub.CLI "
             "Microsoft.GitCredentialManagerCore"
         )
-    ):
-        LOGGER.error("Could not install git. Please install it manually.")
 
     # resolve git configuration paths
     if utils.is_windows():
