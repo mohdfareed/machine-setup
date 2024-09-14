@@ -42,9 +42,10 @@ class Scoop(PackageManager):
             "Set-ExecutionPolicy -ExecutionPolicy "
             "RemoteSigned -Scope CurrentUser"
         )
-        utils.shell.run(
-            "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
-        )
+        installer = utils.shell.run("New-TemporaryFile")[1]
+        utils.shell.run(f"irm get.scoop.sh -OutFile '{installer}'")
+        utils.shell.run(f"& '{installer}'")
+        utils.shell.run(f"Remove-Item '{installer}'")
         utils.shell.run("scoop update")
         utils.shell.run("scoop update *")
         LOGGER.debug("Scoop was setup successfully.")
