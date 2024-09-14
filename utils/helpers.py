@@ -3,7 +3,9 @@
 
 import argparse as _argparse
 import os as _os
+import pathlib as _pathlib
 import platform as _platform
+import shutil as _shutil
 import sys as _sys
 from collections.abc import Callable as _Callable
 from enum import Enum as _Enum
@@ -150,11 +152,7 @@ def symlink(src: str, dst: str) -> None:
     is_dir = _os.path.isdir(src)
 
     if is_windows():
-        if _os.path.exists(dst):
-            if _os.path.isdir(dst):
-                _os.removedirs(dst)
-            else:
-                _os.remove(dst)
+        delete(dst)
     else:
         _run(f"sudo rm -rf '{dst}'", throws=False)
     _os.makedirs(_os.path.dirname(dst), exist_ok=True)
@@ -168,6 +166,19 @@ def symlink_at(src: str, dst_dir: str) -> None:
     does not exist, it will be created."""
     dst = _os.path.join(_os.path.expanduser(dst_dir), _os.path.basename(src))
     symlink(src, dst)
+
+
+def delete(path: str) -> None:
+    """Delete a file or directory at the specified path."""
+    item = _pathlib.Path(path)
+    if not item.exists():
+        return
+
+    if item.is_file():
+        item.unlink()
+    if item.is_dir():
+        _shutil.rmtree(item)
+    LOGGER.debug("Deleted: %s", path)
 
 
 def is_installed(command: str) -> bool:
