@@ -33,7 +33,7 @@ class Scoop(PackageManager):
     @override
     @staticmethod
     def is_supported() -> bool:
-        return utils.is_windows() and utils.is_installed("scoop")
+        return utils.is_windows()
 
     @override
     def _setup(self) -> None:
