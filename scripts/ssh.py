@@ -160,5 +160,10 @@ def setup_server(apt: APT | None) -> None:
 
 
 if __name__ == "__main__":
+    utils.PARSER.add_argument(
+        "ssh_config",
+        metavar="SSH_CONFIG",
+        help="The path to a SSH configuration file.",
+    )
     args = utils.startup(description="SSH setup script.")
-    utils.execute(setup)
+    utils.execute(setup, args.ssh_config)

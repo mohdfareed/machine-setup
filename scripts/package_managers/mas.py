@@ -48,5 +48,4 @@ class MAS(PackageManager):
 
 
 if __name__ == "__main__":
-    args = utils.startup(description="MAS setup script.")
-    utils.execute(MAS)
+    raise RuntimeError("This script is not meant to be run directly.")

@@ -61,5 +61,4 @@ def _setup_windows():
 
 
 if __name__ == "__main__":
-    args = utils.startup(description="Tailscale setup script.")
-    utils.execute(setup)
+    raise RuntimeError("This script is not meant to be run directly.")

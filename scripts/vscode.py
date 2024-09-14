@@ -73,5 +73,4 @@ def setup_tunnels(name: str) -> None:
 
 
 if __name__ == "__main__":
-    args = utils.startup(description="VSCode setup script.")
-    utils.execute(setup)
+    raise RuntimeError("This script is not meant to be run directly.")

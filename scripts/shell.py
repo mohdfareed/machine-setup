@@ -121,29 +121,4 @@ def install_nvim(pkg_manager: HomeBrew | WinGet | SnapStore) -> None:
 
 
 if __name__ == "__main__":
-    if utils.is_windows():
-        utils.PARSER.add_argument(
-            "ps_profile",
-            help="The path to the PowerShell profile file.",
-            nargs="?",  # optional argument
-            default=config.ps_profile,
-        )
-    else:
-        utils.PARSER.add_argument(
-            "zshrc",
-            help="The path to the zshrc file.",
-            nargs="?",  # optional argument
-            default=config.zshrc,
-        )
-        utils.PARSER.add_argument(
-            "zshenv",
-            help="The path to the zshenv file.",
-            nargs="?",  # optional argument
-            default=config.zshenv,
-        )
-
-    args = utils.startup(description="Shell setup script.")
-    if utils.is_windows():
-        utils.execute(setup_windows, args.ps_profile)
-    else:
-        utils.execute(setup, args.machine_zshrc, args.machine_zshenv)
+    raise RuntimeError("This script is not meant to be run directly.")

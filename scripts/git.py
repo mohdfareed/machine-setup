@@ -51,5 +51,4 @@ def setup(
 
 
 if __name__ == "__main__":
-    args = utils.startup(description="Git setup script.")
-    utils.execute(setup)
+    raise RuntimeError("This script is not meant to be run directly.")

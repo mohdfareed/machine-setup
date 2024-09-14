@@ -46,5 +46,4 @@ class SnapStore(PackageManager):
 
 
 if __name__ == "__main__":
-    args = utils.startup(description="The Snap store setup script.")
-    utils.execute(SnapStore)
+    raise RuntimeError("This script is not meant to be run directly.")
