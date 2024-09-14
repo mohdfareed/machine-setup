@@ -71,19 +71,11 @@ def _setup_key(key: "_SSHKeyPair") -> None:
     LOGGER.info("Setting up SSH key: %s", key.name)
 
     # symlink private key and set permissions
-    if not os.path.samefile(
-        key.private,
-        (private_key := os.path.join(SSH_DIR, key.private_filename))
-    ):
-        utils.symlink(key.private, private_key)
+    utils.symlink(key.private, os.path.join(SSH_DIR, key.private_filename))
     _set_permissions(key.private, private=True)
 
     if key.public:  # symlink public key if it exists and set permissions
-        if not os.path.samefile(
-            key.public,
-            (public_key := os.path.join(SSH_DIR, key.public_filename))
-        ):
-            utils.symlink(key.public, public_key)
+        utils.symlink(key.public, os.path.join(SSH_DIR, key.public_filename))
         _set_permissions(key.public, private=False)
 
     # get key fingerprint
@@ -94,9 +86,10 @@ def _setup_key(key: "_SSHKeyPair") -> None:
     # add key to ssh agent if it doesn't exist
     cmd = "ssh-add -l | grep -q " + fingerprint
     if shell.run(cmd, throws=False)[0] != 0:
-        if utils.is_macos():
+        if utils.is_macos(): # add key to keychain on macOS
             shell.run(f"ssh-add --apple-use-keychain '{key.private}'")
-        else:
+
+        else: # add key to ssh agent on other operating systems
             shell.run(f"ssh-add '{key.private}'")
         LOGGER.info("Added key to SSH agent")
     else:
@@ -145,20 +138,25 @@ def setup_server(apt: APT | None) -> None:
         )
     raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
-def generate_key_pair(name: str, keys_dir: str=SSH_DIR) -> None:
+def generate_key_pair(
+    name: str,
+    keys_dir: str=config.ssh_keys,
+    email='mohdf.fareed@icloud.com',
+    passphrase=''
+) -> None:
     """Create a new ssh key pair."""
-    LOGGER.info("Creating SSH key pair: %s", name)
 
+    LOGGER.info("Creating SSH key pair: %s", name)
     keys_dir = os.path.abspath(keys_dir)
     if not os.path.exists(keys_dir):
         os.makedirs(keys_dir)
 
     private_key=os.path.join(keys_dir, name + PRIVATE_EXT)
     public_key=os.path.join(keys_dir, name + PUBLIC_EXT)
-    generated_public_key=os.path.join(keys_dir, name + ".pub")
 
-    shell.run(f"ssh-keygen -t ed25519 -C 'your_email@example.com' -f {private_key} -N ''")
-    shutil.move(generated_public_key, public_key)
+    key_args = f"-C '{email}' -f {private_key} -N '{passphrase}'"
+    shell.run(f"ssh-keygen -t ed25519 -C {key_args}")
+    shutil.move(private_key + ".pub", public_key)
     LOGGER.info("SSH key pair generated: %s", name)
 
     if os.path.exists(public_key):
