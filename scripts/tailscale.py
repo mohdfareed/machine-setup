@@ -27,12 +27,12 @@ def setup(brew: HomeBrew | None) -> None:
     else:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
-    utils.shell.run("sudo tailscale up", info=True)
     LOGGER.debug("Tailscale was setup successfully.")
 
 
 def _setup_macos(brew: HomeBrew):
     brew.install("tailscale", cask=True)
+    utils.shell.run("tailscale up", info=True)
 
 
 def _setup_linux():
@@ -42,6 +42,7 @@ def _setup_linux():
         )
     else:
         utils.shell.run("sudo tailscale update", info=True)
+    utils.shell.run("sudo tailscale up", info=True)
 
 
 def _setup_windows():
@@ -58,6 +59,7 @@ def _setup_windows():
         throws=False,
     )
     os.remove(installer_path)
+    utils.shell.run("tailscale up", info=True)
 
 
 if __name__ == "__main__":
