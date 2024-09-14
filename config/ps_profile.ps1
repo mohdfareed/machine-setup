@@ -10,7 +10,7 @@ $script = (Get-Item -Path $MyInvocation.MyCommand.Path).Target
 if (-not $script) {
     $script = $MyInvocation.MyCommand.Path
 }
-$env:MACHINE = Resolve-Path "$script/.."
+$env:MACHINE = Resolve-Path "$script/../.." # ps_profile -> config -> machine
 Remove-Variable -Name "script"
 
 # private environment

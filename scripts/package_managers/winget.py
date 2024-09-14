@@ -32,16 +32,8 @@ class WinGet(PackageManager):
 
     @override
     def _setup(self) -> None:
-        LOGGER.info("Setting up Scoop...")
-        utils.shell.run(
-            "Set-ExecutionPolicy -ExecutionPolicy "
-            "RemoteSigned -Scope CurrentUser"
-        )
-        utils.shell.run(
-            "Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression"
-        )
-        utils.shell.run("scoop update")
-        utils.shell.run("scoop update *")
+        LOGGER.info("Setting up WinGet...")
+        shell.run("winget upgrade --all --include-unknown")
         LOGGER.debug("Scoop was setup successfully.")
 
 

@@ -9,23 +9,14 @@ import logging as _logging
 import os as _os
 import subprocess as _subprocess
 
-
-def _find_powershell() -> str:
-    pwsh_path = _os.path.join(_os.environ["ProgramFiles"], "PowerShell")
-    versions = _os.listdir(pwsh_path)
-    versions.sort(reverse=True)
-
-    return f'"{ _os.path.join(pwsh_path, versions[0], "pwsh.exe")}"'
-
-
 LOGGER = _logging.getLogger(__name__)
 """The shell logger."""
 
 _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
-_WINDOWS = "nt"
-_EXECUTABLE = "/bin/zsh" if not _os.name == _WINDOWS else None
+_IS_WINDOWS = _os.name == (_ := "nt")
+_EXECUTABLE = "/bin/zsh"
 
 
 def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
@@ -48,25 +39,40 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
         code and `throws` is True.
         KeyboardInterrupt: If the command is interrupted by the user.
     """
-    if _SUDO_TOKEN in command.lower() and _os.name != _WINDOWS:
+    if _SUDO_TOKEN in command.lower() and _os.name != _IS_WINDOWS:
         LOGGER.debug("Running sudo command: %s", command)
 
     # execute the command
-    with _subprocess.Popen(
-        command,
-        env=env,
-        stdout=_subprocess.PIPE,
-        stderr=_subprocess.STDOUT,
-        executable=_EXECUTABLE,
-        shell=True,
-        text=True,
-    ) as process:
+    with _create_process(command, env) as process:
         (output, returncode) = _exec_process(process, info)
 
     # handle return code and/or output
     if throws and returncode != 0:
         raise ShellError(returncode, command, output)
     return returncode, output
+
+
+def _create_process(command: str, env=None) -> _subprocess.Popen[str]:
+    subprocess = (
+        _subprocess.Popen(  # pylint: disable=consider-using-with
+            command,
+            env=env,
+            stdout=_subprocess.PIPE,
+            stderr=_subprocess.STDOUT,
+            executable=_EXECUTABLE,
+            shell=True,
+            text=True,
+        )
+        if not _IS_WINDOWS
+        else _subprocess.Popen(  # pylint: disable=consider-using-with
+            ["pwsh.exe", "-Command", command],
+            env=env,
+            stdout=_subprocess.PIPE,
+            stderr=_subprocess.STDOUT,
+            text=True,
+        )
+    )
+    return subprocess
 
 
 def _exec_process(
@@ -104,3 +110,10 @@ def _log_line(line: str, info: bool) -> None:
 
 class ShellError(Exception):
     """Exception due to a shell error."""
+
+
+if _IS_WINDOWS:
+    run(
+        "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned "
+        "-Scope Process -Force"
+    )

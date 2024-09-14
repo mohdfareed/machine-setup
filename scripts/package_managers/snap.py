@@ -15,9 +15,9 @@ class SnapStore(PackageManager):
     """Snap Store package manager."""
 
     def __init__(self, apt: APT) -> None:
-        super().__init__()
         self.apt = apt
         """The Snap Store package manager."""
+        super().__init__()
 
     @override
     def install(self, package: str | list[str], classic=False) -> None:
