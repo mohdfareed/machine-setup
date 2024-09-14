@@ -100,7 +100,7 @@ class ShellError(Exception):
 if _IS_WINDOWS:
     # _EXECUTABLE = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
     _EXECUTABLE = _subprocess.run(
-        "for %i in (pwsh.exe) do @echo. %~$PATH:i",
+        ["cmd.exe", "for %i in (pwsh.exe) do @echo. %~$PATH:i"],
         check=False,
         capture_output=True,
         text=True,
