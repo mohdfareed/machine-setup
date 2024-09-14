@@ -99,4 +99,4 @@ class ShellError(Exception):
 
 if _IS_WINDOWS:
     _EXECUTABLE = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-    run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
+    # run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
