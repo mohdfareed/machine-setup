@@ -59,11 +59,11 @@ def setup_wsl(wsl_module="machines.windows.wsl") -> None:
     LOGGER.info("Setting up WSL...")
     utils.shell.run("wsl --install", info=True)
 
-    python: str
-    if utils.is_unix():
-        python = utils.shell.run("which python").output
-    else:
-        python = utils.shell.run("Get-Command python").output
+    python = (
+        utils.shell.run("which python").output
+        if utils.is_unix()
+        else utils.shell.run("(Get-Command python).Path").output
+    )
 
     wsl_command = f"cd {config.MACHINE} && {python} -m {wsl_module}"
     LOGGER.warning("Run the following command in WSL: %s", wsl_command)
