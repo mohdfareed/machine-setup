@@ -22,7 +22,7 @@ class WinGet(PackageManager):
 
         for pkg in package:
             LOGGER.info("Installing %s from winget...", pkg)
-            shell.run(f"winget install -e --id {pkg}")
+            shell.run(f"winget install -e --id {pkg}", throws=False)
             LOGGER.debug("%s was installed successfully.", pkg)
 
     @override
