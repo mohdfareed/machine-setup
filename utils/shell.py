@@ -44,7 +44,7 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
 
     # execute the command
     with _subprocess.Popen(
-        command if not _IS_WINDOWS else f"-Command {command}",
+        command if not _IS_WINDOWS else f"{command}",
         env=env,
         stdout=_subprocess.PIPE,
         stderr=_subprocess.STDOUT,
