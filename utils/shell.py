@@ -98,4 +98,4 @@ class ShellError(Exception):
 
 
 if _WINDOWS:
-    _EXECUTABLE = "powershell.exe"
+    _EXECUTABLE = "c:\\Program Files\\PowerShell\\7\\pwsh.exe"
