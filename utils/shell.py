@@ -5,18 +5,26 @@ reused for all commands that require sudo access.
 If user input is required, the user must be prompted outside the shell command.
 """
 
-import logging
+import logging as _logging
 import os as _os
-import subprocess
+import subprocess as _subprocess
 
-LOGGER = logging.getLogger(__name__)
+
+def _find_powershell() -> str:
+    pwsh_path = _os.path.join(_os.environ["ProgramFiles"], "PowerShell")
+    versions = _os.listdir(pwsh_path)
+    versions.sort(reverse=True)
+    return _os.path.join(pwsh_path, versions[0], "pwsh.exe")
+
+
+LOGGER = _logging.getLogger(__name__)
 """The shell logger."""
 
 _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
 _WINDOWS = "nt"
-_EXECUTABLE = "/bin/zsh" if not _os.name == _WINDOWS else "powershell"
+_EXECUTABLE = "/bin/zsh" if not _os.name == _WINDOWS else _find_powershell()
 
 
 def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
@@ -43,11 +51,11 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
         LOGGER.debug("Running sudo command: %s", command)
 
     # execute the command
-    with subprocess.Popen(
+    with _subprocess.Popen(
         command,
         env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        stdout=_subprocess.PIPE,
+        stderr=_subprocess.STDOUT,
         executable=_EXECUTABLE,
         shell=True,
         text=True,
@@ -61,7 +69,7 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
 
 
 def _exec_process(
-    process: subprocess.Popen[str], info=False
+    process: _subprocess.Popen[str], info=False
 ) -> tuple[str, int]:
 
     output = ""  # if the process has no output

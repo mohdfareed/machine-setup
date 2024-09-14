@@ -52,7 +52,7 @@ def main(
 
     # set up environment
     clone_machine(path, overwrite)
-    python = create_virtual_env(path, machine)
+    python = create_virtual_env(path, machine, overwrite)
     install_dependencies(python, path)
 
     # bootstrap machine
@@ -80,7 +80,7 @@ def update_machine(path: str):
         ).returncode
         != 0
     ):
-        _log_warning("Uncommitted changes found.")
+        _log_warning("Uncommitted changes found. Skipping update.")
         return
 
     # pull latest changes if exists
@@ -88,11 +88,14 @@ def update_machine(path: str):
     subprocess.run(["git", "pull", "-q"], cwd=path, check=True)
 
 
-def create_virtual_env(path: str, prompt: str) -> str:
+def create_virtual_env(path: str, prompt: str, clean: bool) -> str:
     """Create a virtual environment in the specified path.
     Return the python executable path."""
+    if clean and os.path.exists(path):  # remove existing
+        _log_info("Removing existing environment...")
     venv = os.path.join(path, VIRTUAL_ENV)
     opts = ["--clear", "--prompt", prompt, "--upgrade-deps"]
+
     _log_info("Creating virtual environment...")
     subprocess.run(["python3", "-m", "venv", *opts, venv], check=True)
     bin_path = "bin" if platform.system() != (_ := "Windows") else "Scripts"
