@@ -42,7 +42,6 @@ def setup(private_machine: str | None = None) -> None:
     scripts.setup_docker(winget)
     scripts.setup_python(scoop)
     scripts.setup_node(winget)
-    winget.install("GitHub.cli")
     winget.install("GoLang.Go")
     winget.install("Microsoft.DotNet.SDK")
     scoop.install("extras/godot")

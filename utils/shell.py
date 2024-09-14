@@ -52,7 +52,7 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
 
     # handle return code and/or output
     if throws and returncode != 0:
-        raise ShellError(returncode, command, output)
+        raise ShellError(returncode, command, ANSI_ESCAPE.sub("", output))
     return returncode, output
 
 

@@ -62,7 +62,6 @@ def setup(private_machine: str | None = None) -> None:
     # scripts.setup_docker(brew)
     scripts.setup_python(brew)
     scripts.setup_node(brew)
-    brew.install("gh")
     brew.install("go")
     brew.install("dotnet-sdk", cask=True)
     brew.install("godot-mono", cask=True)

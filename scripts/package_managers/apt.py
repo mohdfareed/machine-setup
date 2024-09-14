@@ -21,6 +21,28 @@ class APT(PackageManager):
         self.install("fonts-jetbrains-mono")
         LOGGER.debug("Fonts were setup successfully.")
 
+    @staticmethod
+    def add_keyring(keyring: str, repo: str, name: str) -> None:
+        """Add a keyring to the apt package manager."""
+        APT()
+
+        LOGGER.info("Adding keyring %s to apt...", keyring)
+        keyring_path = f"/etc/apt/keyrings/{keyring}"
+
+        utils.shell.run(
+            f"""
+                (type -p wget >/dev/null || sudo apt-get install wget -y) \
+                && sudo mkdir -p -m 755 /etc/apt/keyrings && wget -qO- \
+                {keyring} | sudo tee {keyring_path} > /dev/null \
+                && sudo chmod go+r {keyring_path} \
+                && echo "deb [arch=$(dpkg --print-architecture) \
+                signed-by={keyring_path}] {repo}" | \
+                sudo tee /etc/apt/sources.list.d/{name}.list > /dev/null \
+                && sudo apt update
+            """
+        )
+        LOGGER.debug("Keyring %s was added successfully.", keyring)
+
     @override
     def install(self, package: str | list[str]) -> None:
         if isinstance(package, str):

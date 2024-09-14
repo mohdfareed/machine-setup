@@ -26,9 +26,14 @@ def setup(
 
     # install git
     if isinstance(pkg_manager, HomeBrew):
-        pkg_manager.install("git git-lfs")
+        pkg_manager.install("git git-lfs gh")
     if isinstance(pkg_manager, APT):
         pkg_manager.install("git git-lfs")
+        pkg_manager.add_keyring(
+            "https://cli.github.com/packages/githubcli-archive-keyring.gpg",
+            "https://cli.github.com/packages stable main",
+            "github-cli",
+        )
     if isinstance(pkg_manager, WinGet):
         pkg_manager.install(
             "Git.Git GitHub.GitLFS GitHub.CLI "
