@@ -98,6 +98,4 @@ class ShellError(Exception):
 
 
 if _WINDOWS:
-    run(
-        "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force"
-    )
+    _EXECUTABLE = "powershell.exe"
