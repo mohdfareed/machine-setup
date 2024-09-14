@@ -16,7 +16,7 @@ _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
 _IS_WINDOWS = _os.name == (_WINDOWS := "nt")
-_EXECUTABLE = "/bin/zsh" if not _IS_WINDOWS else "powershell.exe -Command"
+_EXECUTABLE = "/bin/zsh"
 
 
 def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
@@ -100,5 +100,11 @@ class ShellError(Exception):
 if _IS_WINDOWS:
     # print the PowerShell executable path
     _EXECUTABLE = r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-    run("Get-Process", info=True)  # check if PowerShell is installed
+    cmd = (
+        r'"& { . '
+        "C:\\Users\\mohdfareed\\.machine\\config\\ps_profile.ps1"
+        ' -EnvOnly; Write-Output $env:MACHINE }"'
+    )
+
+    run(cmd, info=True)  # check if PowerShell is installed
     LOGGER.info("PowerShell executable: %s", _EXECUTABLE)
