@@ -93,11 +93,11 @@ def _log_line(line: str, info: bool) -> None:
         LOGGER.debug(line)
 
 
+class ShellError(Exception):
+    """Exception due to a shell error."""
+
+
 if _WINDOWS:
     run(
         "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force"
     )
-
-
-class ShellError(Exception):
-    """Exception due to a shell error."""
