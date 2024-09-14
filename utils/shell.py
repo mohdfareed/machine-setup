@@ -15,8 +15,8 @@ LOGGER = _logging.getLogger(__name__)
 _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
-_WINDOWS = _os.name == "nt"
-_EXECUTABLE = "/bin/zsh" if not _WINDOWS else None
+_IS_WINDOWS = _os.name == (_WINDOWS := "nt")
+_EXECUTABLE = "/bin/zsh" if not _IS_WINDOWS else "powershell.exe -Command"
 
 
 def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
@@ -39,7 +39,7 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
         code and `throws` is True.
         KeyboardInterrupt: If the command is interrupted by the user.
     """
-    if _SUDO_TOKEN in command.lower() and _os.name != _WINDOWS:
+    if _SUDO_TOKEN in command.lower() and _os.name != _IS_WINDOWS:
         LOGGER.debug("Running sudo command: %s", command)
 
     # execute the command
@@ -97,10 +97,10 @@ class ShellError(Exception):
     """Exception due to a shell error."""
 
 
-if _WINDOWS:
+if _IS_WINDOWS:
     run("pwsh -Command exit", info=True)  # check if PowerShell is installed
     # print the PowerShell executable path
-    _EXECUTABLE = (
-        "pwsh" if _os.system("pwsh -Command exit") == 0 else "powershell"
-    )
+    # _EXECUTABLE = (
+    #     "pwsh" if _os.system("pwsh -Command exit") == 0 else "powershell"
+    # )
     LOGGER.debug("PowerShell executable: %s", _EXECUTABLE)
