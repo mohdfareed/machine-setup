@@ -44,7 +44,7 @@ def run(command: str, env=None, throws=True, info=False) -> tuple[int, str]:
 
     # execute the command
     with _subprocess.Popen(
-        command,
+        command if not _IS_WINDOWS else f"-Command {command}",
         env=env,
         stdout=_subprocess.PIPE,
         stderr=_subprocess.STDOUT,
@@ -99,6 +99,6 @@ class ShellError(Exception):
 
 if _IS_WINDOWS:
     # print the PowerShell executable path
-    _EXECUTABLE = r'"C:\Program Files\PowerShell\7\pwsh.exe" -Command'
+    _EXECUTABLE = r'"C:\Program Files\PowerShell\7\pwsh.exe"'
     run("Get-Process", info=True)  # check if PowerShell is installed
     LOGGER.info("PowerShell executable: %s", _EXECUTABLE)
