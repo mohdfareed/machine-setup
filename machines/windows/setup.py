@@ -1,6 +1,6 @@
 """Setup module containing a `setup` function for setting up Windows."""
 
-import sys
+from typing import Callable as _Callable
 
 import config
 import scripts
@@ -8,6 +8,8 @@ import utils
 from machines import LOGGER, windows
 from scripts import git, shell, ssh, tailscale, vscode
 from scripts.package_managers import Scoop, WinGet
+
+from . import wsl
 
 
 def setup(private_machine: str | None = None) -> None:
@@ -46,7 +48,7 @@ def setup(private_machine: str | None = None) -> None:
     # scripts.setup_node(winget)
     # winget.install("GoLang.Go")
     # winget.install("Microsoft.DotNet.SDK")
-    setup_wsl()  # install ubuntu wsl
+    setup_wsl(wsl.setup)  # install ubuntu wsl
 
     # extras
     scoop.add_bucket("extras")
@@ -56,14 +58,15 @@ def setup(private_machine: str | None = None) -> None:
     LOGGER.warning("Restart for some changes to apply.")
 
 
-def setup_wsl(wsl_module="machines.windows.wsl") -> None:
+def setup_wsl(wsl_setup_handler: _Callable) -> None:
     """Setup WSL on a new machine."""
     LOGGER.info("Setting up WSL...")
     utils.shell.run("wsl --install", info=True)
+    current_shell = utils.shell.EXECUTABLE
 
-    wsl_command = f"cd {config.MACHINE} && {sys.executable} -m {wsl_module}"
-    LOGGER.warning("Run the following command in WSL: %s", wsl_command)
-    utils.shell.run(f"wsl -e bash -c {wsl_command}")
+    utils.shell.EXECUTABLE = utils.shell.SupportedExecutables.WSL
+    wsl_setup_handler()
+    utils.shell.EXECUTABLE = current_shell
     LOGGER.info("WSL setup complete.")
 
 

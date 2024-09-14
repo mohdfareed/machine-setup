@@ -9,18 +9,30 @@ import logging as _logging
 import os as _os
 import re as _re
 import subprocess as _subprocess
+from enum import StrEnum as _StrEnum
 
 LOGGER = _logging.getLogger(__name__)
 """The shell logger."""
 
+# log matching tokens
 _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
-_IS_WINDOWS = _os.name == (_ := "nt")
-_EXECUTABLE = "/bin/zsh"
 
-# Regular expression to match ANSI escape codes
-ANSI_ESCAPE = _re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
+_IS_WINDOWS = _os.name == (_ := "nt")  # whether the OS is Windows
+_ANSI_ESCAPE = _re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")  # ANSI escape codes
+
+
+class SupportedExecutables(_StrEnum):
+    """Supported shell executables."""
+
+    ZSH = "/bin/zsh"
+    PWSH_WIN = "pwsh.exe"
+    WSL = "wsl"
+
+
+EXECUTABLE: SupportedExecutables = SupportedExecutables.ZSH
+"""The shell executable to use."""
 
 
 def run(command: str, env=None, throws=True, info=False) -> "ShellResults":
@@ -60,25 +72,37 @@ def run(command: str, env=None, throws=True, info=False) -> "ShellResults":
 
 
 def _create_process(command: str, env=None) -> _subprocess.Popen[str]:
-    subprocess = (
-        _subprocess.Popen(  # pylint: disable=consider-using-with
+    subprocess = None
+
+    if EXECUTABLE == SupportedExecutables.PWSH_WIN:
+        subprocess = _subprocess.Popen(  # pylint: disable=consider-using-with
+            [EXECUTABLE, "-Command", command],
+            env=env,
+            stdout=_subprocess.PIPE,
+            stderr=_subprocess.STDOUT,
+            text=True,
+        )
+
+    elif EXECUTABLE == SupportedExecutables.WSL:
+        subprocess = _subprocess.Popen(  # pylint: disable=consider-using-with
+            [EXECUTABLE, "-e", "bash", "-c", command],
+            env=env,
+            stdout=_subprocess.PIPE,
+            stderr=_subprocess.STDOUT,
+            text=True,
+        )
+
+    else:  # default to unix shell
+        subprocess = _subprocess.Popen(  # pylint: disable=consider-using-with
             command,
             env=env,
             stdout=_subprocess.PIPE,
             stderr=_subprocess.STDOUT,
-            executable=_EXECUTABLE,
+            executable=EXECUTABLE,
             shell=True,
             text=True,
         )
-        if not _IS_WINDOWS
-        else _subprocess.Popen(  # pylint: disable=consider-using-with
-            ["pwsh.exe", "-Command", command],
-            env=env,
-            stdout=_subprocess.PIPE,
-            stderr=_subprocess.STDOUT,
-            text=True,
-        )
-    )
+
     return subprocess
 
 
@@ -98,7 +122,7 @@ def _exec_process(
         # break if process is done
         if process.poll() is not None:
             break
-    return ShellResults(process.wait(), ANSI_ESCAPE.sub("", output.strip()))
+    return ShellResults(process.wait(), _ANSI_ESCAPE.sub("", output.strip()))
 
 
 def _log_line(line: str, info: bool) -> None:
@@ -106,7 +130,7 @@ def _log_line(line: str, info: bool) -> None:
         return
 
     # Strip ANSI escape codes
-    line = ANSI_ESCAPE.sub("", line)
+    line = _ANSI_ESCAPE.sub("", line)
 
     if any(token in line.lower() for token in _ERROR_TOKENS):
         LOGGER.error(line)

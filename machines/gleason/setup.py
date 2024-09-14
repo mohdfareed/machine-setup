@@ -7,6 +7,8 @@ from machines import LOGGER, gleason, windows
 from scripts import git, shell, vscode
 from scripts.package_managers import Scoop, WinGet
 
+from . import wsl
+
 
 def setup() -> None:
     """Setup Gleason config on a new machine."""
@@ -34,7 +36,7 @@ def setup() -> None:
     scripts.setup_node(None)
     winget.install("GoLang.Go")
     winget.install("Microsoft.DotNet.SDK")
-    windows.setup_wsl("machines.gleason.wsl")  # install wsl
+    windows.setup_wsl(wsl.setup)  # install wsl
 
     LOGGER.info("Gleason machine setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

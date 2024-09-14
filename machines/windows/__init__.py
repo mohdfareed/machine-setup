@@ -1,4 +1,4 @@
-"""macOS specific setup module."""
+"""Windows specific setup module."""
 
 import os as _os
 
