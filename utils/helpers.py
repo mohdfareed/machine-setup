@@ -135,7 +135,9 @@ def load_env_var(env_path: str, var_name: str) -> str:
     the environment variable is loaded using the Z shell."""
     if is_windows():
         ps_command = f"$env:{var_name}"
-        command = f"{_EXECUTABLE} -NoProfile -File {env_path} {ps_command}"
+        command = (
+            f"{_EXECUTABLE} -NoProfile -File {env_path} -EnvOnly {ps_command}"
+        )
     else:
         command = f"source '{env_path}' && echo ${var_name}"
     return _run(command)[1]
