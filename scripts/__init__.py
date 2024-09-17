@@ -38,16 +38,19 @@ def setup_python(pkg_manager: HomeBrew | APT | Scoop) -> None:
 
     if isinstance(pkg_manager, HomeBrew):
         pkg_manager.install("python pipx pyenv")
+        utils.shell.run("pipx install poetry")
 
     if isinstance(pkg_manager, APT):
         pkg_manager.install("python3 python3-pip python3-venv pipx")
         if not utils.is_installed("pyenv"):
             utils.shell.run("curl https://pyenv.run | bash")
+        utils.shell.run("pipx install poetry")
 
     if isinstance(pkg_manager, Scoop):
         # python is installed by default when running the script
         # it is done through winget
         pkg_manager.install("pipx pyenv")
+        utils.shell.run("pipx install poetry")
 
     LOGGER.debug("Python was setup successfully.")
 
