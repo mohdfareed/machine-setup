@@ -50,6 +50,14 @@ if (Test-Path -Path "/opt/homebrew/bin/brew") {
 }
 
 # fnm (windows node version manager)
-if (-not (Get-Command -Name "fnm" -ErrorAction SilentlyContinue)) {
+if ($IsWindows -and -not (Get-Command -Name "fnm" -ErrorAction SilentlyContinue)) {
     fnm env --use-on-cd | Out-String | Invoke-Expression
+}
+
+# dotnet completions
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+        dotnet complete --position $cursorPosition "$commandAst" | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
 }

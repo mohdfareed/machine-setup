@@ -1,34 +1,15 @@
-working_dir=$(pwd) # needed due to some plugins changing the current directory
-
 # region - Setup
 # =============================================================================
 
-# homebrew
-if [[ -f "/opt/homebrew/bin/brew" ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)" # activate homebrew
-    if [[ -d "$(brew --prefix python)" ]]; then
-        export PATH="$(brew --prefix python)/libexec/bin:$PATH" # python
-    fi
-
-    # nvm
-    export NVM_DIR="$HOME/.nvm"
-    if [ -s "$(brew --prefix nvm)/nvm.sh" ]; then
-        source "$(brew --prefix nvm)/nvm.sh" # load nvm
-        [ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && \
-        source "$(brew --prefix nvm)/etc/bash_completion.d/nvm" # completions
-    fi
-fi
-
-# pyenv
-if command -v pyenv 1>/dev/null 2>&1; then
-    eval "$(pyenv init -)"
-fi
-
-# zinit
+# install zinit
 repo=https://github.com/zdharma-continuum/zinit.git
 [ ! -d $ZINIT_HOME ] && mkdir -p "$(dirname $ZINIT_HOME)"
 [ ! -d $ZINIT_HOME/.git ] && git clone $repo $ZINIT_HOME
-source $ZINIT_HOME/zinit.zsh; unset repo
+source $ZINIT_HOME/zinit.zsh && unset repo
+
+# extensions and plugins
+zinit light zdharma-continuum/zinit-annex-as-monitor # remote file updater
+zinit light zdharma-continuum/zinit-annex-patch-dl # download with dl"URL file"
 source "$(realpath $(dirname $0))/plugins.zsh"
 
 # history
@@ -51,7 +32,7 @@ zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 alias zsh::reload='exec $SHELL'
 alias cat='bat --paging=never'
 alias vim='nvim'
-alias ls='eza --group-directories-first --sort=Name --icons'
+alias ls='eza --group-directories-first --sort=Name --icons automatic'
 alias lst='ls -T'
 alias lls='ls -lhmU --git --no-user'
 alias llst='lls -T'
@@ -88,5 +69,3 @@ brew-uninstall() {
 }
 
 # endregion
-
-cd $working_dir; unset working_dir

@@ -2,10 +2,63 @@
 # =============================================================================
 # examples: https://zdharma-continuum.github.io/zinit/wiki/GALLERY
 
-# extensions
-zinit light zdharma-continuum/zinit-annex-unscope # reference without usernames
-zinit light monitor # monitor for updates to file with url
-zinit light patch-dl # download files with dl"URL file"
+# homebrew
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)" # activate homebrew
+    FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}" # completions
+
+    # python
+    if [[ -d "$(brew --prefix python)" ]]; then
+        export PATH="$(brew --prefix python)/libexec/bin:$PATH"
+    fi
+
+    # nvm
+    export NVM_DIR="$HOME/.nvm"
+    if [ -s "$(brew --prefix nvm)/nvm.sh" ]; then
+        source "$(brew --prefix nvm)/nvm.sh" # load nvm
+        [ -s "$(brew --prefix nvm)/etc/bash_completion.d/nvm" ] && \
+        source "$(brew --prefix nvm)/etc/bash_completion.d/nvm" # completions
+    fi
+fi
+
+# pyenv (python version manager)
+if command -v pyenv 1>/dev/null 2>&1; then
+    eval "$(pyenv init -)"
+fi
+
+# poetry (python package manager)
+if command -v poetry 1>/dev/null 2>&1; then
+    _completions="$(dirname "$ZINIT_HOME")/completions/_poetry"
+    if [[ ! -f "$_completions" ]]; then
+        mkdir -p "$(dirname "$_completions")"
+        poetry completions zsh > "$_completions"
+    fi; unset _completions
+fi
+
+# dotnet completions, source:
+# https://learn.microsoft.com/en-us/dotnet/core/tools/enable-tab-autocomplete
+_dotnet_zsh_complete()
+{
+  local completions=("$(dotnet complete "$words")")
+  if [ -z "$completions" ]
+  then
+    _arguments '*::arguments: _normal'
+    return
+  fi
+  _values = "${(ps:\n:)completions}" # this is not variable assignment!
+}
+
+# endregion
+# region - Shell Plugins
+# =============================================================================
+
+# oh-my-posh theme
+if [[ ! $(command -v oh-my-posh) ]]; then
+    curl -s https://ohmyposh.dev/install.sh | bash -s
+fi
+theme="$POSH_THEMES_PATH/pure.omp.json"
+eval "$(oh-my-posh init zsh --config "$theme")"
+unset theme
 
 # # pure theme
 # PURE_PROMPT_SYMBOL='➜' # prompt symbol
@@ -16,24 +69,14 @@ zinit light patch-dl # download files with dl"URL file"
 # zinit ice pick'async.zsh' src'pure.zsh'
 # zinit light sindresorhus/pure
 
-# oh-my-posh theme
-if [[ ! $(command -v oh-my-posh) ]]; then
-    curl -s https://ohmyposh.dev/install.sh | bash -s
-fi
-theme="$POSH_THEMES_PATH/pure.omp.json"
-eval "$(oh-my-posh init zsh --config "$theme")" && unset theme
-
-# syntax highlighting
-zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zpcompinit; zpcdreplay;"
-zinit light fast-syntax-highlighting
-
-# auto-completions
-zinit ice wait lucid atload"!_zsh_autosuggest_start"
-zinit light zsh-users/zsh-autosuggestions
-
-# completions
-zinit ice wait lucid blockf atpull'zinit creinstall -q .'
-zinit light zsh-users/zsh-completions
+# syntax highlighting, autosuggestions, completions
+zinit wait lucid light-mode for \
+  atinit"zicompinit; zicdreplay; compdef _dotnet_zsh_complete dotnet;" \
+      zdharma-continuum/fast-syntax-highlighting \
+  atload"_zsh_autosuggest_start" \
+      zsh-users/zsh-autosuggestions \
+  blockf atpull'zinit creinstall -q .' \
+      zsh-users/zsh-completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' \
 'r:|[._-]=* r:|=* l:|=*' # case-insensitive completion, ignore dots and hyphens
 
@@ -48,10 +91,6 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:*' switch-group '<' '>'
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-
-# endregion
-# region - Tools
-# =============================================================================
 
 # fzf (fuzzy finder)
 zinit ice wait lucid as"program" from"gh-r" mv"fzf* -> fzf" pick"fzf" \
