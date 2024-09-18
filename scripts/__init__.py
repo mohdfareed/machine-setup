@@ -49,19 +49,9 @@ def setup_python(pkg_manager: HomeBrew | APT | Scoop) -> None:
         utils.shell.run("pipx install poetry")
 
     if isinstance(pkg_manager, Scoop):
-        # python is installed by default when running the script
-        # it is done through winget
+        # python is installed by default through winget
         pkg_manager.install("pipx pyenv")
         utils.shell.run("pipx install poetry")
-
-    # # generate poetry completions
-    # completions_script = os.path.join(
-    #     os.path.dirname(utils.load_env_var(config.zshenv, "ZINIT_HOME")),
-    #     "completions",
-    #     "_poetry",
-    # )
-    # utils.shell.run(f"poetry completions zsh > {completions_script}")
-    # LOGGER.debug("Generated poetry completions.")
 
     LOGGER.debug("Python was setup successfully.")
 
