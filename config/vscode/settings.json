@@ -1,34 +1,37 @@
 {
   // MARK: editor
   // #region ===================================================================
-  "editor.lineNumbers": "relative",
   "editor.wordWrap": "on",
   "editor.wrappingIndent": "indent",
   "editor.guides.bracketPairs": true,
   "editor.formatOnSave": true,
-  // # endregion
-  // MARK: whitespace
-  // #region ===================================================================
-  "editor.renderWhitespace": "all",
+  "editor.occurrencesHighlight": "multiFile",
+  "editor.stickyScroll.enabled": true,
+  "explorer.confirmDelete": false,
+  // whitespace ----------------------------------------------------------------
+  "editor.renderWhitespace": "boundary",
   "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,
   "files.insertFinalNewline": true,
   // # endregion
   // MARK: visual
   // #region ===================================================================
-  "editor.stickyScroll.enabled": true,
-  "editor.minimap.renderCharacters": false,
-  "editor.minimap.autohide": true,
+  "workbench.tree.enableStickyScroll": true,
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": "on",
-  "editor.occurrencesHighlight": "multiFile",
-  "editor.minimap.showRegionSectionHeaders": true,
-  "workbench.editor.showTabs": "none",
-  "workbench.editor.empty.hint": "hidden",
   "workbench.activityBar.location": "top",
-  "workbench.tree.enableStickyScroll": true,
+  "workbench.editor.showTabs": "single",
+  // startup -------------------------------------------------------------------
+  "workbench.editor.empty.hint": "hidden",
+  "workbench.startupEditor": "newUntitledFile",
+  "window.openWithoutArgumentsInNewWindow": "on",
+  // minimap -------------------------------------------------------------------
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.autohide": true,
+  "editor.minimap.showRegionSectionHeaders": true,
+  // theme ---------------------------------------------------------------------
   "workbench.colorTheme": "One Dark Pro",
-  "oneDarkPro.editorTheme": "Dark Modern",
+  "oneDarkPro.editorTheme": "Ayu",
   "oneDarkPro.bold": true,
   "oneDarkPro.vivid": true,
   "oneDarkPro.markdownStyle": false,
@@ -36,22 +39,10 @@
     80,
     120
   ],
-  // # endregion
-  // MARK: font
-  // #region ===================================================================
+  // font ----------------------------------------------------------------------
   "editor.fontFamily": "JetBrainsMono Nerd Font",
   "editor.fontSize": 13,
   "editor.fontLigatures": true,
-  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
-  "terminal.integrated.fontSize": 14,
-  "terminal.integrated.smoothScrolling": true,
-  // TODO - check if terminal ligature is supported
-  // # endregion
-  // MARK: vscode
-  // #region ===================================================================
-  "window.openWithoutArgumentsInNewWindow": "on",
-  "workbench.startupEditor": "newUntitledFile",
-  "explorer.confirmDelete": false,
   // # endregion
   // MARK: suggestions
   // #region ===================================================================
@@ -81,6 +72,11 @@
   "terminal.integrated.defaultProfile.osx": "zsh",
   "terminal.integrated.defaultProfile.linux": "zsh",
   "terminal.integrated.defaultProfile.windows": "PowerShell",
+  // font ----------------------------------------------------------------------
+  "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.smoothScrolling": true,
+  // TODO - check if terminal ligature is supported
   // # endregion
   // MARK: git
   // #region ===================================================================
@@ -88,22 +84,20 @@
   "git.autofetch": "all",
   "git.ignoreLegacyWarning": true,
   "git.confirmSync": false,
+  "git.rebaseWhenSync": true,
   "git.enableSmartCommit": true,
   "diffEditor.renderSideBySide": false,
-  "gitlens.codeLens.enabled": false,
   "gitlens.statusBar.enabled": false,
-  "gitlens.currentLine.enabled": false,
   "gitlens.hovers.currentLine.over": "line",
-  "gitlens.graph.minimap.enabled": false,
+  "gitlens.graph.minimap.enabled": true,
   "multiDiffEditor.experimental.enabled": true,
+  "gitlens.codeLens.enabled": false,
+  "gitlens.currentLine.enabled": false,
   // # endregion
   // MARK: copilot
   // #region ===================================================================
   "github.copilot.enable": {
     "*": true,
-    "plaintext": true,
-    "markdown": true,
-    "scminput": false
   },
   // # endregion
   // MARK: comment anchors
@@ -125,13 +119,6 @@
   },
   "commentAnchors.workspace.excludeFiles": "**/{.git,bin,.venv}/**/*",
   // # endregion
-  // MARK: vim
-  // #region ===================================================================
-  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
-  },
-  // # endregion
   // MARK: markdown
   // #region ===================================================================
   "markdown.preview.typographer": true,
@@ -151,7 +138,7 @@
   // # endregion
   // MARK: python
   // #region ===================================================================
-  "python.analysis.typeCheckingMode": "standard",
+  "python.analysis.typeCheckingMode": "strict",
   "python.analysis.autoSearchPaths": true,
   "python.analysis.diagnosticMode": "workspace",
   "python.analysis.useLibraryCodeForTypes": true,
@@ -175,13 +162,6 @@
   },
   "python.testing.pytestArgs": [
     "--color=yes"
-  ],
-  "pylint.args": [
-    "--enable-all-extensions",
-    "--disable=while_used",
-    "--disable=too-few-public-methods",
-    // "--disable=expression-not-assigned",
-    "--disable=fixme"
   ],
   "mypy-type-checker.args": [
     "--check-untyped-defs"
@@ -207,7 +187,7 @@
   },
   "omnisharp.organizeImportsOnFormat": true,
   "dotnet.codeLens.enableReferencesCodeLens": false,
-  "godotTools.editorPath.godot4": "${GODOT_PATH}",
+  "godotTools.editorPath.godot4": "${GODOT}",
   // # endregion
   // MARK: go
   // #region ===================================================================
@@ -227,7 +207,7 @@
   // #region ===================================================================
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
-  }
+  },
   // # endregion
   // REVIEW - new customizations above =========================================
 }

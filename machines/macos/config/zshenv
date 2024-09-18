@@ -9,4 +9,4 @@ unset config
 # machine specific environment variables
 export DEV="$HOME/Developer"
 export ICLOUD="$HOME/Library/Mobile Documents/com~apple~CloudDocs"
-export GODOT_PATH="/Applications/Godot_mono.app/Contents/MacOS/Godot"
+export GODOT="/Applications/Godot_mono.app/Contents/MacOS/Godot"

@@ -1,4 +1,5 @@
 {
+    // reference: https://github.com/chickensoft-games/GodotGame/blob/main/.vscode/launch.json
     "macOS Godot C# Launch Settings": {
         "prefix": "godotcsharp-launch-macos",
         "body": [
@@ -7,14 +8,14 @@
             "\t\"type\": \"coreclr\",",
             "\t\"request\": \"launch\",",
             "\t\"preLaunchTask\": \"build\",",
-            "\t\"program\": \"\\${env:GODOT_PATH}\"",
+            "\t\"program\": \"\\${env:GODOT}\"",
             "},",
             "{",
             "\t\"name\": \"Launch Scene\",",
             "\t\"type\": \"coreclr\",",
             "\t\"request\": \"launch\",",
             "\t\"preLaunchTask\": \"build\",",
-            "\t\"program\": \"\\${env:GODOT_PATH}\",",
+            "\t\"program\": \"\\${env:GODOT}\",",
             "\t\"args\": [",
             "\t\t\"\\${command:godot.csharp.getLaunchScene}\"",
             "\t]",
@@ -27,6 +28,7 @@
         ],
         "description": "Create a C# Godot debug launch configurations for macOS"
     },
+    // reference: https://github.com/chickensoft-games/GodotGame/blob/main/.vscode/tasks.json
     "Godot C# Build Task": {
         "prefix": "godotcsharp-build",
         "body": [

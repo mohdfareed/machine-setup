@@ -11,9 +11,9 @@
   "assistant": {
     "default_model": {
       "provider": "openai",
-      "model": "gpt-4o",
+      "model": "gpt-4o"
     },
-    "version": "2",
+    "version": "2"
   },
   "restore_on_startup": "last_session",
 
@@ -21,14 +21,14 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "One Dark Pro",
+    "dark": "One Dark Pro"
   },
   "experimental.theme_overrides": {
     "syntax": {
       "comment": {
-        "font_style": "italic",
-      },
-    },
+        "font_style": "italic"
+      }
+    }
   },
 
   // font settings
@@ -43,14 +43,14 @@
   "soft_wrap": "editor_width",
   "vim_mode": true,
   "inlay_hints": {
-    "enabled": true,
+    "enabled": true
   },
 
   // language settings
   "languages": {
     "Python": {
       "code_actions_on_format": {
-        "source.organizeImports": true,
+        "source.organizeImports": true
       },
       "formatter": {
         "external": {
@@ -58,10 +58,23 @@
           "arguments": [
             "-", // read stdin
             "--line-length",
-            "80",
-          ],
-        },
-      },
+            "80"
+          ]
+        }
+      }
     },
-  },
+    "lsp": {
+      "pyright": {
+        "settings": {
+          "python.analysis": {
+            "diagnosticMode": "workspace",
+            "typeCheckingMode": "strict"
+          },
+          "python": {
+            "pythonPath": ".venv/bin/python"
+          }
+        }
+      }
+    }
+  }
 }
