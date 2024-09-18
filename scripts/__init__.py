@@ -3,8 +3,10 @@ machine. These methods are imported and used by the main `setup.py` script. The
 modules in this library depend on modules in the `utils` library."""
 
 import logging
+import os
 
 import utils
+import config
 from scripts.package_managers import *
 
 LOGGER = logging.getLogger(__name__)
@@ -52,6 +54,15 @@ def setup_python(pkg_manager: HomeBrew | APT | Scoop) -> None:
         pkg_manager.install("pipx pyenv")
         utils.shell.run("pipx install poetry")
 
+    # # generate poetry completions
+    # completions_script = os.path.join(
+    #     os.path.dirname(utils.load_env_var(config.zshenv, "ZINIT_HOME")),
+    #     "completions",
+    #     "_poetry",
+    # )
+    # utils.shell.run(f"poetry completions zsh > {completions_script}")
+    # LOGGER.debug("Generated poetry completions.")
+
     LOGGER.debug("Python was setup successfully.")
 
 
@@ -75,3 +86,18 @@ def setup_node(pkg_manager: HomeBrew | WinGet | None) -> None:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
     LOGGER.debug("Node was setup successfully.")
+
+
+def setup_zed(pkg_manager: HomeBrew | None) -> None:
+    """Setup the Zed text editor on a new machine."""
+    LOGGER.info("Setting up Zed...")
+
+    if isinstance(pkg_manager, HomeBrew):
+        pkg_manager.install("zed")
+    elif utils.is_linux():
+        utils.shell.run("curl -f https://zed.dev/install.sh | sh")
+    else:
+        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+
+    settings_file = os.path.join(config.xdg_config, "zed", "settings.json")
+    utils.symlink(config.zed_settings, settings_file)

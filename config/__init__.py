@@ -30,6 +30,9 @@ ps_profile = _os.path.join(config, "ps_profile.ps1")
 tmux = _os.path.join(config, "tmux.conf")
 """The path of the tmux configuration file."""
 
+zed_settings = _os.path.join(config, "zed_settings.jsonc")
+"""The path of the Zed text editor settings file."""
+
 zshrc = _os.path.join(config, "zshrc")
 """The path of zshrc file."""
 zshenv = _os.path.join(config, "zshenv")
@@ -37,9 +40,8 @@ zshenv = _os.path.join(config, "zshenv")
 
 # environment variables =======================================================
 
-MACHINE = _utils.load_env_var(
-    ps_profile if _utils.is_windows() else zshenv, "MACHINE"
-)
+_env_file = ps_profile if _utils.is_windows() else zshenv
+MACHINE = _utils.load_env_var(_env_file, "MACHINE")
 """The path to the machine repository."""
 
 private_env = _utils.load_env_var(
