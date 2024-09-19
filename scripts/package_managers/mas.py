@@ -7,7 +7,8 @@ import logging
 from typing import Union, override
 
 import utils
-from scripts.package_managers import HomeBrew, PackageManager
+from scripts.package_managers.brew import HomeBrew
+from scripts.package_managers.models import PackageManager
 from utils import shell
 
 LOGGER = logging.getLogger(__name__)

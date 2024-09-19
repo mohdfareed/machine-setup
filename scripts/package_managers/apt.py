@@ -7,7 +7,7 @@ import logging
 from typing import Union, override
 
 import utils
-from scripts.package_managers import PackageManager
+from scripts.package_managers.models import PackageManager
 
 LOGGER = logging.getLogger(__name__)
 """The APT package manager logger."""

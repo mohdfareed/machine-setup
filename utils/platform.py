@@ -40,7 +40,7 @@ ARCH = ARCHITECTURE.ARM if "arm" in platform.machine() else ARCHITECTURE.AMD
 
 def is_macos() -> bool:
     """Check if the current operating system is macOS."""
-    return platform.system() == "darwin"
+    return platform.system() == PLATFORM.MACOS.value
 
 
 def is_linux() -> bool:
