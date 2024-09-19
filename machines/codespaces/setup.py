@@ -4,7 +4,7 @@ import config
 import utils
 from machines import LOGGER, codespaces
 from scripts import fonts, git, shell
-from scripts.package_managers import APT, SnapStore
+from scripts.package_managers import APT
 
 
 def setup() -> None:
@@ -13,13 +13,10 @@ def setup() -> None:
 
     # package managers
     apt = APT()
-    snap = SnapStore(apt)
 
     # setup core tools
     git.setup(apt)
     shell.setup(apt, zshrc=codespaces.zshrc)
-    shell.install_nvim(snap)
-    shell.install_btop(snap)
     fonts.setup(apt)
 
     # set zsh as the default shell
