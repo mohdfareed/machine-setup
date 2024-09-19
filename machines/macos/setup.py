@@ -1,5 +1,7 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
+__all__ = ["setup"]
+
 import os
 from typing import Optional
 
@@ -7,7 +9,7 @@ import config
 import scripts
 import utils
 from machines import LOGGER, macos
-from scripts import git, shell, ssh, tailscale, vscode
+from scripts import fonts, git, shell, ssh, tailscale, vscode
 from scripts.package_managers import MAS, HomeBrew
 from utils import shell as shell_utils
 
@@ -55,14 +57,14 @@ def setup(private_machine: Optional[str] = None) -> None:
     git.setup(brew)
     vscode.setup(brew)
     tailscale.setup(brew)
+    fonts.setup(brew)
     # brew.install_brewfile(macos.brewfile)
-    brew.setup_fonts()
 
     # setup dev tools
     shell.install_powershell(brew)
-    # scripts.setup_docker(brew)
     scripts.setup_python(brew)
     scripts.setup_node(brew)
+    # scripts.setup_docker(brew)
     brew.install("go")
     brew.install("dotnet-sdk", cask=True)
     brew.install("godot-mono", cask=True)

@@ -1,5 +1,4 @@
-"""Setup module containing a `setup` function for setting up Git on a new
-machine."""
+"""Setup module containing a `setup` function for setting up Git on a new machine."""
 
 __all__ = ["setup"]
 
@@ -56,10 +55,7 @@ def _install(pkg_manager: Union[HomeBrew, APT, WinGet]) -> None:
         )
         pkg_manager.install("gh")
     if isinstance(pkg_manager, WinGet):
-        pkg_manager.install(
-            "Git.Git GitHub.GitLFS GitHub.CLI "
-            "Microsoft.GitCredentialManagerCore"
-        )
+        pkg_manager.install("Git.Git GitHub.GitLFS GitHub.CLI Microsoft.GitCredentialManagerCore")
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
-"""Setup module containing a `setup` function for setting up Tailscale on a new
-machine."""
+"""Setup module containing a `setup` function for setting up Tailscale on a new machine."""
 
 __all__ = ["setup"]
 
@@ -38,9 +37,7 @@ def _setup_macos(brew: HomeBrew):
 
 def _setup_linux():
     if not utils.is_installed("tailscale"):
-        utils.shell.run(
-            "curl -fsSL https://tailscale.com/install.sh | sh", info=True
-        )
+        utils.shell.run("curl -fsSL https://tailscale.com/install.sh | sh", info=True)
     else:
         utils.shell.run("sudo tailscale update", info=True)
     utils.shell.run("sudo tailscale up", info=True)
@@ -55,9 +52,7 @@ def _setup_windows():
     installer_path = os.path.join(os.environ["TEMP"], "tailscale-setup.exe")
     urllib.request.urlretrieve(installer_url, installer_path)
     utils.shell.run(
-        f"Start-Process -FilePath {installer_path} "
-        "-ArgumentList '/quiet' -Wait",
-        throws=False,
+        f"Start-Process -FilePath {installer_path} -ArgumentList '/quiet' -Wait", throws=False
     )
     os.remove(installer_path)
     utils.shell.run("tailscale up", info=True)

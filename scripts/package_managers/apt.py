@@ -4,7 +4,7 @@ Debian machine."""
 __all__ = ["APT"]
 
 import logging
-from typing import override
+from typing import Union, override
 
 import utils
 from scripts.package_managers import PackageManager
@@ -15,12 +15,6 @@ LOGGER = logging.getLogger(__name__)
 
 class APT(PackageManager):
     """Advanced Package Tool (APT) package manager."""
-
-    def setup_fonts(self) -> None:
-        """Setup fonts on a new machine."""
-        LOGGER.info("Setting up fonts...")
-        self.install("fonts-jetbrains-mono")
-        LOGGER.debug("Fonts were setup successfully.")
 
     @staticmethod
     def add_keyring(keyring: str, repo: str, name: str) -> None:
@@ -45,7 +39,7 @@ class APT(PackageManager):
         LOGGER.debug("Keyring %s was added successfully.", keyring)
 
     @override
-    def install(self, package: str | list[str]) -> None:
+    def install(self, package: Union[str, list[str]]) -> None:
         if isinstance(package, str):
             package = package.split()
 

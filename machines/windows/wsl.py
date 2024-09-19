@@ -1,6 +1,9 @@
 """Setup module containing a `setup` function for setting up WSL."""
 
+__all__ = ["setup"]
+
 import config
+import scripts
 import utils
 from machines import LOGGER
 from scripts import git, shell
@@ -17,15 +20,15 @@ def setup() -> None:
     snap = SnapStore(apt)
 
     # setup core machine
-    git.setup(brew or apt)
     shell.setup(brew or apt)
     shell.install_nvim(brew or snap)
     shell.install_btop(brew or snap)
+    git.setup(brew or apt)
+    scripts.fonts.setup(brew or apt)
 
-    if brew:  # setup fonts
-        brew.setup_fonts()
-    else:
-        apt.setup_fonts()
+    # setup dev tools
+    scripts.setup_python(brew or apt)
+    scripts.setup_node(brew)
 
     LOGGER.info("Windows WSL setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

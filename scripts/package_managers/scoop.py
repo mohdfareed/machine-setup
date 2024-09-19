@@ -4,7 +4,7 @@ Windows machine."""
 __all__ = ["Scoop"]
 
 import logging
-from typing import override
+from typing import Union, override
 
 import utils
 from scripts.package_managers import PackageManager
@@ -31,7 +31,7 @@ class Scoop(PackageManager):
         LOGGER.debug("Bucket %s was added successfully.", bucket)
 
     @override
-    def install(self, package: str | list[str]) -> None:
+    def install(self, package: Union[str, list[str]]) -> None:
         if isinstance(package, str):
             package = package.split()
 
@@ -51,10 +51,7 @@ class Scoop(PackageManager):
 
         # install
         if not utils.is_installed("scoop"):
-            utils.shell.run(
-                "Set-ExecutionPolicy -ExecutionPolicy "
-                "RemoteSigned -Scope CurrentUser"
-            )
+            utils.shell.run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
             utils.shell.run('iex "& {$(irm get.scoop.sh)} -RunAsAdmin"')
         else:
             # update

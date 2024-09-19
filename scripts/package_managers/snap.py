@@ -22,17 +22,13 @@ class SnapStore(PackageManager):
         super().__init__()
 
     @override
-    def install(
-        self, package: Union[str, list[str]], classic: bool = False
-    ) -> None:
+    def install(self, package: Union[str, list[str]], classic: bool = False) -> None:
         if isinstance(package, str):
             package = package.split()
 
         for pkg in package:
             LOGGER.info("Installing %s from the snap store...", pkg)
-            utils.shell.run(
-                f"sudo snap install {pkg} {'--classic' if classic else ''}"
-            )
+            utils.shell.run(f"sudo snap install {pkg} {'--classic' if classic else ''}")
             LOGGER.debug("%s was installed successfully.", pkg)
         utils.shell.run("sudo snap refresh")
 

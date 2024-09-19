@@ -1,14 +1,6 @@
-"""Setup module containing a `setup` function for setting up the shell on a new
-machine.
-"""
+"""Setup module containing a `setup` function for setting up the shell on a new machine."""
 
-__all__ = [
-    "setup",
-    "setup_windows",
-    "install_btop",
-    "install_powershell",
-    "install_nvim",
-]
+__all__ = ["setup", "setup_windows", "install_btop", "install_powershell", "install_nvim"]
 
 import logging
 import os
@@ -87,9 +79,7 @@ def setup_windows(ps_profile: str = config.ps_profile) -> None:
     if not utils.is_windows():
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
     if not os.path.exists(ps_profile):
-        raise utils.SetupError(
-            "Machine powershell profile file does not exist."
-        )
+        raise utils.SetupError("Machine powershell profile file does not exist.")
 
     # resolve shell configuration paths
     vim = os.path.join(config.local_data, "nvim")
@@ -99,7 +89,7 @@ def setup_windows(ps_profile: str = config.ps_profile) -> None:
     LOGGER.debug("Shell setup complete.")
 
 
-def install_btop(pkg_manager: HomeBrew | Scoop | SnapStore) -> None:
+def install_btop(pkg_manager: Union[HomeBrew, Scoop, SnapStore]) -> None:
     """Install btop on a machine."""
     if isinstance(pkg_manager, HomeBrew):
         pkg_manager.install("btop")
@@ -109,7 +99,7 @@ def install_btop(pkg_manager: HomeBrew | Scoop | SnapStore) -> None:
         pkg_manager.install("btop")
 
 
-def install_powershell(pkg_manager: HomeBrew | WinGet | SnapStore) -> None:
+def install_powershell(pkg_manager: Union[HomeBrew, WinGet, SnapStore]) -> None:
     """Install PowerShell on a machine."""
     if isinstance(pkg_manager, HomeBrew):
         pkg_manager.install("powershell", cask=True)
@@ -119,7 +109,7 @@ def install_powershell(pkg_manager: HomeBrew | WinGet | SnapStore) -> None:
         pkg_manager.install("powershell")
 
 
-def install_nvim(pkg_manager: HomeBrew | WinGet | SnapStore) -> None:
+def install_nvim(pkg_manager: Union[HomeBrew, WinGet, SnapStore]) -> None:
     """Install NeoVim on a machine."""
     if isinstance(pkg_manager, HomeBrew):
         pkg_manager.install("nvim")

@@ -167,7 +167,7 @@
   ],
   "black-formatter.args": [
     "--line-length",
-    "79"
+    "99"
   ],
   "isort.args": [
     "--profile",

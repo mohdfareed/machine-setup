@@ -122,9 +122,7 @@ def setup_server(apt: Optional[APT]) -> None:
 
     if utils.is_windows():
         utils.shell.run("Add-WindowsCapability -Online -Name OpenSSH.Server")
-        utils.shell.run(
-            "Get-Service -Name sshd | Set-Service -StartupType Automatic"
-        )
+        utils.shell.run("Get-Service -Name sshd | Set-Service -StartupType Automatic")
         utils.shell.run("Start-Service sshd")
         LOGGER.debug("SSH server setup complete.")
         return
@@ -142,9 +140,7 @@ def setup_server(apt: Optional[APT]) -> None:
         return
 
     if utils.is_linux():
-        raise utils.SetupError(
-            "APT package manager is required for linux setup."
-        )
+        raise utils.SetupError("APT package manager is required for linux setup.")
     raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
 

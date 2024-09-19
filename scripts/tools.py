@@ -92,3 +92,7 @@ def setup_zed(pkg_manager: Optional[HomeBrew]) -> None:
     settings_file = os.path.join(config.xdg_config, "zed", "settings.json")
     utils.symlink(config.zed_settings, settings_file)
     LOGGER.debug("Zed was setup successfully.")
+
+
+if __name__ == "__main__":
+    raise RuntimeError("This script is not meant to be run directly.")

@@ -1,5 +1,7 @@
 """Setup module containing a `setup` function for setting up Windows."""
 
+__all__ = ["setup"]
+
 from typing import Optional
 
 import config
@@ -9,7 +11,7 @@ from machines import LOGGER, windows
 from scripts import git, shell, ssh, tailscale, vscode
 from scripts.package_managers import Scoop, WinGet
 
-# from . import setup_wsl, wsl
+from . import setup_wsl
 
 
 def setup(private_machine: Optional[str] = None) -> None:
@@ -48,7 +50,7 @@ def setup(private_machine: Optional[str] = None) -> None:
     scripts.setup_node(winget)
     winget.install("GoLang.Go")
     winget.install("Microsoft.DotNet.SDK")
-    # setup_wsl(wsl.setup)  # install ubuntu wsl
+    setup_wsl(windows.wsl)  # install ubuntu wsl
 
     # extras
     scoop.add_bucket("extras")

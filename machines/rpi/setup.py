@@ -1,4 +1,6 @@
-"""Setup module containing a `setup` function for setting up macOS."""
+"""Setup module containing a `setup` function for setting up a RPi."""
+
+__all__ = ["setup"]
 
 from typing import Optional
 
@@ -6,7 +8,7 @@ import config
 import scripts
 import utils
 from machines import LOGGER, rpi
-from scripts import git, shell, ssh, tailscale, vscode
+from scripts import fonts, git, shell, ssh, tailscale, vscode
 from scripts.package_managers import APT, SnapStore
 from utils import shell as shell_utils
 
@@ -41,7 +43,7 @@ def setup(private_machine: Optional[str] = None) -> None:
     vscode.setup(snap)
     vscode.setup_tunnels("rpi")
     tailscale.setup(None)
-    apt.setup_fonts()
+    fonts.setup(apt)
 
     # setup dev tools
     scripts.setup_docker(None)
@@ -51,18 +53,10 @@ def setup(private_machine: Optional[str] = None) -> None:
     snap.install("dotnet-sdk", classic=True)
 
     # machine-specific setup
-    shell_utils.run(
-        "sudo loginctl enable-linger $USER", throws=False
-    )  # code server
-    shell_utils.run(
-        "sudo chsh -s $(which zsh)", throws=False
-    )  # change default shell
-    shell_utils.run(
-        "sudo touch $HOME/.hushlogin", throws=False
-    )  # remove login message
-    shell_utils.run(
-        "sudo mkdir -p $HOME/.config", throws=False
-    )  # create config directory
+    shell_utils.run("sudo loginctl enable-linger $USER", throws=False)  # code server
+    shell_utils.run("sudo chsh -s $(which zsh)", throws=False)  # change default shell
+    shell_utils.run("sudo touch $HOME/.hushlogin", throws=False)  # remove login message
+    shell_utils.run("sudo mkdir -p $HOME/.config", throws=False)  # create config directory
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

@@ -1,8 +1,4 @@
-"""Shell commands execution. The module provides a function that can be used
-to run shell commands and retrieve their outputs and return codes.
-Individual commands can't display sudo prompts, so the password is cached and
-reused for all commands that require sudo access. If user input is required,
-the user must be prompted outside the shell command."""
+"""Shell commands execution."""
 
 __all__ = ["run", "ShellResults", "ShellError"]
 
@@ -17,8 +13,8 @@ LOGGER = logging.getLogger(__name__)
 """The shell logger."""
 
 # log matching tokens
-_ERROR_TOKENS = ["error"]
-_WARNING_TOKENS = ["warning"]
+_ERROR_TOKEN = "error"
+_WARNING_TOKEN = "warning"
 _SUDO_TOKEN = "sudo"
 
 _IS_WINDOWS = os.name == (_ := "nt")  # whether the OS is Windows
@@ -34,9 +30,7 @@ class SupportedExecutables(StrEnum):
 
 
 EXECUTABLE: SupportedExecutables = (
-    SupportedExecutables.ZSH
-    if not _IS_WINDOWS
-    else SupportedExecutables.PWSH_WIN
+    SupportedExecutables.ZSH if not _IS_WINDOWS else SupportedExecutables.PWSH_WIN
 )
 """The shell executable to use."""
 
@@ -50,41 +44,29 @@ def run(
     """Run a shell command and return its output and return code.
 
     Args:
-        command (str | list[str]): The command to run.
-        env (dict[str, str], optional): The environment variables to set for
-            the command. Defaults to None.
-        throws (bool, optional): Whether to throw an error if the command has a
-            non-zero return code. Defaults to True.
-        info (bool, optional): Wether to log output as info or debug. Defaults
-            to False, logging as debug.
+        command (str): The command to run.
+        env (Optional[dict[str, Any]]): Environment variables.
+        throws (bool, optional): Whether to throw on non-zero return code.
+        info (bool, optional): Wether to log debug messages as info.
 
     Returns:
         tuple[int, str]: The return code and output of the command.
 
     Raises:
-        ShellError: If the command has a non-zero return
-        code and `throws` is True.
-        KeyboardInterrupt: If the command is interrupted by the user.
-    """
+        ShellError: If the command has a non-zero return code and `throws` is True.
+        KeyboardInterrupt: If the command is interrupted by the user."""
     if _SUDO_TOKEN in command.lower() and not _IS_WINDOWS:
         LOGGER.debug("Running sudo command: %s", command)
 
-    # execute the command
     with _create_process(command, env) as process:
         results = _exec_process(process, info)
 
-    # handle return code and/or output
     if throws and results.returncode != 0:
-        raise ShellError(
-            command=command,
-            results=results,
-        )
+        raise ShellError(command=command, results=results)
     return results
 
 
-def _create_process(
-    command: str, env: Optional[dict[str, Any]] = None
-) -> subprocess.Popen[str]:
+def _create_process(command: str, env: Optional[dict[str, Any]] = None) -> subprocess.Popen[str]:
     sub_proc = None
 
     if EXECUTABLE == SupportedExecutables.PWSH_WIN:
@@ -119,18 +101,17 @@ def _create_process(
     return sub_proc
 
 
-def _exec_process(
-    process: subprocess.Popen[str], info: bool = False
-) -> "ShellResults":
-
+def _exec_process(process: subprocess.Popen[str], info: bool = False) -> "ShellResults":
     output = ""  # if the process has no output
     if process.stdout is None:
         return ShellResults(process.wait(), output)
 
     while True:  # read output from the process in real time
         line = process.stdout.readline().strip()
-        _log_line(line, info)  # log the line
         output += line
+
+        if line:  # log the line
+            _log_line(line, info)
 
         # break if process is done
         if process.poll() is not None:
@@ -139,15 +120,11 @@ def _exec_process(
 
 
 def _log_line(line: str, info: bool) -> None:
-    if not line:
-        return
+    line = _ANSI_ESCAPE.sub("", line)  # strip ANSI escape codes
 
-    # Strip ANSI escape codes
-    line = _ANSI_ESCAPE.sub("", line)
-
-    if any(token in line.lower() for token in _ERROR_TOKENS):
+    if _ERROR_TOKEN in line.lower():
         LOGGER.error(line)
-    elif any(token in line.lower() for token in _WARNING_TOKENS):
+    elif _WARNING_TOKEN in line.lower():
         LOGGER.warning(line)
     elif info:
         LOGGER.info(line)
@@ -169,9 +146,7 @@ class ShellResults(tuple[int, str]):
         return f"[{self.returncode}] {self.output}"
 
     def _repr__(self):
-        return (
-            f"ShellOutput(returncode={self.returncode}, output={self.output})"
-        )
+        return f"ShellOutput(returncode={self.returncode}, output={self.output})"
 
 
 class ShellError(Exception):
@@ -182,7 +157,4 @@ class ShellError(Exception):
 
 
 if _IS_WINDOWS:
-    run(
-        "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned "
-        "-Scope Process -Force"
-    )
+    run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force")

@@ -14,9 +14,7 @@ LOGGER = logging.getLogger(__name__)
 
 machine_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 logging_dir = os.path.join(machine_root, "logs")
-reduced_logging_modules: list[str] = (
-    []
-)  # modules with reduced (WARNING) logging level
+reduced_logging_modules: list[str] = []  # modules with reduced (WARNING) logging level
 
 
 def setup_logging(debug: bool = False) -> None:
@@ -26,9 +24,7 @@ def setup_logging(debug: bool = False) -> None:
         debug (bool): Whether to enable debug mode.
     """
     # logging formats
-    console_formatter = logging.Formatter(
-        r"%(message)s",
-    )
+    console_formatter = logging.Formatter(r"%(message)s")
     file_formatter = logging.Formatter(
         r"[%(asctime)s.%(msecs)03d] %(levelname)-8s "
         r"%(message)s - %(name)s [%(filename)s:%(lineno)d]",
@@ -53,9 +49,7 @@ def setup_logging(debug: bool = False) -> None:
 
     # setup file logger
     os.makedirs(os.path.dirname(logging_file), exist_ok=True)
-    file_handler = RotatingFileHandler(
-        logging_file, maxBytes=2**20, backupCount=10
-    )
+    file_handler = RotatingFileHandler(logging_file, maxBytes=2**20, backupCount=10)
     file_handler.setFormatter(file_formatter)
     file_handler.setLevel(logging.DEBUG)  # log all messages to file
 

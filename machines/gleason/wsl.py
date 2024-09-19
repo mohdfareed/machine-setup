@@ -1,11 +1,12 @@
-"""Setup module containing a `setup` function for setting up WSL for a Gleason
-machine."""
+"""Setup module containing a `setup` function for setting up WSL for a Gleason machine."""
+
+__all__ = ["setup"]
 
 import config
 import scripts
 import utils
 from machines import LOGGER, gleason
-from scripts import git, shell
+from scripts import fonts, git, shell
 from scripts.package_managers import APT, HomeBrew, SnapStore
 
 
@@ -23,11 +24,7 @@ def setup() -> None:
     shell.setup(brew or apt)
     shell.install_nvim(brew or snap)
     shell.install_btop(brew or snap)
-
-    if brew:  # setup fonts
-        brew.setup_fonts()
-    else:
-        apt.setup_fonts()
+    fonts.setup(brew or apt)
 
     # setup dev tools
     scripts.setup_python(brew or apt)

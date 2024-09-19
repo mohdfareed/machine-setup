@@ -1,32 +1,32 @@
 """Windows specific setup module."""
 
-import os
-from typing import Callable
+import os as _os
+import sys as _sys
+from types import ModuleType as _ModuleType
 
-import utils
-from machines import LOGGER
+import utils as _utils
+from machines import LOGGER as _LOGGER
 
-config = os.path.join(os.path.dirname(os.path.realpath(__file__)), "config")
-"""The path of macOS configuration files."""
+from . import wsl  # type: ignore
 
-ps_profile = os.path.join(config, "ps_profile.ps1")
+config = _os.path.join(_os.path.dirname(_os.path.realpath(__file__)), "config")
+"""The path of Windows configuration files."""
+ps_profile = _os.path.join(config, "ps_profile.ps1")
 """The path of Windows Powershell profile file."""
+ssh_config = _os.path.join(config, "ssh.config")
+"""The path of the Windows ssh config file."""
 
-ssh_config = os.path.join(config, "ssh.config")
-"""The path of the global ssh config file."""
 
-
-# FIXME: find better way to run wsl setup script, doesn't work as is
-def setup_wsl(wsl_setup_handler: Callable[[], None]) -> None:
+def setup_wsl(wsl_module: _ModuleType, setup_args: str = "") -> None:
     """Setup WSL on a new machine."""
-    LOGGER.info("Setting up WSL...")
-    utils.shell.run("wsl --install", info=True)
-    current_shell = utils.shell.EXECUTABLE
 
-    utils.shell.EXECUTABLE = utils.shell.SupportedExecutables.WSL
-    wsl_setup_handler()
-    utils.shell.EXECUTABLE = current_shell
-    LOGGER.info("WSL setup complete.")
+    _LOGGER.info("Setting up WSL...")
+    _utils.shell.run("wsl --install", info=True)
+    current_shell = _utils.shell.EXECUTABLE
+    _utils.shell.EXECUTABLE = _utils.shell.SupportedExecutables.WSL
+    _utils.shell.run(f"{_sys.executable} {wsl_module.__name__} {setup_args}")
+    _utils.shell.EXECUTABLE = current_shell
+    _LOGGER.info("WSL setup complete.")
 
 
 __all__ = ["config", "ps_profile", "ssh_config", "setup_wsl"]

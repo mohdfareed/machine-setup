@@ -5,7 +5,7 @@ __all__ = ["HomeBrew"]
 
 import logging
 import os
-from typing import Optional, override
+from typing import Optional, Union, override
 
 import utils
 from scripts.package_managers import PackageManager
@@ -37,16 +37,8 @@ class HomeBrew(PackageManager):
             LOGGER.error("Homebrew is not supported: %s", ex)
             return None
 
-    def setup_fonts(self) -> None:
-        """Setup fonts on a new machine."""
-
-        LOGGER.info("Setting up fonts...")
-        self.install("font-computer-modern")
-        self.install("font-jetbrains-mono-nerd-font")
-        LOGGER.debug("Fonts were setup successfully.")
-
     @override
-    def install(self, package: str | list[str], cask: bool = False) -> None:
+    def install(self, package: Union[str, list[str]], cask: bool = False) -> None:
         if isinstance(package, str):
             package = package.split()
 
@@ -59,9 +51,7 @@ class HomeBrew(PackageManager):
     @override
     @staticmethod
     def is_supported() -> bool:
-        return utils.is_macos() or (
-            (utils.is_linux() or utils.is_windows()) and not utils.is_arm()
-        )
+        return utils.is_macos() or not utils.is_arm()
 
     @override
     def _setup(self) -> None:

@@ -1,5 +1,4 @@
-"""Setup module containing a `setup` function for setting up VSCode on a new
-machine."""
+"""Setup module containing a `setup` function for setting up VSCode on a new machine."""
 
 __all__ = ["setup", "setup_tunnels"]
 
@@ -33,7 +32,7 @@ elif utils.is_windows():
     vscode = os.path.join(os.environ["APPDATA"], "Code", "User")
 
 
-def setup(pkg_manager: HomeBrew | SnapStore | WinGet) -> None:
+def setup(pkg_manager: Union[HomeBrew, SnapStore, WinGet]) -> None:
     """Setup VSCode on a new machine."""
 
     LOGGER.info("Setting up VSCode...")
@@ -62,10 +61,7 @@ def setup_tunnels(name: str) -> None:
         raise utils.SetupError("VSCode is not installed on this machine.")
 
     LOGGER.info("Setting up VSCode SSH tunnels...")
-    cmd = (
-        f"code tunnel service install "
-        f"--accept-server-license-terms --name {name}"
-    )
+    cmd = f"code tunnel service install " f"--accept-server-license-terms --name {name}"
     shell.run(cmd, info=True)
     LOGGER.debug("VSCode SSH tunnels were setup successfully.")
 

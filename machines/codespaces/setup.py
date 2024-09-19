@@ -3,7 +3,7 @@
 import config
 import utils
 from machines import LOGGER, codespaces
-from scripts import git, shell
+from scripts import fonts, git, shell
 from scripts.package_managers import APT, SnapStore
 
 
@@ -20,7 +20,7 @@ def setup() -> None:
     shell.setup(apt, zshrc=codespaces.zshrc)
     shell.install_nvim(snap)
     shell.install_btop(snap)
-    apt.setup_fonts()
+    fonts.setup(apt)
 
     # set zsh as the default shell
     cmd = 'sudo chsh "$(id -un)" --shell "/usr/bin/zsh"'
