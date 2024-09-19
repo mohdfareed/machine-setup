@@ -4,7 +4,7 @@ __all__ = ["setup", "setup_tunnels"]
 
 import logging
 import os
-from typing import Optional, Union
+from typing import Union
 
 import config
 import utils
@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 """The VSCode setup logger."""
 
 
-vscode: Optional[str] = None
+vscode: str
 """The path to the VSCode user settings directory."""
 
 if utils.is_macos():
@@ -28,21 +28,16 @@ if utils.is_macos():
     )
 elif utils.is_linux():
     vscode = os.path.join(os.path.expanduser("~"), ".config", "Code", "User")
-elif utils.is_windows():
+else:  # windows
     vscode = os.path.join(os.environ["APPDATA"], "Code", "User")
 
 
 def setup(pkg_manager: Union[HomeBrew, SnapStore, WinGet]) -> None:
     """Setup VSCode on a new machine."""
-
     LOGGER.info("Setting up VSCode...")
-    if not vscode:
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
-
     _install(pkg_manager)
     for file in os.listdir(config.vscode):
         utils.symlink_at(os.path.join(config.vscode, file), vscode)
-
     LOGGER.debug("VSCode was setup successfully.")
 
 

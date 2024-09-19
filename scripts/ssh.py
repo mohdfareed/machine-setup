@@ -29,7 +29,6 @@ def setup(ssh_config: Optional[str], ssh_keys=config.ssh_keys) -> None:  # type:
     config file are copied from the specified directory."""
 
     LOGGER.info("Setting up SSH...")
-
     if ssh_config:  # symlink ssh config file
         utils.symlink(ssh_config, os.path.join(SSH_DIR, "config"))
 

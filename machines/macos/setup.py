@@ -9,9 +9,7 @@ import config
 import scripts
 import utils
 from machines import LOGGER, macos
-from scripts import fonts, git, shell, ssh, tailscale, vscode
-from scripts.package_managers import MAS, HomeBrew
-from utils import shell as shell_utils
+from scripts import package_managers
 
 PAM_SUDO = os.path.join("/", "etc", "pam.d", "sudo_local")
 """The path to the sudo PAM configuration file on macOS."""
@@ -33,35 +31,35 @@ def setup(private_machine: Optional[str] = None) -> None:
 
     LOGGER.info("Authenticate to accept Xcode license.")
     try:  # ensure xcode license is accepted
-        shell_utils.run("sudo xcodebuild -license accept", info=True)
-    except shell_utils.ShellError as ex:
+        utils.shell.run("sudo xcodebuild -license accept", info=True)
+    except utils.shell.ShellError as ex:
         raise utils.SetupError(
             "Failed to accept Xcode license. "
             "Ensure Xcode is installed using: xcode-select --install"
         ) from ex
 
     # setup package managers
-    brew = HomeBrew()
-    MAS(brew)
+    brew = package_managers.HomeBrew()
+    package_managers.MAS(brew)
 
     # setup shell
-    shell.setup(brew, macos.zshrc, macos.zshenv)
-    shell.install_nvim(brew)
-    shell.install_btop(brew)
+    scripts.shell.setup(brew, macos.zshrc, macos.zshenv)
+    scripts.shell.install_nvim(brew)
+    scripts.shell.install_btop(brew)
 
     # setup ssh
-    ssh.setup(macos.ssh_config)
-    ssh.setup_server(None)
+    scripts.ssh.setup(macos.ssh_config)
+    scripts.ssh.setup_server(None)
 
     # setup core machine
-    git.setup(brew)
-    vscode.setup(brew)
-    tailscale.setup(brew)
-    fonts.setup(brew)
-    # brew.install_brewfile(macos.brewfile)
+    scripts.git.setup(brew)
+    scripts.vscode.setup(brew)
+    scripts.tailscale.setup(brew)
+    scripts.tools.setup(brew)
+    # scripts.brew.install_brewfile(macos.brewfile)
 
     # setup dev tools
-    shell.install_powershell(brew)
+    scripts.shell.install_powershell(brew)
     scripts.setup_python(brew)
     scripts.setup_node(brew)
     # scripts.setup_docker(brew)
@@ -71,7 +69,7 @@ def setup(private_machine: Optional[str] = None) -> None:
 
     # setup system preferences
     LOGGER.debug("Setting system preferences...")
-    shell_utils.run(f". {macos.preferences}")
+    utils.shell.run(f". {macos.preferences}")
     enable_touch_id()
 
     LOGGER.info("macOS setup complete.")

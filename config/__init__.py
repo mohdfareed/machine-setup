@@ -45,14 +45,10 @@ _env_file = ps_profile if _utils.is_windows() else zshenv
 MACHINE = _utils.load_env_var(_env_file, "MACHINE")
 """The path to the machine repository."""
 
-private_env = _utils.load_env_var(
-    ps_profile if _utils.is_windows() else zshenv, "PRIVATE_ENV"
-)
+private_env = _utils.load_env_var(ps_profile if _utils.is_windows() else zshenv, "PRIVATE_ENV")
 """The path of the machine private environment file."""
 
-ssh_keys = _utils.load_env_var(
-    ps_profile if _utils.is_windows() else zshenv, "SSH_KEYS"
-)
+ssh_keys = _utils.load_env_var(ps_profile if _utils.is_windows() else zshenv, "SSH_KEYS")
 """The path of the machine ssh keys directory."""
 
 # os-specific environment variables ===========================================
@@ -98,6 +94,8 @@ def report(machine_config: Optional[dict[str, str]]) -> None:
     """
 
     LOGGER.debug("Machine configuration:")
+    LOGGER.debug("\tOS: %s", _utils.OS)
+    LOGGER.debug("\tArch: %s", _utils.ARCH)
     LOGGER.debug("\tMACHINE: %s", MACHINE)
     LOGGER.debug("\tPRIVATE_ENV: %s", private_env)
     LOGGER.debug("\tSSH_KEYS: %s", ssh_keys)
@@ -114,4 +112,3 @@ def report(machine_config: Optional[dict[str, str]]) -> None:
         LOGGER.debug("Additional configuration:")
         for key, value in machine_config.items():
             LOGGER.debug("\t%s: %s", key, value)
-    LOGGER.debug("Machine configuration reported.")

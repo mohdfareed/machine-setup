@@ -6,8 +6,7 @@ import config
 import scripts
 import utils
 from machines import LOGGER, gleason, windows
-from scripts import git, shell, vscode
-from scripts.package_managers import Scoop, WinGet
+from scripts import package_managers
 
 
 def setup() -> None:
@@ -16,18 +15,18 @@ def setup() -> None:
     utils.shell.run("wsl --install", info=True)
 
     # setup package managers
-    winget = WinGet()
-    scoop = Scoop()
+    winget = package_managers.WinGet()
+    scoop = package_managers.Scoop()
 
     # setup shell
-    shell.setup_windows(windows.ps_profile)
-    shell.install_powershell(winget)
-    shell.install_nvim(winget)
-    shell.install_btop(scoop)
+    scripts.shell.setup_windows(windows.ps_profile)
+    scripts.shell.install_powershell(winget)
+    scripts.shell.install_nvim(winget)
+    scripts.shell.install_btop(scoop)
 
     # setup core machine
-    git.setup(winget, gleason.gitconfig)
-    vscode.setup(winget)
+    scripts.git.setup(winget, gleason.gitconfig)
+    scripts.vscode.setup(winget)
     scoop.setup_fonts()
 
     # setup dev tools

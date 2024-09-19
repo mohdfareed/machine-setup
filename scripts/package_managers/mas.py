@@ -46,6 +46,7 @@ class MAS(PackageManager):
     def _setup(self) -> None:
         LOGGER.info("Setting up the Mac App Store...")
         self.homebrew.install("mas")
+        LOGGER.info("Updating Mac App Store applications...")
         shell.run("mas upgrade")
         LOGGER.info("Mac App Store setup complete.")
 

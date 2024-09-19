@@ -46,6 +46,7 @@ class HomeBrew(PackageManager):
             LOGGER.info("Installing %s from Homebrew...", pkg)
             shell.run(f"{self.brew} install {'--cask' if cask else ''} {pkg}")
             LOGGER.debug("%s was installed successfully.", pkg)
+        LOGGER.debug("Cleaning up...")
         shell.run(f"{self.brew} cleanup --prune=all", throws=False)
 
     @override

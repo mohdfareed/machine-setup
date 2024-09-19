@@ -1,10 +1,10 @@
 """Setup module containing a `setup` function for setting up a codespace."""
 
 import config
+import scripts
 import utils
 from machines import LOGGER, codespaces
-from scripts import fonts, git, shell
-from scripts.package_managers import APT
+from scripts import package_managers
 
 
 def setup() -> None:
@@ -12,12 +12,12 @@ def setup() -> None:
     LOGGER.info("Setting up codespace...")
 
     # package managers
-    apt = APT()
+    apt = package_managers.APT()
 
     # setup core tools
-    git.setup(apt)
-    shell.setup(apt, zshrc=codespaces.zshrc)
-    fonts.setup(apt)
+    scripts.git.setup(apt)
+    scripts.shell.setup(apt, zshrc=codespaces.zshrc)
+    scripts.tools.setup(apt)
 
     # set zsh as the default shell
     cmd = 'sudo chsh "$(id -un)" --shell "/usr/bin/zsh"'

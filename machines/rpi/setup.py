@@ -8,9 +8,7 @@ import config
 import scripts
 import utils
 from machines import LOGGER, rpi
-from scripts import fonts, git, shell, ssh, tailscale, vscode
-from scripts.package_managers import APT, SnapStore
-from utils import shell as shell_utils
+from scripts import package_managers
 
 PACKAGES = ["zsh", "git", "code", "npm", "docker-compose"]
 
@@ -24,26 +22,26 @@ def setup(private_machine: Optional[str] = None) -> None:
         config.link_private_config(private_machine)
 
     # package managers
-    apt = APT()
-    snap = SnapStore(apt)
+    apt = package_managers.APT()
+    snap = package_managers.SnapStore(apt)
 
     # setup shell
-    shell.setup(apt, rpi.zshrc, rpi.zshenv)
-    shell.install_nvim(snap)
-    shell.install_btop(snap)
-    shell.install_powershell(snap)
+    scripts.shell.setup(apt, rpi.zshrc, rpi.zshenv)
+    scripts.shell.install_nvim(snap)
+    scripts.shell.install_btop(snap)
+    scripts.shell.install_powershell(snap)
 
     # setup ssh
-    ssh.generate_key_pair("personal")
-    ssh.setup(rpi.ssh_config)
-    ssh.setup_server(apt)
+    scripts.ssh.generate_key_pair("personal")
+    scripts.ssh.setup(rpi.ssh_config)
+    scripts.ssh.setup_server(apt)
 
     # setup core machine
-    git.setup(apt)
-    vscode.setup(snap)
-    vscode.setup_tunnels("rpi")
-    tailscale.setup(None)
-    fonts.setup(apt)
+    scripts.git.setup(apt)
+    scripts.vscode.setup(snap)
+    scripts.vscode.setup_tunnels("rpi")
+    scripts.tailscale.setup(None)
+    scripts.tools.setup(apt)
 
     # setup dev tools
     scripts.setup_docker(None)
@@ -53,10 +51,10 @@ def setup(private_machine: Optional[str] = None) -> None:
     snap.install("dotnet-sdk", classic=True)
 
     # machine-specific setup
-    shell_utils.run("sudo loginctl enable-linger $USER", throws=False)  # code server
-    shell_utils.run("sudo chsh -s $(which zsh)", throws=False)  # change default shell
-    shell_utils.run("sudo touch $HOME/.hushlogin", throws=False)  # remove login message
-    shell_utils.run("sudo mkdir -p $HOME/.config", throws=False)  # create config directory
+    utils.shell.run("sudo loginctl enable-linger $USER", throws=False)  # code server
+    utils.shell.run("sudo chsh -s $(which zsh)", throws=False)  # change default shell
+    utils.shell.run("sudo touch $HOME/.hushlogin", throws=False)  # remove login message
+    utils.shell.run("sudo mkdir -p $HOME/.config", throws=False)  # create config directory
 
     LOGGER.info("Raspberry Pi setup complete.")
     LOGGER.warning("Restart for some changes to apply.")

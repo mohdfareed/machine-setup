@@ -8,8 +8,7 @@ import config
 import scripts
 import utils
 from machines import LOGGER, windows
-from scripts import git, shell, ssh, tailscale, vscode
-from scripts.package_managers import Scoop, WinGet
+from scripts import package_managers
 
 from . import setup_wsl
 
@@ -23,25 +22,25 @@ def setup(private_machine: Optional[str] = None) -> None:
         config.link_private_config(private_machine)
 
     # setup package managers
-    winget = WinGet()
-    scoop = Scoop()
+    winget = package_managers.WinGet()
+    scoop = package_managers.Scoop()
 
     # setup shell
-    shell.setup_windows(windows.ps_profile)
-    shell.install_powershell(winget)
-    shell.install_nvim(winget)
-    shell.install_btop(scoop)
+    scripts.shell.setup_windows(windows.ps_profile)
+    scripts.shell.install_powershell(winget)
+    scripts.shell.install_nvim(winget)
+    scripts.shell.install_btop(scoop)
 
     # setup ssh
-    ssh.generate_key_pair("personal")
-    ssh.setup(windows.ssh_config)
-    ssh.setup_server(None)
+    scripts.ssh.generate_key_pair("personal")
+    scripts.ssh.setup(windows.ssh_config)
+    scripts.ssh.setup_server(None)
 
     # setup core machine
-    git.setup(winget)
-    vscode.setup(winget)
-    vscode.setup_tunnels("pc")
-    tailscale.setup(None)
+    scripts.git.setup(winget)
+    scripts.vscode.setup(winget)
+    scripts.vscode.setup_tunnels("pc")
+    scripts.tailscale.setup(None)
     scoop.setup_fonts()
 
     # setup dev tools

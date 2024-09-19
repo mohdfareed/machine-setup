@@ -6,8 +6,7 @@ import config
 import scripts
 import utils
 from machines import LOGGER, gleason
-from scripts import fonts, git, shell
-from scripts.package_managers import APT, HomeBrew, SnapStore
+from scripts import package_managers
 
 
 def setup() -> None:
@@ -15,16 +14,16 @@ def setup() -> None:
     LOGGER.info("Setting up WSL...")
 
     # package managers
-    brew = HomeBrew.safe_setup()
-    apt = APT()
-    snap = SnapStore(apt)
+    brew = package_managers.HomeBrew.safe_setup()
+    apt = package_managers.APT()
+    snap = package_managers.SnapStore(apt)
 
     # setup core machine
-    git.setup(brew or apt, gitconfig=gleason.gitconfig)
-    shell.setup(brew or apt)
-    shell.install_nvim(brew or snap)
-    shell.install_btop(brew or snap)
-    fonts.setup(brew or apt)
+    scripts.git.setup(brew or apt, gitconfig=gleason.gitconfig)
+    scripts.shell.setup(brew or apt)
+    scripts.shell.install_nvim(brew or snap)
+    scripts.shell.install_btop(brew or snap)
+    scripts.tools.setup(brew or apt)
 
     # setup dev tools
     scripts.setup_python(brew or apt)

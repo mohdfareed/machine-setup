@@ -22,6 +22,7 @@ if utils.is_windows():
         "profile.ps1",
     )
     """The path to the PowerShell profile file."""
+
 else:
     ZSHENV = os.path.join(os.path.expanduser("~"), ".zshenv")
     """The path to the zsh environment file symlink."""
