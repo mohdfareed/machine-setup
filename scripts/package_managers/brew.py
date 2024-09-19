@@ -1,9 +1,11 @@
 """Setup module containing a `setup` function for setting up Homebrew on a new
 machine."""
 
+__all__ = ["HomeBrew"]
+
 import logging
 import os
-from typing import override
+from typing import Optional, override
 
 import utils
 from scripts.package_managers import PackageManager
@@ -26,7 +28,7 @@ class HomeBrew(PackageManager):
     """The path to the brew executable."""
 
     @classmethod
-    def safe_setup(cls) -> "HomeBrew | None":
+    def safe_setup(cls) -> "Optional[HomeBrew]":
         """Safely setup Homebrew without throwing exceptions."""
 
         try:
@@ -91,4 +93,4 @@ class HomeBrew(PackageManager):
 
 if __name__ == "__main__":
     args = utils.startup(description="Homebrew setup script.")
-    utils.execute(HomeBrew)
+    utils.execute(HomeBrew.__init__)

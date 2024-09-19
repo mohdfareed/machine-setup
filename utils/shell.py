@@ -1,17 +1,19 @@
 """Shell commands execution. The module provides a function that can be used
 to run shell commands and retrieve their outputs and return codes.
 Individual commands can't display sudo prompts, so the password is cached and
-reused for all commands that require sudo access.
-If user input is required, the user must be prompted outside the shell command.
-"""
+reused for all commands that require sudo access. If user input is required,
+the user must be prompted outside the shell command."""
 
-import logging as _logging
-import os as _os
-import re as _re
-import subprocess as _subprocess
-from enum import StrEnum as _StrEnum
+__all__ = ["run", "ShellResults", "ShellError"]
 
-LOGGER = _logging.getLogger(__name__)
+import logging
+import os
+import re
+import subprocess
+from enum import StrEnum
+from typing import Any, Optional
+
+LOGGER = logging.getLogger(__name__)
 """The shell logger."""
 
 # log matching tokens
@@ -19,11 +21,11 @@ _ERROR_TOKENS = ["error"]
 _WARNING_TOKENS = ["warning"]
 _SUDO_TOKEN = "sudo"
 
-_IS_WINDOWS = _os.name == (_ := "nt")  # whether the OS is Windows
-_ANSI_ESCAPE = _re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")  # ANSI escape codes
+_IS_WINDOWS = os.name == (_ := "nt")  # whether the OS is Windows
+_ANSI_ESCAPE = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")  # ANSI escape codes
 
 
-class SupportedExecutables(_StrEnum):
+class SupportedExecutables(StrEnum):
     """Supported shell executables."""
 
     ZSH = "/bin/zsh"
@@ -31,14 +33,20 @@ class SupportedExecutables(_StrEnum):
     WSL = "wsl"
 
 
-EXECUTABLE: SupportedExecutables = SupportedExecutables.ZSH
+EXECUTABLE: SupportedExecutables = (
+    SupportedExecutables.ZSH
+    if not _IS_WINDOWS
+    else SupportedExecutables.PWSH_WIN
+)
 """The shell executable to use."""
 
-if _IS_WINDOWS:
-    EXECUTABLE = SupportedExecutables.PWSH_WIN
 
-
-def run(command: str, env=None, throws=True, info=False) -> "ShellResults":
+def run(
+    command: str,
+    env: Optional[dict[str, Any]] = None,
+    throws: bool = True,
+    info: bool = False,
+) -> "ShellResults":
     """Run a shell command and return its output and return code.
 
     Args:
@@ -58,7 +66,7 @@ def run(command: str, env=None, throws=True, info=False) -> "ShellResults":
         code and `throws` is True.
         KeyboardInterrupt: If the command is interrupted by the user.
     """
-    if _SUDO_TOKEN in command.lower() and _os.name != _IS_WINDOWS:
+    if _SUDO_TOKEN in command.lower() and not _IS_WINDOWS:
         LOGGER.debug("Running sudo command: %s", command)
 
     # execute the command
@@ -74,43 +82,45 @@ def run(command: str, env=None, throws=True, info=False) -> "ShellResults":
     return results
 
 
-def _create_process(command: str, env=None) -> _subprocess.Popen[str]:
-    subprocess = None
+def _create_process(
+    command: str, env: Optional[dict[str, Any]] = None
+) -> subprocess.Popen[str]:
+    sub_proc = None
 
     if EXECUTABLE == SupportedExecutables.PWSH_WIN:
-        subprocess = _subprocess.Popen(  # pylint: disable=consider-using-with
+        sub_proc = subprocess.Popen(  # pylint: disable=consider-using-with
             [EXECUTABLE, "-Command", command],
             env=env,
-            stdout=_subprocess.PIPE,
-            stderr=_subprocess.STDOUT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             text=True,
         )
 
     elif EXECUTABLE == SupportedExecutables.WSL:
-        subprocess = _subprocess.Popen(  # pylint: disable=consider-using-with
+        sub_proc = subprocess.Popen(  # pylint: disable=consider-using-with
             [EXECUTABLE, "-e", "bash", "-c", f"'{command}'"],
             env=env,
-            stdout=_subprocess.PIPE,
-            stderr=_subprocess.STDOUT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             text=True,
         )
 
     else:  # default to unix shell
-        subprocess = _subprocess.Popen(  # pylint: disable=consider-using-with
+        sub_proc = subprocess.Popen(  # pylint: disable=consider-using-with
             command,
             env=env,
-            stdout=_subprocess.PIPE,
-            stderr=_subprocess.STDOUT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
             executable=EXECUTABLE,
             shell=True,
             text=True,
         )
 
-    return subprocess
+    return sub_proc
 
 
 def _exec_process(
-    process: _subprocess.Popen[str], info=False
+    process: subprocess.Popen[str], info: bool = False
 ) -> "ShellResults":
 
     output = ""  # if the process has no output
@@ -158,7 +168,7 @@ class ShellResults(tuple[int, str]):
     def __str__(self):
         return f"[{self.returncode}] {self.output}"
 
-    def __repr__(self):
+    def _repr__(self):
         return (
             f"ShellOutput(returncode={self.returncode}, output={self.output})"
         )
@@ -167,8 +177,8 @@ class ShellResults(tuple[int, str]):
 class ShellError(Exception):
     """Exception due to a shell error."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, kwargs)
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)
 
 
 if _IS_WINDOWS:

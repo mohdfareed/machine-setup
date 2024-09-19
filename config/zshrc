@@ -30,22 +30,34 @@ zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 # =============================================================================
 
 alias zsh::reload='exec $SHELL'
+alias zsh::source='source $ZDOTDIR/.zshrc'
+alias brew::update='brew update && brew upgrade'
+alias brew::cleanup='brew autoremove && brew cleanup'
 alias cat='bat --paging=never'
 alias vim='nvim'
-alias ls='eza --group-directories-first --sort=Name --icons automatic'
+alias ls='eza --icons --group-directories-first --sort=Name '
 alias lst='ls -T'
 alias lls='ls -lhmU --git --no-user'
 alias llst='lls -T'
+alias update='brew::update && zinit update && zinit self-update'
+alias cleanup='brew::cleanup && zinit delete --clean'
+
+# copy ssh key to machine, default user is current user
+ssh::copy() {
+    usage="usage: $0 host [user]"
+    if (($# < 1 || $# > 2)); then echo $usage && return 1; fi
+    ssh-copy-id ${2-$USER}@$1
+}
 
 # time the startup of shell
-time-startup() {
+zsh::time() {
     usage="usage: $0 [iterations]"
     if (($# > 1)); then echo $usage && return 1; fi
     for i in $(seq 1 ${1-1}); do time $SHELL -i -c exit; done
 }
 
 # activate python virtual environment
-venv-activate() {
+venv() {
     usage="usage: $0 [venv_dir]"
     if (($# > 1)); then echo $usage && return 1; fi
 
@@ -54,18 +66,7 @@ venv-activate() {
         echo "No virtual environment directory found"
         return 1
     fi
-
     source "$venv/bin/activate"
-}
-
-# uninstall homebrew package with its dependencies
-brew-uninstall() {
-    usage="usage: $0 package..."
-    if (($# < 1)); then echo $usage && return 1; fi
-
-    brew uninstall $@
-    brew autoremove
-    brew cleanup
 }
 
 # endregion

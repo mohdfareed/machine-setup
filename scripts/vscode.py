@@ -1,8 +1,11 @@
 """Setup module containing a `setup` function for setting up VSCode on a new
 machine."""
 
+__all__ = ["setup", "setup_tunnels"]
+
 import logging
 import os
+from typing import Optional, Union
 
 import config
 import utils
@@ -13,11 +16,11 @@ LOGGER = logging.getLogger(__name__)
 """The VSCode setup logger."""
 
 
-VSCODE: str | None = None
+vscode: Optional[str] = None
 """The path to the VSCode user settings directory."""
 
 if utils.is_macos():
-    VSCODE = os.path.join(
+    vscode = os.path.join(
         os.path.expanduser("~"),
         "Library",
         "Application Support",
@@ -25,31 +28,26 @@ if utils.is_macos():
         "User",
     )
 elif utils.is_linux():
-    VSCODE = os.path.join(os.path.expanduser("~"), ".config", "Code", "User")
+    vscode = os.path.join(os.path.expanduser("~"), ".config", "Code", "User")
 elif utils.is_windows():
-    VSCODE = os.path.join(os.environ["APPDATA"], "Code", "User")
-
-
-_config_files = ["settings.json", "keybindings.json", "snippets"]
+    vscode = os.path.join(os.environ["APPDATA"], "Code", "User")
 
 
 def setup(pkg_manager: HomeBrew | SnapStore | WinGet) -> None:
     """Setup VSCode on a new machine."""
 
     LOGGER.info("Setting up VSCode...")
-    if not VSCODE:
+    if not vscode:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
     _install(pkg_manager)
     for file in os.listdir(config.vscode):
-        if file not in _config_files:
-            continue
-        utils.symlink_at(os.path.join(config.vscode, file), VSCODE)
+        utils.symlink_at(os.path.join(config.vscode, file), vscode)
 
     LOGGER.debug("VSCode was setup successfully.")
 
 
-def _install(pkg_manager):
+def _install(pkg_manager: Union[HomeBrew, SnapStore, WinGet]) -> None:
     if isinstance(pkg_manager, HomeBrew) and (brew := pkg_manager):
         brew.install("visual-studio-code")
     if isinstance(pkg_manager, WinGet) and (winget := pkg_manager):

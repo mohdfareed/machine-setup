@@ -1,5 +1,5 @@
-"""Helper functions that wraps setup execution with error handling and logging.
-"""
+"""Utilities for setting up logging, shell execution, and other helpers."""
 
-from . import logging, shell
-from .helpers import *  # make all helpers available at the root level
+from .helpers import *
+from .logging import *
+from .shell import *

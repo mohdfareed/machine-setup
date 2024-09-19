@@ -1,8 +1,10 @@
-"""Setup module containing a `setup` function for setting up MAS on a new
-machine."""
+"""Setup module containing a `setup` function for setting up the Mac App Store
+CLI on a new machine."""
+
+__all__ = ["MAS"]
 
 import logging
-from typing import override
+from typing import Union, override
 
 import utils
 from scripts.package_managers import HomeBrew, PackageManager
@@ -24,7 +26,7 @@ class MAS(PackageManager):
         super().__init__()
 
     @override
-    def install(self, package: str | list[str]) -> None:
+    def install(self, package: Union[str, list[str]]) -> None:
         if isinstance(package, str):
             package = package.split()
 
@@ -48,4 +50,5 @@ class MAS(PackageManager):
 
 
 if __name__ == "__main__":
-    raise RuntimeError("This script is not meant to be run directly.")
+    args = utils.startup(description="Mac App Store setup script.")
+    utils.execute(MAS.__init__)

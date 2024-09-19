@@ -1,9 +1,12 @@
 """Setup module containing a `setup` function for setting up Tailscale on a new
 machine."""
 
+__all__ = ["setup"]
+
 import logging
 import os
 import urllib.request
+from typing import Optional
 
 import utils
 from scripts.package_managers import HomeBrew
@@ -12,10 +15,9 @@ LOGGER = logging.getLogger(__name__)
 """The tailscale setup logger."""
 
 
-def setup(brew: HomeBrew | None) -> None:
+def setup(brew: Optional[HomeBrew]) -> None:
     """Setup tailscale on a new machine."""
     LOGGER.info("Setting up tailscale...")
-
     if utils.is_macos() and brew:
         _setup_macos(brew)
     elif utils.is_linux():
@@ -26,7 +28,6 @@ def setup(brew: HomeBrew | None) -> None:
         raise utils.SetupError("Homebrew is required for macOS.")
     else:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
-
     LOGGER.debug("Tailscale was setup successfully.")
 
 

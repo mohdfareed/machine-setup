@@ -2,8 +2,17 @@
 machine.
 """
 
+__all__ = [
+    "setup",
+    "setup_windows",
+    "install_btop",
+    "install_powershell",
+    "install_nvim",
+]
+
 import logging
 import os
+from typing import Union
 
 import config
 import utils
@@ -29,7 +38,9 @@ else:
 
 
 def setup(
-    pkg_manager: HomeBrew | APT, zshrc=config.zshrc, zshenv=config.zshenv
+    pkg_manager: Union[HomeBrew, APT],
+    zshrc: str = config.zshrc,
+    zshenv: str = config.zshenv,
 ) -> None:
     """Setup the shell environment on a machine."""
 
@@ -40,9 +51,7 @@ def setup(
         raise utils.SetupError("Machine zshrc file does not exist.")
     if not os.path.exists(zshenv):
         raise utils.SetupError("Machine zshenv file does not exist.")
-
-    # install zsh
-    pkg_manager.install("zsh")
+    pkg_manager.install("zsh")  # install zsh
 
     # resolve shell configuration paths
     _zshrc = os.path.join(ZDOTDIR, ".zshrc")
@@ -68,10 +77,10 @@ def setup(
     shell.run("sudo rm -rf ~/.zsh_sessions", throws=False)
     shell.run("sudo rm -rf ~/.zsh_history", throws=False)
     shell.run("sudo rm -rf ~/.lesshst", throws=False)
-    LOGGER.info("Shell setup complete.")
+    LOGGER.debug("Shell setup complete.")
 
 
-def setup_windows(ps_profile=config.ps_profile) -> None:
+def setup_windows(ps_profile: str = config.ps_profile) -> None:
     """Setup the shell environment on a Windows machine."""
 
     LOGGER.info("Setting up shell...")
@@ -84,10 +93,10 @@ def setup_windows(ps_profile=config.ps_profile) -> None:
 
     # resolve shell configuration paths
     vim = os.path.join(config.local_data, "nvim")
-
     # symlink config files
     utils.symlink(config.vim, vim)
     utils.symlink(config.ps_profile, PS_PROFILE)
+    LOGGER.debug("Shell setup complete.")
 
 
 def install_btop(pkg_manager: HomeBrew | Scoop | SnapStore) -> None:

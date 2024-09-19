@@ -1,5 +1,7 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
+from typing import Optional
+
 import config
 import scripts
 import utils
@@ -11,7 +13,7 @@ from utils import shell as shell_utils
 PACKAGES = ["zsh", "git", "code", "npm", "docker-compose"]
 
 
-def setup(private_machine: str | None = None) -> None:
+def setup(private_machine: Optional[str] = None) -> None:
     """Setup Raspberry Pi on a new machine."""
     LOGGER.info("Setting up Raspberry Pi...")
 

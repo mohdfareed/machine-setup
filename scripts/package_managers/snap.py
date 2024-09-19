@@ -1,8 +1,10 @@
 """Setup module containing a `setup` function for setting up the Snap store on
 a new Debian machine."""
 
+__all__ = ["SnapStore"]
+
 import logging
-from typing import override
+from typing import Union, override
 
 import utils
 from scripts.package_managers import APT, PackageManager
@@ -20,7 +22,9 @@ class SnapStore(PackageManager):
         super().__init__()
 
     @override
-    def install(self, package: str | list[str], classic=False) -> None:
+    def install(
+        self, package: Union[str, list[str]], classic: bool = False
+    ) -> None:
         if isinstance(package, str):
             package = package.split()
 
@@ -46,4 +50,5 @@ class SnapStore(PackageManager):
 
 
 if __name__ == "__main__":
-    raise RuntimeError("This script is not meant to be run directly.")
+    args = utils.startup(description="Snap Store setup script.")
+    utils.execute(SnapStore.__init__)

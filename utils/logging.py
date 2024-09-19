@@ -1,5 +1,7 @@
 """Logging configuration for the project."""
 
+__all__ = ["LOGGER", "setup_logging"]
+
 import logging
 import os
 from datetime import datetime

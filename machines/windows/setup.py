@@ -1,5 +1,7 @@
 """Setup module containing a `setup` function for setting up Windows."""
 
+from typing import Optional
+
 import config
 import scripts
 import utils
@@ -10,7 +12,7 @@ from scripts.package_managers import Scoop, WinGet
 # from . import setup_wsl, wsl
 
 
-def setup(private_machine: str | None = None) -> None:
+def setup(private_machine: Optional[str] = None) -> None:
     """Setup Windows on a new machine."""
     LOGGER.info("Setting up Windows...")
 

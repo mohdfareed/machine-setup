@@ -1,11 +1,12 @@
 """Setup module containing a `setup` function for setting up APT on a on a new
 Debian machine."""
 
+__all__ = ["APT"]
+
 import logging
 from typing import override
 
 import utils
-from config import LOGGER
 from scripts.package_managers import PackageManager
 
 LOGGER = logging.getLogger(__name__)
@@ -68,4 +69,4 @@ class APT(PackageManager):
 
 if __name__ == "__main__":
     args = utils.startup(description="APT setup script.")
-    utils.execute(APT)
+    utils.execute(APT.__init__)

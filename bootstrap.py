@@ -21,6 +21,7 @@ import platform
 import shutil
 import subprocess
 import sys
+from typing import Optional
 
 REPOSITORY = "https://github.com/mohdfareed/machine.git"
 """Machine configuration repository."""
@@ -40,10 +41,10 @@ DEFAULT_MACHINE_PATH = os.environ.get("MACHINE") or os.path.join(
 
 
 def main(
-    machine=DEFAULT_MACHINE,
-    path=DEFAULT_MACHINE_PATH,
-    overwrite=False,
-    setup_args=None,
+    machine: str = DEFAULT_MACHINE,
+    path: str = DEFAULT_MACHINE_PATH,
+    overwrite: bool = False,
+    setup_args: Optional[list[str]] = None,
 ):
     """Bootstrap the machine setup process."""
     path = os.path.realpath(path)
@@ -115,7 +116,9 @@ def install_dependencies(python: str, path: str):
     subprocess.run(cmd, capture_output=True, check=True)
 
 
-def setup_machine(python: str, module: str, path: str, setup_args=None):
+def setup_machine(
+    python: str, module: str, path: str, setup_args: Optional[list[str]] = None
+):
     """Bootstrap the machine setup process."""
     script_path = os.path.join(path, *module.split(".")) + ".py"
     if not os.path.exists(script_path):

@@ -1,19 +1,39 @@
-"""Utilities library containing modules and functions used within the project.
-"""
+"""Helper functions for setting up the development environment."""
 
-import argparse as _argparse
-import os as _os
-import pathlib as _pathlib
-import platform as _platform
-import shutil as _shutil
-import sys as _sys
-from collections.abc import Callable as _Callable
-from enum import Enum as _Enum
+__all__ = [
+    "ARCH",
+    "ARCHITECTURE",
+    "OS",
+    "PLATFORM",
+    "PARSER",
+    "SetupError",
+    "UnsupportedOS",
+    "delete",
+    "execute",
+    "is_arm",
+    "is_linux",
+    "is_macos",
+    "is_unix",
+    "is_windows",
+    "is_installed",
+    "load_env_var",
+    "startup",
+    "symlink",
+    "symlink_at",
+]
 
-from .logging import LOGGER
-from .logging import setup_logging as _setup_logging
-from .shell import EXECUTABLE, ShellError, SupportedExecutables
-from .shell import run as _run
+import argparse
+import os
+import pathlib
+import platform
+import shutil
+import sys
+from collections.abc import Callable
+from enum import Enum
+from typing import Any, Optional
+
+from .logging import LOGGER, setup_logging
+from .shell import EXECUTABLE, ShellError, SupportedExecutables, run
 
 # MARK - Platform =============================================================
 
@@ -22,7 +42,7 @@ class UnsupportedOS(Exception):
     """Exception due to an unsupported operating system."""
 
 
-class PLATFORM(_Enum):
+class PLATFORM(Enum):
     """Enumeration of supported platforms."""
 
     LINUX = "Linux"
@@ -30,7 +50,7 @@ class PLATFORM(_Enum):
     WINDOWS = "Windows"
 
 
-class ARCHITECTURE(_Enum):
+class ARCHITECTURE(Enum):
     """Enumeration of supported architectures."""
 
     ARM = "arm"
@@ -45,13 +65,13 @@ class ARCHITECTURE(_Enum):
 def is_macos() -> bool:
     """Check if the current operating system is macOS."""
 
-    return _platform.system() == PLATFORM.MACOS.value
+    return platform.system() == PLATFORM.MACOS.value
 
 
 def is_linux() -> bool:
     """Check if the current operating system is Linux."""
 
-    return _platform.system() == PLATFORM.LINUX.value
+    return platform.system() == PLATFORM.LINUX.value
 
 
 def is_unix() -> bool:
@@ -63,15 +83,15 @@ def is_unix() -> bool:
 def is_windows() -> bool:
     """Check if the current operating system is Windows."""
 
-    return _platform.system() == PLATFORM.WINDOWS.value
+    return platform.system() == PLATFORM.WINDOWS.value
 
 
 def is_arm() -> bool:
     """Check if the current operating system is ARM based."""
-    return str(ARCHITECTURE.ARM) in _platform.machine()
+    return str(ARCHITECTURE.ARM) in platform.machine()
 
 
-OS = PLATFORM(_platform.system())
+OS = PLATFORM(platform.system())
 """The current operating system."""
 
 ARCH = ARCHITECTURE.ARM if is_arm() else ARCHITECTURE.AMD
@@ -79,9 +99,9 @@ ARCH = ARCHITECTURE.ARM if is_arm() else ARCHITECTURE.AMD
 
 # MARK - Setup ================================================================
 
-PARSER = _argparse.ArgumentParser(
+PARSER = argparse.ArgumentParser(
     description="Machine setup script.",
-    formatter_class=_argparse.ArgumentDefaultsHelpFormatter,
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 """The command line argument parser."""
 
@@ -91,9 +111,9 @@ class SetupError(Exception):
 
 
 def startup(
-    setup: str | None = None,
-    description: str | None = None,
-) -> _argparse.Namespace:
+    setup: Optional[str] = None,
+    description: Optional[str] = None,
+) -> argparse.Namespace:
     """Parse command line arguments and setup logging."""
 
     if setup:
@@ -105,11 +125,15 @@ def startup(
         "-q", "--quiet", action="store_true", help="disable debug messages"
     )  # default to logging debug messages
     args = PARSER.parse_args()
-    execute(_setup_logging, debug=not args.quiet)  # type: ignore
+    execute(setup_logging, debug=not args.quiet)  # type: ignore
     return args
 
 
-def execute(setup: _Callable, *args, **kwargs) -> None:
+def execute(
+    setup: Callable[..., None],
+    *args: tuple[Any, ...],
+    **kwargs: dict[str, Any],
+) -> None:
     """Execute a setup method with logging and error handling."""
 
     try:
@@ -117,15 +141,15 @@ def execute(setup: _Callable, *args, **kwargs) -> None:
     except KeyboardInterrupt:
         print()
         LOGGER.warning("Setup interrupted.")
-        _sys.exit(0)
+        sys.exit(0)
     except (SetupError, ShellError) as exception:
         LOGGER.exception(exception)
         LOGGER.error("Setup failed.")
-        _sys.exit(1)
+        sys.exit(1)
     except Exception as exception:  # pylint: disable=broad-except
         LOGGER.exception(exception)
         LOGGER.error("An unexpected error occurred.")
-        _sys.exit(1)
+        sys.exit(1)
 
 
 # MARK - File System ==========================================================
@@ -140,23 +164,23 @@ def load_env_var(env_path: str, var_name: str) -> str:
         if is_windows()
         else f"source '{env_path}' && echo ${var_name}"
     )
-    return _run(command)[1]
+    return run(command)[1]
 
 
 def symlink(src: str, dst: str) -> None:
     """Create a symbolic link from `src` to `dst`. If the destination exists,
     it will be overwritten. If the destination's directory structure does not
     exist, it will be created."""
-    dst = _os.path.expanduser(dst)
-    src = _os.path.expanduser(src)
-    is_dir = _os.path.isdir(src)
+    dst = os.path.expanduser(dst)
+    src = os.path.expanduser(src)
+    is_dir = os.path.isdir(src)
 
     if is_windows():
         delete(dst)
     else:
-        _run(f"sudo rm -rf '{dst}'", throws=False)
-    _os.makedirs(_os.path.dirname(dst), exist_ok=True)
-    _os.symlink(src, dst, target_is_directory=is_dir)
+        run(f"sudo rm -rf '{dst}'", throws=False)
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    os.symlink(src, dst, target_is_directory=is_dir)
     LOGGER.debug("Linked '%s' -> '%s'", src, dst)
 
 
@@ -164,20 +188,20 @@ def symlink_at(src: str, dst_dir: str) -> None:
     """Create a symbolic link from 'src' to 'dst_dir/src'. If the destination
     exists, it will be overwritten. If the destination's directory structure
     does not exist, it will be created."""
-    dst = _os.path.join(_os.path.expanduser(dst_dir), _os.path.basename(src))
+    dst = os.path.join(os.path.expanduser(dst_dir), os.path.basename(src))
     symlink(src, dst)
 
 
 def delete(path: str) -> None:
     """Delete a file or directory at the specified path."""
-    item = _pathlib.Path(path)
+    item = pathlib.Path(path)
     if not item.exists():
         return
 
     if item.is_symlink() or item.is_file():
         item.unlink()
     if item.is_dir():
-        _shutil.rmtree(item)
+        shutil.rmtree(item)
     LOGGER.debug("Deleted: %s", path)
 
 
@@ -185,10 +209,10 @@ def is_installed(command: str) -> bool:
     """Check if a command is installed."""
     if EXECUTABLE == SupportedExecutables.PWSH_WIN:
         return (
-            _run(
+            run(
                 f"Get-Command {command} -ErrorAction SilentlyContinue",
                 throws=False,
             )[0]
             == 0
         )
-    return _run(f"command -v {command}", throws=False)[0] == 0
+    return run(f"command -v {command}", throws=False)[0] == 0

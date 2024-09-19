@@ -1,6 +1,8 @@
 """Setup module containing a `setup` function for setting up Scoop on a new
 Windows machine."""
 
+__all__ = ["Scoop"]
+
 import logging
 from typing import override
 
@@ -63,4 +65,4 @@ class Scoop(PackageManager):
 
 if __name__ == "__main__":
     args = utils.startup(description="Scoop setup script.")
-    utils.execute(Scoop)
+    utils.execute(Scoop.__init__)

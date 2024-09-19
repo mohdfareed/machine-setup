@@ -2,6 +2,7 @@
 
 import logging as _logging
 import os as _os
+from typing import Optional
 
 import utils as _utils
 
@@ -90,7 +91,7 @@ def link_private_config(private_machine: str) -> None:
         LOGGER.warning("SSH keys not found.")
 
 
-def report(machine_config: dict[str, str] | None) -> None:
+def report(machine_config: Optional[dict[str, str]]) -> None:
     """Report the machine configuration.
     Args:
         machine_config (dict[str, str]): Additional configuration.

@@ -1,6 +1,7 @@
 """Setup module containing a `setup` function for setting up macOS."""
 
 import os
+from typing import Optional
 
 import config
 import scripts
@@ -20,7 +21,7 @@ auth       sufficient     {PAM_SUDO_MODULE}
 """The content to add to the sudo PAM configuration file to enable Touch ID."""
 
 
-def setup(private_machine: str | None = None) -> None:
+def setup(private_machine: Optional[str] = None) -> None:
     """Setup macOS on a new machine."""
     LOGGER.info("Setting up macOS...")
 

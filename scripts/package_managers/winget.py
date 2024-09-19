@@ -1,8 +1,10 @@
 """Setup module containing a `setup` function for setting up WinGet on a new
 Windows machine."""
 
+__all__ = ["WinGet"]
+
 import logging
-from typing import override
+from typing import Union, override
 
 import utils
 from scripts.package_managers import PackageManager
@@ -16,7 +18,7 @@ class WinGet(PackageManager):
     """WinGet package manager."""
 
     @override
-    def install(self, package: str | list[str]) -> None:
+    def install(self, package: Union[str, list[str]]) -> None:
         if isinstance(package, str):
             package = package.split()
 
@@ -39,4 +41,4 @@ class WinGet(PackageManager):
 
 if __name__ == "__main__":
     args = utils.startup(description="WinGet setup script.")
-    utils.execute(WinGet)
+    utils.execute(WinGet.__init__)

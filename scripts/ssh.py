@@ -1,9 +1,12 @@
 """SSH setup module."""
 
+__all__ = ["setup", "setup_server", "generate_key_pair"]
+
 import logging
 import os
 import shutil
 from dataclasses import dataclass
+from typing import Optional
 
 import config
 import utils
@@ -21,7 +24,7 @@ PRIVATE_EXT: str = ".key"
 """The extension of the private key filenames."""
 
 
-def setup(ssh_config: str | None, ssh_keys=config.ssh_keys) -> None:
+def setup(ssh_config: Optional[str], ssh_keys=config.ssh_keys) -> None:  # type: ignore
     """Setup ssh keys and configuration on a new machine. The ssh keys and
     config file are copied from the specified directory."""
 
@@ -30,14 +33,14 @@ def setup(ssh_config: str | None, ssh_keys=config.ssh_keys) -> None:
     if ssh_config:  # symlink ssh config file
         utils.symlink(ssh_config, os.path.join(SSH_DIR, "config"))
 
-    if not os.path.exists(ssh_keys): # check if ssh keys directory exists
+    if not os.path.exists(ssh_keys):  # check if ssh keys directory exists
         LOGGER.warning("SSH keys directory does not exist: %s", ssh_keys)
         LOGGER.info("Skipping SSH keys setup.")
         return
 
     # read ssh keys from directory
     for key in _load_keys(ssh_keys):
-        _setup_key(key) # setup ssh keys
+        _setup_key(key)  # setup ssh keys
     LOGGER.info("SSH setup complete")
 
 
@@ -87,15 +90,15 @@ def _setup_key(key: "_SSHKeyPair") -> None:
         shell.run("Get-Service ssh-agent | Set-Service -StartupType Automatic")
         shell.run("Start-Service ssh-agent")
         cmd = f"ssh-add -l | Select-String -Pattern '{fingerprint}'"
-    else: # command to check if key already exists in ssh agent
+    else:  # command to check if key already exists in ssh agent
         cmd = "ssh-add -l | grep -q " + fingerprint
 
     # add key to ssh agent if it doesn't exist
     if shell.run(cmd, throws=False)[0] != 0:
-        if utils.is_macos(): # add key to keychain on macOS
+        if utils.is_macos():  # add key to keychain on macOS
             shell.run(f"ssh-add --apple-use-keychain '{key.private}'")
 
-        else: # add key to ssh agent on other operating systems
+        else:  # add key to ssh agent on other operating systems
             shell.run(f"ssh-add '{key.private}'")
         LOGGER.info("Added key to SSH agent")
     else:
@@ -107,13 +110,13 @@ def _set_permissions(filepath: str, private: bool) -> None:
     if utils.is_windows():
         shell.run(
             f"icacls {filepath} /inheritance:r /grant:r "
-            f"{os.getlogin()}:{"F" if private else "R"}"
+            f"{os.getlogin()}:{'F' if private else 'R'}"
         )
     else:
         os.chmod(filepath, 0o600 if private else 0o644)
 
 
-def setup_server(apt: APT | None) -> None:
+def setup_server(apt: Optional[APT]) -> None:
     """setup an ssh server on a new machine."""
     LOGGER.info("Setting up SSH server...")
 
@@ -144,11 +147,12 @@ def setup_server(apt: APT | None) -> None:
         )
     raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
+
 def generate_key_pair(
     name: str,
-    keys_dir: str=config.ssh_keys,
-    email='mohdf.fareed@icloud.com',
-    passphrase=''
+    keys_dir: str = config.ssh_keys,
+    email: str = "mohdf.fareed@icloud.com",
+    passphrase: str = "",
 ) -> None:
     """Create a new ssh key pair."""
     LOGGER.info("Creating SSH key pair: %s", name)
@@ -159,14 +163,14 @@ def generate_key_pair(
         os.makedirs(keys_dir)
 
     # define key paths
-    private_key=os.path.join(keys_dir, name + PRIVATE_EXT)
-    public_key=os.path.join(keys_dir, name + PUBLIC_EXT)
+    private_key = os.path.join(keys_dir, name + PRIVATE_EXT)
+    public_key = os.path.join(keys_dir, name + PUBLIC_EXT)
 
     # check if private key already exists
     if os.path.exists(private_key):
         LOGGER.warning("Private key already exists: %s", private_key)
 
-        if not os.path.exists(public_key): # regenerate public key
+        if not os.path.exists(public_key):  # regenerate public key
             shell.run(f"ssh-keygen -y -f {private_key} > {public_key}")
             LOGGER.info("Public key regenerated: %s", public_key)
         return  # don't overwrite existing key pair
@@ -186,13 +190,14 @@ def generate_key_pair(
         LOGGER.debug("Public key: %s", public_key)
     LOGGER.debug("Private key: %s", private_key)
 
+
 @dataclass
 class _SSHKeyPair:
     """An SSH key pair of a private and optional public keys."""
 
     private: str
     """The path to the private key file."""
-    public: str | None = None
+    public: Optional[str] = None
     """The path to the public key file."""
 
     @property
@@ -212,7 +217,6 @@ class _SSHKeyPair:
     def name(self) -> str:
         """The name of the key pair based on the private key filename."""
         return os.path.splitext(self.private_filename)[0]
-
 
 
 if __name__ == "__main__":
