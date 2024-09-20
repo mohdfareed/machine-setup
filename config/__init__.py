@@ -9,6 +9,7 @@ import utils as _utils
 LOGGER = _logging.getLogger(__name__)
 """The machine configuration logger."""
 
+# FIXME: convert to dataclass
 
 # configuration files =========================================================
 

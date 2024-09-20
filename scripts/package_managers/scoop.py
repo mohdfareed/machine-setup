@@ -3,7 +3,7 @@ Windows machine."""
 
 __all__ = ["Scoop"]
 
-from typing import override
+from typing import Union, override
 
 import utils
 from scripts.package_managers.models import LOGGER, PackageManager
@@ -25,7 +25,8 @@ class Scoop(PackageManager):
         return utils.is_windows()
 
     @override
-    def _install(self, package: str) -> None:
+    @PackageManager.installation
+    def install(self, package: Union[str, list[str]]) -> None:
         utils.shell.run(f"scoop install {package}")
 
     @override

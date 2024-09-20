@@ -4,7 +4,7 @@ __all__ = ["PackageManager", "PackageManagerException"]
 
 import logging
 from abc import ABC, abstractmethod
-from typing import Union
+from typing import Any, Callable, Union
 
 from utils import SetupError
 
@@ -27,24 +27,31 @@ class PackageManager(ABC):
         self._setup()
         LOGGER.debug("%s was setup successfully.", self.name)
 
+    @staticmethod
+    def installation(func: Callable[..., None]) -> Callable[..., None]:
+        """Decorator to wrap installation process."""
+
+        def wrapper(
+            self: PackageManager, package: Union[str, list[str]], *args: Any, **kwargs: Any
+        ) -> None:
+            if isinstance(package, str):
+                package = package.split()
+
+            for pkg in package:
+                LOGGER.info("Installing %s from %s...", pkg, self.name)
+                func(self, pkg, *args, **kwargs)
+                LOGGER.debug("%s was installed successfully.", pkg)
+
+        return wrapper
+
+    @abstractmethod
     def install(self, package: Union[str, list[str]]) -> None:
         """Install a package."""
-        if isinstance(package, str):
-            package = package.split()
-
-        for pkg in package:
-            LOGGER.info("Installing %s from %s...", pkg, self.name)
-            self._install(pkg)
-            LOGGER.debug("%s was installed successfully.", pkg)
 
     @staticmethod
     @abstractmethod
     def is_supported() -> bool:
         """Check if the package manager is supported."""
-
-    @abstractmethod
-    def _install(self, package: str) -> None:
-        """Install a package."""
 
     @abstractmethod
     def _setup(self) -> None:

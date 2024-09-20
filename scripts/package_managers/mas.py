@@ -4,7 +4,7 @@ CLI on a new machine."""
 __all__ = ["MAS"]
 
 import os
-from typing import override
+from typing import Union, override
 
 import utils
 from scripts.package_managers.brew import HomeBrew
@@ -29,7 +29,8 @@ class MAS(PackageManager):
         return utils.is_macos()
 
     @override
-    def _install(self, package: str) -> None:
+    @PackageManager.installation
+    def install(self, package: Union[str, list[str]]) -> None:
         shell.run(f"{self.mas} install {package}")
 
     @override

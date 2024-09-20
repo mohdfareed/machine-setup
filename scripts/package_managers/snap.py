@@ -19,21 +19,14 @@ class SnapStore(PackageManager):
         super().__init__()
 
     @override
+    @PackageManager.installation
     def install(self, package: Union[str, list[str]], classic: bool = False) -> None:
-        if isinstance(package, list):
-            for p in package:
-                super().install(f"{p} {'--classic' if classic else ''}")
-        else:
-            super().install(f"{package} {'--classic' if classic else ''}")
+        utils.shell.run(f"sudo snap install {package} {'--classic' if classic else ''}")
 
     @override
     @staticmethod
     def is_supported() -> bool:
         return True
-
-    @override
-    def _install(self, package: str) -> None:
-        utils.shell.run(f"sudo snap install {package}")
 
     @override
     def _setup(self) -> None:

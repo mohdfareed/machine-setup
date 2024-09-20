@@ -3,7 +3,7 @@ Windows machine."""
 
 __all__ = ["WinGet"]
 
-from typing import override
+from typing import Union, override
 
 import utils
 from scripts.package_managers.models import PackageManager
@@ -19,7 +19,8 @@ class WinGet(PackageManager):
         return utils.is_installed("winget")
 
     @override
-    def _install(self, package: str) -> None:
+    @PackageManager.installation
+    def install(self, package: Union[str, list[str]]) -> None:
         shell.run(f"winget install -e --id {package}", throws=False)
 
     @override

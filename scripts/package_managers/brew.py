@@ -35,12 +35,9 @@ class HomeBrew(PackageManager):
             return None
 
     @override
+    @PackageManager.installation
     def install(self, package: Union[str, list[str]], cask: bool = False) -> None:
-        if isinstance(package, list):
-            for p in package:
-                super().install(f"{'--cask' if cask else ''} {p}")
-        else:
-            super().install(f"{'--cask' if cask else ''} {package}")
+        shell.run(f"{self.brew} install {'--cask' if cask else ''} {package}")
 
     @override
     @staticmethod
@@ -54,10 +51,6 @@ class HomeBrew(PackageManager):
         shell.run(f"{self.brew} bundle install --file={file}")
         shell.run(f"{self.brew} cleanup --prune=all", throws=False)
         LOGGER.debug("Homebrew packages were installed successfully.")
-
-    @override
-    def _install(self, package: str) -> None:
-        shell.run(f"{self.brew} install {package}")
 
     @override
     def _setup(self) -> None:
