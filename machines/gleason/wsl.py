@@ -5,13 +5,13 @@ __all__ = ["setup"]
 import config
 import scripts
 import utils
-from machines import LOGGER, gleason
+from machines import gleason
 from scripts import package_managers
 
 
+@utils.machine_setup
 def setup() -> None:
     """Setup WSL on a new Gleason Windows machine."""
-    LOGGER.info("Setting up WSL...")
 
     # package managers
     brew = package_managers.HomeBrew.safe_setup()
@@ -21,19 +21,16 @@ def setup() -> None:
     # setup core machine
     scripts.git.setup(brew or apt, gitconfig=gleason.gitconfig)
     scripts.shell.setup(brew or apt)
-    scripts.shell.install_nvim(brew or snap)
-    scripts.shell.install_btop(brew or snap)
-    scripts.tools.setup(brew or apt)
+    scripts.tools.install_nvim(brew or snap)
+    scripts.tools.install_btop(brew or snap)
+    scripts.tools.setup_fonts(brew or apt)
 
     # setup dev tools
     scripts.setup_python(brew or apt)
     scripts.setup_node(brew)
 
-    LOGGER.info("Gleason WSL setup complete.")
-    LOGGER.warning("Restart for some changes to apply.")
-
 
 if __name__ == "__main__":
-    args = utils.startup(description="Gleason WSL setup script.")
+    utils.startup()
     config.report(None)
-    utils.execute(setup)
+    setup()

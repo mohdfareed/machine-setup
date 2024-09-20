@@ -32,7 +32,7 @@ def setup(ssh_config: Optional[str], ssh_keys=config.ssh_keys) -> None:  # type:
     if ssh_config:  # symlink ssh config file
         utils.symlink(ssh_config, os.path.join(SSH_DIR, "config"))
 
-    if not os.path.exists(ssh_keys):  # check if ssh keys directory exists
+    if not ssh_keys or not os.path.exists(ssh_keys):  # check if ssh keys directory exists
         LOGGER.warning("SSH keys directory does not exist: %s", ssh_keys)
         LOGGER.info("Skipping SSH keys setup.")
         return
@@ -145,7 +145,7 @@ def setup_server(apt: Optional[APT]) -> None:
 
 def generate_key_pair(
     name: str,
-    keys_dir: str = config.ssh_keys,
+    keys_dir: str = config.ssh_keys or SSH_DIR,
     email: str = "mohdf.fareed@icloud.com",
     passphrase: str = "",
 ) -> None:
@@ -212,13 +212,3 @@ class _SSHKeyPair:
     def name(self) -> str:
         """The name of the key pair based on the private key filename."""
         return os.path.splitext(self.private_filename)[0]
-
-
-if __name__ == "__main__":
-    utils.PARSER.add_argument(
-        "ssh_config",
-        metavar="SSH_CONFIG",
-        help="The path to a SSH configuration file.",
-    )
-    args = utils.startup(description="SSH setup script.")
-    utils.execute(setup, args.ssh_config)

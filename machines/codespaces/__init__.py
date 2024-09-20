@@ -1,10 +1,6 @@
 """Codespaces specific setup module."""
 
-__all__ = ["config", "zshrc"]
+import os as _os
 
-import os
-
-config = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-"""The path of codespaces configuration files."""
-zshrc = os.path.join(config, "zshrc")
-"""The path of codespaces zshrc file."""
+config = _os.path.join(_os.path.dirname(_os.path.realpath(__file__)))
+zshrc = _os.path.join(config, "zshrc")

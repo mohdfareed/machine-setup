@@ -2,24 +2,18 @@
 
 __all__ = ["setup"]
 
-from typing import Optional
-
 import config
 import scripts
 import utils
-from machines import LOGGER, rpi
+from machines import rpi
 from scripts import package_managers
 
 PACKAGES = ["zsh", "git", "code", "npm", "docker-compose"]
 
 
-def setup(private_machine: Optional[str] = None) -> None:
+@utils.machine_setup
+def setup() -> None:
     """Setup Raspberry Pi on a new machine."""
-    LOGGER.info("Setting up Raspberry Pi...")
-
-    # load private machine configuration if provided
-    if private_machine:
-        config.link_private_config(private_machine)
 
     # package managers
     apt = package_managers.APT()
@@ -27,9 +21,9 @@ def setup(private_machine: Optional[str] = None) -> None:
 
     # setup shell
     scripts.shell.setup(apt, rpi.zshrc, rpi.zshenv)
-    scripts.shell.install_nvim(snap)
-    scripts.shell.install_btop(snap)
-    scripts.shell.install_powershell(snap)
+    scripts.tools.install_nvim(snap)
+    scripts.tools.install_btop(snap)
+    scripts.tools.install_powershell(snap)
 
     # setup ssh
     scripts.ssh.generate_key_pair("personal")
@@ -41,7 +35,7 @@ def setup(private_machine: Optional[str] = None) -> None:
     scripts.vscode.setup(snap)
     scripts.vscode.setup_tunnels("rpi")
     scripts.tailscale.setup(None)
-    scripts.tools.setup(apt)
+    scripts.tools.setup_fonts(apt)
 
     # setup dev tools
     scripts.setup_docker(None)
@@ -56,18 +50,8 @@ def setup(private_machine: Optional[str] = None) -> None:
     utils.shell.run("sudo touch $HOME/.hushlogin", throws=False)  # remove login message
     utils.shell.run("sudo mkdir -p $HOME/.config", throws=False)  # create config directory
 
-    LOGGER.info("Raspberry Pi setup complete.")
-    LOGGER.warning("Restart for some changes to apply.")
-
 
 if __name__ == "__main__":
-    utils.PARSER.add_argument(
-        "private_machine",
-        metavar="PRIVATE_MACHINE",
-        nargs="?",
-        help="The path to a private machine configuration directory.",
-        default=None,
-    )
-    args = utils.startup(description="Raspberry Pi setup script.")
+    utils.startup()
     config.report(None)
-    utils.execute(setup)
+    setup()

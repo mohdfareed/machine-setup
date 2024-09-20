@@ -1,6 +1,14 @@
 """Setup functions for various tools and utilities."""
 
-__all__ = ["setup_docker", "setup_python", "setup_node", "setup_zed"]
+__all__ = [
+    "setup_docker",
+    "setup_python",
+    "setup_node",
+    "setup_zed",
+    "install_btop",
+    "install_powershell",
+    "install_nvim",
+]
 
 import logging
 import os
@@ -8,13 +16,13 @@ from typing import Optional, Union
 
 import config
 import utils
-from scripts.package_managers import APT, HomeBrew, Scoop, WinGet
+from scripts.package_managers import APT, HomeBrew, Scoop, SnapStore, WinGet
 
 LOGGER = logging.getLogger(__name__)
 """The package managers logger."""
 
 
-def setup(pkg_manager: Union[HomeBrew, APT, Scoop]) -> None:
+def setup_fonts(pkg_manager: Union[HomeBrew, APT, Scoop]) -> None:
     """Setup fonts on a new machine."""
     LOGGER.info("Setting up tailscale...")
     if isinstance(pkg_manager, HomeBrew):
@@ -82,17 +90,44 @@ def setup_node(pkg_manager: Optional[Union[HomeBrew, WinGet]]) -> None:
 def setup_zed(pkg_manager: Optional[HomeBrew]) -> None:
     """Setup the Zed text editor on a new machine."""
     LOGGER.info("Setting up Zed...")
+    if not config.xdg_config:
+        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+
     if isinstance(pkg_manager, HomeBrew):
         pkg_manager.install("zed")
     elif utils.is_linux():
         utils.shell.run("curl -f https://zed.dev/install.sh | sh")
-    else:
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
     settings_file = os.path.join(config.xdg_config, "zed", "settings.json")
     utils.symlink(config.zed_settings, settings_file)
     LOGGER.debug("Zed was setup successfully.")
 
 
-if __name__ == "__main__":
-    raise RuntimeError("This script is not meant to be run directly.")
+def install_btop(pkg_manager: Union[HomeBrew, Scoop, SnapStore]) -> None:
+    """Install btop on a machine."""
+    if isinstance(pkg_manager, HomeBrew):
+        pkg_manager.install("btop")
+    if isinstance(pkg_manager, Scoop):
+        pkg_manager.install("btop-lhm")
+    if isinstance(pkg_manager, SnapStore):
+        pkg_manager.install("btop")
+
+
+def install_powershell(pkg_manager: Union[HomeBrew, WinGet, SnapStore]) -> None:
+    """Install PowerShell on a machine."""
+    if isinstance(pkg_manager, HomeBrew):
+        pkg_manager.install("powershell", cask=True)
+    if isinstance(pkg_manager, WinGet):
+        pkg_manager.install("Microsoft.PowerShell")
+    if isinstance(pkg_manager, SnapStore):
+        pkg_manager.install("powershell")
+
+
+def install_nvim(pkg_manager: Union[HomeBrew, WinGet, SnapStore]) -> None:
+    """Install NeoVim on a machine."""
+    if isinstance(pkg_manager, HomeBrew):
+        pkg_manager.install("nvim")
+    if isinstance(pkg_manager, WinGet):
+        pkg_manager.install("Neovim.Neovim")
+    if isinstance(pkg_manager, SnapStore):
+        pkg_manager.install("nvim")

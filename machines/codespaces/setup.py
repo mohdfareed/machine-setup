@@ -3,30 +3,25 @@
 import config
 import scripts
 import utils
-from machines import LOGGER, codespaces
+from machines import codespaces
 from scripts import package_managers
 
 
 def setup() -> None:
     """Setup a new GitHub codespace."""
-    LOGGER.info("Setting up codespace...")
-
-    # package managers
-    apt = package_managers.APT()
+    apt = package_managers.APT()  # package managers
 
     # setup core tools
     scripts.git.setup(apt)
     scripts.shell.setup(apt, zshrc=codespaces.zshrc)
-    scripts.tools.setup(apt)
+    scripts.tools.setup_fonts(apt)
 
     # set zsh as the default shell
     cmd = 'sudo chsh "$(id -un)" --shell "/usr/bin/zsh"'
     utils.shell.run(cmd, throws=False)
 
-    LOGGER.info("Codespace setup complete.")
-
 
 if __name__ == "__main__":
-    args = utils.startup(description="Codespaces setup script.")
+    utils.startup()
     config.report(None)
-    utils.execute(setup)
+    setup()

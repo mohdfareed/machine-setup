@@ -3,14 +3,10 @@ Debian machine."""
 
 __all__ = ["APT"]
 
-import logging
-from typing import Union, override
+from typing import override
 
 import utils
-from scripts.package_managers.models import PackageManager
-
-LOGGER = logging.getLogger(__name__)
-"""The APT package manager logger."""
+from scripts.package_managers.models import LOGGER, PackageManager
 
 
 class APT(PackageManager):
@@ -39,28 +35,19 @@ class APT(PackageManager):
         LOGGER.debug("Keyring %s was added successfully.", keyring)
 
     @override
-    def install(self, package: Union[str, list[str]]) -> None:
-        if isinstance(package, str):
-            package = package.split()
-
-        for pkg in package:
-            LOGGER.info("Installing %s from apt...", pkg)
-            utils.shell.run(f"sudo apt install -y {pkg}")
-            LOGGER.debug("%s was installed successfully.", pkg)
-        utils.shell.run("sudo apt autoremove -y")
-
-    @override
     @staticmethod
     def is_supported() -> bool:
         return utils.is_installed("apt")
 
     @override
+    def _install(self, package: str) -> None:
+        utils.shell.run(f"sudo apt install -y {package}")
+
+    @override
     def _setup(self) -> None:
-        LOGGER.info("Setting up Debian apt...")
         utils.shell.run("sudo apt update && sudo apt upgrade -y")
-        LOGGER.debug("Debian apt was setup successfully.")
 
-
-if __name__ == "__main__":
-    args = utils.startup(description="APT setup script.")
-    utils.execute(APT.__init__)
+    def __del__(self) -> None:
+        LOGGER.debug("Cleaning up APT...")
+        utils.shell.run("sudo apt autoremove -y")
+        LOGGER.debug("APT cleanup complete.")

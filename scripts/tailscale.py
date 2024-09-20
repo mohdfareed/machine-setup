@@ -50,7 +50,3 @@ def _setup_windows():
     )
     os.remove(installer_path)
     utils.shell.run("tailscale up", info=True)
-
-
-if __name__ == "__main__":
-    raise RuntimeError("This script is not meant to be run directly.")

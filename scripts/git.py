@@ -28,13 +28,12 @@ def setup(
     if not os.path.exists(gitignore):
         raise utils.SetupError("Machine gitignore file does not exist.")
 
-    # resolve git configuration paths
-    if utils.is_windows():
-        gitconfig_path = os.path.join(os.environ["USERPROFILE"], ".gitconfig")
-        gitignore_path = os.path.join(os.environ["USERPROFILE"], ".gitignore")
-    elif utils.is_unix():
+    if config.xdg_config:  # resolve git configuration paths
         gitconfig_path = os.path.join(config.xdg_config, "git", "config")
         gitignore_path = os.path.join(config.xdg_config, "git", "ignore")
+    elif utils.is_windows():
+        gitconfig_path = os.path.join(os.environ["USERPROFILE"], ".gitconfig")
+        gitignore_path = os.path.join(os.environ["USERPROFILE"], ".gitignore")
     else:
         raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
 
@@ -56,7 +55,3 @@ def _install(pkg_manager: Union[HomeBrew, APT, WinGet]) -> None:
         pkg_manager.install("gh")
     if isinstance(pkg_manager, WinGet):
         pkg_manager.install("Git.Git GitHub.GitLFS GitHub.CLI Microsoft.GitCredentialManagerCore")
-
-
-if __name__ == "__main__":
-    raise RuntimeError("This script is not meant to be run directly.")

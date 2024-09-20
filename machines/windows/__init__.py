@@ -10,11 +10,8 @@ from machines import LOGGER as _LOGGER
 from . import wsl  # type: ignore
 
 config = _os.path.join(_os.path.dirname(_os.path.realpath(__file__)), "config")
-"""The path of Windows configuration files."""
 ps_profile = _os.path.join(config, "ps_profile.ps1")
-"""The path of Windows Powershell profile file."""
 ssh_config = _os.path.join(config, "ssh.config")
-"""The path of the Windows ssh config file."""
 
 
 def setup_wsl(wsl_module: _ModuleType, setup_args: str = "") -> None:
@@ -27,6 +24,3 @@ def setup_wsl(wsl_module: _ModuleType, setup_args: str = "") -> None:
     _utils.shell.run(f"{_sys.executable} {wsl_module.__name__} {setup_args}")
     _utils.shell.EXECUTABLE = current_shell
     _LOGGER.info("WSL setup complete.")
-
-
-__all__ = ["config", "ps_profile", "ssh_config", "setup_wsl"]

@@ -5,13 +5,13 @@ __all__ = ["setup"]
 import config
 import scripts
 import utils
-from machines import LOGGER, gleason, windows
+from machines import gleason, windows
 from scripts import package_managers
 
 
+@utils.machine_setup
 def setup() -> None:
     """Setup Gleason config on a new machine."""
-    LOGGER.info("Setting up Gleason machine...")
     utils.shell.run("wsl --install", info=True)
 
     # setup package managers
@@ -20,14 +20,14 @@ def setup() -> None:
 
     # setup shell
     scripts.shell.setup_windows(windows.ps_profile)
-    scripts.shell.install_powershell(winget)
-    scripts.shell.install_nvim(winget)
-    scripts.shell.install_btop(scoop)
+    scripts.tools.install_powershell(winget)
+    scripts.tools.install_nvim(winget)
+    scripts.tools.install_btop(scoop)
 
     # setup core machine
     scripts.git.setup(winget, gleason.gitconfig)
     scripts.vscode.setup(winget)
-    scoop.setup_fonts()
+    scripts.tools.setup_fonts(scoop)
 
     # setup dev tools
     scripts.setup_docker(winget)
@@ -37,11 +37,8 @@ def setup() -> None:
     winget.install("Microsoft.DotNet.SDK")
     windows.setup_wsl(gleason.wsl)  # install wsl
 
-    LOGGER.info("Gleason machine setup complete.")
-    LOGGER.warning("Restart for some changes to apply.")
-
 
 if __name__ == "__main__":
-    args = utils.startup(description="Gleason machine setup script.")
+    utils.startup()
     config.report(None)
-    utils.execute(setup)
+    setup()

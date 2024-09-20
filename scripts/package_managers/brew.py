@@ -3,16 +3,13 @@ machine."""
 
 __all__ = ["HomeBrew"]
 
-import logging
+
 import os
 from typing import Optional, Union, override
 
 import utils
-from scripts.package_managers.models import PackageManager
+from scripts.package_managers.models import LOGGER, PackageManager
 from utils import shell
-
-LOGGER = logging.getLogger(__name__)
-"""Homebrew package manager logger."""
 
 
 class HomeBrew(PackageManager):
@@ -39,28 +36,16 @@ class HomeBrew(PackageManager):
 
     @override
     def install(self, package: Union[str, list[str]], cask: bool = False) -> None:
-        if isinstance(package, str):
-            package = package.split()
-
-        for pkg in package:
-            LOGGER.info("Installing %s from Homebrew...", pkg)
-            shell.run(f"{self.brew} install {'--cask' if cask else ''} {pkg}")
-            LOGGER.debug("%s was installed successfully.", pkg)
-        LOGGER.debug("Cleaning up...")
-        shell.run(f"{self.brew} cleanup --prune=all", throws=False)
+        if isinstance(package, list):
+            for p in package:
+                super().install(f"{'--cask' if cask else ''} {p}")
+        else:
+            super().install(f"{'--cask' if cask else ''} {package}")
 
     @override
     @staticmethod
     def is_supported() -> bool:
         return utils.is_macos() or not utils.is_arm()
-
-    @override
-    def _setup(self) -> None:
-        LOGGER.info("Setting up Homebrew...")
-        if not os.path.exists(self.brew):
-            self._install_brew()
-        shell.run(f"{self.brew} update && {self.brew} upgrade")
-        LOGGER.info("Homebrew setup complete.")
 
     def install_brewfile(self, file: str) -> None:
         """Install Homebrew packages from a Brewfile."""
@@ -69,6 +54,16 @@ class HomeBrew(PackageManager):
         shell.run(f"{self.brew} bundle install --file={file}")
         shell.run(f"{self.brew} cleanup --prune=all", throws=False)
         LOGGER.debug("Homebrew packages were installed successfully.")
+
+    @override
+    def _install(self, package: str) -> None:
+        shell.run(f"{self.brew} install {package}")
+
+    @override
+    def _setup(self) -> None:
+        if not os.path.exists(self.brew):
+            self._install_brew()
+        shell.run(f"{self.brew} update && {self.brew} upgrade")
 
     def _install_brew(self) -> None:
         LOGGER.info("Installing Homebrew...")
@@ -81,7 +76,7 @@ class HomeBrew(PackageManager):
         shell.run(f'chmod -R go-w "$({self.brew} --prefix)/share"')
         LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
 
-
-if __name__ == "__main__":
-    args = utils.startup(description="Homebrew setup script.")
-    utils.execute(HomeBrew.__init__)
+    def __del__(self) -> None:
+        LOGGER.debug("Cleaning up...")
+        shell.run(f"{self.brew} cleanup --prune=all", throws=False)
+        LOGGER.debug("Homebrew cleanup complete.")

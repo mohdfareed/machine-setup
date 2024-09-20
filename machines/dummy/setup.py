@@ -5,14 +5,14 @@ import utils
 from machines import LOGGER
 
 
+@utils.machine_setup
 def setup() -> None:
     """Setup a dummy machine."""
-    LOGGER.warning("Setting up dummy machine for testing...")
-    LOGGER.info("This machine is used if no machine is specified.")
-    LOGGER.info("Dummy machine setup complete.")
+    LOGGER.warning("Setting up dummy machine...")
+    LOGGER.info("This is executed if no machine is specified.")
 
 
 if __name__ == "__main__":
-    args = utils.startup(description="Dummy machine setup script.")
+    utils.startup()
     config.report(None)
-    utils.execute(setup)
+    setup()

@@ -21,13 +21,12 @@ def setup_logging(debug: bool = False) -> None:
     """Setup the logging configuration.
 
     Args:
-        debug (bool): Whether to enable debug mode.
-    """
+        debug (bool): Whether to enable debug mode."""
+
     # logging formats
     console_formatter = logging.Formatter(r"%(message)s")
     file_formatter = logging.Formatter(
-        r"[%(asctime)s.%(msecs)03d] %(levelname)-8s "
-        r"%(message)s - %(name)s [%(filename)s:%(lineno)d]",
+        r"[%(asctime)s.%(msecs)03d] %(levelname)-8s %(message)s [%(filename)s:%(lineno)d]",
         datefmt=r"%Y-%m-%d %H:%M:%S",
     )
 

@@ -2,7 +2,6 @@
 machine. These methods are imported and used by the main `setup.py` script. The
 modules in this library depend on modules in the `utils` library."""
 
-from . import fonts  # type: ignore
 from . import git  # type: ignore
 from . import package_managers  # type: ignore
 from . import shell  # type: ignore

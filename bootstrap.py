@@ -1,19 +1,6 @@
 #!/usr/bin/env python3
 """Bootstrap a new machine. This will clone the machine's configuration and
-execute the setup script.
-
-Requirements:
-    - Python 3.7+
-    - git must be installed
-    - machine module with a setup script
-    - requirements.txt file with dependencies
-
-External effects:
-    - Clones machine into the specified path
-    - Creates a virtual environment
-    - Installs dependencies
-    - Executes the setup script
-"""
+execute the setup script."""
 
 import argparse
 import os
@@ -24,20 +11,12 @@ import sys
 from typing import Optional
 
 REPOSITORY = "https://github.com/mohdfareed/machine.git"
-"""Machine configuration repository."""
-VIRTUAL_ENV = ".venv"
-"""Virtual environment directory name."""
-REQUIREMENTS = "requirements.txt"
-"""Requirements file name."""
 MODULE = "machines.{}.setup"
-"""Machine setup module name."""
 
 DEFAULT_MACHINE = "codespaces" if os.environ.get("CODESPACES") else "dummy"
-"""Default machine name."""
 DEFAULT_MACHINE_PATH = os.environ.get("MACHINE") or os.path.join(
     os.path.expanduser("~"), ".machine"
 )  # default to $MACHINE or ~/.machine
-"""Default path to clone the machine repository."""
 
 
 def main(
@@ -51,18 +30,13 @@ def main(
     if not machine:
         raise ValueError("Machine name not provided.")
 
-    # set up environment
-    clone_machine(path, overwrite)
-    python = create_virtual_env(path, machine, overwrite)
+    _clone_machine(path, overwrite)
+    python = _create_virtual_env(path, machine, overwrite)
     install_dependencies(python, path)
-
-    # bootstrap machine
-    module = MODULE.format(machine)
-    setup_machine(python, module, path, setup_args)
+    _setup_machine(python, f"machines.{machine}.setup", path, setup_args)
 
 
-def clone_machine(path: str, clean: bool):
-    """Clone the machine repository into the specified path."""
+def _clone_machine(path: str, clean: bool):
     if clean and os.path.exists(path):  # remove existing
         _log_info("Removing existing machine...")
         shutil.rmtree(path, ignore_errors=True)
@@ -70,29 +44,20 @@ def clone_machine(path: str, clean: bool):
         _log_info("Cloning machine repository...")
         subprocess.run(["git", "clone", "-q", REPOSITORY, path], check=True)
     else:
-        update_machine(path)
+        _update_machine(path)
 
 
-def update_machine(path: str):
-    """Update the machine repository in the specified path."""
-    if (  # check for uncommitted changes
-        subprocess.run(
-            ["git", "diff", "--quiet"], cwd=path, check=False
-        ).returncode
-        != 0
-    ):
+def _update_machine(path: str):
+    if subprocess.run(["git", "diff", "--quiet"], cwd=path, check=False).returncode != 0:
         _log_warning("Uncommitted changes found. Skipping update.")
         return
 
-    # pull latest changes if exists
-    _log_info("Updating machine...")
+    _log_info("Updating machine...")  # pull latest changes
     subprocess.run(["git", "pull"], cwd=path, check=True)
 
 
-def create_virtual_env(path: str, prompt: str, clean: bool) -> str:
-    """Create a virtual environment in the specified path.
-    Return the python executable path."""
-    venv = os.path.join(path, VIRTUAL_ENV)
+def _create_virtual_env(path: str, prompt: str, clean: bool) -> str:
+    venv = os.path.join(path, ".venv")
     if clean and os.path.exists(venv):  # remove existing
         _log_info("Removing existing environment...")
         shutil.rmtree(path, ignore_errors=True)
@@ -109,17 +74,13 @@ def create_virtual_env(path: str, prompt: str, clean: bool) -> str:
 
 
 def install_dependencies(python: str, path: str):
-    """Install and/or upgrade dependencies from the requirements file."""
-    req_file = os.path.join(path, REQUIREMENTS)
+    req_file = os.path.join(path, "requirements.txt")
     cmd = [python, "-m", "pip", "install", "-r", req_file, "--upgrade"]
     _log_info("Installing dependencies...")
     subprocess.run(cmd, capture_output=True, check=True)
 
 
-def setup_machine(
-    python: str, module: str, path: str, setup_args: Optional[list[str]] = None
-):
-    """Bootstrap the machine setup process."""
+def _setup_machine(python: str, module: str, path: str, setup_args: Optional[list[str]] = None):
     script_path = os.path.join(path, *module.split(".")) + ".py"
     if not os.path.exists(script_path):
         raise FileNotFoundError(f"Machine script not found: {script_path}")
@@ -170,9 +131,7 @@ if __name__ == "__main__":
         nargs="?",
         default=DEFAULT_MACHINE,
     )
-    parser.add_argument(
-        "args", nargs=argparse.REMAINDER, help="additional setup arguments"
-    )
+    parser.add_argument("args", nargs=argparse.REMAINDER, help="additional setup arguments")
 
     # parse arguments
     args = parser.parse_args()

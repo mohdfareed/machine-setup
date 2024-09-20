@@ -3,22 +3,19 @@ CLI on a new machine."""
 
 __all__ = ["MAS"]
 
-import logging
-from typing import Union, override
+import os
+from typing import override
 
 import utils
 from scripts.package_managers.brew import HomeBrew
-from scripts.package_managers.models import PackageManager
+from scripts.package_managers.models import LOGGER, PackageManager
 from utils import shell
-
-LOGGER = logging.getLogger(__name__)
-"""The MAS package manager logger."""
 
 
 class MAS(PackageManager):
     """Mac App Store."""
 
-    mas: str
+    mas = os.path.join(HomeBrew.bin, "mas")
     """The path to the mas executable."""
 
     def __init__(self, homebrew: HomeBrew) -> None:
@@ -27,30 +24,16 @@ class MAS(PackageManager):
         super().__init__()
 
     @override
-    def install(self, package: Union[str, list[str]]) -> None:
-        if isinstance(package, str):
-            package = package.split()
-
-        for pkg in package:
-            LOGGER.info("Installing %s from the Mac App Store...", pkg)
-            shell.run(f"{self.mas} install {pkg}")
-            LOGGER.debug("%s was installed successfully.", pkg)
-        shell.run(f"{self.homebrew.brew} cleanup --prune=all", throws=False)
-
-    @override
     @staticmethod
     def is_supported() -> bool:
         return utils.is_macos()
 
     @override
+    def _install(self, package: str) -> None:
+        shell.run(f"{self.mas} install {package}")
+
+    @override
     def _setup(self) -> None:
-        LOGGER.info("Setting up the Mac App Store...")
         self.homebrew.install("mas")
         LOGGER.info("Updating Mac App Store applications...")
         shell.run("mas upgrade")
-        LOGGER.info("Mac App Store setup complete.")
-
-
-if __name__ == "__main__":
-    args = utils.startup(description="Mac App Store setup script.")
-    utils.execute(MAS.__init__)

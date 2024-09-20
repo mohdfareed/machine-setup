@@ -14,7 +14,6 @@ from utils import shell
 LOGGER = logging.getLogger(__name__)
 """The VSCode setup logger."""
 
-
 vscode: str
 """The path to the VSCode user settings directory."""
 
@@ -35,13 +34,13 @@ else:  # windows
 def setup(pkg_manager: Union[HomeBrew, SnapStore, WinGet]) -> None:
     """Setup VSCode on a new machine."""
     LOGGER.info("Setting up VSCode...")
-    _install(pkg_manager)
+    install(pkg_manager)
     for file in os.listdir(config.vscode):
         utils.symlink_at(os.path.join(config.vscode, file), vscode)
     LOGGER.debug("VSCode was setup successfully.")
 
 
-def _install(pkg_manager: Union[HomeBrew, SnapStore, WinGet]) -> None:
+def install(pkg_manager: Union[HomeBrew, SnapStore, WinGet]) -> None:
     if isinstance(pkg_manager, HomeBrew) and (brew := pkg_manager):
         brew.install("visual-studio-code")
     if isinstance(pkg_manager, WinGet) and (winget := pkg_manager):
@@ -59,7 +58,3 @@ def setup_tunnels(name: str) -> None:
     cmd = f"code tunnel service install " f"--accept-server-license-terms --name {name}"
     shell.run(cmd, info=True)
     LOGGER.debug("VSCode SSH tunnels were setup successfully.")
-
-
-if __name__ == "__main__":
-    raise RuntimeError("This script is not meant to be run directly.")

@@ -44,10 +44,10 @@ def run(
     """Run a shell command and return its output and return code.
 
     Args:
-        command (str): The command to run.
-        env (Optional[dict[str, Any]]): Environment variables.
-        throws (bool, optional): Whether to throw on non-zero return code.
-        info (bool, optional): Wether to log debug messages as info.
+        command: The command to run.
+        env: Environment variables.
+        throws: Whether to throw on non-zero return code.
+        info: Wether to log debug messages as info.
 
     Returns:
         tuple[int, str]: The return code and output of the command.

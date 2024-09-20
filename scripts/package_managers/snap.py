@@ -3,15 +3,11 @@ a new Debian machine."""
 
 __all__ = ["SnapStore"]
 
-import logging
 from typing import Union, override
 
 import utils
 from scripts.package_managers.apt import APT
 from scripts.package_managers.models import PackageManager
-
-LOGGER = logging.getLogger(__name__)
-"""The Snap Store logger."""
 
 
 class SnapStore(PackageManager):
@@ -24,14 +20,11 @@ class SnapStore(PackageManager):
 
     @override
     def install(self, package: Union[str, list[str]], classic: bool = False) -> None:
-        if isinstance(package, str):
-            package = package.split()
-
-        for pkg in package:
-            LOGGER.info("Installing %s from the snap store...", pkg)
-            utils.shell.run(f"sudo snap install {pkg} {'--classic' if classic else ''}")
-            LOGGER.debug("%s was installed successfully.", pkg)
-        utils.shell.run("sudo snap refresh")
+        if isinstance(package, list):
+            for p in package:
+                super().install(f"{p} {'--classic' if classic else ''}")
+        else:
+            super().install(f"{package} {'--classic' if classic else ''}")
 
     @override
     @staticmethod
@@ -39,13 +32,10 @@ class SnapStore(PackageManager):
         return True
 
     @override
+    def _install(self, package: str) -> None:
+        utils.shell.run(f"sudo snap install {package}")
+
+    @override
     def _setup(self) -> None:
-        LOGGER.info("Setting up the snap store...")
         self.apt.install("snapd")
         self.install("snapd")
-        LOGGER.debug("The snap store was setup successfully.")
-
-
-if __name__ == "__main__":
-    args = utils.startup(description="Snap Store setup script.")
-    utils.execute(SnapStore.__init__)
