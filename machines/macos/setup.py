@@ -14,20 +14,12 @@ PAM_SUDO = os.path.join("/", "etc", "pam.d", "sudo_local")
 PAM_SUDO_MODULE = "pam_tid.so"
 PAM_SUDO_CONTENT = f"""
 auth       sufficient     {PAM_SUDO_MODULE}
-"""
+""".strip()
 
 
 @utils.machine_setup
 def setup() -> None:
     """Setup macOS on a new machine."""
-    # LOGGER.info("Authenticate to accept Xcode license.")
-    # try:  # ensure xcode license is accepted
-    #     utils.shell.run("sudo xcodebuild -license accept", info=True)
-    # except utils.shell.ShellError as ex:
-    #     raise utils.SetupError(
-    #         "Failed to accept Xcode license. "
-    #         "Ensure Xcode is installed using: xcode-select --install"
-    #     ) from ex
 
     # setup package managers
     LOGGER.info("Setting up macOS...")
@@ -68,15 +60,16 @@ def setup() -> None:
 def enable_touch_id() -> None:
     """Enable Touch ID for sudo on macOS."""
     LOGGER.info("Enabling Touch ID for sudo...")
-    with open(PAM_SUDO, "r", encoding="utf-8") as f:
-        lines = f.read()
+    if not os.path.exists(PAM_SUDO):
+        os.makedirs(os.path.dirname(PAM_SUDO), exist_ok=True)
+        utils.shell.run(f"sudo touch {PAM_SUDO}")
 
-    if PAM_SUDO_MODULE in lines:
+    pam_sudo_contents = utils.shell.run(f"cat {PAM_SUDO}")
+    if PAM_SUDO_MODULE in pam_sudo_contents:
         LOGGER.info("Touch ID for sudo already enabled.")
         return
 
-    with open(PAM_SUDO, "a", encoding="utf-8") as f:
-        f.write(PAM_SUDO_CONTENT)
+    utils.shell.run(f"echo '{PAM_SUDO_CONTENT}' | sudo tee {PAM_SUDO} > /dev/null")
     LOGGER.info("Touch ID for sudo enabled.")
 
 
