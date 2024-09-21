@@ -24,7 +24,7 @@ To set up a machine, run the following command:
 
 ```sh
 url="https://raw.githubusercontent.com/mohdfareed/machine/main/bootstrap.py"
-curl -fsSL $url | python3 - [-h] [-f] [path] machine [-h]
+curl -fsSL $url | python3 - [-h] [-f] [-p PATH] machine [-h] [-q] [-m PRIVATE_MACHINE] ...
 
 # example:
 # cd private_config_path (explained below)
@@ -34,7 +34,7 @@ curl -fsSL $url | python3 - [-h] [-f] [path] machine [-h]
 Or download it and run it locally:
 
 ```sh
-./bootstrap.py [-h] [-f] [-p PATH] [machine] [-h] [-q] ...
+./bootstrap.py [-h] [-f] [-p PATH] machine [-h] [-q] [-m PRIVATE_MACHINE] ...
 ```
 
 Where the arguments are as follows:
@@ -46,22 +46,13 @@ Where the arguments are as follows:
 - `machine`: the machine to set up, defaults to a testing machine.
 - `-h|--help`: prints the machine's setup help message.
 - `-q|--quiet`: suppresses debug output.
+- `-m|--private-machine`: the path to the private configuration directory.
 - `args`: the arguments required by the machine's setup script.
 
-### Setting Up Individual Components
-
-Individual machine components can be set up by running the respective setup
-module, provided that the bootstrapping script has already been run. Run the
-following command to set up a component:
-
-```sh
-python -m scripts.[component] [-h|--help]
-```
-
-Where the `args` are the arguments required by the component setup script.
-
-**Note:** Not all components can be set up independently of the machine setup
-due to dependencies on other components.
+> **Note:** The bootstrapping script clones the repository into the specified
+> path, sets up a virtual environment then runs the machine's setup script.
+> The machine's setup script links all files in the private configuration
+> into the machine configuration directory.
 
 ### Updating and Cleaning
 
@@ -98,7 +89,7 @@ machines/
 
 Some machines can have private configurations that cannot be shared publicly.
 These configurations can be stored in a private directory and provided to the
-machine's setup script as an argument, where supported.
+machine's setup script as an argument.
 
 The following are the private configuration files supported on all machines:
 
