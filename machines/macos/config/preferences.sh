@@ -1,27 +1,28 @@
-# General
-# =======
-
-# set computer name and local host name
-scutil --set ComputerName "Mohd's MacBook"
+# set local host name
 scutil --set LocalHostName "mohds-macbook"
+# keyboard repeat rate
+defaults write NSGlobalDomain KeyRepeat -int 2
+# keyboard repeat delay
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+# keyboard navigation
+defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
+# tap to click
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+# drag with trackpad
+defaults write com.apple.AppleMultitouchTrackpad Dragging -bool true
+
 # reduce wallpaper tinting in windows
 defaults write .GlobalPreferences AppleReduceDesktopTinting -bool true
 # rearrange spaces based on most recent use
 defaults write com.apple.dock mru-spaces -bool false
-# autohide dock
+# switch windows in same space
+defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool false
+# enable app expose
+defaults write com.apple.dock showAppExposeGestureEnabled -bool true
+
+# auto-hide dock
 defaults write com.apple.dock autohide -bool true
-# show the ~/Library folder
-chflags nohidden ~/Library && xattr -d com.apple.FinderInfo ~/Library > /dev/null 2>&1
-
-# trackpad, mouse, and keyboard
-# =============================
-
-# key repeat
-defaults write .GlobalPreferences KeyRepeat -int 2
-# delay until key repeat
-defaults write .GlobalPreferences InitialKeyRepeat -int 25
-# trackpad dragging
-defaults write com.apple.AppleMultitouchTrackpad Dragging -int 1
-defaults write com.apple.AppleMultitouchTrackpad DragLock -int 1
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Dragging -int 1
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad DragLock -int 1
+# hide recent apps
+defaults write com.apple.dock show-recents -bool false
+# minimize with scaling
+defaults write com.apple.dock mineffect -string "scale"

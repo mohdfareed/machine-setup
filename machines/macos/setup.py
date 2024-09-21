@@ -23,6 +23,7 @@ def setup() -> None:
 
     # setup package managers
     LOGGER.info("Setting up macOS...")
+    accept_xcode_license()
     brew = package_managers.HomeBrew()
     package_managers.MAS(brew)
 
@@ -40,7 +41,7 @@ def setup() -> None:
     scripts.vscode.setup(brew)
     scripts.tailscale.setup(brew)
     scripts.tools.setup_fonts(brew)
-    # scripts.brew.install_brewfile(macos.brewfile)
+    brew.install_brewfile(macos.brewfile)
 
     # setup dev tools
     scripts.tools.install_powershell(brew)
@@ -71,6 +72,18 @@ def enable_touch_id() -> None:
 
     utils.shell.run(f"echo '{PAM_SUDO_CONTENT}' | sudo tee {PAM_SUDO} > /dev/null")
     LOGGER.info("Touch ID for sudo enabled.")
+
+
+def accept_xcode_license() -> None:
+    """Accept the Xcode license."""
+    LOGGER.info("Authenticate to accept Xcode license.")
+    try:  # ensure xcode license is accepted
+        utils.shell.run("sudo xcodebuild -license accept", info=True)
+    except utils.shell.ShellError as ex:
+        raise utils.SetupError(
+            "Failed to accept Xcode license. "
+            "Ensure Xcode is installed using: xcode-select --install"
+        ) from ex
 
 
 if __name__ == "__main__":
