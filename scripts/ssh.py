@@ -127,7 +127,11 @@ def setup_server(apt: Optional[APT]) -> None:
         return
 
     if utils.is_macos():
-        utils.shell.run("sudo systemsetup -setremotelogin on")
+        try:
+            utils.shell.run("sudo systemsetup -setremotelogin on")
+        except shell.ShellError as ex:
+            LOGGER.error("Failed to enable SSH server: %s", ex)
+            return
         LOGGER.debug("SSH server setup complete.")
         return
 

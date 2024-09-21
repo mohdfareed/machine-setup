@@ -5,7 +5,7 @@ __all__ = ["HomeBrew"]
 
 
 import os
-from typing import Optional, Union, override
+from typing import Optional, Union
 
 import utils
 from scripts.package_managers.models import LOGGER, PackageManager
@@ -34,12 +34,10 @@ class HomeBrew(PackageManager):
             LOGGER.error("Homebrew is not supported: %s", ex)
             return None
 
-    @override
     @PackageManager.installation
     def install(self, package: Union[str, list[str]], cask: bool = False) -> None:
         shell.run(f"{self.brew} install {'--cask' if cask else ''} {package}")
 
-    @override
     @staticmethod
     def is_supported() -> bool:
         return utils.is_macos() or not utils.is_arm()
@@ -52,7 +50,6 @@ class HomeBrew(PackageManager):
         shell.run(f"{self.brew} cleanup --prune=all", throws=False)
         LOGGER.debug("Homebrew packages were installed successfully.")
 
-    @override
     def _setup(self) -> None:
         if not os.path.exists(self.brew):
             self._install_brew()
@@ -65,9 +62,9 @@ class HomeBrew(PackageManager):
         except shell.ShellError as ex:
             raise utils.SetupError("Failed to install Homebrew.") from ex
 
-        # fix “zsh compinit: insecure directories” error
-        shell.run(f'chmod -R go-w "$({self.brew} --prefix)/share"')
-        LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
+        # # fix “zsh compinit: insecure directories” error
+        # shell.run(f'chmod -R go-w "$({self.brew} --prefix)/share"')
+        # LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
 
     def __del__(self) -> None:
         LOGGER.debug("Cleaning up...")

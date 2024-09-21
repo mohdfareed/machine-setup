@@ -3,7 +3,7 @@ Debian machine."""
 
 __all__ = ["APT"]
 
-from typing import Union, override
+from typing import Union
 
 import utils
 from scripts.package_managers.models import LOGGER, PackageManager
@@ -34,17 +34,14 @@ class APT(PackageManager):
         )
         LOGGER.debug("Keyring %s was added successfully.", keyring)
 
-    @override
     @staticmethod
     def is_supported() -> bool:
         return utils.is_installed("apt")
 
-    @override
     @PackageManager.installation
     def install(self, package: Union[str, list[str]]) -> None:
         utils.shell.run(f"sudo apt install -y {package}")
 
-    @override
     def _setup(self) -> None:
         utils.shell.run("sudo apt update && sudo apt upgrade -y")
 

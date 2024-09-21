@@ -31,9 +31,9 @@ def startup() -> None:
     """Start the setup process for a machine."""
     PARSER.add_argument("-q", "--quiet", action="store_true", help="disable debug messages")
     PARSER.add_argument(
-        "private_machine",
-        metavar="PRIVATE_MACHINE",
-        nargs="?",
+        "-m",
+        "--private_machine",
+        type=str,
         default=None,
         help="The path to a private machine configuration directory.",
     )

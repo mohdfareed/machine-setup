@@ -6,7 +6,7 @@ import logging
 import os
 import re
 import subprocess
-from enum import StrEnum
+from enum import Enum
 from typing import Any, Optional
 
 LOGGER = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ _IS_WINDOWS = os.name == (_ := "nt")  # whether the OS is Windows
 _ANSI_ESCAPE = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")  # ANSI escape codes
 
 
-class SupportedExecutables(StrEnum):
+class SupportedExecutables(Enum):
     """Supported shell executables."""
 
     ZSH = "/bin/zsh"
@@ -62,7 +62,7 @@ def run(
         results = _exec_process(process, info)
 
     if throws and results.returncode != 0:
-        raise ShellError(command=command, results=results)
+        raise ShellError(command, results)
     return results
 
 
@@ -71,7 +71,7 @@ def _create_process(command: str, env: Optional[dict[str, Any]] = None) -> subpr
 
     if EXECUTABLE == SupportedExecutables.PWSH_WIN:
         sub_proc = subprocess.Popen(  # pylint: disable=consider-using-with
-            [EXECUTABLE, "-Command", command],
+            [EXECUTABLE.value, "-Command", command],
             env=env,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -80,7 +80,7 @@ def _create_process(command: str, env: Optional[dict[str, Any]] = None) -> subpr
 
     elif EXECUTABLE == SupportedExecutables.WSL:
         sub_proc = subprocess.Popen(  # pylint: disable=consider-using-with
-            [EXECUTABLE, "-e", "bash", "-c", f"'{command}'"],
+            [EXECUTABLE.value, "-e", "bash", "-c", f"'{command}'"],
             env=env,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
@@ -93,7 +93,7 @@ def _create_process(command: str, env: Optional[dict[str, Any]] = None) -> subpr
             env=env,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            executable=EXECUTABLE,
+            executable=EXECUTABLE.value,
             shell=True,
             text=True,
         )
@@ -151,9 +151,6 @@ class ShellResults(tuple[int, str]):
 
 class ShellError(Exception):
     """Exception due to a shell error."""
-
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(*args, **kwargs)
 
 
 if _IS_WINDOWS:

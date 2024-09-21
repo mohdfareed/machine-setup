@@ -20,14 +20,14 @@ auth       sufficient     {PAM_SUDO_MODULE}
 @utils.machine_setup
 def setup() -> None:
     """Setup macOS on a new machine."""
-    LOGGER.info("Authenticate to accept Xcode license.")
-    try:  # ensure xcode license is accepted
-        utils.shell.run("sudo xcodebuild -license accept", info=True)
-    except utils.shell.ShellError as ex:
-        raise utils.SetupError(
-            "Failed to accept Xcode license. "
-            "Ensure Xcode is installed using: xcode-select --install"
-        ) from ex
+    # LOGGER.info("Authenticate to accept Xcode license.")
+    # try:  # ensure xcode license is accepted
+    #     utils.shell.run("sudo xcodebuild -license accept", info=True)
+    # except utils.shell.ShellError as ex:
+    #     raise utils.SetupError(
+    #         "Failed to accept Xcode license. "
+    #         "Ensure Xcode is installed using: xcode-select --install"
+    #     ) from ex
 
     # setup package managers
     LOGGER.info("Setting up macOS...")

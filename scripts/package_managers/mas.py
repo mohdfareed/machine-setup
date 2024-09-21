@@ -4,7 +4,7 @@ CLI on a new machine."""
 __all__ = ["MAS"]
 
 import os
-from typing import Union, override
+from typing import Union
 
 import utils
 from scripts.package_managers.brew import HomeBrew
@@ -23,18 +23,15 @@ class MAS(PackageManager):
         """The Homebrew package manager."""
         super().__init__()
 
-    @override
     @staticmethod
     def is_supported() -> bool:
         return utils.is_macos()
 
-    @override
     @PackageManager.installation
     def install(self, package: Union[str, list[str]]) -> None:
         shell.run(f"{self.mas} install {package}")
 
-    @override
     def _setup(self) -> None:
         self.homebrew.install("mas")
         LOGGER.info("Updating Mac App Store applications...")
-        shell.run("mas upgrade")
+        shell.run(f"{self.mas} upgrade")

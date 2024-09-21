@@ -32,7 +32,7 @@ def main(
 
     _clone_machine(path, overwrite)
     python = _create_virtual_env(path, machine, overwrite)
-    install_dependencies(python, path)
+    _install_dependencies(python, path)
     _setup_machine(python, f"machines.{machine}.setup", path, setup_args)
 
 
@@ -73,7 +73,7 @@ def _create_virtual_env(path: str, prompt: str, clean: bool) -> str:
     return os.path.join(venv, bin_path, "python")
 
 
-def install_dependencies(python: str, path: str):
+def _install_dependencies(python: str, path: str):
     req_file = os.path.join(path, "requirements.txt")
     cmd = [python, "-m", "pip", "install", "-r", req_file, "--upgrade"]
     _log_info("Installing dependencies...")

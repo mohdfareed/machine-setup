@@ -3,7 +3,7 @@ Windows machine."""
 
 __all__ = ["Scoop"]
 
-from typing import Union, override
+from typing import Union
 
 import utils
 from scripts.package_managers.models import LOGGER, PackageManager
@@ -19,17 +19,14 @@ class Scoop(PackageManager):
         utils.shell.run(f"scoop bucket add {bucket}", throws=False)
         LOGGER.debug("Bucket %s was added successfully.", bucket)
 
-    @override
     @staticmethod
     def is_supported() -> bool:
         return utils.is_windows()
 
-    @override
     @PackageManager.installation
     def install(self, package: Union[str, list[str]]) -> None:
         utils.shell.run(f"scoop install {package}")
 
-    @override
     def _setup(self) -> None:
         if not utils.is_installed("scoop"):  # install
             utils.shell.run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")

@@ -3,7 +3,7 @@ a new Debian machine."""
 
 __all__ = ["SnapStore"]
 
-from typing import Union, override
+from typing import Union
 
 import utils
 from scripts.package_managers.apt import APT
@@ -18,17 +18,14 @@ class SnapStore(PackageManager):
         """The Snap Store package manager."""
         super().__init__()
 
-    @override
     @PackageManager.installation
     def install(self, package: Union[str, list[str]], classic: bool = False) -> None:
         utils.shell.run(f"sudo snap install {package} {'--classic' if classic else ''}")
 
-    @override
     @staticmethod
     def is_supported() -> bool:
         return True
 
-    @override
     def _setup(self) -> None:
         self.apt.install("snapd")
         self.install("snapd")
