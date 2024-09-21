@@ -23,7 +23,6 @@ def setup() -> None:
 
     # setup package managers
     LOGGER.info("Setting up macOS...")
-    accept_xcode_license()
     brew = package_managers.HomeBrew()
     package_managers.MAS(brew)
 

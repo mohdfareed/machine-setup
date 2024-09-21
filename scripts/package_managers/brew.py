@@ -62,10 +62,6 @@ class HomeBrew(PackageManager):
         except shell.ShellError as ex:
             raise utils.SetupError("Failed to install Homebrew.") from ex
 
-        # # fix “zsh compinit: insecure directories” error
-        # shell.run(f'chmod -R go-w "$({self.brew} --prefix)/share"')
-        # LOGGER.info("Fixed zsh `compinit` security error.")  # REVIEW: needed?
-
     def __del__(self) -> None:
         LOGGER.debug("Cleaning up...")
         shell.run(f"{self.brew} cleanup --prune=all", throws=False)

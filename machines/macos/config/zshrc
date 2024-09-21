@@ -8,7 +8,6 @@ source $MACHINE/config/zshrc
 # =============================================================================
 
 alias setup-machine="$MACHINE/bootstrap.py macos"
-alias ssh-create-key="ssh-keygen -t ed25519 -C"
 alias update="\
 brew update && \
 brew upgrade && \
@@ -17,7 +16,7 @@ zinit self-update && \
 zinit update"
 
 # add all ssh keys to keychain
-function ssh-fix-keychain {
+function ssh::fix-keychain {
     for private_key in ~/.ssh/*.key; do
         ssh-add --apple-use-keychain "$private_key"
     done

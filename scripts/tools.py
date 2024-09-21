@@ -39,7 +39,9 @@ def setup_docker(pkg_manager: Optional[Union[HomeBrew, WinGet]]) -> None:
     """Setup docker on a new Debian machine."""
     LOGGER.info("Setting up Docker...")
     if isinstance(pkg_manager, HomeBrew):
-        pkg_manager.install("docker", cask=True)
+        # REVIEW: check homebrew cask for apple silicon support
+        LOGGER.warning("Docker is not supported on Apple Silicon.")
+        LOGGER.warning("Download manually from: https://www.docker.com")
     elif isinstance(pkg_manager, WinGet):
         pkg_manager.install("Docker.DockerDesktop")
     elif utils.is_unix():

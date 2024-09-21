@@ -22,7 +22,11 @@
     "winget",
     "zcompdump",
     "zdotdir",
-    "zinit"
+    "zinit",
+    "codespaces",
+    "endregion",
+    "Raycast",
+    "trackpad"
   ],
   "cSpell.ignorePaths": [
     "*/vscode/settings.json"
