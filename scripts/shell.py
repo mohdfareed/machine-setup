@@ -7,6 +7,7 @@ import os
 from typing import Union
 
 import config
+import core
 import utils
 from scripts.package_managers import APT, HomeBrew
 from utils import shell
@@ -39,11 +40,11 @@ def setup(
 
     LOGGER.info("Setting up shell...")
     if not config.xdg_config:
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+        raise utils.Unsupported(f"Unsupported operating system: {utils.OS}")
     if not os.path.exists(zshrc):
-        raise utils.SetupError("Machine zshrc file does not exist.")
+        raise core.SetupError("Machine zshrc file does not exist.")
     if not os.path.exists(zshenv):
-        raise utils.SetupError("Machine zshenv file does not exist.")
+        raise core.SetupError("Machine zshenv file does not exist.")
     pkg_manager.install("zsh")  # install zsh
 
     # resolve shell configuration paths
@@ -62,14 +63,14 @@ def setup(
     # update zinit and its plugins
     LOGGER.info("Updating zinit and its plugins...")
     source_env = f"source {zshrc} && source {zshenv}"
-    shell.run(f"{source_env} && zinit self-update && zinit update")
+    shell.execute(f"{source_env} && zinit self-update && zinit update")
 
     # clean up
-    shell.run("sudo rm -rf ~/.zcompdump*", throws=False)
-    shell.run("sudo rm -rf ~/.zshrc", throws=False)
-    shell.run("sudo rm -rf ~/.zsh_sessions", throws=False)
-    shell.run("sudo rm -rf ~/.zsh_history", throws=False)
-    shell.run("sudo rm -rf ~/.lesshst", throws=False)
+    shell.execute("sudo rm -rf ~/.zcompdump*", throws=False)
+    shell.execute("sudo rm -rf ~/.zshrc", throws=False)
+    shell.execute("sudo rm -rf ~/.zsh_sessions", throws=False)
+    shell.execute("sudo rm -rf ~/.zsh_history", throws=False)
+    shell.execute("sudo rm -rf ~/.lesshst", throws=False)
     LOGGER.debug("Shell setup complete.")
 
 
@@ -78,9 +79,9 @@ def setup_windows(ps_profile: str = config.ps_profile) -> None:
 
     LOGGER.info("Setting up shell...")
     if not config.local_data:
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+        raise utils.Unsupported(f"Unsupported operating system: {utils.OS}")
     if not os.path.exists(ps_profile):
-        raise utils.SetupError("Machine powershell profile file does not exist.")
+        raise core.SetupError("Machine powershell profile file does not exist.")
 
     # resolve shell configuration paths
     vim = os.path.join(config.local_data, "nvim")

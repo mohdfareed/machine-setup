@@ -3,12 +3,12 @@
 __all__ = ["setup"]
 
 import config
+import core
 import scripts
-import utils
 from scripts import package_managers
 
 
-@utils.machine_setup
+@core.machine_setup
 def setup() -> None:
     """Setup WSL on a new Windows machine."""
 
@@ -30,6 +30,5 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.startup()
     config.report(None)
     setup()

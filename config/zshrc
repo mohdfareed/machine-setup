@@ -31,17 +31,18 @@ zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
 
 alias zsh::reload='exec $SHELL'
 alias zsh::source='source $ZDOTDIR/.zshrc'
+alias zsh::update='zinit update && zinit self-update'
+alias zsh::clean='zinit delete --clean'
 alias brew::update='brew update && brew upgrade'
 alias brew::cleanup='brew autoremove && brew cleanup'
 alias ssh::gen-key='ssh-keygen -t ed25519 -C'
+
 alias cat='bat --paging=never'
 alias vim='nvim'
-alias ls='eza --icons --group-directories-first --sort=Name '
+alias ls='eza --icons --group-directories-first --sort=Name'
 alias lst='ls -T'
 alias lls='ls -lhmU --git --no-user'
 alias llst='lls -T'
-alias update='brew::update && zinit update && zinit self-update'
-alias cleanup='brew::cleanup && zinit delete --clean'
 
 # copy ssh key to machine, default user is current user
 ssh::copy() {
@@ -58,7 +59,7 @@ zsh::time() {
 }
 
 # activate python virtual environment
-venv() {
+venv::activate() {
     usage="usage: $0 [venv_dir]"
     if (($# > 1)); then echo $usage && return 1; fi
 

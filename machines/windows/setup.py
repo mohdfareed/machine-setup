@@ -3,15 +3,15 @@
 __all__ = ["setup"]
 
 import config
+import core
 import scripts
-import utils
 from machines import windows
 from scripts import package_managers
 
 from . import setup_wsl
 
 
-@utils.machine_setup
+@core.machine_setup
 def setup() -> None:
     """Setup Windows on a new machine."""
 
@@ -51,6 +51,5 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.startup()
     config.report(None)
     setup()

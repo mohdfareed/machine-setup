@@ -1,1 +1,1 @@
-rich
+typer[all]

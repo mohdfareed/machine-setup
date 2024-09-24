@@ -11,8 +11,9 @@ import sys
 from typing import Optional
 
 REPOSITORY = "https://github.com/mohdfareed/machine.git"
-MODULE = "machines.{}.setup"
 
+# the script to execute for machine setup
+MODULE = "machines.{}.setup"
 DEFAULT_MACHINE = "codespaces" if os.environ.get("CODESPACES") else "dummy"
 DEFAULT_MACHINE_PATH = os.environ.get("MACHINE") or os.path.join(
     os.path.expanduser("~"), ".machine"

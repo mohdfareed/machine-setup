@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 import config
+import core
 import utils
 from scripts.package_managers import APT
 from utils import shell
@@ -81,24 +82,24 @@ def _setup_key(key: "_SSHKeyPair") -> None:
         _set_permissions(key.public, private=False)
 
     # get key fingerprint
-    fingerprint = shell.run(f"ssh-keygen -lf {key.private}")[1]
+    fingerprint = shell.execute(f"ssh-keygen -lf {key.private}")[1]
     fingerprint = fingerprint.split(" ")[1]
     LOGGER.debug("Key fingerprint: %s", fingerprint)
 
     if utils.is_windows():  # set up ssh agent on windows
-        shell.run("Get-Service ssh-agent | Set-Service -StartupType Automatic")
-        shell.run("Start-Service ssh-agent")
+        shell.execute("Get-Service ssh-agent | Set-Service -StartupType Automatic")
+        shell.execute("Start-Service ssh-agent")
         cmd = f"ssh-add -l | Select-String -Pattern '{fingerprint}'"
     else:  # command to check if key already exists in ssh agent
         cmd = "ssh-add -l | grep -q " + fingerprint
 
     # add key to ssh agent if it doesn't exist
-    if shell.run(cmd, throws=False)[0] != 0:
+    if shell.execute(cmd, throws=False)[0] != 0:
         if utils.is_macos():  # add key to keychain on macOS
-            shell.run(f"ssh-add --apple-use-keychain '{key.private}'")
+            shell.execute(f"ssh-add --apple-use-keychain '{key.private}'")
 
         else:  # add key to ssh agent on other operating systems
-            shell.run(f"ssh-add '{key.private}'")
+            shell.execute(f"ssh-add '{key.private}'")
         LOGGER.info("Added key to SSH agent")
     else:
         LOGGER.info("Key already exists in SSH agent")
@@ -107,7 +108,7 @@ def _setup_key(key: "_SSHKeyPair") -> None:
 def _set_permissions(filepath: str, private: bool) -> None:
     """Set file permissions based on the operating system."""
     if utils.is_windows():
-        shell.run(
+        shell.execute(
             f"icacls {filepath} /inheritance:r /grant:r "
             f"{os.getlogin()}:{'F' if private else 'R'}"
         )
@@ -120,15 +121,15 @@ def setup_server(apt: Optional[APT]) -> None:
     LOGGER.info("Setting up SSH server...")
 
     if utils.is_windows():
-        utils.shell.run("Add-WindowsCapability -Online -Name OpenSSH.Server")
-        utils.shell.run("Get-Service -Name sshd | Set-Service -StartupType Automatic")
-        utils.shell.run("Start-Service sshd")
+        utils.shell.execute("Add-WindowsCapability -Online -Name OpenSSH.Server")
+        utils.shell.execute("Get-Service -Name sshd | Set-Service -StartupType Automatic")
+        utils.shell.execute("Start-Service sshd")
         LOGGER.debug("SSH server setup complete.")
         return
 
     if utils.is_macos():
         try:
-            utils.shell.run("sudo systemsetup -setremotelogin on")
+            utils.shell.execute("sudo systemsetup -setremotelogin on")
         except shell.ShellError as ex:
             LOGGER.error("Failed to enable SSH server: %s", ex)
             return
@@ -137,14 +138,14 @@ def setup_server(apt: Optional[APT]) -> None:
 
     if utils.is_linux() and apt:
         apt.install("openssh-server")
-        utils.shell.run("sudo systemctl start ssh")
-        utils.shell.run("sudo systemctl enable ssh")
+        utils.shell.execute("sudo systemctl start ssh")
+        utils.shell.execute("sudo systemctl enable ssh")
         LOGGER.debug("SSH server setup complete.")
         return
 
     if utils.is_linux():
-        raise utils.SetupError("APT package manager is required for linux setup.")
-    raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
+        raise core.SetupError("APT package manager is required for linux setup.")
+    raise utils.Unsupported(f"Unsupported operating system: {utils.OS}")
 
 
 def generate_key_pair(
@@ -170,7 +171,7 @@ def generate_key_pair(
         LOGGER.warning("Private key already exists: %s", private_key)
 
         if not os.path.exists(public_key):  # regenerate public key
-            shell.run(f"ssh-keygen -y -f {private_key} > {public_key}")
+            shell.execute(f"ssh-keygen -y -f {private_key} > {public_key}")
             LOGGER.info("Public key regenerated: %s", public_key)
         return  # don't overwrite existing key pair
 
@@ -181,7 +182,7 @@ def generate_key_pair(
     # generate new key pair
     LOGGER.debug("Generating new key pair...")
     key_args = f"-C '{email}' -f {private_key} -N '{passphrase}'"
-    shell.run(f"ssh-keygen -t ed25519 {key_args}")
+    shell.execute(f"ssh-keygen -t ed25519 {key_args}")
     shutil.move(private_key + ".pub", public_key)
 
     LOGGER.info("SSH key pair generated: %s", name)

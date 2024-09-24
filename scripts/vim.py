@@ -1,4 +1,4 @@
-"""Setup module containing a `setup` function for setting up Git on a new machine."""
+"""Setup module containing a `setup` function for setting up Vim on a new machine."""
 
 __all__ = ["setup"]
 

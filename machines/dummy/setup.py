@@ -1,11 +1,11 @@
 """Setup module containing a `setup` function for a dummy machine."""
 
 import config
-import utils
+import core
 from machines import LOGGER
 
 
-@utils.machine_setup
+@core.machine_setup
 def setup() -> None:
     """Setup a dummy machine."""
     LOGGER.warning("Setting up dummy machine...")
@@ -13,6 +13,5 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.startup()
     config.report(None)
     setup()

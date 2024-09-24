@@ -3,9 +3,7 @@
 __all__ = [
     "OS",
     "ARCH",
-    "PLATFORM",
-    "ARCHITECTURE",
-    "UnsupportedOS",
+    "Unsupported",
     "is_macos",
     "is_linux",
     "is_unix",
@@ -17,35 +15,36 @@ import platform
 from enum import Enum
 
 
-class PLATFORM(Enum):
-    """Enumeration of supported platforms."""
-
+class _PLATFORM(Enum):
     LINUX = "Linux"
     MACOS = "Darwin"
     WINDOWS = "Windows"
 
 
-class ARCHITECTURE(Enum):
-    """Enumeration of supported architectures."""
-
+class _ARCHITECTURE(Enum):
     ARM = "arm"
     AMD = "64"
 
 
-OS = PLATFORM(platform.system())
+OS = _PLATFORM(platform.system())
 """The current operating system."""
-ARCH = ARCHITECTURE.ARM if "arm" in platform.machine() else ARCHITECTURE.AMD
+ARCH = _ARCHITECTURE.ARM if "arm" in platform.machine() else _ARCHITECTURE.AMD
 """The current architecture."""
+
+
+def is_windows() -> bool:
+    """Check if the current operating system is Windows."""
+    return platform.system() == _PLATFORM.WINDOWS.value
 
 
 def is_macos() -> bool:
     """Check if the current operating system is macOS."""
-    return platform.system() == PLATFORM.MACOS.value
+    return platform.system() == _PLATFORM.MACOS.value
 
 
 def is_linux() -> bool:
     """Check if the current operating system is Linux."""
-    return platform.system() == PLATFORM.LINUX.value
+    return platform.system() == _PLATFORM.LINUX.value
 
 
 def is_unix() -> bool:
@@ -53,15 +52,10 @@ def is_unix() -> bool:
     return is_macos() or is_linux()
 
 
-def is_windows() -> bool:
-    """Check if the current operating system is Windows."""
-    return platform.system() == PLATFORM.WINDOWS.value
-
-
 def is_arm() -> bool:
     """Check if the current operating system is ARM based."""
-    return str(ARCHITECTURE.ARM) in platform.machine()
+    return str(_ARCHITECTURE.ARM) in platform.machine()
 
 
-class UnsupportedOS(Exception):
-    """Exception due to an unsupported operating system."""
+class Unsupported(Exception):
+    """Exception due to an unsupported machine configuration."""

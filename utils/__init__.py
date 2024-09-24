@@ -1,7 +1,6 @@
-"""Utilities for setting up logging, shell execution, and other helpers."""
+"""Utilities package for the project."""
 
-from . import shell  # type: ignore
 from .filesystem import *
-from .helpers import *
 from .logging import *
 from .platform import *
+from .shell import *

@@ -22,18 +22,18 @@ def setup(brew: Optional[HomeBrew]) -> None:
 
     elif utils.is_linux():
         if not utils.is_installed("tailscale"):
-            utils.shell.run("curl -fsSL https://tailscale.com/install.sh | sh", info=True)
+            utils.shell.execute("curl -fsSL https://tailscale.com/install.sh | sh", info=True)
 
     elif utils.is_windows():
         installer_url = "https://pkgs.tailscale.com/stable/tailscale-setup.exe"
         installer_path = os.path.join(os.environ["TEMP"], "tailscale-setup.exe")
         urllib.request.urlretrieve(installer_url, installer_path)
-        utils.shell.run(
+        utils.shell.execute(
             f"Start-Process -FilePath {installer_path} -ArgumentList '/quiet' -Wait", throws=False
         )
         os.remove(installer_path)
 
     else:
-        raise utils.UnsupportedOS(f"Unsupported operating system: {utils.OS}")
-    utils.shell.run("sudo tailscale update", info=True)
+        raise utils.Unsupported(f"Unsupported operating system: {utils.OS}")
+    utils.shell.execute("sudo tailscale update", info=True)
     LOGGER.debug("Tailscale was setup successfully.")

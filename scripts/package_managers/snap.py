@@ -20,7 +20,7 @@ class SnapStore(PackageManager):
 
     @PackageManager.installation
     def install(self, package: Union[str, list[str]], classic: bool = False) -> None:
-        utils.shell.run(f"sudo snap install {package} {'--classic' if classic else ''}")
+        utils.shell.execute(f"sudo snap install {package} {'--classic' if classic else ''}")
 
     @staticmethod
     def is_supported() -> bool:

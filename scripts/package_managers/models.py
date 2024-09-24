@@ -6,7 +6,7 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Union
 
-from utils import SetupError
+import core
 
 LOGGER = logging.getLogger(__name__)
 """Package managers logger."""
@@ -22,7 +22,7 @@ class PackageManager(ABC):
 
     def __init__(self) -> None:
         if not self.is_supported():
-            raise SetupError(f"Package manager {self.name} is not supported.")
+            raise core.SetupError(f"Package manager {self.name} is not supported.")
         LOGGER.info("Setting up %s...", self.name)
         self._setup()
         LOGGER.debug("%s was setup successfully.", self.name)

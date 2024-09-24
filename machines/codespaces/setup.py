@@ -1,12 +1,14 @@
 """Setup module containing a `setup` function for setting up a codespace."""
 
 import config
+import core
 import scripts
 import utils
 from machines import codespaces
 from scripts import package_managers
 
 
+@core.machine_setup
 def setup() -> None:
     """Setup a new GitHub codespace."""
     apt = package_managers.APT()  # package managers
@@ -18,10 +20,9 @@ def setup() -> None:
 
     # set zsh as the default shell
     cmd = 'sudo chsh "$(id -un)" --shell "/usr/bin/zsh"'
-    utils.shell.run(cmd, throws=False)
+    utils.shell.execute(cmd, throws=False)
 
 
 if __name__ == "__main__":
-    utils.startup()
     config.report(None)
     setup()

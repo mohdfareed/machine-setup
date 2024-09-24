@@ -52,7 +52,8 @@
     "*"
   ],
   "cSpell.userWords": [
-    "endregion"
+    "endregion",
+    "Fareed"
   ],
   // # endregion
   // MARK: terminal
@@ -166,7 +167,7 @@
   ],
   "black-formatter.args": [
     "--line-length",
-    "99"
+    "88"
   ],
   "isort.args": [
     "--profile",
@@ -206,7 +207,9 @@
   "[latex]": {
     "editor.defaultFormatter": "James-Yu.latex-workshop"
   },
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
+  "editor.minimap.enabled": false,
+  "diffEditor.ignoreTrimWhitespace": true
   // # endregion
   // REVIEW - new customizations above =========================================
 }

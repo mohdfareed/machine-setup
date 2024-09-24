@@ -3,13 +3,13 @@
 __all__ = ["setup"]
 
 import config
+import core
 import scripts
-import utils
 from machines import gleason
 from scripts import package_managers
 
 
-@utils.machine_setup
+@core.machine_setup
 def setup() -> None:
     """Setup WSL on a new Gleason Windows machine."""
 
@@ -31,6 +31,5 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.startup()
     config.report(None)
     setup()

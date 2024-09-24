@@ -7,6 +7,7 @@ __all__ = ["HomeBrew"]
 import os
 from typing import Optional, Union
 
+import core
 import utils
 from scripts.package_managers.models import LOGGER, PackageManager
 from utils import shell
@@ -30,13 +31,13 @@ class HomeBrew(PackageManager):
 
         try:
             return HomeBrew()
-        except utils.SetupError as ex:
+        except core.SetupError as ex:
             LOGGER.error("Homebrew is not supported: %s", ex)
             return None
 
     @PackageManager.installation
     def install(self, package: Union[str, list[str]], cask: bool = False) -> None:
-        shell.run(f"{self.brew} install {'--cask' if cask else ''} {package}")
+        shell.execute(f"{self.brew} install {'--cask' if cask else ''} {package}")
 
     @staticmethod
     def is_supported() -> bool:
@@ -46,23 +47,23 @@ class HomeBrew(PackageManager):
         """Install Homebrew packages from a Brewfile."""
 
         LOGGER.info("Installing Homebrew packages from Brewfile...")
-        shell.run(f"{self.brew} bundle install --file={file}")
-        shell.run(f"{self.brew} cleanup --prune=all", throws=False)
+        shell.execute(f"{self.brew} bundle install --file={file}")
+        shell.execute(f"{self.brew} cleanup --prune=all", throws=False)
         LOGGER.debug("Homebrew packages were installed successfully.")
 
     def _setup(self) -> None:
         if not os.path.exists(self.brew):
             self._install_brew()
-        shell.run(f"{self.brew} update && {self.brew} upgrade")
+        shell.execute(f"{self.brew} update && {self.brew} upgrade")
 
     def _install_brew(self) -> None:
         LOGGER.info("Installing Homebrew...")
         try:  # install homebrew otherwise
-            shell.run('/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"')
+            shell.execute('/bin/bash -c "$(curl -fsSL https://git.io/JIY6g)"')
         except shell.ShellError as ex:
-            raise utils.SetupError("Failed to install Homebrew.") from ex
+            raise core.SetupError("Failed to install Homebrew.") from ex
 
     def __del__(self) -> None:
         LOGGER.debug("Cleaning up...")
-        shell.run(f"{self.brew} cleanup --prune=all", throws=False)
+        shell.execute(f"{self.brew} cleanup --prune=all", throws=False)
         LOGGER.debug("Homebrew cleanup complete.")

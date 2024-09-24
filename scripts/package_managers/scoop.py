@@ -16,7 +16,7 @@ class Scoop(PackageManager):
     def add_bucket(bucket: str) -> None:
         """Add a bucket to the scoop package manager."""
         LOGGER.info("Adding bucket %s to scoop...", bucket)
-        utils.shell.run(f"scoop bucket add {bucket}", throws=False)
+        utils.shell.execute(f"scoop bucket add {bucket}", throws=False)
         LOGGER.debug("Bucket %s was added successfully.", bucket)
 
     @staticmethod
@@ -25,12 +25,14 @@ class Scoop(PackageManager):
 
     @PackageManager.installation
     def install(self, package: Union[str, list[str]]) -> None:
-        utils.shell.run(f"scoop install {package}")
+        utils.shell.execute(f"scoop install {package}")
 
     def _setup(self) -> None:
         if not utils.is_installed("scoop"):  # install
-            utils.shell.run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser")
-            utils.shell.run('iex "& {$(irm get.scoop.sh)} -RunAsAdmin"')
+            utils.shell.execute(
+                "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"
+            )
+            utils.shell.execute('iex "& {$(irm get.scoop.sh)} -RunAsAdmin"')
         else:  # update
-            utils.shell.run("scoop update")
-            utils.shell.run("scoop update *")
+            utils.shell.execute("scoop update")
+            utils.shell.execute("scoop update *")

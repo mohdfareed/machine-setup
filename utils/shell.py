@@ -1,6 +1,6 @@
 """Shell commands execution."""
 
-__all__ = ["run", "ShellResults", "ShellError"]
+__all__ = ["execute", "ShellResults", "ShellError"]
 
 import logging
 import os
@@ -13,12 +13,12 @@ LOGGER = logging.getLogger(__name__)
 """The shell logger."""
 
 # log matching tokens
-_ERROR_TOKEN = "error"
-_WARNING_TOKEN = "warning"
-_SUDO_TOKEN = "sudo"
+ERROR_TOKEN = "error"
+WARNING_TOKEN = "warning"
+SUDO_TOKEN = "sudo"
 
-_IS_WINDOWS = os.name == (_ := "nt")  # whether the OS is Windows
-_ANSI_ESCAPE = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")  # ANSI escape codes
+IS_WINDOWS = os.name == (_ := "nt")  # whether the OS is Windows
+ANSI_ESCAPE = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")  # ANSI escape codes
 
 
 class SupportedExecutables(Enum):
@@ -30,12 +30,12 @@ class SupportedExecutables(Enum):
 
 
 EXECUTABLE: SupportedExecutables = (
-    SupportedExecutables.ZSH if not _IS_WINDOWS else SupportedExecutables.PWSH_WIN
+    SupportedExecutables.ZSH if not IS_WINDOWS else SupportedExecutables.PWSH_WIN
 )
 """The shell executable to use."""
 
 
-def run(
+def execute(
     command: str,
     env: Optional[dict[str, Any]] = None,
     throws: bool = True,
@@ -55,7 +55,7 @@ def run(
     Raises:
         ShellError: If the command has a non-zero return code and `throws` is True.
         KeyboardInterrupt: If the command is interrupted by the user."""
-    if _SUDO_TOKEN in command.lower() and not _IS_WINDOWS:
+    if SUDO_TOKEN in command.lower() and not IS_WINDOWS:
         LOGGER.debug("Running sudo command: %s", command)
 
     with _create_process(command, env) as process:
@@ -116,15 +116,15 @@ def _exec_process(process: subprocess.Popen[str], info: bool = False) -> "ShellR
         # break if process is done
         if process.poll() is not None:
             break
-    return ShellResults(process.wait(), _ANSI_ESCAPE.sub("", output.strip()))
+    return ShellResults(process.wait(), ANSI_ESCAPE.sub("", output.strip()))
 
 
 def _log_line(line: str, info: bool) -> None:
-    line = _ANSI_ESCAPE.sub("", line)  # strip ANSI escape codes
+    line = ANSI_ESCAPE.sub("", line)  # strip ANSI escape codes
 
-    if _ERROR_TOKEN in line.lower():
+    if ERROR_TOKEN in line.lower():
         LOGGER.error(line)
-    elif _WARNING_TOKEN in line.lower():
+    elif WARNING_TOKEN in line.lower():
         LOGGER.warning(line)
     elif info:
         LOGGER.info(line)
@@ -153,5 +153,5 @@ class ShellError(Exception):
     """Exception due to a shell error."""
 
 
-if _IS_WINDOWS:
-    run("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force")
+if IS_WINDOWS:
+    execute("Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force")

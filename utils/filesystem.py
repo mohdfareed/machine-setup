@@ -13,7 +13,7 @@ import shutil
 
 from .logging import LOGGER
 from .platform import is_windows
-from .shell import EXECUTABLE, SupportedExecutables, run
+from .shell import EXECUTABLE, SupportedExecutables, execute
 
 
 def load_env_var(env_path: str, var_name: str) -> str:
@@ -25,7 +25,7 @@ def load_env_var(env_path: str, var_name: str) -> str:
         if is_windows()
         else f"source '{env_path}' && echo ${var_name}"
     )
-    return run(command)[1]
+    return execute(command)[1]
 
 
 def symlink(src: str, dst: str) -> None:
@@ -37,7 +37,7 @@ def symlink(src: str, dst: str) -> None:
     if is_windows():
         delete(dst)
     else:
-        run(f"sudo rm -rf '{dst}'", throws=False)
+        execute(f"sudo rm -rf '{dst}'", throws=False)
 
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     os.symlink(src, dst, target_is_directory=os.path.isdir(src))
@@ -66,5 +66,7 @@ def delete(path: str) -> None:
 def is_installed(command: str) -> bool:
     """Check if a command is installed."""
     if EXECUTABLE == SupportedExecutables.PWSH_WIN:
-        return run(f"Get-Command {command} -ErrorAction SilentlyContinue", throws=False)[0] == 0
-    return run(f"command -v {command}", throws=False)[0] == 0
+        return (
+            execute(f"Get-Command {command} -ErrorAction SilentlyContinue", throws=False)[0] == 0
+        )
+    return execute(f"command -v {command}", throws=False)[0] == 0

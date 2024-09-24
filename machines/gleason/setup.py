@@ -3,16 +3,17 @@
 __all__ = ["setup"]
 
 import config
+import core
 import scripts
 import utils
 from machines import gleason, windows
 from scripts import package_managers
 
 
-@utils.machine_setup
+@core.machine_setup
 def setup() -> None:
     """Setup Gleason config on a new machine."""
-    utils.shell.run("wsl --install", info=True)
+    utils.shell.execute("wsl --install", info=True)
 
     # setup package managers
     winget = package_managers.WinGet()
@@ -39,6 +40,5 @@ def setup() -> None:
 
 
 if __name__ == "__main__":
-    utils.startup()
     config.report(None)
     setup()

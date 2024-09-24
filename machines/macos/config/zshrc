@@ -8,12 +8,8 @@ source $MACHINE/config/zshrc
 # =============================================================================
 
 alias setup-machine="$MACHINE/bootstrap.py macos"
-alias update="\
-brew update && \
-brew upgrade && \
-brew cleanup && \
-zinit self-update && \
-zinit update"
+alias cleanup='brew::cleanup && zsh::clean'
+alias update='brew::update && zsh::update && cleanup'
 
 # add all ssh keys to keychain
 function ssh::fix-keychain {

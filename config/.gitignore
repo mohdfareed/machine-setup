@@ -7,17 +7,5 @@ Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
-# vscode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
-*.code-workspace
-
-# python
-*__pycache__/
-*.mypy_cache/
-*.venv/
-*.python-version
+# linux
+*~

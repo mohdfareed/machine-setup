@@ -29,9 +29,9 @@ class MAS(PackageManager):
 
     @PackageManager.installation
     def install(self, package: Union[str, list[str]]) -> None:
-        shell.run(f"{self.mas} install {package}")
+        shell.execute(f"{self.mas} install {package}")
 
     def _setup(self) -> None:
         self.homebrew.install("mas")
         LOGGER.info("Updating Mac App Store applications...")
-        shell.run(f"{self.mas} upgrade")
+        shell.execute(f"{self.mas} upgrade")

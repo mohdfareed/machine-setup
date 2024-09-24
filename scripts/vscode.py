@@ -7,6 +7,7 @@ import os
 from typing import Union
 
 import config
+import core
 import utils
 from scripts.package_managers import HomeBrew, SnapStore, WinGet
 from utils import shell
@@ -52,9 +53,9 @@ def install(pkg_manager: Union[HomeBrew, SnapStore, WinGet]) -> None:
 def setup_tunnels(name: str) -> None:
     """Setup VSCode SSH tunnels as a service."""
     if not utils.is_installed("code"):
-        raise utils.SetupError("VSCode is not installed on this machine.")
+        raise core.SetupError("VSCode is not installed on this machine.")
 
     LOGGER.info("Setting up VSCode SSH tunnels...")
     cmd = f"code tunnel service install " f"--accept-server-license-terms --name {name}"
-    shell.run(cmd, info=True)
+    shell.execute(cmd, info=True)
     LOGGER.debug("VSCode SSH tunnels were setup successfully.")

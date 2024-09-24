@@ -4,12 +4,13 @@ import logging as _logging
 import os as _os
 from typing import Optional as _Optional
 
+import core as _core
 import utils as _utils
 
 LOGGER = _logging.getLogger(__name__)
 """The machine configuration logger."""
 
-# FIXME: convert to dataclass
+# REVIEW: use Path(app_dir) / "config.json"
 
 # configuration files =========================================================
 
@@ -31,9 +32,14 @@ MACHINE = _utils.load_env_var(_env_file, "MACHINE") or _os.path.join(
     _os.path.expanduser("~"), ".machine"
 )
 private_env = (
-    _utils.load_env_var(ps_profile if _utils.is_windows() else zshenv, "PRIVATE_ENV") or None
+    _utils.load_env_var(ps_profile if _utils.is_windows() else zshenv, "PRIVATE_ENV")
+    or None
 )
-ssh_keys = _utils.load_env_var(ps_profile if _utils.is_windows() else zshenv, "SSH_KEYS") or None
+ssh_keys = (
+    _utils.load_env_var(ps_profile if _utils.is_windows() else zshenv, "SSH_KEYS")
+    or None
+)
+shell_completions = _utils.load_env_var(ps_profile, "COMPLETIONS_PATH") or None
 del _env_file
 
 # os-specific environment variables ===========================================
@@ -61,7 +67,7 @@ if _utils.is_windows():
 def link_private_config(private_machine: str) -> None:
     """Load private machine configuration."""
     if not private_env or not ssh_keys:
-        raise _utils.SetupError("Private machine not configured.")
+        raise _core.SetupError("Private machine not configured.")
 
     LOGGER.info("Loading private machine configuration: %s", private_machine)
     source_env = _os.path.join(private_machine, _os.path.basename(private_env))

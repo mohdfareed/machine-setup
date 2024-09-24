@@ -5,6 +5,7 @@ __all__ = ["setup"]
 import os
 
 import config
+import core
 import scripts
 import utils
 from machines import LOGGER, macos
@@ -17,12 +18,11 @@ auth       sufficient     {PAM_SUDO_MODULE}
 """.strip()
 
 
-@utils.machine_setup
+@core.machine_setup
 def setup() -> None:
     """Setup macOS on a new machine."""
 
     # setup package managers
-    LOGGER.info("Setting up macOS...")
     brew = package_managers.HomeBrew()
     package_managers.MAS(brew)
 
@@ -53,7 +53,7 @@ def setup() -> None:
 
     # setup system preferences
     LOGGER.debug("Setting system preferences...")
-    utils.shell.run(f". {macos.preferences}")
+    utils.shell.execute(f". {macos.preferences}")
     enable_touch_id()
 
 
@@ -62,14 +62,14 @@ def enable_touch_id() -> None:
     LOGGER.info("Enabling Touch ID for sudo...")
     if not os.path.exists(PAM_SUDO):
         os.makedirs(os.path.dirname(PAM_SUDO), exist_ok=True)
-        utils.shell.run(f"sudo touch {PAM_SUDO}")
+        utils.shell.execute(f"sudo touch {PAM_SUDO}")
 
-    pam_sudo_contents = utils.shell.run(f"cat {PAM_SUDO}")
+    pam_sudo_contents = utils.shell.execute(f"cat {PAM_SUDO}")
     if PAM_SUDO_MODULE in pam_sudo_contents:
         LOGGER.info("Touch ID for sudo already enabled.")
         return
 
-    utils.shell.run(f"echo '{PAM_SUDO_CONTENT}' | sudo tee {PAM_SUDO} > /dev/null")
+    utils.shell.execute(f"echo '{PAM_SUDO_CONTENT}' | sudo tee {PAM_SUDO} > /dev/null")
     LOGGER.info("Touch ID for sudo enabled.")
 
 
@@ -77,15 +77,14 @@ def accept_xcode_license() -> None:
     """Accept the Xcode license."""
     LOGGER.info("Authenticate to accept Xcode license.")
     try:  # ensure xcode license is accepted
-        utils.shell.run("sudo xcodebuild -license accept", info=True)
+        utils.shell.execute("sudo xcodebuild -license accept", info=True)
     except utils.shell.ShellError as ex:
-        raise utils.SetupError(
+        raise core.SetupError(
             "Failed to accept Xcode license. "
             "Ensure Xcode is installed using: xcode-select --install"
         ) from ex
 
 
 if __name__ == "__main__":
-    utils.startup()
     config.report(None)
     setup()

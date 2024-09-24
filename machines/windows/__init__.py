@@ -18,9 +18,9 @@ def setup_wsl(wsl_module: _ModuleType, setup_args: str = "") -> None:
     """Setup WSL on a new machine."""
 
     _LOGGER.info("Setting up WSL...")
-    _utils.shell.run("wsl --install", info=True)
+    _utils.shell.execute("wsl --install", info=True)
     current_shell = _utils.shell.EXECUTABLE
     _utils.shell.EXECUTABLE = _utils.shell.SupportedExecutables.WSL
-    _utils.shell.run(f"{_sys.executable} {wsl_module.__name__} {setup_args}")
+    _utils.shell.execute(f"{_sys.executable} {wsl_module.__name__} {setup_args}")
     _utils.shell.EXECUTABLE = current_shell
     _LOGGER.info("WSL setup complete.")

@@ -3,6 +3,7 @@
 __all__ = ["setup"]
 
 import config
+import core
 import scripts
 import utils
 from machines import rpi
@@ -11,7 +12,7 @@ from scripts import package_managers
 PACKAGES = ["zsh", "git", "code", "npm", "docker-compose"]
 
 
-@utils.machine_setup
+@core.machine_setup
 def setup() -> None:
     """Setup Raspberry Pi on a new machine."""
 
@@ -45,13 +46,20 @@ def setup() -> None:
     snap.install("dotnet-sdk", classic=True)
 
     # machine-specific setup
-    utils.shell.run("sudo loginctl enable-linger $USER", throws=False)  # code server
-    utils.shell.run("sudo chsh -s $(which zsh)", throws=False)  # change default shell
-    utils.shell.run("sudo touch $HOME/.hushlogin", throws=False)  # remove login message
-    utils.shell.run("sudo mkdir -p $HOME/.config", throws=False)  # create config directory
+    utils.shell.execute(
+        "sudo loginctl enable-linger $USER", throws=False
+    )  # code server
+    utils.shell.execute(
+        "sudo chsh -s $(which zsh)", throws=False
+    )  # change default shell
+    utils.shell.execute(
+        "sudo touch $HOME/.hushlogin", throws=False
+    )  # remove login message
+    utils.shell.execute(
+        "sudo mkdir -p $HOME/.config", throws=False
+    )  # create config directory
 
 
 if __name__ == "__main__":
-    utils.startup()
     config.report(None)
     setup()

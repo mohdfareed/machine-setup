@@ -26,26 +26,23 @@ if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
 fi
 
-# poetry (python package manager)
-if command -v poetry 1>/dev/null 2>&1; then
-    _completions="$(dirname "$ZINIT_HOME")/completions/_poetry"
-    if [[ ! -f "$_completions" ]]; then
-        mkdir -p "$(dirname "$_completions")"
-        poetry completions zsh > "$_completions"
-    fi; unset _completions
-fi
-
 # dotnet completions, source:
 # https://learn.microsoft.com/en-us/dotnet/core/tools/enable-tab-autocomplete
 _dotnet_zsh_complete()
 {
-  local completions=("$(dotnet complete "$words")")
-  if [ -z "$completions" ]
-  then
-    _arguments '*::arguments: _normal'
-    return
-  fi
-  _values = "${(ps:\n:)completions}" # this is not variable assignment!
+    if [[ ! $(command -v dotnet) ]]; then
+        return
+    fi
+
+    local completions=("$(dotnet complete "$words")")
+    if [ -z "$completions" ]
+    then
+        _arguments '*::arguments: _normal'
+        return
+    fi
+
+    # this is not variable assignment, do not modify!
+    _values = "${(ps:\n:)completions}"
 }
 
 # endregion

@@ -20,7 +20,7 @@ class APT(PackageManager):
         LOGGER.info("Adding keyring %s to apt...", keyring)
         keyring_path = f"/etc/apt/keyrings/{keyring}"
 
-        utils.shell.run(
+        utils.shell.execute(
             f"""
                 (type -p wget >/dev/null || sudo apt-get install wget -y) \
                 && sudo mkdir -p -m 755 /etc/apt/keyrings && wget -qO- \
@@ -40,12 +40,12 @@ class APT(PackageManager):
 
     @PackageManager.installation
     def install(self, package: Union[str, list[str]]) -> None:
-        utils.shell.run(f"sudo apt install -y {package}")
+        utils.shell.execute(f"sudo apt install -y {package}")
 
     def _setup(self) -> None:
-        utils.shell.run("sudo apt update && sudo apt upgrade -y")
+        utils.shell.execute("sudo apt update && sudo apt upgrade -y")
 
     def __del__(self) -> None:
         LOGGER.debug("Cleaning up APT...")
-        utils.shell.run("sudo apt autoremove -y")
+        utils.shell.execute("sudo apt autoremove -y")
         LOGGER.debug("APT cleanup complete.")

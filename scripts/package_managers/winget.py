@@ -19,7 +19,7 @@ class WinGet(PackageManager):
 
     @PackageManager.installation
     def install(self, package: Union[str, list[str]]) -> None:
-        shell.run(f"winget install -e --id {package}", throws=False)
+        shell.execute(f"winget install -e --id {package}", throws=False)
 
     def _setup(self) -> None:
-        shell.run("winget upgrade --all --include-unknown")
+        shell.execute("winget upgrade --all --include-unknown")
